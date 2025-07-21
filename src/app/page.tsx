@@ -1,8 +1,43 @@
 import Image from "next/image";
+import { getMeAction, logoutAction } from "@/actions/authActions";
 
-export default function Home() {
+export default async function Home() {
+  const userRes = await getMeAction();
+  const user = userRes.isLogin && userRes.data ? userRes.data : null;
+
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+      {user ? (
+        <div className="row-start-1 text-center text-lg font-semibold mb-4 flex flex-col items-center">
+          <span>
+            Welcome, {user.name ?? user.email ?? user.email}!
+          </span>
+          {/* Logout button */}
+          <form
+            action={async () => {
+              "use server";
+              await logoutAction();
+            }}
+            style={{ marginTop: 12 }}
+          >
+            <button
+              type="submit"
+              className="mt-2 px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600"
+            >
+              Logout
+            </button>
+          </form>
+        </div>
+      ) : (
+        <div className="row-start-1 text-center text-lg font-semibold mb-4 flex flex-col items-center">
+          <a
+            href="/login"
+            className="mt-2 px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600"
+          >
+            Login
+          </a>
+        </div>
+      )}
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image
           className="dark:invert"
