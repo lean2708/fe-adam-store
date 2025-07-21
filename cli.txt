@@ -1,0 +1,5 @@
+openapi-generator-cli generate \
+  -i https://microservices.appf4.io.vn/adamstore/v3/api-docs \
+  -g typescript-axios \
+  -o ./api-client \
+  --additional-properties=useSingleRequestParameter=true,withSeparateModelsAndApi=true,supportsES6=true,modelPropertyNaming=original
