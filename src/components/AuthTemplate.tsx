@@ -4,17 +4,21 @@ import type { ReactNode } from 'react';
 interface AuthTemplateProps {
   children: ReactNode;
   reverseOrder?: boolean;
+  imageSrc?: string;
+  imageAlt?: string;
 }
 
 export default function AuthTemplate({
   children,
   reverseOrder = false,
+  imageSrc,
+  imageAlt,
 }: AuthTemplateProps) {
   const ImageSection = () => (
     <div className='lg:w-1/2 min-h-[300px] lg:min-h-full'>
       <Image
-        src='/imgs/landing-login-img.png'
-        alt='Two people in mint green clothing sitting on wooden stairs'
+        src={`/imgs/${imageSrc}`}
+        alt={`${imageAlt}`}
         width={600}
         height={600}
         className='w-full h-full object-cover'

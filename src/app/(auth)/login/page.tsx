@@ -6,7 +6,10 @@ import Link from 'next/link';
 
 export default function LoginPage() {
   return (
-    <AuthTemplate>
+    <AuthTemplate
+      imageSrc='landing-login-img.png'
+      imageAlt='Landing Login Image'
+    >
       <div className='space-y-4 md:space-y-6'>
         <div className='space-y-1 md:space-y-2'>
           <h1 className='text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-7xl mb-24 font-sans  text-primary'>
