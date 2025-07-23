@@ -1,7 +1,5 @@
-import AuthTemplate from '@/components/AuthTemplate';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Lock, Mail } from 'lucide-react';
+import AuthTemplate from '@/components/Auth/AuthTemplate';
+import LoginForm from '@/components/Auth/form/LoginForm';
 import Link from 'next/link';
 
 export default function LoginPage() {
@@ -23,7 +21,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <form action='/register'>
+        {/* <form action='/register'>
           <div className='space-y-4'>
             <div className='space-y-2 relative'>
               <Input
@@ -66,7 +64,8 @@ export default function LoginPage() {
               </Link>
             </div>
           </div>
-        </form>
+        </form> */}
+        <LoginForm />
 
         <div className='text-sm text-primary px-3'>
           Bạn chưa có tài khoản ?
