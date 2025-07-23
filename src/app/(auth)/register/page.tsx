@@ -24,72 +24,77 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        <div className='space-y-4'>
-          <div className='space-y-2 relative'>
-            <Input
-              id='name'
-              type='text'
-              placeholder='Tên tài khoản'
-              className='w-full -px-3  py-8 rounded-none  border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none  focus-visible:border-b-2  focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none '
-            />
+        <form action='/register/verify'>
+          <div className='space-y-4'>
+            <div className='space-y-2 relative'>
+              <Input
+                id='name'
+                type='text'
+                placeholder='Tên tài khoản'
+                className='w-full -px-3  py-8 rounded-none  border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none  focus-visible:border-b-2  focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none '
+              />
 
-            <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-              <User className='text-gray-500 size-5' />
-            </span>
+              <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
+                <User className='text-gray-500 size-5' />
+              </span>
+            </div>
+
+            <div className='space-y-2 relative'>
+              <Input
+                id='email'
+                type='email'
+                placeholder='Địa chỉ Email'
+                className='w-full -px-3  py-8 rounded-none  border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none  focus-visible:border-b-2  focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none '
+              />
+
+              <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
+                <Mail className='text-gray-500 size-5' />
+              </span>
+            </div>
+
+            <div className='space-y-2 relative'>
+              <Input
+                id='password'
+                type='password'
+                placeholder='Mật khẩu'
+                className='w-full -px-3  py-8 rounded-none  border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none  focus-visible:border-b-2  focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none '
+              />
+
+              <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
+                <LockKeyhole className='text-gray-500 size-5' />
+              </span>
+            </div>
+
+            <div className='space-y-2 relative'>
+              <Input
+                id='confirmPassword'
+                type='password'
+                placeholder='Nhập lại mật khẩu'
+                className='w-full -px-3  py-8 rounded-none  border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none  focus-visible:border-b-2  focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none '
+              />
+
+              <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
+                <LockKeyhole className='text-gray-500 size-5' />
+              </span>
+            </div>
           </div>
 
-          <div className='space-y-2 relative'>
-            <Input
-              id='email'
-              type='email'
-              placeholder='Địa chỉ Email'
-              className='w-full -px-3  py-8 rounded-none  border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none  focus-visible:border-b-2  focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none '
-            />
+          <div className='space-y-1 mt-8 flex justify-between'>
+            <Button className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 rounded-md font-medium'>
+              Đăng ký
+            </Button>
 
-            <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-              <Mail className='text-gray-500 size-5' />
-            </span>
+            <div className='text-center'>
+              Bạn đã có tài khoản ?{' '}
+              <Link
+                href='/login'
+                className='text-sm text-primary hover:underline'
+              >
+                Đăng nhập
+              </Link>
+            </div>
           </div>
-
-          <div className='space-y-2 relative'>
-            <Input
-              id='password'
-              type='password'
-              placeholder='Mật khẩu'
-              className='w-full -px-3  py-8 rounded-none  border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none  focus-visible:border-b-2  focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none '
-            />
-
-            <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-              <LockKeyhole className='text-gray-500 size-5' />
-            </span>
-          </div>
-
-          <div className='space-y-2 relative'>
-            <Input
-              id='confirmPassword'
-              type='password'
-              placeholder='Nhập lại mật khẩu'
-              className='w-full -px-3  py-8 rounded-none  border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none  focus-visible:border-b-2  focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none '
-            />
-
-            <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-              <LockKeyhole className='text-gray-500 size-5' />
-            </span>
-          </div>
-        </div>
-
-        <div className='space-y-1 mt-8 flex justify-between'>
-          <Button className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 rounded-md font-medium'>
-            Đăng ký
-          </Button>
-
-          <div className='text-center'>
-            Bạn đã có tài khoản ?{' '}
-            <Link href='#' className='text-sm text-primary hover:underline'>
-              Đăng nhập
-            </Link>
-          </div>
-        </div>
+        </form>
       </div>
     </AuthTemplate>
   );
