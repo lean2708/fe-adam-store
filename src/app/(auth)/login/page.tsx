@@ -1,7 +1,7 @@
 import AuthTemplate from '@/components/AuthTemplate';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { LockKeyhole, Mail } from 'lucide-react';
+import { Lock, Mail } from 'lucide-react';
 import Link from 'next/link';
 
 export default function LoginPage() {
@@ -47,7 +47,7 @@ export default function LoginPage() {
               />
 
               <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-                <LockKeyhole className='text-gray-500 size-5' />
+                <Lock className='text-gray-500 size-5' />
               </span>
             </div>
           </div>
@@ -58,7 +58,10 @@ export default function LoginPage() {
             </Button>
 
             <div className='text-center'>
-              <Link href='#' className='text-sm text-primary hover:underline'>
+              <Link
+                href='/forgot_password'
+                className='text-sm text-primary hover:underline'
+              >
                 Quên mật khẩu ?
               </Link>
             </div>

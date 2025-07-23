@@ -1,5 +1,5 @@
 import { Input } from '@/components/ui/input';
-import { LockKeyhole, Mail, User } from 'lucide-react';
+import { Lock, Mail, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import AuthTemplate from '@/components/AuthTemplate';
@@ -61,7 +61,7 @@ export default function RegisterPage() {
               />
 
               <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-                <LockKeyhole className='text-gray-500 size-5' />
+                <Lock className='text-gray-500 size-5' />
               </span>
             </div>
 
@@ -74,7 +74,7 @@ export default function RegisterPage() {
               />
 
               <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-                <LockKeyhole className='text-gray-500 size-5' />
+                <Lock className='text-gray-500 size-5' />
               </span>
             </div>
           </div>
