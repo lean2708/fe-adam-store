@@ -1,4 +1,3 @@
-import type { NextConfig } from "next";
 
 const nextConfig = {
   experimental: {
@@ -11,12 +10,20 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ["placeholder.svg"],
-    dangerouslyAllowSVG: true,
-    contentDispositionType: "attachment",
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com', // if you use placeholder.com images
+      },
+    ],
+    dangerouslyAllowSVG: false, // Set to true only if you trust your SVG sources
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    unoptimized: true,
   },
+
 }
 
 export default nextConfig;
