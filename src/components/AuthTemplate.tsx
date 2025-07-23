@@ -1,11 +1,15 @@
 import Image from 'next/image';
 import type { ReactNode } from 'react';
 
-interface AuthLayoutProps {
+interface AuthTemplateProps {
   children: ReactNode;
+  reverseOrder?: boolean;
 }
 
-export default function AuthLayout({ children }: AuthLayoutProps) {
+export default function AuthTemplate({
+  children,
+  reverseOrder = false,
+}: AuthTemplateProps) {
   const ImageSection = () => (
     <div className='lg:w-1/2 min-h-[300px] lg:min-h-full'>
       <Image
@@ -25,11 +29,20 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
   );
 
   return (
-    <div className=' bg-background flex items-center justify-center '>
-      <div className='w-full  bg-background overflow-hidden'>
+    <div className='bg-background flex items-center justify-center'>
+      <div className='w-full bg-background overflow-hidden'>
         <div className='flex flex-col lg:flex-row max-h-screen'>
-          <ImageSection />
-          <FormSection />
+          {reverseOrder ? (
+            <>
+              <FormSection />
+              <ImageSection />
+            </>
+          ) : (
+            <>
+              <ImageSection />
+              <FormSection />
+            </>
+          )}
         </div>
       </div>
     </div>
