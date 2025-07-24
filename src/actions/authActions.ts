@@ -120,6 +120,12 @@ export async function signInAction(
     };
   }
 
+  /**
+   * ?BUG: Cookies can only be modified in a Server Action or Route Handler.
+   * !FIX: set một flag để xác định delete cookie nằm trong Server Action scope
+   */
+  let shouldClearCookies = false;
+
   try {
     // 1. Call the lib/data layer function for sign-in
     const tokenResponse = await signInApi({
@@ -159,6 +165,8 @@ export async function signInAction(
     );
     console.error('Error in signInAction:', error);
 
+    shouldClearCookies = true;
+
     // Clean up cookies if getting user info failed after setting tokens
     deleteCookie('token');
     deleteCookie('refreshToken');
@@ -168,6 +176,16 @@ export async function signInAction(
       message: extractedError.message,
       apiError: extractedError,
     };
+  } finally {
+    if (shouldClearCookies) {
+      try {
+        //  !tách việc xóa cookie ra phía đầu Server Action, trước khi kết thúc function
+        await deleteCookie('token');
+        await deleteCookie('refreshToken');
+      } catch (e) {
+        console.warn('Failed to clear cookies in finally:', e);
+      }
+    }
   }
 }
 
