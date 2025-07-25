@@ -18,3 +18,7 @@ export const signUpSchema = signInSchema
     message: "Passwords don't match.",
     path: ['confirmPassword'],
   });
+
+export const verifyRegistrationSchema = z.object({
+  verifyCodeRequest: z.string().min(1, 'Code is required'),
+});

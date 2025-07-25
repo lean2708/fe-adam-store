@@ -2,7 +2,7 @@ import { Input } from '@/components/ui/input';
 import { Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import AuthTemplate from '@/components/Auth/AuthTemplate';
+import AuthTemplate from '@/components/templates/(auth)/AuthTemplate';
 
 export default function RegisterPage() {
   return (
@@ -12,7 +12,7 @@ export default function RegisterPage() {
     >
       <div className='space-y-4 md:space-y-6'>
         <div className='space-y-1 md:space-y-2'>
-          <h1 className='text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-7xl mb-20 font-sans  text-primary'>
+          <h1 className='h-fit text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-7xl mb-20 font-sans  text-primary'>
             Adam Store
           </h1>
           <h2 className='text-lg md:text-2xl lg:text-3xl font-medium adam-store-text'>

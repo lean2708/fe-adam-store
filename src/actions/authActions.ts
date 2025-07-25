@@ -2,14 +2,24 @@
 'use server';
 
 import { deleteCookie, getCookie, setCookie } from '@/lib/cookies';
-import { signInApi, signUpApi, getMyInfoApi, logoutApi } from '@/lib/data/auth';
+import {
+  signInApi,
+  signUpApi,
+  getMyInfoApi,
+  logoutApi,
+  verifyRegistrationApi,
+} from '@/lib/data/auth';
 
 import type { ActionResponse } from '@/lib/types/actions';
 import type { UserResponse } from '@/api-client/models';
 import { extractErrorMessage } from '@/lib/utils';
 
 // Import schemas from new schema file
-import { signInSchema, signUpSchema } from './schema/authSchema';
+import {
+  signInSchema,
+  signUpSchema,
+  verifyRegistrationSchema,
+} from './schema/authSchema';
 
 // --- Specific Return Type for getMeAction (no change) ---
 interface GetMeResult extends ActionResponse<UserResponse> {
@@ -41,6 +51,12 @@ export async function signUpAction(
     };
   }
 
+  /**
+   * ?BUG: Cookies can only be modified in a Server Action or Route Handler.
+   * !FIX: set một flag để xác định delete cookie nằm trong Server Action scope
+   */
+  let shouldClearCookies = false;
+
   try {
     // 1. Call the lib/data layer function for sign up and auto-login
     const tokenResponse = await signUpApi({
@@ -50,15 +66,99 @@ export async function signUpAction(
       confirmPassword: validatedFields.data.confirmPassword,
     });
 
+    console.log('token: ', tokenResponse);
+
     // 2. Set authentication cookies from the TokenResponse
+    if (!tokenResponse?.verificationCode) {
+      return {
+        success: false,
+        message:
+          'Registration successful, but failed to obtain verification code for verify.',
+      };
+    }
+
+    await setCookie('pending_email', validatedFields.data.email, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 300, // 5 phút
+      path: '/register/verify',
+    });
+
+    return {
+      success: true,
+      message: 'Mã xác thực đã được gửi đến email của bạn',
+      data: { email: validatedFields.data.email },
+    }; // Return the full UserResponse
+  } catch (error) {
+    const extractedError = extractErrorMessage(
+      error,
+      'An unexpected error occurred during sign-up.'
+    );
+    console.error('Error in signUpAction:', extractedError);
+
+    shouldClearCookies = true;
+
+    // Clean up cookies if getting user info failed after setting tokens
+    deleteCookie('token');
+    deleteCookie('refreshToken');
+
+    return {
+      success: false,
+      message: extractedError.message,
+      apiError: extractedError,
+      code: extractedError.code,
+    };
+  } finally {
+    if (shouldClearCookies) {
+      try {
+        //  !tách việc xóa cookie ra phía đầu Server Action, trước khi kết thúc function
+        await deleteCookie('token');
+        await deleteCookie('refreshToken');
+      } catch (e) {
+        console.warn('Failed to clear cookies in finally:', e);
+      }
+    }
+  }
+}
+
+/**
+ * Xác thực đăng ký tài khoản bằng mã OTP
+ */
+export async function verifyRegistrationAction(
+  email: string,
+  formData: FormData
+): Promise<ActionResponse<UserResponse>> {
+  const validatedFields = verifyRegistrationSchema.safeParse({
+    verifyCodeRequest: formData.get('verifyCodeRequest'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      success: false,
+      message: 'Validation failed.',
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  let shouldClearCookies = false;
+
+  try {
+    // 1. Gọi API xác thực
+    const tokenResponse = await verifyRegistrationApi({
+      email,
+      verificationCode: validatedFields.data.verifyCodeRequest,
+    });
+
     if (!tokenResponse?.accessToken || !tokenResponse?.refreshToken) {
       return {
         success: false,
         message:
-          'Registration successful, but failed to obtain tokens for login.',
+          'Verification successful, but failed to obtain tokens for login.',
       };
     }
 
+    // 2. Lưu token vào cookie
     setCookie('token', tokenResponse.accessToken, {
       httpOnly: true,
       path: '/',
@@ -72,20 +172,21 @@ export async function signUpAction(
       sameSite: 'lax',
     });
 
-    // 3. IMPORTANT: Now fetch the full user profile using the *newly obtained* access token
-    const user = await getMyInfoApi(tokenResponse.accessToken); // Call API directly
+    const user = await getMyInfoApi(tokenResponse.accessToken);
 
     return {
       success: true,
-      message: 'Sign up and login successful!',
+      message: 'Xác thực thành công!',
       data: user,
-    }; // Return the full UserResponse
+    };
   } catch (error) {
     const extractedError = extractErrorMessage(
       error,
       'An unexpected error occurred during sign-up.'
     );
     console.error('Error in signUpAction:', extractedError);
+
+    shouldClearCookies = true;
 
     // Clean up cookies if getting user info failed after setting tokens
     deleteCookie('token');
@@ -97,6 +198,16 @@ export async function signUpAction(
       apiError: extractedError,
       code: extractedError.code,
     };
+  } finally {
+    if (shouldClearCookies) {
+      try {
+        //  !tách việc xóa cookie ra phía đầu Server Action, trước khi kết thúc function
+        await deleteCookie('token');
+        await deleteCookie('refreshToken');
+      } catch (e) {
+        console.warn('Failed to clear cookies in finally:', e);
+      }
+    }
   }
 }
 
@@ -282,5 +393,24 @@ export async function logoutAction(): Promise<ActionResponse> {
       message: extractedError.message,
       apiError: extractedError,
     };
+  }
+}
+
+export async function handlePendingEmail(): Promise<string | null> {
+  try {
+    const email = await getCookie('pending_email');
+
+    return email || null;
+  } catch (error) {
+    console.error('Error handling pending email:', error);
+    return null;
+  }
+}
+
+export async function clearPendingEmail() {
+  try {
+    await deleteCookie('pending_email');
+  } catch (error) {
+    console.error('Error clearing pending email:', error);
   }
 }

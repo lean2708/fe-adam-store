@@ -1,10 +1,26 @@
-import { Input } from '@/components/ui/input';
-import { Lock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import AuthTemplate from '@/components/Auth/AuthTemplate';
+import { handlePendingEmail } from '@/actions/authActions';
+import AuthTemplate from '@/components/templates/(auth)/AuthTemplate';
+import VerifyForm from '@/components/templates/(auth)/register/VerifyForm';
 
-export default function RegisterPage() {
+export default async function RegisterPage() {
+  const email = await handlePendingEmail();
+
+  if (!email) {
+    return (
+      <div className='min-h-screen flex items-center justify-center'>
+        <div className='text-center p-6 bg-white rounded-lg shadow-md'>
+          <h1 className='text-2xl font-bold mb-4'>Yêu cầu không hợp lệ</h1>
+          <p className='mb-4'>
+            Không tìm thấy thông tin xác thực hoặc phiên làm việc đã hết hạn.
+          </p>
+          <a href='/register' className='text-blue-600 hover:underline'>
+            Quay lại trang đăng ký
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <AuthTemplate
       reverseOrder
@@ -23,40 +39,7 @@ export default function RegisterPage() {
         </p>
       </div>
 
-      <form action='/' className='mb-20'>
-        <div className='space-y-4 md:space-y-6'>
-          <div className='space-y-4'>
-            <div className='space-y-2 relative'>
-              <Input
-                id='otp'
-                type='text'
-                placeholder='Nhập mã xác thực'
-                className='w-full -px-3  py-8 rounded-none  border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none  focus-visible:border-b-2  focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none '
-              />
-
-              <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-                <Lock className='text-gray-500 size-5' />
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className='space-y-1 mt-8 flex justify-between'>
-          <Button className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 rounded-md font-medium'>
-            Xác thực
-          </Button>
-
-          <div className='text-center'>
-            Bạn đã có tài khoản ?{' '}
-            <Link
-              href='/login'
-              className='text-sm text-primary hover:underline'
-            >
-              Đăng nhập
-            </Link>
-          </div>
-        </div>
-      </form>
+      <VerifyForm email={email} />
     </AuthTemplate>
   );
 }
