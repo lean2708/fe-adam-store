@@ -8,6 +8,8 @@ import {
   type UserResponse,
   VerifyCodeRequest,
   VerificationCodeResponse,
+  RedisForgotPasswordToken,
+  ResetPasswordRequest,
 } from '@/api-client';
 
 // Import the Configuration class for initializing the API client
@@ -56,7 +58,6 @@ export async function signInApi(
 
 /**
  * Registers a new user with the provided details.
- * This function also includes an automatic sign-in after successful registration,
  * returning the TokenResponse from the login.
  *
  * @param data - An object containing the user's registration details.
@@ -84,6 +85,62 @@ export async function signUpApi(
 
   // If registration is successful, proceed with automatic login and return its TokenResponse.
   return registerResponse.data.result;
+}
+
+/**
+ * User sends email to request confirmation verification code
+ * returning the forgotPasswordToken
+ *
+ * @param request - An email that the user previously registered with.
+ * @returns A Promise that resolves to the TokenResponse if registration and auto-login are successful.
+ * @throws {ApiErrorResponse} If registration or the subsequent auto-login fails.
+ */
+export async function forgotPasswordApi(request: {
+  email: string;
+}): Promise<VerificationCodeResponse> {
+  const authApi = getAuthController();
+  const response = await authApi.forgotPassword({
+    emailRequest: request,
+  });
+  if (response.data.code !== 200 && response.data.code !== 201) {
+    throw response.data;
+  }
+
+  if (!response.data.result) {
+    throw new Error('TokenResponse is missing in the response.');
+  }
+  return response.data.result;
+}
+
+export async function verifyForgotPasswordCodeApi(
+  request: VerifyCodeRequest
+): Promise<RedisForgotPasswordToken> {
+  const authApi = getAuthController();
+  const response = await authApi.verifyForgotPasswordCode({
+    verifyCodeRequest: request,
+  });
+
+  if (response.data.code !== 200 && response.data.code !== 201) {
+    throw response.data;
+  }
+
+  if (!response.data.result) {
+    throw new Error('TokenResponse is missing in the response.');
+  }
+  return response.data.result;
+}
+
+export async function resetPasswordApi(
+  request: ResetPasswordRequest
+): Promise<void> {
+  const authApi = getAuthController();
+  const response = await authApi.resetPassword({
+    resetPasswordRequest: request,
+  });
+
+  if (response.data.code !== 200 && response.data.code !== 201) {
+    throw response.data;
+  }
 }
 
 /**

@@ -1,8 +1,5 @@
-import { Input } from '@/components/ui/input';
-import { Lock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import AuthTemplate from '@/components/templates/(auth)/AuthTemplate';
+import ResetPasswordForm from '@/components/templates/(auth)/forgot_password/ResetPasswordForm';
 
 export default function RegisterPage() {
   return (
@@ -21,7 +18,7 @@ export default function RegisterPage() {
           <p className='text-xs md:text-sm '>Khôi phục mật khẩu của bạn</p>
         </div>
 
-        <form action='/login'>
+        {/* <form action='/login'>
           <div className='space-y-4'>
             <div className='space-y-2 relative'>
               <Input
@@ -64,7 +61,8 @@ export default function RegisterPage() {
               </Link>
             </div>
           </div>
-        </form>
+        </form> */}
+        <ResetPasswordForm />
       </div>
     </AuthTemplate>
   );

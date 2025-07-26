@@ -8,16 +8,26 @@ import {
   getMyInfoApi,
   logoutApi,
   verifyRegistrationApi,
+  forgotPasswordApi,
+  verifyForgotPasswordCodeApi,
+  resetPasswordApi,
 } from '@/lib/data/auth';
 
 import type { ActionResponse } from '@/lib/types/actions';
-import type { UserResponse } from '@/api-client/models';
+import type {
+  RedisForgotPasswordToken,
+  UserResponse,
+  VerificationCodeResponse,
+} from '@/api-client/models';
 import { extractErrorMessage } from '@/lib/utils';
 
 // Import schemas from new schema file
 import {
+  forgotPasswordSchema,
+  resetPasswordSchema,
   signInSchema,
   signUpSchema,
+  verifyForgotPasswordSchema,
   verifyRegistrationSchema,
 } from './schema/authSchema';
 
@@ -300,6 +310,215 @@ export async function signInAction(
   }
 }
 
+// Thêm các server action trong authActions.ts
+export async function forgotPasswordAction(
+  formData: FormData
+): Promise<ActionResponse<VerificationCodeResponse>> {
+  const validatedFields = forgotPasswordSchema.safeParse({
+    email: formData.get('email'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      success: false,
+      message: 'Validation failed.',
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  try {
+    // 1. Call the lib/data layer function for sign-in
+    const verificationCodeRespon = await forgotPasswordApi({
+      email: validatedFields.data.email,
+    });
+
+    // 2. Set authentication cookies from the TokenResponse
+    if (!verificationCodeRespon.email) {
+      return {
+        success: false,
+        message: 'Send email code failed: Failed to obtain code.',
+      };
+    }
+
+    // Lưu email vào cookie để sử dụng ở bước tiếp theo
+    await setCookie('forgot_password_email', verificationCodeRespon.email, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 300, // 5 phút
+      path: '/forgot_password/verify_code',
+    });
+
+    console.log('verificationCodeRespon:', verificationCodeRespon);
+
+    return {
+      success: true,
+      message: 'Mã xác thực đã được gửi đến email của bạn',
+      data: verificationCodeRespon,
+    };
+  } catch (error) {
+    const extractedError = extractErrorMessage(
+      error,
+      'Failed to retrieve user information from API.'
+    );
+    console.error('Error in forgotPasswordAction (API call):', error);
+
+    return {
+      success: false,
+      message: extractedError.message,
+      apiError: extractedError,
+    };
+  }
+}
+
+export async function verifyForgotPasswordCodeAction(
+  formData: FormData
+): Promise<ActionResponse<RedisForgotPasswordToken>> {
+  const validatedFields = verifyForgotPasswordSchema.safeParse({
+    verificationCode: formData.get('verificationCode'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      success: false,
+      message: 'Validation failed.',
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const email = await getCookie('forgot_password_email');
+
+  if (!email) {
+    return {
+      success: false,
+      message: 'Không tìm thấy email. Vui lòng thử lại',
+    };
+  }
+
+  try {
+    const verifyForgotPasswordCodeRespon = await verifyForgotPasswordCodeApi({
+      email,
+      verificationCode: validatedFields.data.verificationCode,
+    });
+
+    if (
+      !verifyForgotPasswordCodeRespon?.forgotPasswordToken ||
+      !verifyForgotPasswordCodeRespon.email
+    ) {
+      return {
+        success: false,
+        message: 'Send verification code failed: Failed to obtain code.',
+      };
+    }
+
+    // Lưu token vào cookie để sử dụng khi reset password
+    await setCookie(
+      'forgot_password_token',
+      verifyForgotPasswordCodeRespon.forgotPasswordToken,
+      {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 300, // 5 phút
+        path: '/forgot_password/reset_password',
+      }
+    );
+
+    console.log(
+      'verifyForgotPasswordCodeRespon:',
+      verifyForgotPasswordCodeRespon
+    );
+
+    return {
+      success: true,
+      message: 'Xác thực thành công',
+      data: verifyForgotPasswordCodeRespon,
+    };
+  } catch (error) {
+    const extractedError = extractErrorMessage(
+      error,
+      'Failed to retrieve user information from API.'
+    );
+    console.error('Error in verifyForgotPasswordCodeAction (API call):', error);
+
+    return {
+      success: false,
+      message: extractedError.message,
+      apiError: extractedError,
+    };
+  }
+}
+
+export async function resetPasswordAction(
+  formData: FormData
+): Promise<ActionResponse> {
+  const validatedFields = resetPasswordSchema.safeParse({
+    password: formData.get('password'),
+    confirmPassword: formData.get('confirmPassword'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      success: false,
+      message: 'Validation failed.',
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  const token = await getCookie('forgot_password_token');
+
+  if (!token) {
+    return {
+      success: false,
+      message: 'Token không hợp lệ. Vui lòng thử lại',
+    };
+  }
+
+  let shouldClearCookies = false;
+
+  try {
+    await resetPasswordApi({
+      forgotPasswordToken: token,
+      newPassword: validatedFields.data.password,
+      confirmPassword: validatedFields.data.confirmPassword,
+    });
+
+    return {
+      success: true,
+      message: 'Đặt lại mật khẩu thành công',
+    };
+  } catch (error) {
+    const extractedError = extractErrorMessage(
+      error,
+      'An unexpected error occurred during reset password.'
+    );
+    console.error('Error in resetPasswordAction:', extractedError);
+
+    shouldClearCookies = true;
+
+    // Clean up cookies if getting user info failed after setting tokens
+    await deleteCookie('forgot_password_token');
+    await deleteCookie('forgot_password_email');
+
+    return {
+      success: false,
+      message: extractedError.message,
+      apiError: extractedError,
+      code: extractedError.code,
+    };
+  } finally {
+    if (shouldClearCookies) {
+      try {
+        //  !tách việc xóa cookie ra phía đầu Server Action, trước khi kết thúc function
+        await deleteCookie('forgot_password_token');
+        await deleteCookie('forgot_password_email');
+      } catch (e) {
+        console.warn('Failed to clear cookies in finally:', e);
+      }
+    }
+  }
+}
+
 /**
  * Retrieves the current authenticated user's information.
  * This is a standalone Server Action designed for consumption by Client/Server Components.
@@ -404,13 +623,5 @@ export async function handlePendingEmail(): Promise<string | null> {
   } catch (error) {
     console.error('Error handling pending email:', error);
     return null;
-  }
-}
-
-export async function clearPendingEmail() {
-  try {
-    await deleteCookie('pending_email');
-  } catch (error) {
-    console.error('Error clearing pending email:', error);
   }
 }

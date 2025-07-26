@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { forgotPasswordAction, signInAction } from '@/actions/authActions';
 import { Input } from '@/components/ui/input';
-import { Lock } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
@@ -17,24 +18,20 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { toast } from 'sonner';
-import { useAuthStore } from '@/stores/authStore';
-import { verifyRegistrationAction } from '@/actions/authActions';
 
-// Schema validation
 const formSchema = z.object({
-  verifyCodeRequest: z.string().min(1, 'Mã xác thực là bắt buộc'),
+  email: z.email('Email không hợp lệ').min(1, 'Email là bắt buộc'),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function VerifyForm({ email }: { email: string }) {
+export default function ForgotPasswordForm() {
   const router = useRouter();
-  const signIn = useAuthStore((state) => state.signIn);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      verifyCodeRequest: '',
+      email: '',
     },
   });
 
@@ -44,23 +41,18 @@ export default function VerifyForm({ email }: { email: string }) {
     setError,
   } = form;
 
-  // TODO: Thay thế bằng action thực tế khi có API đăng ký
   const onSubmit = async (values: FormValues) => {
-    // Giả lập gọi API
     const formData = new FormData();
+    formData.append('email', values.email);
 
-    formData.append('verifyCodeRequest', values.verifyCodeRequest);
+    const res = await forgotPasswordAction(formData);
 
-    const res = await verifyRegistrationAction(email, formData);
-
-    if (res.success && res.data) {
+    if (res.success) {
       toast.success(`${res.message}`);
 
-      signIn(res.data);
-
-      router.push('/');
+      router.push('/forgot_password/verify_code');
     } else {
-      // Xử lý lỗi từng field nếu có
+      // Nếu có lỗi field cụ thể từ backend, setError cho từng field
       if (res.errors) {
         Object.entries(res.errors).forEach(([field, messages]) => {
           setError(field as keyof FormValues, {
@@ -69,8 +61,7 @@ export default function VerifyForm({ email }: { email: string }) {
           });
         });
       }
-      toast.error(res.message || 'Xác thực thất bại');
-      // Registration successful, but failed to obtain tokens for login
+      toast.error(`${res.message}`);
     }
   };
 
@@ -79,21 +70,21 @@ export default function VerifyForm({ email }: { email: string }) {
       <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
         <FormField
           control={form.control}
-          name='verifyCodeRequest'
+          name='email'
           render={({ field }) => (
             <FormItem className='relative'>
               <FormControl>
                 <Input
                   {...field}
-                  id='name'
-                  type='text'
-                  placeholder='Nhập mã xác thực'
+                  id='email'
+                  type='email'
+                  placeholder='Địa chỉ Email'
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none'
                 />
               </FormControl>
               <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-                <Lock className='text-gray-500 size-5' />
+                <Mail className='text-gray-500 size-5' />
               </span>
               <FormMessage />
             </FormItem>
@@ -106,16 +97,15 @@ export default function VerifyForm({ email }: { email: string }) {
             disabled={isSubmitting}
             className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 rounded-md font-medium'
           >
-            {isSubmitting ? 'Đang xác thực...' : 'Xác thực'}
+            {isSubmitting ? 'Đang gửi mã...' : 'Gửi mã'}
           </Button>
 
           <div className='text-center'>
-            Bạn đã có tài khoản?{' '}
             <Link
               href='/login'
               className='text-sm text-primary hover:underline'
             >
-              Đăng nhập
+              Trờ về đăng nhập
             </Link>
           </div>
         </div>

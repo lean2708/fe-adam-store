@@ -1,8 +1,5 @@
-import { Input } from '@/components/ui/input';
-import { Mail } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import AuthTemplate from '@/components/templates/(auth)/AuthTemplate';
+import VerifyCodeForm from '@/components/templates/(auth)/forgot_password/VerifyCodeForm';
 
 export default function RegisterPage() {
   return (
@@ -21,11 +18,11 @@ export default function RegisterPage() {
           <p className='text-xs md:text-sm '>Khôi phục mật khẩu của bạn</p>
         </div>
 
-        <form action='/forgot_password/reset_password'>
+        {/* <form action='/forgot_password/reset_password'>
           <div className='space-y-4'>
             <div className='space-y-2 relative'>
               <Input
-                id='otp'
+                id='verificationCode'
                 type='text'
                 placeholder='Nhập mã xác thực'
                 className='w-full -px-3  py-8 rounded-none  border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none  focus-visible:border-b-2  focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none '
@@ -51,7 +48,8 @@ export default function RegisterPage() {
               </Link>
             </div>
           </div>
-        </form>
+        </form> */}
+        <VerifyCodeForm />
       </div>
     </AuthTemplate>
   );
