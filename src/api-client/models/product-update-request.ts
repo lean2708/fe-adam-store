@@ -13,9 +13,6 @@
  */
 
 
-// May contain unused imports in some cases
-// @ts-ignore
-import type { VariantRequest } from './variant-request';
 
 /**
  * 
@@ -43,9 +40,9 @@ export interface ProductUpdateRequest {
     'categoryId'?: number;
     /**
      * 
-     * @type {Array<VariantRequest>}
+     * @type {Array<number>}
      * @memberof ProductUpdateRequest
      */
-    'variants': Array<VariantRequest>;
+    'imageIds'?: Array<number>;
 }
 

@@ -43,6 +43,12 @@ export interface OrderResponse {
      * @type {number}
      * @memberof OrderResponse
      */
+    'discountAmount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderResponse
+     */
     'totalPrice'?: number;
     /**
      * 

@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **number** |  | [optional] [default to undefined]
 **orderDate** | **string** |  | [optional] [default to undefined]
+**discountAmount** | **number** |  | [optional] [default to undefined]
 **totalPrice** | **number** |  | [optional] [default to undefined]
 **orderStatus** | **string** |  | [optional] [default to undefined]
 **customerName** | **string** |  | [optional] [default to undefined]
@@ -21,6 +22,7 @@ import { OrderResponse } from './api';
 const instance: OrderResponse = {
     id,
     orderDate,
+    discountAmount,
     totalPrice,
     orderStatus,
     customerName,

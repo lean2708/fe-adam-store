@@ -43,6 +43,12 @@ export interface ProductRequest {
     'categoryId': number;
     /**
      * 
+     * @type {Array<number>}
+     * @memberof ProductRequest
+     */
+    'imageIds': Array<number>;
+    /**
+     * 
      * @type {Array<VariantRequest>}
      * @memberof ProductRequest
      */

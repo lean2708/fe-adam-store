@@ -16,9 +16,6 @@
 // May contain unused imports in some cases
 // @ts-ignore
 import type { EntityBasic } from './entity-basic';
-// May contain unused imports in some cases
-// @ts-ignore
-import type { ImageBasic } from './image-basic';
 
 /**
  * 
@@ -56,12 +53,6 @@ export interface ProductVariantResponse {
      * @memberof ProductVariantResponse
      */
     'status'?: ProductVariantResponseStatusEnum;
-    /**
-     * 
-     * @type {ImageBasic}
-     * @memberof ProductVariantResponse
-     */
-    'image'?: ImageBasic;
     /**
      * 
      * @type {EntityBasic}

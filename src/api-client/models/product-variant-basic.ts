@@ -16,9 +16,6 @@
 // May contain unused imports in some cases
 // @ts-ignore
 import type { EntityBasic } from './entity-basic';
-// May contain unused imports in some cases
-// @ts-ignore
-import type { ImageBasic } from './image-basic';
 
 /**
  * 
@@ -32,12 +29,6 @@ export interface ProductVariantBasic {
      * @memberof ProductVariantBasic
      */
     'id'?: number;
-    /**
-     * 
-     * @type {ImageBasic}
-     * @memberof ProductVariantBasic
-     */
-    'image'?: ImageBasic;
     /**
      * 
      * @type {EntityBasic}

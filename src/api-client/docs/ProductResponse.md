@@ -14,6 +14,7 @@ Name | Type | Description | Notes
 **totalReviews** | **number** |  | [optional] [default to undefined]
 **status** | **string** |  | [optional] [default to undefined]
 **createdAt** | **string** |  | [optional] [default to undefined]
+**images** | [**Array&lt;ImageBasic&gt;**](ImageBasic.md) |  | [optional] [default to undefined]
 **variants** | [**Array&lt;ProductVariantResponse&gt;**](ProductVariantResponse.md) |  | [optional] [default to undefined]
 
 ## Example
@@ -31,6 +32,7 @@ const instance: ProductResponse = {
     totalReviews,
     status,
     createdAt,
+    images,
     variants,
 };
 ```

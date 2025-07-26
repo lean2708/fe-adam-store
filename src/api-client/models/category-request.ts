@@ -26,11 +26,5 @@ export interface CategoryRequest {
      * @memberof CategoryRequest
      */
     'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CategoryRequest
-     */
-    'description'?: string;
 }
 

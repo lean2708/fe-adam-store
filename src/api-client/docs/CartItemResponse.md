@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **id** | **number** |  | [optional] [default to undefined]
 **price** | **number** |  | [optional] [default to undefined]
 **quantity** | **number** |  | [optional] [default to undefined]
+**image** | [**ImageBasic**](ImageBasic.md) |  | [optional] [default to undefined]
 **productVariantBasic** | [**ProductVariantBasic**](ProductVariantBasic.md) |  | [optional] [default to undefined]
 
 ## Example
@@ -19,6 +20,7 @@ const instance: CartItemResponse = {
     id,
     price,
     quantity,
+    image,
     productVariantBasic,
 };
 ```

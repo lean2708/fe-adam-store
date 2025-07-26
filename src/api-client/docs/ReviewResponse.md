@@ -6,6 +6,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **number** |  | [optional] [default to undefined]
+**userName** | **string** |  | [optional] [default to undefined]
+**userAvatarUrl** | **string** |  | [optional] [default to undefined]
 **rating** | **number** |  | [optional] [default to undefined]
 **comment** | **string** |  | [optional] [default to undefined]
 **imageUrls** | **object** |  | [optional] [default to undefined]
@@ -19,6 +21,8 @@ import { ReviewResponse } from './api';
 
 const instance: ReviewResponse = {
     id,
+    userName,
+    userAvatarUrl,
     rating,
     comment,
     imageUrls,

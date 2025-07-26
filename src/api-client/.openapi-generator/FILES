@@ -1,6 +1,5 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 api.ts
 apis/address-controller-api.ts
 apis/auth-controller-api.ts
@@ -179,6 +178,7 @@ docs/UserCreationRequest.md
 docs/UserResponse.md
 docs/UserUpdateRequest.md
 docs/VNPayResponse.md
+docs/VariantCreateRequest.md
 docs/VariantRequest.md
 docs/VariantUpdateRequest.md
 docs/VerificationCodeResponse.md
@@ -313,6 +313,7 @@ models/top-selling-dto.ts
 models/user-creation-request.ts
 models/user-response.ts
 models/user-update-request.ts
+models/variant-create-request.ts
 models/variant-request.ts
 models/variant-update-request.ts
 models/verification-code-response.ts

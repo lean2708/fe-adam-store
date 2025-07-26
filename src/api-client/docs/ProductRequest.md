@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **name** | **string** |  | [default to undefined]
 **description** | **string** |  | [default to undefined]
 **categoryId** | **number** |  | [default to undefined]
+**imageIds** | **Array&lt;number&gt;** |  | [default to undefined]
 **variants** | [**Array&lt;VariantRequest&gt;**](VariantRequest.md) |  | [default to undefined]
 
 ## Example
@@ -19,6 +20,7 @@ const instance: ProductRequest = {
     name,
     description,
     categoryId,
+    imageIds,
     variants,
 };
 ```

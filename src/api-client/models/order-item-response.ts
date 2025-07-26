@@ -15,6 +15,9 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
+import type { ImageBasic } from './image-basic';
+// May contain unused imports in some cases
+// @ts-ignore
 import type { ProductVariantBasic } from './product-variant-basic';
 
 /**
@@ -41,6 +44,12 @@ export interface OrderItemResponse {
      * @memberof OrderItemResponse
      */
     'quantity'?: number;
+    /**
+     * 
+     * @type {ImageBasic}
+     * @memberof OrderItemResponse
+     */
+    'image'?: ImageBasic;
     /**
      * 
      * @type {ProductVariantBasic}

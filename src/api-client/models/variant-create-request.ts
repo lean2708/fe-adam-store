@@ -17,31 +17,37 @@
 /**
  * 
  * @export
- * @interface VariantRequest
+ * @interface VariantCreateRequest
  */
-export interface VariantRequest {
+export interface VariantCreateRequest {
     /**
      * 
      * @type {number}
-     * @memberof VariantRequest
+     * @memberof VariantCreateRequest
+     */
+    'productId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof VariantCreateRequest
      */
     'colorId': number;
     /**
      * 
      * @type {number}
-     * @memberof VariantRequest
+     * @memberof VariantCreateRequest
      */
     'sizeId': number;
     /**
      * 
      * @type {number}
-     * @memberof VariantRequest
+     * @memberof VariantCreateRequest
      */
     'price': number;
     /**
      * 
      * @type {number}
-     * @memberof VariantRequest
+     * @memberof VariantCreateRequest
      */
     'quantity': number;
 }

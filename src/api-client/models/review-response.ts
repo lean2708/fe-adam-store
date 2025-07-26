@@ -28,6 +28,18 @@ export interface ReviewResponse {
     'id'?: number;
     /**
      * 
+     * @type {string}
+     * @memberof ReviewResponse
+     */
+    'userName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReviewResponse
+     */
+    'userAvatarUrl'?: string;
+    /**
+     * 
      * @type {number}
      * @memberof ReviewResponse
      */

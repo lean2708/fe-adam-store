@@ -7,7 +7,6 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **colorId** | **number** |  | [default to undefined]
 **sizeId** | **number** |  | [default to undefined]
-**imageId** | **number** |  | [default to undefined]
 **price** | **number** |  | [default to undefined]
 **quantity** | **number** |  | [default to undefined]
 
@@ -19,7 +18,6 @@ import { VariantRequest } from './api';
 const instance: VariantRequest = {
     colorId,
     sizeId,
-    imageId,
     price,
     quantity,
 };

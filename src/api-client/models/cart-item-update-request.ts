@@ -25,6 +25,18 @@ export interface CartItemUpdateRequest {
      * @type {number}
      * @memberof CartItemUpdateRequest
      */
-    'quantity': number;
+    'colorId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CartItemUpdateRequest
+     */
+    'sizeId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CartItemUpdateRequest
+     */
+    'quantity'?: number;
 }
 

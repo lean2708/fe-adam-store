@@ -26,6 +26,8 @@ import type { ApiResponseProductVariantResponse } from '../models';
 // @ts-ignore
 import type { ApiResponseVoid } from '../models';
 // @ts-ignore
+import type { VariantCreateRequest } from '../models';
+// @ts-ignore
 import type { VariantUpdateRequest } from '../models';
 /**
  * ProductVariantControllerApi - axios parameter creator
@@ -33,6 +35,46 @@ import type { VariantUpdateRequest } from '../models';
  */
 export const ProductVariantControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * API để tạo ProductVariant mới theo product, color, size, giá và số lượng
+         * @summary Create new product variant
+         * @param {VariantCreateRequest} variantCreateRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createProductVariant: async (variantCreateRequest: VariantCreateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'variantCreateRequest' is not null or undefined
+            assertParamExists('createProductVariant', 'variantCreateRequest', variantCreateRequest)
+            const localVarPath = `/v1/admin/product-variants`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(variantCreateRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * API để xóa ProductVariant
          * @summary Delete product variant
@@ -210,6 +252,19 @@ export const ProductVariantControllerApiFp = function(configuration?: Configurat
     const localVarAxiosParamCreator = ProductVariantControllerApiAxiosParamCreator(configuration)
     return {
         /**
+         * API để tạo ProductVariant mới theo product, color, size, giá và số lượng
+         * @summary Create new product variant
+         * @param {VariantCreateRequest} variantCreateRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createProductVariant(variantCreateRequest: VariantCreateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseProductVariantResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createProductVariant(variantCreateRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProductVariantControllerApi.createProductVariant']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * API để xóa ProductVariant
          * @summary Delete product variant
          * @param {number} id 
@@ -275,6 +330,16 @@ export const ProductVariantControllerApiFactory = function (configuration?: Conf
     const localVarFp = ProductVariantControllerApiFp(configuration)
     return {
         /**
+         * API để tạo ProductVariant mới theo product, color, size, giá và số lượng
+         * @summary Create new product variant
+         * @param {ProductVariantControllerApiCreateProductVariantRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createProductVariant(requestParameters: ProductVariantControllerApiCreateProductVariantRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseProductVariantResponse> {
+            return localVarFp.createProductVariant(requestParameters.variantCreateRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * API để xóa ProductVariant
          * @summary Delete product variant
          * @param {ProductVariantControllerApiDelete5Request} requestParameters Request parameters.
@@ -316,6 +381,20 @@ export const ProductVariantControllerApiFactory = function (configuration?: Conf
         },
     };
 };
+
+/**
+ * Request parameters for createProductVariant operation in ProductVariantControllerApi.
+ * @export
+ * @interface ProductVariantControllerApiCreateProductVariantRequest
+ */
+export interface ProductVariantControllerApiCreateProductVariantRequest {
+    /**
+     * 
+     * @type {VariantCreateRequest}
+     * @memberof ProductVariantControllerApiCreateProductVariant
+     */
+    readonly variantCreateRequest: VariantCreateRequest
+}
 
 /**
  * Request parameters for delete5 operation in ProductVariantControllerApi.
@@ -401,6 +480,18 @@ export interface ProductVariantControllerApiUpdatePriceAndQuantityRequest {
  * @extends {BaseAPI}
  */
 export class ProductVariantControllerApi extends BaseAPI {
+    /**
+     * API để tạo ProductVariant mới theo product, color, size, giá và số lượng
+     * @summary Create new product variant
+     * @param {ProductVariantControllerApiCreateProductVariantRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductVariantControllerApi
+     */
+    public createProductVariant(requestParameters: ProductVariantControllerApiCreateProductVariantRequest, options?: RawAxiosRequestConfig) {
+        return ProductVariantControllerApiFp(this.configuration).createProductVariant(requestParameters.variantCreateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * API để xóa ProductVariant
      * @summary Delete product variant

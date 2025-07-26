@@ -6,7 +6,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **number** |  | [optional] [default to undefined]
-**image** | [**ImageBasic**](ImageBasic.md) |  | [optional] [default to undefined]
 **color** | [**EntityBasic**](EntityBasic.md) |  | [optional] [default to undefined]
 **size** | [**EntityBasic**](EntityBasic.md) |  | [optional] [default to undefined]
 **product** | [**EntityBasic**](EntityBasic.md) |  | [optional] [default to undefined]
@@ -18,7 +17,6 @@ import { ProductVariantBasic } from './api';
 
 const instance: ProductVariantBasic = {
     id,
-    image,
     color,
     size,
     product,

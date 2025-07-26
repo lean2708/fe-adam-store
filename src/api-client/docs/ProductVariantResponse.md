@@ -10,7 +10,6 @@ Name | Type | Description | Notes
 **quantity** | **number** |  | [optional] [default to undefined]
 **isAvailable** | **boolean** |  | [optional] [default to undefined]
 **status** | **string** |  | [optional] [default to undefined]
-**image** | [**ImageBasic**](ImageBasic.md) |  | [optional] [default to undefined]
 **size** | [**EntityBasic**](EntityBasic.md) |  | [optional] [default to undefined]
 **color** | [**EntityBasic**](EntityBasic.md) |  | [optional] [default to undefined]
 
@@ -25,7 +24,6 @@ const instance: ProductVariantResponse = {
     quantity,
     isAvailable,
     status,
-    image,
     size,
     color,
 };

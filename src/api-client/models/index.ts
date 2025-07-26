@@ -123,6 +123,7 @@ export * from './user-creation-request';
 export * from './user-response';
 export * from './user-update-request';
 export * from './vnpay-response';
+export * from './variant-create-request';
 export * from './variant-request';
 export * from './variant-update-request';
 export * from './verification-code-response';

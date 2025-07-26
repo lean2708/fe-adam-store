@@ -15,6 +15,9 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
+import type { ImageBasic } from './image-basic';
+// May contain unused imports in some cases
+// @ts-ignore
 import type { ProductVariantResponse } from './product-variant-response';
 
 /**
@@ -77,6 +80,12 @@ export interface ProductResponse {
      * @memberof ProductResponse
      */
     'createdAt'?: string;
+    /**
+     * 
+     * @type {Array<ImageBasic>}
+     * @memberof ProductResponse
+     */
+    'images'?: Array<ImageBasic>;
     /**
      * 
      * @type {Array<ProductVariantResponse>}
