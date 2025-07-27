@@ -1,28 +1,16 @@
 import Link from "next/link"
 import { X } from "lucide-react"
-import { useRef, useEffect } from "react"
+import { Modal } from "@/components/ui/modal"
 
 export default function MobileSidebar({ open, onClose }: { open: boolean, onClose: () => void }) {
-    const modalRef = useRef<HTMLDivElement>(null)
-
-    useEffect(() => {
-        if (!open) return
-        function handleClickOutside(event: MouseEvent) {
-            if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-                onClose()
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside)
-        return () => document.removeEventListener("mousedown", handleClickOutside)
-    }, [open, onClose])
-
-    if (!open) return null
-
     return (
-        <div
-            ref={modalRef}
-            className="fixed left-0 top-0 h-full w-80 bg-white z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto"
-            style={{ maxHeight: "100vh" }}
+        <Modal
+            open={open}
+            onClose={onClose}
+            variant="sidebar"
+            size="sm"
+            position="left"
+            showOverlay={true}
         >
             <div className="p-4">
                 {/* Close Button */}
@@ -74,6 +62,6 @@ export default function MobileSidebar({ open, onClose }: { open: boolean, onClos
                     </nav>
                 </div>
             </div>
-        </div>
+        </Modal>
     )
 }

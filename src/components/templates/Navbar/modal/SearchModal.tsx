@@ -1,55 +1,133 @@
 import Image from "next/image"
-import { useState, useRef, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
-import { cn } from "@/lib/utils"
+import { Modal, ModalBody, ModalFooter } from "@/components/ui/modal"
+import { ProductCardSkeleton } from "@/components/ui/skeleton"
+import { searchProductsAction } from "@/actions/productActions"
+import { TProduct } from "@/types"
 
 type SearchModalProps = {
     open: boolean
     onClose: () => void
+    searchQuery?: string
+    isSearchExpanded?: boolean
 }
 
-const dummyResults = Array.from({ length: 6 }).map((_, idx) => ({
-    id: idx + 1,
-    name: "ÁO IN COTTON CARE & SHARE",
-    price: 690000,
-    image: "/placeholder.svg?height=180&width=140",
-}))
+export default function SearchModal({ open, onClose, searchQuery = "", isSearchExpanded = false }: SearchModalProps) {
+    const [searchResults, setSearchResults] = useState<TProduct[]>([])
+    const [debouncedQuery, setDebouncedQuery] = useState("")
+    const [isSearching, setIsSearching] = useState(false)
+    const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({})
+    const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-export default function SearchModal({ open, onClose }: SearchModalProps) {
-    const modalRef = useRef<HTMLDivElement>(null)
+    // Debounced search function
+    const performSearch = useCallback(async (query: string) => {
+        if (!query.trim()) {
+            // Fetch initial products when no query - show available, active products
+            setIsSearching(true)
+            try {
+                const response = await searchProductsAction(0, 6, ["createdAt,desc"], [])
+                if (response.status === 200 && response.products) {
+                    setSearchResults(response.products)
+                }
+            } catch (error) {
+                console.error("Failed to fetch initial products:", error)
+                setSearchResults([])
+            } finally {
+                setIsSearching(false)
+            }
+            return
+        }
 
+        setIsSearching(true)
+
+        try {
+            // Search products using the API with name filter and active status
+            const response = await searchProductsAction(0, 12, ["createdAt,desc"], [
+                `name~${query}`,
+            ])
+            if (response.status === 200 && response.products) {
+                setSearchResults(response.products)
+            } else {
+                setSearchResults([])
+            }
+        } catch (error) {
+            console.error("Search failed:", error)
+            setSearchResults([])
+        } finally {
+            setIsSearching(false)
+        }
+    }, [])
+
+    // Handle search query changes with debounce
     useEffect(() => {
-        if (!open) return
-        function handleClickOutside(event: MouseEvent) {
-            if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-                onClose()
+        if (debounceTimeoutRef.current) {
+            clearTimeout(debounceTimeoutRef.current)
+        }
+
+        debounceTimeoutRef.current = setTimeout(() => {
+            setDebouncedQuery(searchQuery)
+            performSearch(searchQuery)
+        }, 500) // 500ms debounce delay
+
+        return () => {
+            if (debounceTimeoutRef.current) {
+                clearTimeout(debounceTimeoutRef.current)
             }
         }
-        document.addEventListener("mousedown", handleClickOutside)
-        return () => document.removeEventListener("mousedown", handleClickOutside)
-    }, [open, onClose])
+    }, [searchQuery, performSearch])
 
-    if (!open) return null
-
+    // Reset search when modal opens
+    useEffect(() => {
+        if (open && !searchQuery) {
+            performSearch("")
+            setDebouncedQuery("")
+        }
+    }, [open, searchQuery, performSearch])
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div
-                ref={modalRef}
-                className="relative bg-white rounded-lg shadow-xl max-w-6xl w-full mx-4 my-8 z-50 flex flex-col overflow-hidden"
+        <div >
+            <Modal
+                open={open}
+                onClose={onClose}
+                variant="centered"
+                size="xl"
+                showOverlay={true}
+                closeOnClickOutside={!isSearchExpanded}
             >
-                {/* Scrollable content */}
-                <div
-                    className="p-6 overflow-y-auto"
-                    style={{ maxHeight: "70vh" }}
-                >
-                    <div className="mb-4 font-semibold text-lg">Kết quả tìm kiếm</div>
+                <ModalBody style={{ maxHeight: "70vh" }} data-search-modal>
+                <div className="mb-4 font-semibold text-lg">
+                    Kết quả tìm kiếm
+                    {debouncedQuery && (
+                        <span className="text-sm font-normal text-gray-600 ml-2">
+                            cho "{debouncedQuery}"
+                        </span>
+                    )}
+                </div>
+
+                {isSearching ? (
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                        {dummyResults.map((item) => {
-                            const [imageError, setImageError] = useState(false)
-                            const imageSrc = imageError ? "/fallback.png" : item.image
-                            const title = item.name
+                        {[...Array(5)].map((_, index) => (
+                            <ProductCardSkeleton key={index} />
+                        ))}
+                    </div>
+                ) : searchResults.length === 0 ? (
+                    <div className="py-8">
+                        <div className="border-t border-gray-200"></div>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                        {searchResults.map((item) => {
+                            const hasImageError = imageErrors[item.id] || false
+                            const imageSrc = hasImageError ? "/fallback.png" : item.mainImage
+                            const title = item.name || item.title
+                            const price = item.colors?.[0]?.variants?.[0]?.price || 0
+
+                            const handleImageError = () => {
+                                setImageErrors(prev => ({ ...prev, [item.id]: true }))
+                            }
+
                             return (
                                 <Card key={item.id}>
                                     <CardContent className="p-0 pb-6">
@@ -57,38 +135,38 @@ export default function SearchModal({ open, onClose }: SearchModalProps) {
                                             <AspectRatio ratio={3 / 4}>
                                                 <Image
                                                     className="w-full h-full object-cover rounded-[4px]"
-                                                    src={imageSrc}
-                                                    alt={title}
+                                                    src={imageSrc || "/fallback.png"}
+                                                    alt={title || "Product"}
                                                     width={300}
                                                     height={400}
-                                                    onError={() => setImageError(true)}
+                                                    onError={handleImageError}
                                                 />
                                             </AspectRatio>
                                         </div>
                                     </CardContent>
-                                    <div className="text-center text-sm">{item.name}</div>
+                                    <div className="text-center text-sm">{title}</div>
                                     <div className="mt-2 text-center text-sm font-bold">
-                                        {item.price.toLocaleString("vi-VN")} VND
+                                        {price.toLocaleString("vi-VN")} VND
                                     </div>
                                 </Card>
                             )
                         })}
                     </div>
-                </div>
+                )}
+            </ModalBody>
 
-                {/* Sticky footer */}
-                <div className="p-4 border-t bg-white flex justify-center sticky bottom-0">
-                    <Button
-                        className="bg-black text-white px-6 py-2 rounded-md"
-                        onClick={() => {
-                            alert("Xem thêm sản phẩm!")
-                            onClose()
-                        }}
-                    >
-                        Xem thêm sản phẩm
-                    </Button>
-                </div>
-            </div>
+            <ModalFooter sticky={true}>
+                <Button
+                    className="bg-black text-white px-6 py-2 rounded-md"
+                    onClick={() => {
+                        alert("Xem thêm sản phẩm!")
+                        onClose()
+                    }}
+                >
+                    Xem thêm sản phẩm
+                </Button>
+            </ModalFooter>
+        </Modal>
         </div>
     )
 }

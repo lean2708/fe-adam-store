@@ -12,77 +12,14 @@ export default function HomePage() {
       {/* Hero Section */}
       {/* Featured Products Row */}
       <MainBanner />
-
       {/* Categories Section */}
-      <Categories
-        categories={[
-          {
-            id: "1",
-            title: "Beige Shirt",
-            image: "https://images.pexels.com/photos/6311602/pexels-photo-6311602.jpeg?auto=compress&cs=tinysrgb&h=400&w=300",
-          },
-          {
-            id: "2",
-            title: "Black Pants",
-            image: "https://images.pexels.com/photos/12103882/pexels-photo-12103882.jpeg?auto=compress&cs=tinysrgb&h=400&w=300",
-          },
-          {
-            id: "3",
-            title: "Black Hoodie",
-            image: "https://images.pexels.com/photos/8041807/pexels-photo-8041807.jpeg?auto=compress&cs=tinysrgb&h=400&w=300",
-          },
-          {
-            id: "4",
-            title: "Gray Shirt",
-            image: "https://images.pexels.com/photos/7049774/pexels-photo-7049774.jpeg?auto=compress&cs=tinysrgb&h=400&w=300",
-          },
-          {
-            id: "5",
-            title: "Black Suit",
-            image: "https://images.pexels.com/photos/7679461/pexels-photo-7679461.jpeg?auto=compress&cs=tinysrgb&h=400&w=300",
-          },
-          {
-            id: "6",
-            title: "Black Cap",
-            image: "https://images.pexels.com/photos/6069525/pexels-photo-6069525.jpeg?auto=compress&cs=tinysrgb&h=400&w=300",
-          },
-        ]}
-      />
+      <Categories />
       { /* Best Sellers Section */}
-      <BestSellers products={
-        [{
-          title: "",
-          mainImage: "",
-          id: 1
-        }, {
-          title: "",
-          mainImage: "",
-          id: 2
-        }, {
-          title: "",
-          mainImage: "",
-          id: 3
-        },
-      ]
-      } />
+      <BestSellers />
       {/* Hero Banner */}
       <HeroBanner />
       {/* Sản phẩm mới */}
-      <NewestProducts products={
-        [{
-          title: "",
-          mainImage: "",
-          id: 1
-        }, {
-          title: "",
-          mainImage: "",
-          id: 2
-        }, {
-          title: "",
-          mainImage: "",
-          id: 3
-        },]
-      } />
+      <NewestProducts />
     </main>
 
   )

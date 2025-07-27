@@ -1,11 +1,9 @@
+
 "use client"
 
-import { useState, useRef } from "react"
-import Link from "next/link"
-import Image from "next/image"
+import { useState, useRef, useCallback, useEffect, useMemo } from "react"
 import { Search, ShoppingBag, User, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
 // Import modals from modal folder
@@ -14,6 +12,8 @@ import CartModal from "./modal/CartModal"
 import MobileSidebar from "./modal/MobileSidebar"
 import SearchModal from "./modal/SearchModal"
 import ThemeToggle from "@/components/modules/ThemeToggle"
+import Logo from "@/components/modules/Logo"
+import SearchInput from "@/components/ui/search-input"
 
 export default function Navbar() {
   // Only manage open/close triggers here
@@ -23,10 +23,26 @@ export default function Navbar() {
   const [isUserModalOpen, setIsUserModalOpen] = useState(false)
   const [searchModalOpen, setSearchModalOpen] = useState(false)
   const [searchValue, setSearchValue] = useState("")
+  const [debouncedSearchValue, setDebouncedSearchValue] = useState("")
   const searchRef = useRef<HTMLDivElement>(null)
+  const expandedSearchRef = useRef<HTMLDivElement>(null)
+  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  // Example cart data (replace with context or props if needed)
-  const cartItems = [
+  // Debounced search handler
+  const handleSearchChange = useCallback((value: string) => {
+    setSearchValue(value)
+
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current)
+    }
+
+    debounceTimeoutRef.current = setTimeout(() => {
+      setDebouncedSearchValue(value)
+    }, 300)
+  }, [])
+
+  // Memoized cart data and calculations
+  const cartItems = useMemo(() => [
     {
       id: 1,
       name: "Áo in cotton Care & Share",
@@ -45,27 +61,81 @@ export default function Navbar() {
       quantity: 1,
       image: "/placeholder.svg?height=80&width=80",
     },
-  ]
-  const cartTotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
-  const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0)
+  ], [])
 
-  const isAnyModalOpen = isSearchExpanded || isCartOpen || isUserModalOpen || isMobileMenuOpen
+  const cartItemCount = useMemo(() =>
+    cartItems.reduce((total, item) => total + item.quantity, 0),
+    [cartItems]
+  )
+
+
+
+  // Memoized click outside handler
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (!isSearchExpanded) return
+
+    const target = event.target as Element
+
+    // Check if click is inside search input area
+    if (searchRef.current?.contains(target)) {
+      return
+    }
+
+    // Check if click is inside expanded search container
+    if (expandedSearchRef.current?.contains(target)) {
+      return
+    }
+
+    // Check if click is inside search modal
+    const searchModal = document.querySelector('[data-search-modal]')
+    if (searchModal?.contains(target)) {
+      return
+    }
+
+    // Close expanded search and modal when clicking outside
+    setIsSearchExpanded(false)
+    setSearchValue("")
+    setSearchModalOpen(false)
+  }, [isSearchExpanded])
+
+  // Handle clicks outside search area
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [handleClickOutside])
+
+  // Memoized modal close handlers
+  const handleSearchModalClose = useCallback(() => {
+    setSearchModalOpen(false)
+    setIsSearchExpanded(false)
+  }, [])
+
+  const handleCartModalClose = useCallback(() => {
+    setIsCartOpen(false)
+  }, [])
+
+  const handleUserModalClose = useCallback(() => {
+    setIsUserModalOpen(false)
+  }, [])
+
+  const handleMobileSidebarClose = useCallback(() => {
+    setIsMobileMenuOpen(false)
+  }, [])
 
   return (
     <header className="border-b adam-store-border adam-store-bg relative h-16 flex items-center">
       <ThemeToggle />
-
-      {/* Overlay for any modal */}
-      {(isAnyModalOpen || searchModalOpen) && (
-        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 transition-opacity duration-300" />
-      )}
       {/* Search expanded: center input in header, hide other header content */}
       {isSearchExpanded ? (
         <div
+          ref={expandedSearchRef}
+          data-search-expanded
           className={cn(
-            "w-full flex items-center justify-center h-16 absolute inset-0 bg-white z-50",
-            "transition-all duration-300 ease-in-out",
-            isSearchExpanded ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
+            "w-full flex items-center justify-center h-16 absolute inset-0 z-[9999]",
+            "transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] transform will-change-transform",
+            isSearchExpanded
+              ? "opacity-100 scale-100 translate-y-0 bg-white dark:bg-gray-900"
+              : "opacity-0 scale-95 translate-y-[-10px] pointer-events-none bg-white/0 dark:bg-gray-900/0"
           )}
           style={{ backgroundColor: "white" }}
         >
@@ -77,18 +147,13 @@ export default function Navbar() {
                   setSearchModalOpen(true)
                 }}
               >
-                <div className="flex items-center bg-white rounded-full px-4 py-0.5 shadow-md border border-gray-300">
-                  <Input
-                    autoFocus
-                    type="search"
-                    placeholder="Tìm kiếm..."
-                    value={searchValue}
-                    onChange={e => setSearchValue(e.target.value)}
-                    className="w-full bg-transparent border-none outline-none ring-0 focus:outline-none focus:ring-0 focus:border-none placeholder-gray-400 h-8"
-                    onBlur={() => setIsSearchExpanded(false)}
-                  />
-                  <Search className="h-4 w-4 text-gray-400 ml-2" />
-                </div>
+                <SearchInput
+                  variant="expanded"
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  onBlur={() => { !searchModalOpen ? setIsSearchExpanded(false) : null }}
+                  autoFocus
+                />
               </form>
             </div>
           </div>
@@ -107,74 +172,27 @@ export default function Navbar() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div className="flex items-center justify-between h-16">
               {/* Logo */}
-              <div className="flex items-center justify-center w-full">
-                <Link href="/" className="text-2xl font-bold adam-store-text">
-                  Adam Store
-                </Link>
-              </div>
-              {/* Navigation */}
-              {/* <nav className="hidden md:flex items-center space-x-8">
-                <Link href="/" className="adam-store-text hover:text-gray-500 transition-colors">
-                  Trang chủ
-                </Link>
-                <Link href="/products" className="adam-store-text hover:text-gray-500 transition-colors">
-                  Sản phẩm
-                </Link>
-                <Link href="/about" className="adam-store-text hover:text-gray-500 transition-colors">
-                  Giới thiệu
-                </Link>
-                <Link href="/contact" className="adam-store-text hover:text-gray-500 transition-colors">
-                  Liên hệ
-                </Link>
-              </nav> */}
+              <Logo />
             </div>
           </div>
           <div className="absolute right-5 top-0 h-16 flex items-center  pl-2">
             {/* Search and Icons */}
             <div className="flex items-center space-x-4">
-              {/* Desktop Search - Expandable */}
+              {/* Desktop Search - Pill Style */}
               <div className="hidden sm:flex items-center relative" ref={searchRef}>
-                <div className="relative flex items-center ">
-                  <Input
-                    type="search"
-                    placeholder="Tìm kiếm..."
-                    className={cn(
-                      "h-9",
-                      "transition-all duration-300 ease-in-out adam-store-border ",
-                      "absolute top-0 right-0 transform ",
-                      isSearchExpanded
-                        ? `
-                          border-2 shadow-lg px-4 py-2
-                          w-[calc(100vw-200px)]
-                          sm:w-[calc(100vw-200px)]
-                          md:w-[calc(100vw-170px)]
-                          lg:w-[calc(100vw-170px)]
-                          xl:w-[calc(100vw-200px)]
-                          2xl:w-[calc(100vw-400px)]
-                          max-w-6xl
-                          `
-                        : `
-                          w-0 overflow-hidden placeholder-transparent
-                          sm:w-10 sm:overflow-hidden sm:placeholder-transparent
-                          md:w-10 md:overflow-hidden md:placeholder-transparent
-                          lg:w-50 lg:overflow-hidden lg:placeholder-black
-                          xl:w-72 xl:placeholder-black
-                          2xl:w-72 2xl:placeholder-black
-                        `
-                    )}
-                    onClick={() => setIsSearchExpanded(true)}
-                    onFocus={() => setIsSearchExpanded(true)}
-                    onBlur={() => setIsSearchExpanded(false)}
-                  />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="ml-2 relative "
-                    onClick={() => setSearchModalOpen(true)}
-                  >
-                    <Search className="h- w-4" />
-                  </Button>
-                </div>
+                <SearchInput
+                  variant="pill"
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  onClick={() => setIsSearchExpanded(true)}
+                  onFocus={() => setIsSearchExpanded(true)}
+                  className="w-auto min-w-0
+                            sm:w-[100px]
+                            md:w-[150px]
+                            lg:w-[200px]
+                            xl:w-[250px]
+                            2xl:w-[280px]"
+                />
               </div>
               {/* Search Overlay Backdrop */}
               {isSearchExpanded && (
@@ -205,7 +223,7 @@ export default function Navbar() {
               {/* User Modal */}
               <div className="relative">
                 {isUserModalOpen && (
-                  <UserModal open={isUserModalOpen} onClose={() => setIsUserModalOpen(false)} />
+                  <UserModal open={isUserModalOpen} onClose={handleUserModalClose} />
                 )}
               </div>
               <div className="relative">
@@ -214,7 +232,7 @@ export default function Navbar() {
                   <CartModal
                     open={isCartOpen}
                     cartItems={cartItems}
-                    onClose={() => setIsCartOpen(false)}
+                    onClose={handleCartModalClose}
                   />
                 )}
               </div>
@@ -222,13 +240,18 @@ export default function Navbar() {
           </div>
           {/* Mobile Sidebar */}
           {isMobileMenuOpen && (
-            <MobileSidebar open={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
+            <MobileSidebar open={isMobileMenuOpen} onClose={handleMobileSidebarClose} />
           )}
         </>
       )}
       {/* Show SearchModal when searchModalOpen is true */}
       {searchModalOpen && (
-        <SearchModal open={searchModalOpen} onClose={() => setSearchModalOpen(false)} />
+        <SearchModal
+          open={searchModalOpen}
+          onClose={handleSearchModalClose}
+          searchQuery={debouncedSearchValue}
+          isSearchExpanded={isSearchExpanded}
+        />
       )}
     </header>
   )

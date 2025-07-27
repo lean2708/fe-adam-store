@@ -1,8 +1,7 @@
 import SectionHeader from "@/components/modules/SectionHeader";
-import { TProduct } from "@/types";
-import BestSellersSwiper from "./BestSellers/BestSellersSwiper";
+import NewestProductsSwiper from "./NewestProducts/NewestProductsSwiper";
 
-export default function BestSellers({ products }: { products: TProduct[] }) {
+export default function NewestProducts() {
     return (
         <section className="mb-16 px-4">
             <SectionHeader
@@ -12,7 +11,7 @@ export default function BestSellers({ products }: { products: TProduct[] }) {
                 hasButton={true}
             />
 
-            <BestSellersSwiper products={products} />
+            <NewestProductsSwiper />
         </section>
     );
 }

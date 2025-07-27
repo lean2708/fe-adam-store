@@ -19,6 +19,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'via.placeholder.com', // if you use placeholder.com images
       },
+      {
+        protocol: 'http',
+        hostname: 'res.cloudinary.com', // if you use placeholder.com images
+      },
+      
     ],
     dangerouslyAllowSVG: false, // Set to true only if you trust your SVG sources
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",

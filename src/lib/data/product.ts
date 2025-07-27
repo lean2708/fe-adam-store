@@ -87,6 +87,30 @@ export async function fetchProductDetailByIdApi(id: number): Promise<TProduct> {
   return transformProductResponseToTProduct(response.data.result as ProductResponse);
 }
 
+/**
+ * Search products (public).
+ * Search criteria format: field~value or field>value or field<value
+ * Examples:
+ * - name~shirt (contains "shirt")
+ * - price>100000 (price greater than 100000)
+ * - soldQuantity<50 (sold quantity less than 50)
+ */
+export async function searchProductApi(
+  page?: number,
+  size?: number,
+  sort?: string[],
+  search?: string[]
+): Promise<TProduct[]> {
+  const api = await getProductController();
+  const response = await api.searchProduct({ page, size, sort, search });
+  if (response.data.code !== 200) {
+    throw response.data;
+  }
+  return (response.data.result?.items ?? []).map(transformProductResponseToTProduct);
+}
+
+
+
 export function transformProductResponseToTProduct(apiProduct: ProductResponse): TProduct {
   // Group variants by color id
   const variants = apiProduct.variants ?? [];
@@ -94,37 +118,49 @@ export function transformProductResponseToTProduct(apiProduct: ProductResponse):
 
   variants.forEach(v => {
     const colorId = v.color?.id ?? 0;
-    if (!groupedByColor[colorId]) {
-      groupedByColor[colorId] = {
+    const colorKey = colorId.toString();
+
+    if (!groupedByColor[colorKey]) {
+      groupedByColor[colorKey] = {
         id: colorId,
         name: v.color?.name ?? "",
         variants: [],
       };
     }
+
     const variant: TVariant = {
-      id: v.id,
-      price: v.price,
-      quantity: v.quantity,
-      isAvailable: v.isAvailable,
-      imageUrl: v.image?.imageUrl,
+      id: v.id ?? 0,
+      price: v.price ?? 0,
+      quantity: v.quantity ?? 0,
+      isAvailable: v.isAvailable ?? false,
+      imageUrl: undefined, // ProductVariantResponse doesn't have image field
       status: v.status,
-      size: v.size ? { id: v.size.id, name: v.size.name } : undefined,
+      size: v.size ? {
+        id: v.size.id ?? 0,
+        name: v.size.name ?? ""
+      } : undefined,
     };
-    groupedByColor[colorId].variants!.push(variant);
+
+    groupedByColor[colorKey].variants!.push(variant);
   });
+
+  // Get main image from product images array (first image if available)
+  const mainImage = apiProduct.images && apiProduct.images.length > 0
+    ? apiProduct.images[0]?.imageUrl ?? ""
+    : "";
 
   return {
     title: apiProduct.name ?? "",
-    mainImage: apiProduct.variants?.[0]?.image?.imageUrl ?? "",
+    mainImage: mainImage,
     id: apiProduct.id ?? 0,
-    isAvailable: apiProduct.isAvailable,
-    name: apiProduct.name,
-    description: apiProduct.description,
-    averageRating: apiProduct.averageRating,
-    soldQuantity: apiProduct.soldQuantity,
-    totalReviews: apiProduct.totalReviews,
-    status: apiProduct.status,
-    createdAt: apiProduct.createdAt,
+    isAvailable: apiProduct.isAvailable ?? false,
+    name: apiProduct.name ?? "",
+    description: apiProduct.description ?? "",
+    averageRating: apiProduct.averageRating ?? 0,
+    soldQuantity: apiProduct.soldQuantity ?? 0,
+    totalReviews: apiProduct.totalReviews ?? 0,
+    status: apiProduct.status ?? "INACTIVE",
+    createdAt: apiProduct.createdAt ?? "",
     colors: Object.values(groupedByColor),
   };
 }
