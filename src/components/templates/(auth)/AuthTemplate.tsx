@@ -1,0 +1,56 @@
+import Image from 'next/image';
+import type { ReactNode } from 'react';
+
+interface AuthTemplateProps {
+  children: ReactNode;
+  reverseOrder?: boolean;
+  imageSrc?: string;
+  imageAlt?: string;
+}
+
+export default function AuthTemplate({
+  children,
+  reverseOrder = false,
+  imageSrc,
+  imageAlt,
+}: AuthTemplateProps) {
+  const ImageSection = () => (
+    <div className='lg:w-1/2 hidden lg:block lg:min-h-full'>
+      <Image
+        src={`/imgs/${imageSrc}`}
+        alt={`${imageAlt}`}
+        width={600}
+        height={600}
+        className='w-full h-full object-cover'
+        placeholder='blur'
+        blurDataURL={`/imgs/${imageSrc}`}
+      />
+    </div>
+  );
+
+  const FormSection = () => (
+    <div className='h-fit lg:w-1/2 p-4 sm:p-8 md:p-12 lg:px-24 flex flex-col justify-center'>
+      {children}
+    </div>
+  );
+
+  return (
+    <div className='bg-background flex items-center justify-center'>
+      <div className='w-full bg-background overflow-hidden'>
+        <div className='flex flex-col lg:flex-row min-h-screen '>
+          {reverseOrder ? (
+            <>
+              <FormSection />
+              <ImageSection />
+            </>
+          ) : (
+            <>
+              <ImageSection />
+              <FormSection />
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
