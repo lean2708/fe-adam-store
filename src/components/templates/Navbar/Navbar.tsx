@@ -13,6 +13,7 @@ import UserModal from "./modal/UserModal"
 import CartModal from "./modal/CartModal"
 import MobileSidebar from "./modal/MobileSidebar"
 import SearchModal from "./modal/SearchModal"
+import ThemeToggle from "@/components/modules/ThemeToggle"
 
 export default function Navbar() {
   // Only manage open/close triggers here
@@ -52,6 +53,8 @@ export default function Navbar() {
 
   return (
     <header className="border-b adam-store-border adam-store-bg relative h-16 flex items-center">
+      <ThemeToggle />
+
       {/* Overlay for any modal */}
       {(isAnyModalOpen || searchModalOpen) && (
         <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 transition-opacity duration-300" />
