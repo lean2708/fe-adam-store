@@ -97,76 +97,77 @@ export default function SearchModal({ open, onClose, searchQuery = "", isSearchE
                 closeOnClickOutside={!isSearchExpanded}
             >
                 <ModalBody style={{ maxHeight: "70vh" }} data-search-modal>
-                <div className="mb-4 font-semibold text-lg">
-                    Kết quả tìm kiếm
-                    {debouncedQuery && (
-                        <span className="text-sm font-normal text-gray-600 ml-2">
-                            cho "{debouncedQuery}"
-                        </span>
-                    )}
-                </div>
-
-                {isSearching ? (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                        {[...Array(5)].map((_, index) => (
-                            <ProductCardSkeleton key={index} />
-                        ))}
+                    <div className="mb-4 font-semibold text-lg">
+                        Kết quả tìm kiếm
+                        {debouncedQuery && (
+                            <span className="text-sm font-normal text-gray-600 ml-2">
+                                cho "{debouncedQuery}"
+                            </span>
+                        )}
                     </div>
-                ) : searchResults.length === 0 ? (
-                    <div className="py-8">
-                        <div className="border-t border-gray-200"></div>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                        {searchResults.map((item) => {
-                            const hasImageError = imageErrors[item.id] || false
-                            const imageSrc = hasImageError ? "/fallback.png" : item.mainImage
-                            const title = item.name || item.title
-                            const price = item.colors?.[0]?.variants?.[0]?.price || 0
 
-                            const handleImageError = () => {
-                                setImageErrors(prev => ({ ...prev, [item.id]: true }))
-                            }
+                    {isSearching ? (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                            {[...Array(5)].map((_, index) => (
+                                <ProductCardSkeleton key={index} />
+                            ))}
+                        </div>
+                    ) : searchResults.length === 0 ? (
+                        <div className="flex items-center justify-center ">
+                            <p className="text-gray-500 text-lg">Không có sản phẩm nào cả</p>
+                        </div>
 
-                            return (
-                                <Card key={item.id}>
-                                    <CardContent className="p-0 pb-6">
-                                        <div className="aspect-[3/4] adam-store-bg-light rounded-lg overflow-hidden relative flex items-center justify-center">
-                                            <AspectRatio ratio={3 / 4}>
-                                                <Image
-                                                    className="w-full h-full object-cover rounded-[4px]"
-                                                    src={imageSrc || "/fallback.png"}
-                                                    alt={title || "Product"}
-                                                    width={300}
-                                                    height={400}
-                                                    onError={handleImageError}
-                                                />
-                                            </AspectRatio>
+                    ) : (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                            {searchResults.map((item) => {
+                                const hasImageError = imageErrors[item.id] || false
+                                const imageSrc = hasImageError ? "/fallback.png" : item.mainImage
+                                const title = item.name || item.title
+                                const price = item.colors?.[0]?.variants?.[0]?.price || 0
+
+                                const handleImageError = () => {
+                                    setImageErrors(prev => ({ ...prev, [item.id]: true }))
+                                }
+
+                                return (
+                                    <Card key={item.id}>
+                                        <CardContent className="p-0 pb-6">
+                                            <div className="aspect-[3/4] adam-store-bg-light rounded-lg overflow-hidden relative flex items-center justify-center">
+                                                <AspectRatio ratio={3 / 4}>
+                                                    <Image
+                                                        className="w-full h-full object-cover rounded-[4px]"
+                                                        src={imageSrc || "/fallback.png"}
+                                                        alt={title || "Product"}
+                                                        width={300}
+                                                        height={400}
+                                                        onError={handleImageError}
+                                                    />
+                                                </AspectRatio>
+                                            </div>
+                                        </CardContent>
+                                        <div className="text-center text-sm">{title}</div>
+                                        <div className="mt-2 text-center text-sm font-bold">
+                                            {price.toLocaleString("vi-VN")} VND
                                         </div>
-                                    </CardContent>
-                                    <div className="text-center text-sm">{title}</div>
-                                    <div className="mt-2 text-center text-sm font-bold">
-                                        {price.toLocaleString("vi-VN")} VND
-                                    </div>
-                                </Card>
-                            )
-                        })}
-                    </div>
-                )}
-            </ModalBody>
+                                    </Card>
+                                )
+                            })}
+                        </div>
+                    )}
+                </ModalBody>
 
-            <ModalFooter sticky={true}>
-                <Button
-                    className="bg-black text-white px-6 py-2 rounded-md"
-                    onClick={() => {
-                        alert("Xem thêm sản phẩm!")
-                        onClose()
-                    }}
-                >
-                    Xem thêm sản phẩm
-                </Button>
-            </ModalFooter>
-        </Modal>
+                <ModalFooter sticky={true}>
+                    <Button
+                        className="bg-black text-white px-6 py-2 rounded-md"
+                        onClick={() => {
+                            alert("Xem thêm sản phẩm!")
+                            onClose()
+                        }}
+                    >
+                        Xem thêm sản phẩm
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </div>
     )
 }

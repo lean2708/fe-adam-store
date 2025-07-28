@@ -120,20 +120,20 @@ export default function UserModal({ open, onClose }: { open: boolean, onClose: (
         </div>
       )}
 
-      <div className="flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer">
+      <div className=" px-3 py-1 flex items-center h-16 rounded-xl gap-3 hover:bg-gray-50 transition cursor-pointer">
         <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center">
           <User className="h-6 w-6 text-gray-400" />
         </div>
         <span className="text-lg font-medium">Thông tin tài khoản</span>
       </div>
-      <div className="flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer">
+      <div className="px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer">
         <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center ">
           <ShoppingBag className="h-6 w-6 text-gray-400" />
         </div>
         <span className="text-lg font-medium">Đơn hàng của tôi</span>
       </div>
       <div
-        className="flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer"
+        className="px-3 py-1 flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer"
         onClick={handleLogout}
       >
         <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center">

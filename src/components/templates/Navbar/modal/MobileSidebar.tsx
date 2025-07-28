@@ -1,8 +1,35 @@
 import Link from "next/link"
 import { X } from "lucide-react"
 import { Modal } from "@/components/ui/modal"
+import { getAllCategoriesAction } from "@/actions/categoryActions";
+import { TCategory } from "@/types";
+import { useState, useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function MobileSidebar({ open, onClose }: { open: boolean, onClose: () => void }) {
+    const [categories, setCategories] = useState<TCategory[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                setLoading(true);
+                const response = await getAllCategoriesAction();
+
+                if (response.status === 200 && response.categories) {
+                    setCategories(response.categories);
+                }
+            } catch (error) {
+                console.error("Failed to fetch categories:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+
     return (
         <Modal
             open={open}
@@ -21,8 +48,33 @@ export default function MobileSidebar({ open, onClose }: { open: boolean, onClos
                     <h2 className="text-lg font-medium text-gray-900">Danh mục</h2>
                     <div className="w-10"></div>
                 </div>
+
+                {/* Main Navigation */}
+                <nav className="space-y-1">
+                    {loading ? (
+                        <div className="text-center py-8">
+                            <Skeleton className="h-8 w-[70%]" />
+                        </div>
+                    ) : categories.length === 0 ? (
+                        <div className="text-center py-8">
+                            <p className="text-gray-500">Không có danh mục nào.</p>
+                        </div>
+                    ) : (
+                        categories.map((category) => (
+                            <Link
+                                key={category.id || category.title}
+                                href="/products/new"
+                                className="block py-4 px-2 text-gray-900 font-medium border-b border-gray-100 hover:bg-gray-50"
+                                onClick={onClose}
+                            >
+                                {category.title}
+                            </Link>
+                        ))
+                    )}
+                </nav>
+
                 {/* Footer Links */}
-                <div className="mt-8 pt-6 border-t border-gray-200">
+                <div className="pt-6 border-t border-gray-200">
                     <nav className="space-y-4">
                         <Link
                             href="/about"

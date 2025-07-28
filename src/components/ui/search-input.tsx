@@ -35,9 +35,9 @@ export default function SearchInput({
 
   if (isPillOrExpanded) {
     return (
-      <div 
+      <div
         className={cn(
-          "flex items-center transition-all duration-500 ease-out",
+          "flex items-center transition-all duration-500 ease-out ",
           variantStyles[variant],
           className
         )}
@@ -51,8 +51,8 @@ export default function SearchInput({
         <Input
           autoFocus={autoFocus}
           type="search"
-          placeholder={placeholder}
-          value={value}
+          placeholder={variant === "pill" && value === "" ? placeholder : ""}
+          value={variant === "pill" ? "" : value}
           onChange={(e) => onChange(e.target.value)}
           className="flex-1 bg-transparent border-none outline-none ring-0 focus:outline-none focus:ring-0 focus:border-none focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 h-auto p-0 transition-all duration-300 cursor-text pointer-events-auto relative z-[9999]"
           onBlur={onBlur}

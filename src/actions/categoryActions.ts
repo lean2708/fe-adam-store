@@ -71,9 +71,9 @@ export async function deleteCategoryAction(categoryId: string) {
   }
 }
 
-export async function getAllCategoriesAction() {
+export async function getAllCategoriesAction(page?: number, size?: number, sort?: string[]) {
   try {
-    const categories = await fetchAllCategoriesApi();
+    const categories = await fetchAllCategoriesApi(page, size, sort);
     return {
       status: 200,
       categories,
