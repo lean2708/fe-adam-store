@@ -113,16 +113,15 @@ export default function Navbar() {
       </>
 
 
-
       {/* Modals */}
       {isUserModalOpen && (
-        <div className="relative">
+        <div className=" absolute right-5 top-8 ">
           <UserModal open={isUserModalOpen} onClose={handleUserModalClose} />
         </div>
       )}
 
       {isCartOpen && (
-        <div className="relative">
+        <div className=" absolute right-5 top-2 ">
           <CartModal
             open={isCartOpen}
             cartItems={cartItems}
@@ -130,7 +129,6 @@ export default function Navbar() {
           />
         </div>
       )}
-
       {isMobileMenuOpen && (
         <MobileSidebar open={isMobileMenuOpen} onClose={handleMobileSidebarClose} />
       )}
