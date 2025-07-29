@@ -3,16 +3,17 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { AspectRatio } from '@radix-ui/react-aspect-ratio';
+import { ProductResponse } from '@/api-client';
 
-export default function Gallery() {
+export default function Gallery({ product }: { product: ProductResponse }) {
   const [selectedImage, setSelectedImage] = useState(0);
 
-  const images = [
-    '/placeholder.svg?height=600&width=600',
-    '/placeholder.svg?height=600&width=600',
-    '/placeholder.svg?height=600&width=600',
-    '/placeholder.svg?height=600&width=600',
-  ];
+  const images =
+    product.images && product.images.length > 0
+      ? product.images.map((img) => img.imageUrl)
+      : [
+          'https://images.pexels.com/photos/6069525/pexels-photo-6069525.jpeg?auto=compress&cs=tinysrgb&h=400&w=300',
+        ];
 
   return (
     <div className='flex gap-4'>
@@ -29,7 +30,10 @@ export default function Gallery() {
             } hover:border-[#0e3bac] transition-colors`}
           >
             <Image
-              src={image || '/placeholder.svg'}
+              src={
+                image ||
+                'https://images.pexels.com/photos/6069525/pexels-photo-6069525.jpeg?auto=compress&cs=tinysrgb&h=400&w=300'
+              }
               alt={`Product view ${index + 1}`}
               width={80}
               height={80}
@@ -43,7 +47,7 @@ export default function Gallery() {
       <div className='flex-1 h-fit aspect-square bg-muted rounded-lg overflow-hidden'>
         <AspectRatio ratio={1 / 2} className='w-full h-fit'>
           <Image
-            src={images[selectedImage] || '/placeholder.svg'}
+            src={images[0] || '/placeholder.svg'}
             alt='Slim-Fit Stretch-Cotton Poplin Fabric Overshirt'
             width={600}
             height={600}

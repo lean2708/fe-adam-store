@@ -1,42 +1,52 @@
-import type { TProduct, TVariant, TEntityBasic, TColor } from "@/types"; // your local template type
+import type { TProduct, TVariant, TEntityBasic, TColor } from '@/types'; // your local template type
 
 import {
   ProductControllerApi,
   type ProductRequest,
   type ProductUpdateRequest,
   ProductResponse,
-} from "@/api-client";
-import { getAuthConfiguration } from "@/api-client/init-auth-config";
+} from '@/api-client';
+import { getAuthConfiguration } from '@/api-client/init-auth-config';
 
 /**
  * Helper to get an instance of ProductControllerApi with auth config.
  */
-export async function getProductController() { // This function is async
+export async function getProductController() {
+  // This function is async
   const authConfig = await getAuthConfiguration(); // Await the config
   return new ProductControllerApi(authConfig); // Returns a Promise<ProductControllerApi>
 }
 /**
  * Create a new product (admin).
  */
-export async function createProductApi(data: ProductRequest): Promise<TProduct> {
+export async function createProductApi(
+  data: ProductRequest
+): Promise<TProduct> {
   const api = await getProductController();
   const response = await api.create6({ productRequest: data });
   if (response.data.code !== 200) {
     throw response.data;
   }
-  return transformProductResponseToTProduct(response.data.result as ProductResponse);
+  return transformProductResponseToTProduct(
+    response.data.result as ProductResponse
+  );
 }
 
 /**
  * Update a product (admin).
  */
-export async function updateProductApi(id: number, data: ProductUpdateRequest): Promise<TProduct> {
+export async function updateProductApi(
+  id: number,
+  data: ProductUpdateRequest
+): Promise<TProduct> {
   const api = await getProductController();
   const response = await api.update5({ id, productUpdateRequest: data });
   if (response.data.code !== 200) {
     throw response.data;
   }
-  return transformProductResponseToTProduct(response.data.result as ProductResponse);
+  return transformProductResponseToTProduct(
+    response.data.result as ProductResponse
+  );
 }
 
 /**
@@ -48,31 +58,62 @@ export async function deleteProductApi(id: number): Promise<TProduct> {
   if (response.data.code !== 200) {
     throw response.data;
   }
-  return transformProductResponseToTProduct(response.data.result as ProductResponse);
+  return transformProductResponseToTProduct(
+    response.data.result as ProductResponse
+  );
 }
 
 /**
  * Fetch all products for user (public).
  */
-export async function fetchAllProductsApi(page?: number, size?: number, sort?: string[]): Promise<TProduct[]> {
+export async function fetchAllProductsApi(
+  page?: number,
+  size?: number,
+  sort?: string[]
+): Promise<TProduct[]> {
   const api = await getProductController();
   const response = await api.fetchAll1({ page, size, sort });
   if (response.data.code !== 200) {
     throw response.data;
   }
-  return (response.data.result?.items ?? []).map(transformProductResponseToTProduct);
+  return (response.data.result?.items ?? []).map(
+    transformProductResponseToTProduct
+  );
+}
+
+/**
+ * Fetch all products for user (public).
+ */
+export async function fetchProductDetailsApi(
+  id: number
+): Promise<ProductResponse> {
+  const api = await getProductController();
+  const response = await api.fetchDetailById({ id });
+  if (response.data.code !== 200) {
+    throw response.data;
+  }
+  if (!response.data.result) {
+    throw new Error('ProductResponse is missing in the response.');
+  }
+  return response.data.result as ProductResponse;
 }
 
 /**
  * Fetch all products for admin (admin).
  */
-export async function fetchAllProductsForAdminApi(page?: number, size?: number, sort?: string[]): Promise<TProduct[]> {
+export async function fetchAllProductsForAdminApi(
+  page?: number,
+  size?: number,
+  sort?: string[]
+): Promise<TProduct[]> {
   const api = await getProductController();
   const response = await api.fetchAllProductsForAdmin({ page, size, sort });
   if (response.data.code !== 200) {
     throw response.data;
   }
-  return (response.data.result?.items ?? []).map(transformProductResponseToTProduct);
+  return (response.data.result?.items ?? []).map(
+    transformProductResponseToTProduct
+  );
 }
 
 /**
@@ -84,7 +125,9 @@ export async function fetchProductDetailByIdApi(id: number): Promise<TProduct> {
   if (response.data.code !== 200) {
     throw response.data;
   }
-  return transformProductResponseToTProduct(response.data.result as ProductResponse);
+  return transformProductResponseToTProduct(
+    response.data.result as ProductResponse
+  );
 }
 
 /**
@@ -106,24 +149,26 @@ export async function searchProductApi(
   if (response.data.code !== 200) {
     throw response.data;
   }
-  return (response.data.result?.items ?? []).map(transformProductResponseToTProduct);
+  return (response.data.result?.items ?? []).map(
+    transformProductResponseToTProduct
+  );
 }
 
-
-
-export function transformProductResponseToTProduct(apiProduct: ProductResponse): TProduct {
+export function transformProductResponseToTProduct(
+  apiProduct: ProductResponse
+): TProduct {
   // Group variants by color id
   const variants = apiProduct.variants ?? [];
   const groupedByColor: Record<string, TColor> = {};
 
-  variants.forEach(v => {
+  variants.forEach((v) => {
     const colorId = v.color?.id ?? 0;
     const colorKey = colorId.toString();
 
     if (!groupedByColor[colorKey]) {
       groupedByColor[colorKey] = {
         id: colorId,
-        name: v.color?.name ?? "",
+        name: v.color?.name ?? '',
         variants: [],
       };
     }
@@ -135,32 +180,35 @@ export function transformProductResponseToTProduct(apiProduct: ProductResponse):
       isAvailable: v.isAvailable ?? false,
       imageUrl: undefined, // ProductVariantResponse doesn't have image field
       status: v.status,
-      size: v.size ? {
-        id: v.size.id ?? 0,
-        name: v.size.name ?? ""
-      } : undefined,
+      size: v.size
+        ? {
+            id: v.size.id ?? 0,
+            name: v.size.name ?? '',
+          }
+        : undefined,
     };
 
     groupedByColor[colorKey].variants!.push(variant);
   });
 
   // Get main image from product images array (first image if available)
-  const mainImage = apiProduct.images && apiProduct.images.length > 0
-    ? apiProduct.images[0]?.imageUrl ?? ""
-    : "";
+  const mainImage =
+    apiProduct.images && apiProduct.images.length > 0
+      ? apiProduct.images[0]?.imageUrl ?? ''
+      : '';
 
   return {
-    title: apiProduct.name ?? "",
+    title: apiProduct.name ?? '',
     mainImage: mainImage,
     id: apiProduct.id ?? 0,
     isAvailable: apiProduct.isAvailable ?? false,
-    name: apiProduct.name ?? "",
-    description: apiProduct.description ?? "",
+    name: apiProduct.name ?? '',
+    description: apiProduct.description ?? '',
     averageRating: apiProduct.averageRating ?? 0,
     soldQuantity: apiProduct.soldQuantity ?? 0,
     totalReviews: apiProduct.totalReviews ?? 0,
-    status: apiProduct.status ?? "INACTIVE",
-    createdAt: apiProduct.createdAt ?? "",
+    status: apiProduct.status ?? 'INACTIVE',
+    createdAt: apiProduct.createdAt ?? '',
     colors: Object.values(groupedByColor),
   };
 }
