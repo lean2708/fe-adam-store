@@ -8,17 +8,24 @@ type Props = {};
 
 const page = (props: Props) => {
   return (
-    <div className=' pt-10  '>
-      <div className='flex flex-col gap-8 lg:flex-row xl:gap-x-10'>
-        <div className='w-full'>
+    <div className='min-h-screen bg-background'>
+      <main className='max-w-7xl mx-auto px-4 py-8'>
+        {/* Product Section */}
+        <div className='grid lg:grid-cols-2 gap-12 mb-16'>
           <Gallery />
-        </div>
-        <div className='w-full pt-5 xl:pt-8'>
           <Details />
         </div>
+
+        {/* Reviews Section */}
+        <div className='mb-16'>
+          <Reviews />
+        </div>
+        <h2 className='text-2xl font-bold text-primary'>Bạn có thể sẽ thích</h2>
+      </main>
+      {/* Recommendations Section */}
+      <div className='mb-16 px-4'>
+        <Recommendations />
       </div>
-      <Reviews />
-      <Recommendations />
     </div>
   );
 };
