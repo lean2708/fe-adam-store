@@ -1,0 +1,42 @@
+.custom-pagination {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 18px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 9999px;
+  border: 1.5px solid #e5e7eb;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  min-height: 32px;
+  min-width: 90px;
+  width: max-content;
+  gap: 0;
+  z-index: 10;
+}
+
+.custom-bullet {
+  display: inline-block;
+  width: 16px;
+  height: 12px;
+  background: #bdbdbd;
+  border-radius: 9999px;
+  margin: 0 4px;
+  opacity: 1;
+  transition: background 0.3s ease, width 0.3s ease;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.custom-bullet:hover {
+  background: #9e9e9e;
+}
+
+.custom-bullet.active {
+  background: #8e8e8e;
+  width: 32px;
+}
