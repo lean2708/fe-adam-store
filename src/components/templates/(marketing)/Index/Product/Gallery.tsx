@@ -11,12 +11,26 @@ import {
   type CarouselApi,
 } from '@/components/ui/carousel';
 import { ProductResponse } from '@/api-client';
+import {
+  CategorySkeleton,
+  ImageSkeleton,
+  Skeleton,
+} from '@/components/ui/skeleton';
 
 export default function Gallery({ product }: { product: ProductResponse }) {
+  //* Lưu instance của Carousel API để điều khiển carousel
   const [api, setApi] = useState<CarouselApi>();
+
+  //* Lưu index của ảnh hiện tại đang được hiển thị trong carousel
   const [current, setCurrent] = useState(0);
+
+  //* Mảng boolean, mỗi phần tử tương ứng với một ảnh, cho biết ảnh đó đã được load xong hay chưa
   const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([]);
+
+  //* Trạng thái auto play, true nếu carousel đang tự động chuyển slide
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  //* Ref để đánh dấu đã preload ảnh hay chưa, tránh preload nhiều lần
   const preloadedRef = useRef(false);
 
   // Danh sách URL ảnh, fallback nếu không có ảnh
@@ -126,7 +140,8 @@ export default function Gallery({ product }: { product: ProductResponse }) {
               sizes='80px'
             />
             {!imagesLoaded[index] && (
-              <div className='absolute inset-0 bg-[#e8e8e8] animate-pulse' />
+              // <div className='absolute inset-0 bg-[#e8e8e8] animate-pulse' />
+              <Skeleton className=' absolute inset-0 rounded-none' />
             )}
           </button>
         ))}
@@ -156,11 +171,7 @@ export default function Gallery({ product }: { product: ProductResponse }) {
                   />
 
                   {/* Loading overlay */}
-                  {!imagesLoaded[index] && (
-                    <div className='absolute inset-0 bg-[#e8e8e8] animate-pulse flex items-center justify-center'>
-                      <div className='w-8 h-8 border-2 border-[#0e3bac] border-t-transparent rounded-full animate-spin' />
-                    </div>
-                  )}
+                  {!imagesLoaded[index] && <CategorySkeleton />}
                 </div>
               </CarouselItem>
             ))}
