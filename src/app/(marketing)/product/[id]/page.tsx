@@ -40,7 +40,7 @@ const page = async ({ params }: Props) => {
 
         {/* Reviews Section */}
         <div className='mb-16'>
-          <Reviews />
+          <Reviews productId={id} />
         </div>
         <h2 className='text-2xl font-bold text-primary'>Bạn có thể sẽ thích</h2>
       </main>
