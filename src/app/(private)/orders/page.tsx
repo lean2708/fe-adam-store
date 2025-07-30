@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import OrderItem from '@/components/ui/order-item';
 import { getAllOrderUserAction } from '@/actions/orderActions';
+import { Skeleton } from '@/components/ui/skeleton';
 type TabStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
 interface TabItem {
   key: TabStatus;
@@ -20,7 +21,7 @@ const tabList: TabItem[] = [
 export default function OrderPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [activeStatus, setActiveStatus] = useState<TabStatus>('PENDING');
-  const [data, setData] = useState<any[]>([1])
+  const [data, setData] = useState<any>({})
   const btnByStatus: Record<TabStatus, React.ReactNode> = {
     PENDING: <><button className='w-60 px-4 mr-4 py-2 rounded-md border border-black'>Thay đổi địa chỉ nhận hàng</button><button className='w-60 px-4 py-2 bg-black text-white rounded-md'>Hủy</button></>,
     PROCESSING: <><button className='w-60 px-4 mr-4 py-2 rounded-md border border-black'>Thay đổi địa chỉ nhận hàng</button><button className='w-60 px-4 py-2 bg-black text-white rounded-md'>Hủy</button></>,
@@ -67,9 +68,14 @@ export default function OrderPage() {
               {tabList.find(tab => tab.key === activeStatus)?.label}
             </h3>
             <div>
-              {
-                data.length != 0 ? data.map((item, index) => <OrderItem key={index} item={item} />) : <p className="py-3 border-b-1 flex w-full h-16 items-center">Bạn chưa có đơn hàng nào cả</p>
-              }
+              {isLoading && <div className="py-3 border-b-2 flex w-full justify-between h-24 items-center">
+                <Skeleton className='h-16 w-full' />
+              </div>}
+              {!isLoading && data?.orderItems?.length > 0 && data.orderItems.map((item: any, index: number) => <OrderItem key={item.id} item={item} />)}
+
+              {!isLoading && (!data?.orderItems || data.orderItems.length === 0) && (
+                <p className="py-3 border-b-1 flex w-full h-16 items-center">Bạn chưa có đơn hàng nào cả</p>
+              )}
             </div>
             <div className={clsx(
               'py-4',
