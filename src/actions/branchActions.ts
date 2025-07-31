@@ -1,6 +1,5 @@
 "use server";
 
-import { z } from "zod";
 import {
   createBranchApi,
   deleteBranchApi,
@@ -10,11 +9,14 @@ import {
   fetchActiveBranchesApi,
 } from "@/lib/data/branch";
 import { branchSchema, updateBranchSchema } from "./schema/branchSchema";
+import type { ActionResponse } from "@/lib/types/actions";
+import { extractErrorMessage } from "@/lib/utils";
+import { TBranch } from "@/types";
 
 /**
  * Create a new branch
  */
-export async function addBranchAction(formData: FormData) {
+export async function addBranchAction(formData: FormData): Promise<ActionResponse<TBranch>> {
   const name = formData.get("name") as string;
   const location = formData.get("location") as string;
   const phone = formData.get("phone") as string;
@@ -27,7 +29,7 @@ export async function addBranchAction(formData: FormData) {
 
   if (!validatedFields.success) {
     return {
-      status: 403,
+      success: false,
       message: "Dữ liệu không hợp lệ",
       errors: validatedFields.error.flatten().fieldErrors,
     };
@@ -42,21 +44,22 @@ export async function addBranchAction(formData: FormData) {
 
     if (!created) {
       return {
-        status: 500,
+        success: false,
         message: "Không thể tạo chi nhánh",
       };
     }
 
     return {
-      status: 201,
+      success: true,
       message: "Tạo chi nhánh thành công",
-      branch: created,
+      data: created,
     };
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Tạo chi nhánh thất bại");
     return {
-      status: 500,
-      message: "Tạo chi nhánh thất bại",
-      error,
+      success: false,
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -64,7 +67,7 @@ export async function addBranchAction(formData: FormData) {
 /**
  * Update an existing branch
  */
-export async function updateBranchAction(branchId: string, formData: FormData) {
+export async function updateBranchAction(branchId: string, formData: FormData): Promise<ActionResponse<TBranch>> {
   const name = formData.get("name") as string;
   const location = formData.get("location") as string;
   const phone = formData.get("phone") as string;
@@ -78,7 +81,7 @@ export async function updateBranchAction(branchId: string, formData: FormData) {
 
   if (!validatedFields.success) {
     return {
-      status: 403,
+      success: false,
       message: "Dữ liệu không hợp lệ",
       errors: validatedFields.error.flatten().fieldErrors,
     };
@@ -89,21 +92,22 @@ export async function updateBranchAction(branchId: string, formData: FormData) {
 
     if (!updated) {
       return {
-        status: 500,
+        success: false,
         message: "Không thể cập nhật chi nhánh",
       };
     }
 
     return {
-      status: 200,
+      success: true,
       message: "Cập nhật chi nhánh thành công",
-      branch: updated,
+      data: updated,
     };
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Cập nhật chi nhánh thất bại");
     return {
-      status: 500,
-      message: "Cập nhật chi nhánh thất bại",
-      error,
+      success: false,
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -111,26 +115,27 @@ export async function updateBranchAction(branchId: string, formData: FormData) {
 /**
  * Delete a branch
  */
-export async function deleteBranchAction(branchId: string) {
+export async function deleteBranchAction(branchId: string): Promise<ActionResponse> {
   try {
     const deleted = await deleteBranchApi(Number(branchId));
-    
+
     if (!deleted) {
       return {
-        status: 500,
+        success: false,
         message: "Không thể xóa chi nhánh",
       };
     }
 
     return {
-      status: 200,
+      success: true,
       message: "Xóa chi nhánh thành công",
     };
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Xóa chi nhánh thất bại");
     return {
-      status: 500,
-      message: "Xóa chi nhánh thất bại",
-      error,
+      success: false,
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -138,18 +143,19 @@ export async function deleteBranchAction(branchId: string) {
 /**
  * Get all branches
  */
-export async function getAllBranchesAction(page?: number, size?: number, sort?: string[]) {
+export async function getAllBranchesAction(page?: number, size?: number, sort?: string[]): Promise<ActionResponse<TBranch[]>> {
   try {
     const branches = await fetchAllBranchesApi(page, size, sort);
     return {
-      status: 200,
-      branches,
+      success: true,
+      data: branches,
     };
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
-      status: 500,
-      message: "Lỗi server",
-      error,
+      success: false,
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -157,26 +163,27 @@ export async function getAllBranchesAction(page?: number, size?: number, sort?: 
 /**
  * Get a single branch by ID
  */
-export async function getBranchByIdAction(branchId: string) {
+export async function getBranchByIdAction(branchId: string): Promise<ActionResponse<TBranch>> {
   try {
     const branch = await fetchBranchByIdApi(branchId);
-    
+
     if (!branch) {
       return {
-        status: 404,
+        success: false,
         message: "Không tìm thấy chi nhánh",
       };
     }
 
     return {
-      status: 200,
-      branch,
+      success: true,
+      data: branch,
     };
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
-      status: 500,
-      message: "Lỗi server",
-      error,
+      success: false,
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -184,18 +191,19 @@ export async function getBranchByIdAction(branchId: string) {
 /**
  * Get active branches only (for public display)
  */
-export async function getActiveBranchesAction() {
+export async function getActiveBranchesAction(): Promise<ActionResponse<TBranch[]>> {
   try {
     const branches = await fetchActiveBranchesApi();
     return {
-      status: 200,
-      branches,
+      success: true,
+      data: branches,
     };
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
-      status: 500,
-      message: "Lỗi server",
-      error,
+      success: false,
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }

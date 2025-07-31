@@ -4,9 +4,16 @@ import { getActiveBranchesAction } from "@/actions/branchActions";
 import { TBranch } from "@/types";
 
 export default async function Footer() {
-    // Fetch active branches for display
-    const branchesResult = await getActiveBranchesAction();
-    const branches: TBranch[] = branchesResult.status === 200 ? (branchesResult.branches || []) : [];
+    // Fetch active branches for display, with error handling for static generation
+    let branches: TBranch[] = [];
+    try {
+        const branchesResult = await getActiveBranchesAction();
+        branches = branchesResult.success ? (branchesResult.data || []) : [];
+    } catch (error) {
+        // Silently fail during static generation or when API is unavailable
+        console.log("Branches not available during static generation");
+        branches = [];
+    }
     return (
         <footer
             className="bg-black text-white "

@@ -17,8 +17,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { toast } from 'sonner';
-import { useAuthStore } from '@/stores/authStore';
-import { verifyRegistrationAction } from '@/actions/authActions';
+import { verifyRegistrationAction } from '@/actions/nextAuthActions';
+import { useAuth } from '@/hooks/useAuth';
 
 // Schema validation
 const formSchema = z.object({
@@ -29,7 +29,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function VerifyForm({ email }: { email: string }) {
   const router = useRouter();
-  const signIn = useAuthStore((state) => state.signIn);
+  const { signIn } = useAuth();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -44,21 +44,18 @@ export default function VerifyForm({ email }: { email: string }) {
     setError,
   } = form;
 
-  // TODO: Thay thế bằng action thực tế khi có API đăng ký
   const onSubmit = async (values: FormValues) => {
-    // Giả lập gọi API
     const formData = new FormData();
-
     formData.append('verifyCodeRequest', values.verifyCodeRequest);
 
     const res = await verifyRegistrationAction(email, formData);
 
-    if (res.success && res.data) {
+    if (res.success) {
       toast.success(`${res.message}`);
 
-      signIn(res.data);
-
-      router.push('/');
+      // After successful verification, redirect to login page
+      // User needs to sign in manually with NextAuth
+      router.push('/login?message=verification_success');
     } else {
       // Xử lý lỗi từng field nếu có
       if (res.errors) {
@@ -70,7 +67,6 @@ export default function VerifyForm({ email }: { email: string }) {
         });
       }
       toast.error(res.message || 'Xác thực thất bại');
-      // Registration successful, but failed to obtain tokens for login
     }
   };
 

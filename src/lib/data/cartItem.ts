@@ -2,13 +2,15 @@ import { CartItemControllerApi } from "@/api-client";
 import type { CartItemResponse } from "@/api-client/models";
 import { TCartItem, TProduct, TColor, TVariant, TEntityBasic } from "@/types";
 import { fetchProductDetailByIdApi } from "./product";
-import { getAuthConfiguration } from "@/api-client/init-auth-config";
+import { getNextAuthConfiguration, getAuthenticatedAxiosInstance } from "@/lib/nextauth-config";
 
 /**
- * Helper to get an instance of CartItemControllerApi with auth config.
+ * Helper to get an instance of CartItemControllerApi with NextAuth config.
  */
 async function getCartItemController() {
-    return new CartItemControllerApi(await getAuthConfiguration());
+    const config = await getNextAuthConfiguration();
+    const axiosInstance = await getAuthenticatedAxiosInstance();
+    return new CartItemControllerApi(config, undefined, axiosInstance);
 }
 
 /**

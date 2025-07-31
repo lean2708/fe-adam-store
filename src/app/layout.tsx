@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import GetMe from './GetMe';
 import { Toaster } from 'sonner';
 import ThemeProvider from '@/providers/theme-provider';
-import { fontVariables } from '@/lib/fonts';
+import AuthProvider from '@/providers/AuthProvider';
+import { fontVariables } from '@/config/fonts';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -27,13 +27,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <GetMe>{children}</GetMe>
-          <Toaster
-            richColors
-            position="top-right"
-            expand={false}
-            visibleToasts={4}
-          />
+          <AuthProvider>
+            {children}
+            <Toaster
+              richColors
+              position="top-right"
+              expand={false}
+              visibleToasts={4}
+            />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

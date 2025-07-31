@@ -1,12 +1,11 @@
 'use client';
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signInAction } from '@/actions/authActions';
-import { useAuthStore } from '@/stores/authStore';
+import { useAuth } from '@/hooks/useAuth';
 import { Input } from '@/components/ui/input';
 import { Lock, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -27,9 +26,18 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function LoginForm() {
-  const signIn = useAuthStore((state) => state.signIn);
+function LoginFormContent() {
+  const { signIn, isLoading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Show success message if coming from verification
+  useEffect(() => {
+    const message = searchParams.get('message');
+    if (message === 'verification_success') {
+      toast.success('Xác thực thành công! Bạn có thể đăng nhập ngay bây giờ.');
+    }
+  }, [searchParams]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -46,31 +54,22 @@ export default function LoginForm() {
   } = form;
 
   const onSubmit = async (values: FormValues) => {
-    const formData = new FormData();
-    formData.append('email', values.email);
-    formData.append('password', values.password);
+    try {
+      const success = await signIn(values.email, values.password);
 
-    const res = await signInAction(formData);
-
-    if (res.success) {
-      toast.success(`${res.message}`);
-
-      if (res.data) {
-        signIn(res.data);
+      if (success) {
+        toast.success('Đăng nhập thành công!');
         router.push('/');
-        return;
-      }
-    } else {
-      // Nếu có lỗi field cụ thể từ backend, setError cho từng field
-      if (res.errors) {
-        Object.entries(res.errors).forEach(([field, messages]) => {
-          setError(field as keyof FormValues, {
-            type: 'server',
-            message: Array.isArray(messages) ? messages[0] : String(messages),
-          });
+      } else {
+        toast.error('Email hoặc mật khẩu không đúng');
+        setError('email', {
+          type: 'server',
+          message: 'Email hoặc mật khẩu không đúng',
         });
       }
-      toast.error(`${res.message}`);
+    } catch (error) {
+      console.error('Login error:', error);
+      toast.error('Có lỗi xảy ra khi đăng nhập');
     }
   };
 
@@ -126,10 +125,10 @@ export default function LoginForm() {
         <div className='space-y-1 mt-8 flex justify-between'>
           <Button
             type='submit'
-            disabled={isSubmitting}
+            disabled={isSubmitting || isLoading}
             className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 rounded-md font-medium'
           >
-            {isSubmitting ? 'Đang đăng nhập...' : 'Đăng nhập'}
+            {(isSubmitting || isLoading) ? 'Đang đăng nhập...' : 'Đăng nhập'}
           </Button>
 
           <div className='text-center'>
@@ -143,5 +142,13 @@ export default function LoginForm() {
         </div>
       </form>
     </Form>
+  );
+}
+
+export default function LoginForm() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginFormContent />
+    </Suspense>
   );
 }

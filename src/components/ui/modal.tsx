@@ -53,7 +53,10 @@ export function Modal({
   closeOnClickOutside = true,
   ...props
 }: ModalProps) {
-  const modalRef = useClickOutside(closeOnClickOutside ? onClose : () => {}, open)
+  const modalRef = useClickOutside(
+    (closeOnClickOutside && variant !== "centered") ? onClose : () => {},
+    open
+  )
 
   if (!open) return null
 
@@ -64,7 +67,15 @@ export function Modal({
         {showOverlay && (
           <div className="fixed inset-0 bg-black/30 z-40 transition-opacity duration-300" />
         )}
-        <div className={variantStyles.centered}>
+        <div
+          className={variantStyles.centered}
+          onClick={closeOnClickOutside ? (e) => {
+            // Only close if clicking on the backdrop (not the modal content)
+            if (e.target === e.currentTarget) {
+              // onClose()
+            }
+          } : undefined}
+        >
           <div
             ref={modalRef}
             className={cn(

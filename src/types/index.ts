@@ -1,11 +1,5 @@
 import { ORDER_STATUS, USER_ROLE } from "@/enums";
 
-export type TUser = {
-  id: string;
-  role: USER_ROLE;
-  username: string;
-  password: string;
-};
 
 
 export type TCategory = {

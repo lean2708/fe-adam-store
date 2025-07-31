@@ -6,14 +6,23 @@ import {
   type ProductUpdateRequest,
   ProductResponse,
 } from "@/api-client";
-import { getAuthConfiguration } from "@/api-client/init-auth-config";
+import { getNextAuthConfiguration, getPublicConfiguration, getAuthenticatedAxiosInstance } from "@/lib/nextauth-config";
 
 /**
- * Helper to get an instance of ProductControllerApi with auth config.
+ * Helper to get an instance of ProductControllerApi with NextAuth config.
  */
-export async function getProductController() { // This function is async
-  const authConfig = await getAuthConfiguration(); // Await the config
-  return new ProductControllerApi(authConfig); // Returns a Promise<ProductControllerApi>
+export async function getProductController() {
+  const config = await getNextAuthConfiguration();
+  const axiosInstance = await getAuthenticatedAxiosInstance();
+  return new ProductControllerApi(config, undefined, axiosInstance);
+}
+
+/**
+ * Helper to get a public instance of ProductControllerApi (no auth).
+ */
+export function getPublicProductController() {
+  const config = getPublicConfiguration();
+  return new ProductControllerApi(config);
 }
 /**
  * Create a new product (admin).
