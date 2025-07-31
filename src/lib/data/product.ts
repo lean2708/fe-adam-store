@@ -6,6 +6,7 @@ import {
   type ProductUpdateRequest,
   ProductResponse,
   ReviewResponse,
+  PageResponseReviewResponse,
 } from '@/api-client';
 import { getAuthConfiguration } from '@/api-client/init-auth-config';
 
@@ -122,7 +123,7 @@ export async function fetchProductReviewssApi(
   page?: number,
   size?: number,
   sort?: string[]
-): Promise<ReviewResponse[]> {
+): Promise<PageResponseReviewResponse> {
   const api = await getProductController();
   const response = await api.fetchReviewsByProductId({
     productId: id,
@@ -136,7 +137,7 @@ export async function fetchProductReviewssApi(
   if (!response.data.result) {
     throw new Error('ProductResponse is missing in the response.');
   }
-  return response.data.result.items as ReviewResponse[];
+  return response.data.result as PageResponseReviewResponse;
 }
 
 /**
