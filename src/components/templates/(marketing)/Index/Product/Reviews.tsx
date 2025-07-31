@@ -68,7 +68,7 @@ export default function Reviews({ productId }: { productId: string }) {
                       <div className='flex justify-between gap-2 mb-4'>
                         <div className='flex flex-row gap-6 items-center'>
                           {/* Avatar */}
-                          <Avatar className='size-12'>
+                          <Avatar className='size-12 ml-2'>
                             <AvatarImage
                               src={review.userAvatarUrl || '/placeholder.svg'}
                             />
@@ -79,10 +79,12 @@ export default function Reviews({ productId }: { productId: string }) {
 
                           {/* Username */}
                           <div className='flex flex-col'>
-                            <span className='font-medium text-primary'>
+                            <span className='font-bold text-primary'>
                               {review.userName || 'Người dùng'}
                             </span>
-                            <span>{review.createdAt}</span>
+                            <span className='text-muted-foreground'>
+                              {review.createdAt}
+                            </span>
                           </div>
                         </div>
 
@@ -108,7 +110,7 @@ export default function Reviews({ productId }: { productId: string }) {
                             {Object.values(review.imageUrls).map((img, i) => (
                               <div
                                 key={i}
-                                className='w-16 h-16 bg-muted rounded overflow-hidden'
+                                className='size-24 bg-muted rounded overflow-hidden'
                               >
                                 <img
                                   src={img || '/imgs/landing-login-img.png'}
@@ -122,7 +124,7 @@ export default function Reviews({ productId }: { productId: string }) {
                         )}
 
                       {/* Comments */}
-                      <p className='text-muted-foreground'>{review.comment}</p>
+                      <p className='text-primary text-base'>{review.comment}</p>
                     </div>
                   </div>
                 </CardContent>

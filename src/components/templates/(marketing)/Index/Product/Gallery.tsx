@@ -101,34 +101,48 @@ export default function Gallery({ product }: { product: TProduct }) {
     setIsAutoPlaying(true);
   }, []);
 
+  // Kiểm tra tất cả thumbnails đã load xong chưa
+  const allThumbnailsLoaded = useMemo(
+    () =>
+      product.images &&
+      imagesLoaded.length === product.images.length &&
+      imagesLoaded.every(Boolean),
+    [imagesLoaded, product.images]
+  );
+
   return (
     <div className='flex gap-4'>
       {/* Thumbnail Images */}
-      <div className='flex flex-col gap-2'>
-        {product.images?.map((image, index) => (
-          <button
-            key={index}
-            onClick={() => handleImageSelect(index)}
-            className={`w-20 h-20 bg-muted-foreground rounded overflow-hidden border-2 relative shadow-md hover:shadow-lg ${
-              current === index + 1
-                ? 'border-[#0e3bac] shadow-lg'
-                : 'border-transparent'
-            } hover:border-[#0e3bac] transition-all duration-200`}
-          >
-            <Image
-              src={image?.imageUrl || '/placeholder.svg'}
-              alt={`Product view ${index + 1}`}
-              width={80}
-              height={80}
-              className='w-full h-full object-cover'
-              loading='lazy'
-              sizes='80px'
-            />
-            {!imagesLoaded[index] && (
-              <Skeleton className=' absolute inset-0 rounded-none' />
-            )}
-          </button>
-        ))}
+      <div className='flex flex-col gap-2 min-w-[80px]'>
+        {!allThumbnailsLoaded
+          ? // Hiển thị skeleton placeholder cho toàn bộ thumbnails
+            Array.from({ length: product.images?.length || 4 }).map(
+              (_, idx) => (
+                <Skeleton key={idx} className='w-20 h-20 mb-2 rounded' />
+              )
+            )
+          : product.images?.map((image, index) => (
+              <button
+                key={index}
+                onClick={() => handleImageSelect(index)}
+                className={`w-20 h-20 bg-muted-foreground rounded overflow-hidden border-2 relative shadow-md hover:shadow-lg ${
+                  current === index + 1
+                    ? 'border-[#0e3bac] shadow-lg'
+                    : 'border-transparent'
+                } hover:border-[#0e3bac] transition-all duration-200`}
+              >
+                <Image
+                  src={image?.imageUrl || '/placeholder.svg'}
+                  alt={`Product view ${index + 1}`}
+                  width={80}
+                  height={80}
+                  className='w-full h-full object-cover'
+                  loading='lazy'
+                  sizes='80px'
+                  unoptimized
+                />
+              </button>
+            ))}
       </div>
 
       {/* Main Image Carousel */}
@@ -150,6 +164,7 @@ export default function Gallery({ product }: { product: TProduct }) {
                     className='w-full h-full object-cover transition-opacity duration-300'
                     priority={index === 0}
                     sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px'
+                    unoptimized
                   />
 
                   {/* Loading overlay */}
