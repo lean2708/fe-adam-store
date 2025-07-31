@@ -1,5 +1,5 @@
-import AuthTemplate from '@/components/templates/(auth)/AuthTemplate';
 import LoginForm from '@/components/templates/(auth)/login/LoginForm';
+import AuthTemplate from '@/components/templates/(auth)/AuthTemplate';
 import Link from 'next/link';
 
 export default function LoginPage() {

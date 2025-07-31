@@ -3,6 +3,7 @@ import './globals.css';
 import GetMe from './GetMe';
 import { Toaster } from 'sonner';
 import ThemeProvider from '@/providers/theme-provider';
+import AuthProvider from '@/components/providers/AuthProvider';
 import { fontVariables } from '@/config/fonts';
 
 export const metadata: Metadata = {
@@ -27,13 +28,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <GetMe>{children}</GetMe>
-          <Toaster
-            richColors
-            position="top-right"
-            expand={false}
-            visibleToasts={4}
-          />
+          <AuthProvider>
+            <GetMe>{children}</GetMe>
+            <Toaster
+              richColors
+              position="top-right"
+              expand={false}
+              visibleToasts={4}
+            />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

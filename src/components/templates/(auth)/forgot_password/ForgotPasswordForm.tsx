@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { forgotPasswordAction, signInAction } from '@/actions/authActions';
+import { forgotPasswordAction } from '@/actions/nextAuthActions';
 import { Input } from '@/components/ui/input';
 import { Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';

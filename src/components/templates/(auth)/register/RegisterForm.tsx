@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { toast } from 'sonner';
-import { signUpAction } from '@/actions/authActions';
+import { signUpAction } from '@/actions/nextAuthActions';
 
 // Schema validation
 const formSchema = z

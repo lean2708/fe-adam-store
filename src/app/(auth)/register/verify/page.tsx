@@ -1,4 +1,4 @@
-import { handlePendingEmail } from '@/actions/authActions';
+import { handlePendingEmail } from '@/actions/nextAuthActions';
 import AuthTemplate from '@/components/templates/(auth)/AuthTemplate';
 import VerifyForm from '@/components/templates/(auth)/register/VerifyForm';
 
