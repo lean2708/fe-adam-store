@@ -6,7 +6,7 @@ export default function NewestProducts() {
         <section className="mb-16 px-4">
             <SectionHeader
                 title="Sản phẩm mới nhất"
-                description="Get newest product"
+                // description="Get newest product"
                 className="mt-10"
                 hasButton={true}
             />

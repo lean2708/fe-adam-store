@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { MessageCircle, Camera, Users } from "lucide-react";
+import { getActiveBranchesAction } from "@/actions/branchActions";
+import { TBranch } from "@/types";
 
-export default function Footer() {
+export default async function Footer() {
+    // Fetch active branches for display
+    const branchesResult = await getActiveBranchesAction();
+    const branches: TBranch[] = branchesResult.status === 200 ? (branchesResult.branches || []) : [];
     return (
         <footer
             className="bg-black text-white "
@@ -117,10 +122,27 @@ export default function Footer() {
                         <div>
                             <h4 className="font-semibold mb-4 text-white">ĐỊA CHỈ CHI NHÁNH</h4>
                             <ul className="space-y-2 text-sm text-gray-300">
-                                <li>132E Nguyễn Thái Học, Phường Bến Thành, Quận 1, HCM</li>
-                                <li>132E Nguyễn Thái Học, Phường Bến Thành, Quận 1, HCM</li>
-                                <li>132E Nguyễn Thái Học, Phường Bến Thành, Quận 1, HCM</li>
-                                <li>132E Nguyễn Thái Học, Phường Bến Thành, Quận 1, HCM</li>
+                                {branches.length > 0 ? (
+                                    branches.map((branch) => (
+                                        <li key={branch.id} className="mb-3">
+                                            <div className="font-medium text-white">{branch.name}</div>
+                                            <div>{branch.location}</div>
+                                            {branch.phone && (
+                                                <div className="text-xs text-gray-400">
+                                                    Tel: {branch.phone}
+                                                </div>
+                                            )}
+                                        </li>
+                                    ))
+                                ) : (
+                                    // Fallback content if no branches are available
+                                    <>
+                                        <li>132E Nguyễn Thái Học, Phường Bến Thành, Quận 1, HCM</li>
+                                        <li>132E Nguyễn Thái Học, Phường Bến Thành, Quận 1, HCM</li>
+                                        <li>132E Nguyễn Thái Học, Phường Bến Thành, Quận 1, HCM</li>
+                                        <li>132E Nguyễn Thái Học, Phường Bến Thành, Quận 1, HCM</li>
+                                    </>
+                                )}
                             </ul>
                         </div>
                     </div>

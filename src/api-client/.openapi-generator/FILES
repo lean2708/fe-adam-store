@@ -42,9 +42,11 @@ docs/ApiResponseDistrictResponse.md
 docs/ApiResponseListChatMessageResponse.md
 docs/ApiResponseListConversationResponse.md
 docs/ApiResponseListFileResponse.md
+docs/ApiResponseListOrderResponse.md
 docs/ApiResponseListRevenueByMonthDTO.md
 docs/ApiResponseListTopSellingDTO.md
 docs/ApiResponseOrderResponse.md
+docs/ApiResponseOrderStatsDTO.md
 docs/ApiResponsePageResponseAddressResponse.md
 docs/ApiResponsePageResponseBranchResponse.md
 docs/ApiResponsePageResponseCartItemResponse.md
@@ -115,6 +117,7 @@ docs/OrderItemRequest.md
 docs/OrderItemResponse.md
 docs/OrderRequest.md
 docs/OrderResponse.md
+docs/OrderStatsDTO.md
 docs/PageResponseAddressResponse.md
 docs/PageResponseBranchResponse.md
 docs/PageResponseCartItemResponse.md
@@ -200,9 +203,11 @@ models/api-response-district-response.ts
 models/api-response-list-chat-message-response.ts
 models/api-response-list-conversation-response.ts
 models/api-response-list-file-response.ts
+models/api-response-list-order-response.ts
 models/api-response-list-revenue-by-month-dto.ts
 models/api-response-list-top-selling-dto.ts
 models/api-response-order-response.ts
+models/api-response-order-stats-dto.ts
 models/api-response-page-response-address-response.ts
 models/api-response-page-response-branch-response.ts
 models/api-response-page-response-cart-item-response.ts
@@ -263,6 +268,7 @@ models/order-item-request.ts
 models/order-item-response.ts
 models/order-request.ts
 models/order-response.ts
+models/order-stats-dto.ts
 models/page-response-address-response.ts
 models/page-response-branch-response.ts
 models/page-response-cart-item-response.ts

@@ -22,6 +22,8 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
+import type { ApiResponseListOrderResponse } from '../models';
+// @ts-ignore
 import type { ApiResponseOrderResponse } from '../models';
 // @ts-ignore
 import type { ApiResponsePageResponseOrderResponse } from '../models';
@@ -243,13 +245,10 @@ export const OrderControllerApiAxiosParamCreator = function (configuration?: Con
          * Lấy danh sách đơn hàng của người dùng hiện tại, lọc theo trạng thái
          * @summary Get Orders for Current User
          * @param {GetOrdersForUserOrderStatusEnum} orderStatus 
-         * @param {number} [page] Zero-based page index (0..N)
-         * @param {number} [size] The size of the page to be returned
-         * @param {Array<string>} [sort] Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getOrdersForUser: async (orderStatus: GetOrdersForUserOrderStatusEnum, page?: number, size?: number, sort?: Array<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getOrdersForUser: async (orderStatus: GetOrdersForUserOrderStatusEnum, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'orderStatus' is not null or undefined
             assertParamExists('getOrdersForUser', 'orderStatus', orderStatus)
             const localVarPath = `/v1/private/user/orders`;
@@ -267,18 +266,6 @@ export const OrderControllerApiAxiosParamCreator = function (configuration?: Con
             // authentication bearerAuth required
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
-
-            if (size !== undefined) {
-                localVarQueryParameter['size'] = size;
-            }
-
-            if (sort) {
-                localVarQueryParameter['sort'] = sort;
-            }
 
             if (orderStatus !== undefined) {
                 localVarQueryParameter['orderStatus'] = orderStatus;
@@ -606,14 +593,11 @@ export const OrderControllerApiFp = function(configuration?: Configuration) {
          * Lấy danh sách đơn hàng của người dùng hiện tại, lọc theo trạng thái
          * @summary Get Orders for Current User
          * @param {GetOrdersForUserOrderStatusEnum} orderStatus 
-         * @param {number} [page] Zero-based page index (0..N)
-         * @param {number} [size] The size of the page to be returned
-         * @param {Array<string>} [sort] Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getOrdersForUser(orderStatus: GetOrdersForUserOrderStatusEnum, page?: number, size?: number, sort?: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponsePageResponseOrderResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getOrdersForUser(orderStatus, page, size, sort, options);
+        async getOrdersForUser(orderStatus: GetOrdersForUserOrderStatusEnum, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseListOrderResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOrdersForUser(orderStatus, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrderControllerApi.getOrdersForUser']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -756,8 +740,8 @@ export const OrderControllerApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getOrdersForUser(requestParameters: OrderControllerApiGetOrdersForUserRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponsePageResponseOrderResponse> {
-            return localVarFp.getOrdersForUser(requestParameters.orderStatus, requestParameters.page, requestParameters.size, requestParameters.sort, options).then((request) => request(axios, basePath));
+        getOrdersForUser(requestParameters: OrderControllerApiGetOrdersForUserRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseListOrderResponse> {
+            return localVarFp.getOrdersForUser(requestParameters.orderStatus, options).then((request) => request(axios, basePath));
         },
         /**
          * Api này dùng để thanh toán đơn hàng thông qua VNPAY
@@ -894,27 +878,6 @@ export interface OrderControllerApiGetOrdersForUserRequest {
      * @memberof OrderControllerApiGetOrdersForUser
      */
     readonly orderStatus: GetOrdersForUserOrderStatusEnum
-
-    /**
-     * Zero-based page index (0..N)
-     * @type {number}
-     * @memberof OrderControllerApiGetOrdersForUser
-     */
-    readonly page?: number
-
-    /**
-     * The size of the page to be returned
-     * @type {number}
-     * @memberof OrderControllerApiGetOrdersForUser
-     */
-    readonly size?: number
-
-    /**
-     * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     * @type {Array<string>}
-     * @memberof OrderControllerApiGetOrdersForUser
-     */
-    readonly sort?: Array<string>
 }
 
 /**
@@ -1105,7 +1068,7 @@ export class OrderControllerApi extends BaseAPI {
      * @memberof OrderControllerApi
      */
     public getOrdersForUser(requestParameters: OrderControllerApiGetOrdersForUserRequest, options?: RawAxiosRequestConfig) {
-        return OrderControllerApiFp(this.configuration).getOrdersForUser(requestParameters.orderStatus, requestParameters.page, requestParameters.size, requestParameters.sort, options).then((request) => request(this.axios, this.basePath));
+        return OrderControllerApiFp(this.configuration).getOrdersForUser(requestParameters.orderStatus, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

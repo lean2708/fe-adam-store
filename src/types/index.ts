@@ -96,3 +96,13 @@ export type TColor = {
   name: string;
   variants?: TVariant[];
 }
+
+export type TBranch = {
+  id: string;
+  name: string;
+  location: string;
+  phone: string;
+  status: 'ACTIVE' | 'INACTIVE';
+  createdAt?: string;
+  updatedAt?: string;
+}
