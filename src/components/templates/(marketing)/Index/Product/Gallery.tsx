@@ -10,14 +10,10 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from '@/components/ui/carousel';
-import { ProductResponse } from '@/api-client';
-import {
-  CategorySkeleton,
-  ImageSkeleton,
-  Skeleton,
-} from '@/components/ui/skeleton';
+import { CategorySkeleton, Skeleton } from '@/components/ui/skeleton';
+import { TProduct } from '@/types';
 
-export default function Gallery({ product }: { product: ProductResponse }) {
+export default function Gallery({ product }: { product: TProduct }) {
   //* Lưu instance của Carousel API để điều khiển carousel
   const [api, setApi] = useState<CarouselApi>();
 
@@ -33,25 +29,14 @@ export default function Gallery({ product }: { product: ProductResponse }) {
   //* Ref để đánh dấu đã preload ảnh hay chưa, tránh preload nhiều lần
   const preloadedRef = useRef(false);
 
-  // Danh sách URL ảnh, fallback nếu không có ảnh
-  const imageUrls = useMemo(
-    () =>
-      product.images && product.images.length > 0
-        ? product.images.map((img) => img.imageUrl)
-        : [
-            'https://images.pexels.com/photos/6069525/pexels-photo-6069525.jpeg?auto=compress&cs=tinysrgb&h=400&w=300',
-          ],
-    [product.images]
-  );
-
   // Preload images only once
   useEffect(() => {
     if (preloadedRef.current) return;
 
-    const loadedStates = new Array(imageUrls.length).fill(false);
+    const loadedStates = new Array(product.images?.length).fill(false);
     setImagesLoaded(loadedStates);
 
-    imageUrls.forEach((src, index) => {
+    product.images?.forEach((imgObj, index) => {
       const img = new window.Image();
       img.onload = () => {
         setImagesLoaded((prev) => {
@@ -67,11 +52,11 @@ export default function Gallery({ product }: { product: ProductResponse }) {
           return newState;
         });
       };
-      img.src = src || '';
+      img.src = imgObj?.imageUrl || '';
     });
 
     preloadedRef.current = true;
-  }, [imageUrls]);
+  }, [product.images]);
 
   // Set up carousel API
   useEffect(() => {
@@ -120,7 +105,7 @@ export default function Gallery({ product }: { product: ProductResponse }) {
     <div className='flex gap-4'>
       {/* Thumbnail Images */}
       <div className='flex flex-col gap-2'>
-        {imageUrls.map((image, index) => (
+        {product.images?.map((image, index) => (
           <button
             key={index}
             onClick={() => handleImageSelect(index)}
@@ -131,7 +116,7 @@ export default function Gallery({ product }: { product: ProductResponse }) {
             } hover:border-[#0e3bac] transition-all duration-200`}
           >
             <Image
-              src={image || '/placeholder.svg'}
+              src={image?.imageUrl || '/placeholder.svg'}
               alt={`Product view ${index + 1}`}
               width={80}
               height={80}
@@ -155,11 +140,11 @@ export default function Gallery({ product }: { product: ProductResponse }) {
       >
         <Carousel setApi={setApi} className='w-full'>
           <CarouselContent>
-            {imageUrls.map((image, index) => (
+            {product.images?.map((image, index) => (
               <CarouselItem key={index}>
                 <div className='aspect-square bg-[#e8e8e8] rounded-lg overflow-hidden relative'>
                   <Image
-                    src={image || '/placeholder.svg'}
+                    src={image?.imageUrl || '/placeholder.svg'}
                     alt={`Slim-Fit Stretch-Cotton Poplin Fabric Overshirt - View ${
                       index + 1
                     }`}
@@ -183,7 +168,7 @@ export default function Gallery({ product }: { product: ProductResponse }) {
 
           {/* Image Indicators */}
           <div className='absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2'>
-            {imageUrls.map((_, index) => (
+            {product.images?.map((_, index) => (
               <button
                 key={index}
                 onClick={() => handleImageSelect(index)}
