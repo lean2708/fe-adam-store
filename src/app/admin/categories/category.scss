@@ -1,0 +1,136 @@
+.category-table {
+  background-color: #f3f4f6;
+  padding: 24px;
+
+  &__wrapper {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    &-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    &-btn {
+      background-color: #000;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead tr {
+      border-bottom: 2px solid #d1d5db;
+
+      th {
+        text-align: center;
+        padding: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #374151;
+      }
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #cccccc;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #f3f4f6;
+      }
+
+      td {
+        padding: 6px;
+        font-size: 14px;
+        color: #4b5563;
+
+        &.description {
+          max-width: 350px;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        &.actions {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  &__pagination {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+    font-size: 14px;
+
+    button {
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+
+      &.active {
+        background-color: #000;
+        color: #fff;
+      }
+
+      &:not(.active) {
+        background-color: #e5e7eb;
+      }
+    }
+  }
+}
+.action-menu {
+  position: absolute;
+  top: 30px;
+  width: 100px;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+
+  button {
+    padding: 8px 12px;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #eee;
+    }
+  }
+}
