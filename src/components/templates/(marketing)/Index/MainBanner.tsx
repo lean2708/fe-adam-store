@@ -1,21 +1,20 @@
 import { Button } from "@/components/ui/button";
 import MainBannerSwiper from "./MainBanner/MainBannerSwiper";
 
+// List of banner image filenames in public/imgs/banner
+const bannerImages = [
+    "banner1.jpg",
+    "banner2.jpg",
+    "banner3.jpg",
+    // Add more filenames as needed
+];
+
+const heroSlides = bannerImages.map((filename, idx) => ({
+    src: `/imgs/banner/${filename}`,
+    alt: `Banner ${idx + 1}`,
+}));
+
 export default function MainBanner() {
-    const heroSlides = [
-        {
-            src: 'https://images.pexels.com/photos/994234/pexels-photo-994234.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            alt: 'Streetwear fashion 1',
-        },
-        {
-            src: 'https://images.pexels.com/photos/1039864/pexels-photo-1039864.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            alt: 'Urban fashion style 2',
-        },
-        {
-            src: 'https://images.pexels.com/photos/1488463/pexels-photo-1488463.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            alt: 'Modern menswear 3',
-        },
-    ]
     return (
         <section className="mb-16">
             {/* Hero Carousel - Embla carousel */}

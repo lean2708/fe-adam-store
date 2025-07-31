@@ -83,27 +83,7 @@ export default function MobileSidebar({ open, onClose }: { open: boolean, onClos
                         >
                             Về chúng tôi
                         </Link>
-                        <Link
-                            href="/policies"
-                            className="block py-2 px-2 text-gray-500 text-sm hover:text-gray-700"
-                            onClick={onClose}
-                        >
-                            Chính sách
-                        </Link>
-                        <Link
-                            href="/fashion-tips"
-                            className="block py-2 px-2 text-gray-500 text-sm hover:text-gray-700"
-                            onClick={onClose}
-                        >
-                            Kiến thức mặc đẹp
-                        </Link>
-                        <Link
-                            href="/customer-care"
-                            className="block py-2 px-2 text-gray-500 text-sm hover:text-gray-700"
-                            onClick={onClose}
-                        >
-                            Chăm sóc khách hàng
-                        </Link>
+
                         <Link
                             href="/stores"
                             className="block py-2 px-2 text-gray-500 text-sm hover:text-gray-700"
