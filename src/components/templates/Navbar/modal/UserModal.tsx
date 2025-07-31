@@ -1,36 +1,50 @@
 import { User, ShoppingBag, LogIn, UserPlus } from "lucide-react"
 import { Modal } from "@/components/ui/modal"
-import { logoutAction } from "@/actions/authActions"
-import { useAuthStore } from "@/stores/authStore"
+import { logoutAction } from "@/actions/nextAuthActions"
+import { signOut, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
 export default function UserModal({ open, onClose }: { open: boolean, onClose: () => void }) {
-  const { logout, isLogin, user } = useAuthStore()
+  const { data: session, status, } = useSession()
   const router = useRouter()
+
+  const isLogin = status === "authenticated" && !!session?.user
+  const user = session?.user
+
 
   const handleLogout = async () => {
     try {
-      const result = await logoutAction()
+      // First call the API to invalidate the token on the server
+      await logoutAction()
+   
 
-      if (result.success) {
-        // Update the auth store
-        logout()
+      // Then sign out with NextAuth (this clears the client session)
+      await signOut({
+        redirect: false,
+        callbackUrl: "/"
+      })
 
-        // Close the modal
-        onClose()
+      // Close the modal
+      onClose()
 
-        // Show success message
-        toast.success(result.message || "Đăng xuất thành công!")
+      // Show success message
+      toast.success("Đăng xuất thành công!")
 
-        // Redirect to home page
-        router.push("/")
-      } else {
-        toast.error(result.message || "Có lỗi xảy ra khi đăng xuất")
-      }
+      // Redirect to home page
+      router.push("/")
     } catch (error) {
       console.error("Logout error:", error)
       toast.error("Có lỗi xảy ra khi đăng xuất")
+
+      // Even if there's an error, try to sign out with NextAuth
+      try {
+        await signOut({ redirect: false })
+        onClose()
+        router.push("/")
+      } catch (signOutError) {
+        console.error("NextAuth signOut error:", signOutError)
+      }
     }
   }
 

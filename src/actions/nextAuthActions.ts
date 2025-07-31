@@ -1,12 +1,12 @@
 "use server";
 
-import { signIn, signOut } from "next-auth/react";
-import { 
-  signUpApi, 
-  verifyRegistrationApi, 
+import {
+  signUpApi,
+  verifyRegistrationApi,
   forgotPasswordApi,
   verifyForgotPasswordCodeApi,
-  resetPasswordApi 
+  resetPasswordApi,
+  logoutApi
 } from "@/lib/data/auth";
 import { setCookie, getCookie, deleteCookie } from "@/lib/cookies";
 import type { ActionResponse } from "@/lib/types/actions";
@@ -352,5 +352,36 @@ export async function handlePendingEmail(): Promise<string | null> {
   } catch (error) {
     console.error('Error handling pending email:', error);
     return null;
+  }
+}
+
+/**
+ * Logout action that calls the API to invalidate the token
+ * Note: NextAuth signOut should be called from the client side
+ */
+export async function logoutAction(): Promise<ActionResponse> {
+  try {
+    // If we have an access token, call the API to invalidate it
+    await logoutApi();
+
+
+    return {
+      success: true,
+      message: 'Logged out successfully.'
+    };
+  } catch (error) {
+    const extractedError = extractErrorMessage(
+      error,
+      'An unexpected server error occurred during logout.'
+    );
+    console.error('Error in logoutAction:', error);
+
+    // Even if API call fails, we still consider logout successful
+    // since the client-side session will be cleared by NextAuth
+    return {
+      success: true,
+      message: 'Logged out successfully.',
+      apiError: extractedError,
+    };
   }
 }

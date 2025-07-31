@@ -1,11 +1,13 @@
 import { OrderControllerApi } from "@/api-client";
-import { getAuthConfiguration } from "@/api-client/init-auth-config";
+import { getNextAuthConfiguration, getAuthenticatedAxiosInstance } from "@/lib/nextauth-config";
 
 /**
- * Helper to get an instance of OrderControllerApi with auth config.
+ * Helper to get an instance of OrderControllerApi with NextAuth config.
  */
 async function getOrderController() {
-  return new OrderControllerApi(await getAuthConfiguration());
+  const config = await getNextAuthConfiguration();
+  const axiosInstance = await getAuthenticatedAxiosInstance();
+  return new OrderControllerApi(config, undefined, axiosInstance);
 }
 
 // Example transform function (customize as needed)

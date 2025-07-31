@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import GetMe from './GetMe';
 import { Toaster } from 'sonner';
 import ThemeProvider from '@/providers/theme-provider';
-import AuthProvider from '@/components/providers/AuthProvider';
+import AuthProvider from '@/providers/AuthProvider';
 import { fontVariables } from '@/config/fonts';
 
 export const metadata: Metadata = {
@@ -29,7 +28,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           disableTransitionOnChange
         >
           <AuthProvider>
-            <GetMe>{children}</GetMe>
+            {children}
             <Toaster
               richColors
               position="top-right"
