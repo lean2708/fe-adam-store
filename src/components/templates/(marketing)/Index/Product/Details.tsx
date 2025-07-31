@@ -103,14 +103,14 @@ export default function Details({ product }: { product: TProduct }) {
         <div className='flex items-center gap-2'>
           <button
             onClick={decreaseQuantity}
-            className='w-8 h-8 border border-[#e0e0e0] rounded flex items-center justify-center hover:bg-[#e8e8e8]'
+            className='w-8 h-8 border border-border rounded flex items-center justify-center hover:bg-[#e8e8e8]'
           >
             -
           </button>
           <span className='w-12 text-center'>{quantity}</span>
           <button
             onClick={increaseQuantity}
-            className='w-8 h-8 border border-[#e0e0e0] rounded flex items-center justify-center hover:bg-[#e8e8e8]'
+            className='w-8 h-8 border border-border rounded flex items-center justify-center hover:bg-[#e8e8e8]'
           >
             +
           </button>

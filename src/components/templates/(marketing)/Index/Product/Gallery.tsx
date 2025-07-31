@@ -109,7 +109,7 @@ export default function Gallery({ product }: { product: TProduct }) {
           <button
             key={index}
             onClick={() => handleImageSelect(index)}
-            className={`w-20 h-20 bg-[#e8e8e8] rounded overflow-hidden border-2 relative shadow-md hover:shadow-lg ${
+            className={`w-20 h-20 bg-muted-foreground rounded overflow-hidden border-2 relative shadow-md hover:shadow-lg ${
               current === index + 1
                 ? 'border-[#0e3bac] shadow-lg'
                 : 'border-transparent'
@@ -125,7 +125,6 @@ export default function Gallery({ product }: { product: TProduct }) {
               sizes='80px'
             />
             {!imagesLoaded[index] && (
-              // <div className='absolute inset-0 bg-[#e8e8e8] animate-pulse' />
               <Skeleton className=' absolute inset-0 rounded-none' />
             )}
           </button>
@@ -142,12 +141,10 @@ export default function Gallery({ product }: { product: TProduct }) {
           <CarouselContent>
             {product.images?.map((image, index) => (
               <CarouselItem key={index}>
-                <div className='aspect-square bg-[#e8e8e8] rounded-lg overflow-hidden relative'>
+                <div className='aspect-square bg-muted-foreground rounded-lg overflow-hidden relative'>
                   <Image
                     src={image?.imageUrl || '/placeholder.svg'}
-                    alt={`Slim-Fit Stretch-Cotton Poplin Fabric Overshirt - View ${
-                      index + 1
-                    }`}
+                    alt={`${product.name} ${index + 1}`}
                     width={600}
                     height={600}
                     className='w-full h-full object-cover transition-opacity duration-300'
