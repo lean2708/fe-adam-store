@@ -35,7 +35,7 @@ const page = async ({ params }: Props) => {
         {/* Product Section */}
         <div className='grid lg:grid-cols-2 gap-12 mb-16'>
           <Gallery product={productResponse.product} />
-          <Details />
+          <Details product={productResponse.product} />
         </div>
 
         {/* Reviews Section */}

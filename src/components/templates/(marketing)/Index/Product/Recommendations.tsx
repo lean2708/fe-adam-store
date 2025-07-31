@@ -32,7 +32,7 @@ export default function Recommendations() {
           setProducts(response.products);
         }
       } catch (error) {
-        console.error('Failed to fetch best-selling products:', error);
+        console.error('Failed to fetch recommend products:', error);
       } finally {
         setLoading(false);
       }
@@ -82,7 +82,7 @@ export default function Recommendations() {
               key={product.id}
               className='basis-1/2 md:basis-1/3 lg:basis-1/5'
             >
-              <Link href={`product/${product.id}`}>
+              <Link href={`${product.id}`}>
                 <ProductCardIndex product={product} badgeText='Bán Chạy' />
               </Link>
             </CarouselItem>

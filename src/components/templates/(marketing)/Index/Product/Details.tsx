@@ -1,123 +1,115 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
+import { TProduct } from '@/types';
+import { useAuthStore } from '@/stores/authStore';
+import Colors from './(Details)/Colors';
+import Sizes from './(Details)/Sizes';
+import { toast } from 'sonner';
 
-export default function Details() {
-  const [selectedSize, setSelectedSize] = useState('M');
+export default function Details({ product }: { product: TProduct }) {
+  const userId = useAuthStore((state) => state.user?.id);
+
   const [showDescription, setShowDescription] = useState(false);
-  const [selectedColor, setSelectedColor] = useState('white');
+  const [selectVariant, setSelectVariant] = useState(
+    product.colors?.[0]?.variants?.[0]
+  );
   const [quantity, setQuantity] = useState(1);
 
-  const handleQuantityChange = (change: number) => {
-    setQuantity((prev) => Math.max(1, prev + change));
+  const selectedColor = useRef(product.colors?.[0]?.id);
+  const selectedSize = useRef(product.colors?.[0]?.variants?.[0]?.size?.id);
+
+  // TODO: Implement quantity change logic
+  const onChangeColor = (color: number | undefined) => {
+    // *Lưu lại id màu sắc mà người dùng vừa chọn vào biến selectedColor.current.
+    selectedColor.current = color;
+    const colorObj = product.colors?.find((c) => c.id === color);
+    // *Tìm variant phù hợp với size hiện tại
+    let variant = colorObj?.variants?.find(
+      (v) => v.size?.id === selectedSize.current
+    );
+    // *Nếu không tìm thấy variant phù hợp với size hiện tại, lấy variant đầu tiên
+    if (!variant && colorObj?.variants?.length) {
+      variant = colorObj.variants[0];
+      selectedSize.current = variant.size?.id;
+    }
+    setSelectVariant(variant);
   };
+
+  // TODO: Implement size change logic
+  const onChangeSize = (size: number | undefined) => {
+    // *Lưu lại id size mà người dùng vừa chọn vào biến selectedColor.current.
+    selectedSize.current = size;
+    // *Tìm variant phù hợp với size hiện tại
+    setSelectVariant(
+      product.colors
+        ?.find((c) => c.id === selectedColor.current)
+        ?.variants?.find((v) => v.size?.id === size)
+    );
+  };
+
+  const increaseQuantity = () => {
+    if (quantity >= (selectVariant?.quantity ?? 0)) {
+      toast.error('Số lượng vượt quá số hàng có sẵn');
+      return;
+    }
+    setQuantity((prev) => prev + 1);
+  };
+
+  const decreaseQuantity = () => {
+    if (quantity <= 1) {
+      return;
+    }
+    setQuantity((prev) => prev - 1);
+  };
+
+  // console.log(selectedColor.current, selectVariant);
 
   return (
     <div className='space-y-6'>
       {/* Product Info */}
       <div className='space-y-1'>
         <h1 className='text-2xl md:text-3xl lg:text-4xl font-bold text-primary '>
-          Slim-Fit Stretch-Cotton Poplin Fabric Overshirt
+          {product.name}
         </h1>
         <div className='flex gap-2'>
           <Star className=' size-5 fill-amber-300 text-amber-200' />{' '}
-          <span> 5.0</span>
-          <span className='text-gray-400 ml-4'>Đã bán: 22</span>
+          <span> {product.averageRating}.0</span>
+          <span className='text-gray-400 ml-4'>
+            Đã bán: {product.soldQuantity || 0}
+          </span>
         </div>
-        {/* <p className='text-[#757575] mb-4'>SKU: AOS-001</p> */}
         <div className='text-xl md:text-2xl lg:text-3xl font-bold text-primary'>
-          450.000 ₫
+          {selectVariant?.price || 0} ₫
         </div>
       </div>
 
       {/* Color Selection */}
-      <div>
-        <label className='block text-sm font-medium text-[#262626] mb-2'>
-          Màu sắc:
-        </label>
-        <div className='flex gap-2'>
-          <button
-            onClick={() => setSelectedColor('white')}
-            className={` bg-white border-2  ${
-              selectedColor === 'white'
-                ? 'border-[#0e3bac]'
-                : 'border-[#e0e0e0]'
-            }`}
-            style={{
-              width: '50px',
-              height: '29px',
-              borderRadius: '100px',
-              opacity: 1,
-            }}
-          />
-          <button
-            onClick={() => setSelectedColor('black')}
-            className={` bg-[#262626] border-2  ${
-              selectedColor === 'black' ? 'border-red-500' : 'border-[#0e3bac]'
-            }`}
-            style={{
-              width: '50px',
-              height: '29px',
-              borderRadius: '100px',
-              opacity: 1,
-            }}
-          />
-          <button
-            onClick={() => setSelectedColor('blue')}
-            className={` bg-blue-700 border-2  ${
-              selectedColor === 'blue' ? 'border-[#0e3bac]' : 'border-[#e0e0e0]'
-            }`}
-            style={{
-              width: '50px',
-              height: '29px',
-              borderRadius: '100px',
-              opacity: 1,
-            }}
-          />
-        </div>
-      </div>
+      <Colors tColors={product.colors || []} onChangeColor={onChangeColor} />
 
       {/* Size Selection */}
-      <div>
-        <label className='block text-sm font-medium text-[#262626] mb-2'>
-          Size:
-        </label>
-        <div className='flex gap-2'>
-          <button className='w-14 h-fit px-2 sm:px-3 py-1 text-xl text-center font-extralight bg-gray-100 rounded-full hover:bg-gray-200 cursor-pointer transition-colors border border-gray-200 hover:border-gray-300 shadow-sm'>
-            M
-          </button>
-          <button className='w-14 h-fit px-2 sm:px-3 py-1 text-xl text-center font-extralight bg-gray-100 rounded-full hover:bg-gray-200 cursor-pointer transition-colors border border-gray-200 hover:border-gray-300 shadow-sm'>
-            L
-          </button>
-          <button className='w-14 h-fit px-2 sm:px-3 py-1 text-xl text-center font-extralight bg-gray-100 rounded-full hover:bg-gray-200 cursor-pointer transition-colors border border-gray-200 hover:border-gray-300 shadow-sm'>
-            XL
-          </button>
-          <button className='w-14 h-fit px-2 sm:px-3 py-1 text-xl text-center font-extralight bg-gray-100 text-gray-400 rounded-full line-through cursor-not-allowed border border-gray-200 opacity-60'>
-            2XL
-          </button>
-          <button className='w-14 h-fit px-2 sm:px-3 py-1 text-xl text-center font-extralight bg-gray-100 text-gray-400 rounded-full line-through cursor-not-allowed border border-gray-200 opacity-60'>
-            3XL
-          </button>
-        </div>
-      </div>
+      <Sizes
+        tColor={(product.colors ?? [])[0] ?? []}
+        onChangeSize={onChangeSize}
+      />
 
       {/* Quantity */}
       <div>
-        <label className='block text-sm font-medium text-[#262626] mb-2'>
+        <label className='block text-sm font-medium text-primary mb-2'>
           Số lượng:
         </label>
         <div className='flex items-center gap-2'>
           <button
-            onClick={() => handleQuantityChange(-1)}
+            onClick={decreaseQuantity}
             className='w-8 h-8 border border-[#e0e0e0] rounded flex items-center justify-center hover:bg-[#e8e8e8]'
           >
             -
           </button>
           <span className='w-12 text-center'>{quantity}</span>
           <button
-            onClick={() => handleQuantityChange(1)}
+            onClick={increaseQuantity}
             className='w-8 h-8 border border-[#e0e0e0] rounded flex items-center justify-center hover:bg-[#e8e8e8]'
           >
             +
@@ -130,7 +122,12 @@ export default function Details() {
         <Button className='px-10 py-3 rounded-md font-semibold text-white bg-neutral-800 hover:bg-neutral-700'>
           Thêm vào giỏ hàng
         </Button>
-        <Button className='px-10 py-3 rounded-md font-semibold text-white bg-blue-800 hover:bg-blue-700'>
+        <Button
+          onClick={() => {
+            console.log(selectVariant, quantity, userId);
+          }}
+          className='px-10 py-3 rounded-md font-semibold text-white bg-blue-800 hover:bg-blue-700'
+        >
           Mua Ngay
         </Button>
       </div>
@@ -141,7 +138,7 @@ export default function Details() {
           <p className='mr-2'>Mô tả sản phẩm</p>
           <button
             onClick={() => setShowDescription((prev) => !prev)}
-            className='w-6 h-6 flex items-center justify-center border border-gray-300 rounded-full bg-white hover:bg-gray-100 transition'
+            className='w-6 h-6 text-black flex items-center justify-center border border-gray-300 rounded-full bg-white hover:bg-gray-100 transition'
             aria-label={showDescription ? 'Thu gọn' : 'Mở rộng'}
           >
             {showDescription ? '-' : '+'}

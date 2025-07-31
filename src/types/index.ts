@@ -1,3 +1,4 @@
+import { ImageBasic } from '@/api-client';
 import { ORDER_STATUS, USER_ROLE } from '@/enums';
 
 export type TUser = {
@@ -63,7 +64,7 @@ export type TCartItem = {
 export type TProduct = {
   title: string;
   mainImage: string;
-  images?: string[];
+  images?: ImageBasic[];
   id: number;
   isAvailable?: boolean;
   name?: string;
