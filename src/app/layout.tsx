@@ -3,7 +3,7 @@ import './globals.css';
 import GetMe from './GetMe';
 import { Toaster } from 'sonner';
 import ThemeProvider from '@/providers/theme-provider';
-import { fontVariables } from '@/lib/fonts';
+import { fontVariables } from '@/config/fonts';
 
 export const metadata: Metadata = {
   title: 'Create Next App',

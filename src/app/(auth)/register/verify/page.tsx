@@ -2,6 +2,9 @@ import { handlePendingEmail } from '@/actions/authActions';
 import AuthTemplate from '@/components/templates/(auth)/AuthTemplate';
 import VerifyForm from '@/components/templates/(auth)/register/VerifyForm';
 
+// This page needs to be dynamically rendered because it uses cookies
+export const dynamic = 'force-dynamic';
+
 export default async function RegisterPage() {
   const email = await handlePendingEmail();
 

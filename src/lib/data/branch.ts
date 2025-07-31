@@ -1,13 +1,23 @@
-import { BranchControllerApi } from "@/api-client";
+import { BranchControllerApi, Configuration } from "@/api-client";
 import { getAuthConfiguration } from "@/api-client/init-auth-config";
 import { TBranch } from "@/types";
+import { transformBranchResponseToTBranch, transformBranchArrayToTBranchArray } from "./transform/branch";
 
 /**
  * Helper to get an instance of BranchControllerApi with auth config.
  */
 async function getBranchController() {
-    return new BranchControllerApi(await getAuthConfiguration());
+  return new BranchControllerApi(await getAuthConfiguration());
 }
+
+/**
+ * Helper to get an instance of BranchControllerApi without auth config for public endpoints.
+ */
+function getPublicBranchController() {
+  return new BranchControllerApi();
+}
+
+
 
 /**
  * Fetch all branches from the API
@@ -28,15 +38,7 @@ export async function fetchAllBranchesApi(
     // Transform API response to TBranch format
     const branches = response.data?.result?.items || [];
 
-    return branches.map((branch: any) => ({
-      id: branch.id?.toString() || '',
-      name: branch.name || '',
-      location: branch.location || '',
-      phone: branch.phone || '',
-      status: branch.status || 'ACTIVE',
-      createdAt: branch.createdAt,
-      updatedAt: branch.updatedAt,
-    }));
+    return transformBranchArrayToTBranchArray(branches);
   } catch (error) {
     console.error("Error fetching branches:", error);
     return [];
@@ -48,7 +50,7 @@ export async function fetchAllBranchesApi(
  */
 export async function fetchBranchByIdApi(id: string): Promise<TBranch | null> {
   try {
-    const api = await getBranchController();
+    const api = getPublicBranchController();
     const response = await api.fetchById({
       id: parseInt(id),
     });
@@ -56,15 +58,7 @@ export async function fetchBranchByIdApi(id: string): Promise<TBranch | null> {
     const branch = response.data?.result;
     if (!branch) return null;
 
-    return {
-      id: branch.id?.toString() || '',
-      name: branch.name || '',
-      location: branch.location || '',
-      phone: branch.phone || '',
-      status: branch.status || 'ACTIVE',
-      createdAt: branch.createdAt,
-      updatedAt: branch.updatedAt,
-    };
+    return transformBranchResponseToTBranch(branch);
   } catch (error) {
     console.error("Error fetching branch:", error);
     return null;
@@ -92,15 +86,7 @@ export async function createBranchApi(branchData: {
     const branch = response.data?.result;
     if (!branch) return null;
 
-    return {
-      id: branch.id?.toString() || '',
-      name: branch.name || '',
-      location: branch.location || '',
-      phone: branch.phone || '',
-      status: branch.status || 'ACTIVE',
-      createdAt: branch.createdAt,
-      updatedAt: branch.updatedAt,
-    };
+    return transformBranchResponseToTBranch(branch);
   } catch (error) {
     console.error("Error creating branch:", error);
     return null;
@@ -132,15 +118,7 @@ export async function updateBranchApi(
     const branch = response.data?.result;
     if (!branch) return null;
 
-    return {
-      id: branch.id?.toString() || '',
-      name: branch.name || '',
-      location: branch.location || '',
-      phone: branch.phone || '',
-      status: branch.status || 'ACTIVE',
-      createdAt: branch.createdAt,
-      updatedAt: branch.updatedAt,
-    };
+    return transformBranchResponseToTBranch(branch);
   } catch (error) {
     console.error("Error updating branch:", error);
     return null;
@@ -168,21 +146,13 @@ export async function deleteBranchApi(id: number): Promise<boolean> {
  */
 export async function fetchActiveBranchesApi(): Promise<TBranch[]> {
   try {
-    const api = await getBranchController();
+    const api = getPublicBranchController();
     const response = await api.fetchAll4({});
 
     // Transform API response to TBranch format
     const branches = response.data?.result?.items || [];
 
-    return branches.map((branch: any) => ({
-      id: branch.id?.toString() || '',
-      name: branch.name || '',
-      location: branch.location || '',
-      phone: branch.phone || '',
-      status: branch.status || 'ACTIVE',
-      createdAt: branch.createdAt,
-      updatedAt: branch.updatedAt,
-    }));
+    return transformBranchArrayToTBranchArray(branches);
   } catch (error) {
     console.error("Error fetching active branches:", error);
     return [];

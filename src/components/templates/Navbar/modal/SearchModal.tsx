@@ -25,22 +25,8 @@ export default function SearchModal({ open, onClose, searchQuery = "", isSearchE
     // Debounced search function
     const performSearch = useCallback(async (query: string) => {
         if (!query.trim()) {
-            // Fetch initial products when no query - show available, active products
-            setIsSearching(true)
-            try {
-                const response = await searchProductsAction(0, 6, ["createdAt,desc"], [])
-                if (response.status === 200 && response.products) {
-                    setSearchResults(response.products)
-                }
-            } catch (error) {
-                console.error("Failed to fetch initial products:", error)
-                setSearchResults([])
-            } finally {
-                setIsSearching(false)
-            }
-            return
+            return;
         }
-
         setIsSearching(true)
 
         try {
@@ -66,7 +52,11 @@ export default function SearchModal({ open, onClose, searchQuery = "", isSearchE
         if (debounceTimeoutRef.current) {
             clearTimeout(debounceTimeoutRef.current)
         }
-
+        console.log(
+            !isSearching,
+            searchResults.length === 0,
+            searchQuery.trim() === ""
+        );
         debounceTimeoutRef.current = setTimeout(() => {
             setDebouncedQuery(searchQuery)
             performSearch(searchQuery)
@@ -88,7 +78,7 @@ export default function SearchModal({ open, onClose, searchQuery = "", isSearchE
     }, [open, searchQuery, performSearch])
     return (
         <div >
-            <Modal
+            <Modal data-search-modal
                 open={open}
                 onClose={onClose}
                 variant="centered"
@@ -96,7 +86,7 @@ export default function SearchModal({ open, onClose, searchQuery = "", isSearchE
                 showOverlay={true}
                 closeOnClickOutside={!isSearchExpanded}
             >
-                <ModalBody style={{ maxHeight: "70vh" }} data-search-modal>
+                <ModalBody style={{ maxHeight: "70vh" }}>
                     <div className="mb-4 font-semibold text-lg">
                         Kết quả tìm kiếm
                         {debouncedQuery && (
@@ -106,17 +96,14 @@ export default function SearchModal({ open, onClose, searchQuery = "", isSearchE
                         )}
                     </div>
 
-                    {isSearching ? (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                            {[...Array(5)].map((_, index) => (
-                                <ProductCardSkeleton key={index} />
-                            ))}
+                    {!searchQuery.trim() ? (
+                        <div className="flex items-center justify-center h-40">
+                            <p className="text-gray-500 text-lg">Vui lòng nhập từ khóa tìm kiếm</p>
                         </div>
                     ) : searchResults.length === 0 ? (
-                        <div className="flex items-center justify-center ">
+                        <div className="flex items-center justify-center h-40">
                             <p className="text-gray-500 text-lg">Không có sản phẩm nào cả</p>
                         </div>
-
                     ) : (
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                             {searchResults.map((item) => {
@@ -152,20 +139,24 @@ export default function SearchModal({ open, onClose, searchQuery = "", isSearchE
                                     </Card>
                                 )
                             })}
+
                         </div>
                     )}
-                </ModalBody>
 
+                </ModalBody>
                 <ModalFooter sticky={true}>
-                    <Button
-                        className="bg-black text-white px-6 py-2 rounded-md"
-                        onClick={() => {
-                            alert("Xem thêm sản phẩm!")
-                            onClose()
-                        }}
-                    >
-                        Xem thêm sản phẩm
-                    </Button>
+                    {!isSearching && searchResults.length !== 0 && searchQuery.trim() !== "" && (
+                        <div className="flex items-center justify-center">
+                            <Button
+                                className="cursor-pointer bg-black text-white px-6 py-2 rounded-md"
+                                onClick={() => alert("Xem thêm sản phẩm!")}
+                            >
+                                Xem thêm sản phẩm
+                            </Button>
+                        </div>
+                    )}
+
+
                 </ModalFooter>
             </Modal>
         </div>
