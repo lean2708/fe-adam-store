@@ -112,6 +112,45 @@ export const CartItemControllerApiAxiosParamCreator = function (configuration?: 
             };
         },
         /**
+         * API xoá nhiều cart item theo danh sách ID
+         * @param {Array<number>} requestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteCartItems: async (requestBody: Array<number>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'requestBody' is not null or undefined
+            assertParamExists('deleteCartItems', 'requestBody', requestBody)
+            const localVarPath = `/v1/private/cart-items`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(requestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @param {number} id 
          * @param {*} [options] Override http request option.
@@ -226,6 +265,18 @@ export const CartItemControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * API xoá nhiều cart item theo danh sách ID
+         * @param {Array<number>} requestBody 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteCartItems(requestBody: Array<number>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseVoid>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteCartItems(requestBody, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['CartItemControllerApi.deleteCartItems']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 
          * @param {number} id 
          * @param {*} [options] Override http request option.
@@ -279,6 +330,15 @@ export const CartItemControllerApiFactory = function (configuration?: Configurat
             return localVarFp.delete1(requestParameters.id, options).then((request) => request(axios, basePath));
         },
         /**
+         * API xoá nhiều cart item theo danh sách ID
+         * @param {CartItemControllerApiDeleteCartItemsRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteCartItems(requestParameters: CartItemControllerApiDeleteCartItemsRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseVoid> {
+            return localVarFp.deleteCartItems(requestParameters.requestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
          * 
          * @param {CartItemControllerApiFetchById6Request} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -325,6 +385,20 @@ export interface CartItemControllerApiDelete1Request {
      * @memberof CartItemControllerApiDelete1
      */
     readonly id: number
+}
+
+/**
+ * Request parameters for deleteCartItems operation in CartItemControllerApi.
+ * @export
+ * @interface CartItemControllerApiDeleteCartItemsRequest
+ */
+export interface CartItemControllerApiDeleteCartItemsRequest {
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof CartItemControllerApiDeleteCartItems
+     */
+    readonly requestBody: Array<number>
 }
 
 /**
@@ -389,6 +463,17 @@ export class CartItemControllerApi extends BaseAPI {
      */
     public delete1(requestParameters: CartItemControllerApiDelete1Request, options?: RawAxiosRequestConfig) {
         return CartItemControllerApiFp(this.configuration).delete1(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API xoá nhiều cart item theo danh sách ID
+     * @param {CartItemControllerApiDeleteCartItemsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CartItemControllerApi
+     */
+    public deleteCartItems(requestParameters: CartItemControllerApiDeleteCartItemsRequest, options?: RawAxiosRequestConfig) {
+        return CartItemControllerApiFp(this.configuration).deleteCartItems(requestParameters.requestBody, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

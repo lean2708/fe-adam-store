@@ -274,7 +274,7 @@ const { status, data } = await apiInstance.fetchDetailById1(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getOrdersForUser**
-> ApiResponsePageResponseOrderResponse getOrdersForUser()
+> ApiResponseListOrderResponse getOrdersForUser()
 
 Lấy danh sách đơn hàng của người dùng hiện tại, lọc theo trạng thái
 
@@ -290,15 +290,9 @@ const configuration = new Configuration();
 const apiInstance = new OrderControllerApi(configuration);
 
 let orderStatus: 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED'; // (default to undefined)
-let page: number; //Zero-based page index (0..N) (optional) (default to 0)
-let size: number; //The size of the page to be returned (optional) (default to 10)
-let sort: Array<string>; //Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. (optional) (default to undefined)
 
 const { status, data } = await apiInstance.getOrdersForUser(
-    orderStatus,
-    page,
-    size,
-    sort
+    orderStatus
 );
 ```
 
@@ -307,14 +301,11 @@ const { status, data } = await apiInstance.getOrdersForUser(
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
 | **orderStatus** | [**&#39;PENDING&#39; | &#39;PROCESSING&#39; | &#39;SHIPPED&#39; | &#39;DELIVERED&#39; | &#39;CANCELLED&#39;**]**Array<&#39;PENDING&#39; &#124; &#39;PROCESSING&#39; &#124; &#39;SHIPPED&#39; &#124; &#39;DELIVERED&#39; &#124; &#39;CANCELLED&#39;>** |  | defaults to undefined|
-| **page** | [**number**] | Zero-based page index (0..N) | (optional) defaults to 0|
-| **size** | [**number**] | The size of the page to be returned | (optional) defaults to 10|
-| **sort** | **Array&lt;string&gt;** | Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. | (optional) defaults to undefined|
 
 
 ### Return type
 
-**ApiResponsePageResponseOrderResponse**
+**ApiResponseListOrderResponse**
 
 ### Authorization
 

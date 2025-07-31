@@ -25,6 +25,8 @@ import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError
 import type { ApiResponseListRevenueByMonthDTO } from '../models';
 // @ts-ignore
 import type { ApiResponseListTopSellingDTO } from '../models';
+// @ts-ignore
+import type { ApiResponseOrderStatsDTO } from '../models';
 /**
  * StatisticsControllerApi - axios parameter creator
  * @export
@@ -32,7 +34,7 @@ import type { ApiResponseListTopSellingDTO } from '../models';
 export const StatisticsControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * API này dùng để xuất dữ liệu doanh thu của các đơn hàng ra file Excel (yyyy-MM-dd)
+         * API để xuất dữ liệu doanh thu của các đơn hàng ra file Excel (yyyy-MM-dd)
          * @summary Export order revenue report to Excel
          * @param {string} startDate 
          * @param {string} endDate 
@@ -84,7 +86,7 @@ export const StatisticsControllerApiAxiosParamCreator = function (configuration?
             };
         },
         /**
-         * API này dùng để ấy doanh thu theo tháng trong khoảng (startDate (yyyy-MM-dd) đến endDate (yyyy-MM-dd))
+         * API để ấy doanh thu theo tháng trong khoảng (startDate (yyyy-MM-dd) đến endDate (yyyy-MM-dd))
          * @summary Fetched monthly revenue data
          * @param {string} startDate 
          * @param {string} endDate 
@@ -136,7 +138,59 @@ export const StatisticsControllerApiAxiosParamCreator = function (configuration?
             };
         },
         /**
-         * API này dùng để lấy các sản phẩm bán chạy (yyyy-MM-dd)
+         * API lấy tổng số lượng đơn hàng và tổng doanh thu trong khoảng startDate đến endDate (yyyy-MM-dd)
+         * @summary Get total orders and revenue
+         * @param {string} startDate 
+         * @param {string} endDate 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOrderRevenueSummary: async (startDate: string, endDate: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'startDate' is not null or undefined
+            assertParamExists('getOrderRevenueSummary', 'startDate', startDate)
+            // verify required parameter 'endDate' is not null or undefined
+            assertParamExists('getOrderRevenueSummary', 'endDate', endDate)
+            const localVarPath = `/v1/admin/statistics/orders/summary`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (startDate !== undefined) {
+                localVarQueryParameter['startDate'] = (startDate as any instanceof Date) ?
+                    (startDate as any).toISOString().substring(0,10) :
+                    startDate;
+            }
+
+            if (endDate !== undefined) {
+                localVarQueryParameter['endDate'] = (endDate as any instanceof Date) ?
+                    (endDate as any).toISOString().substring(0,10) :
+                    endDate;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * API để lấy các sản phẩm bán chạy (yyyy-MM-dd)
          * @summary Fetched top selling products
          * @param {string} startDate 
          * @param {string} endDate 
@@ -198,7 +252,7 @@ export const StatisticsControllerApiFp = function(configuration?: Configuration)
     const localVarAxiosParamCreator = StatisticsControllerApiAxiosParamCreator(configuration)
     return {
         /**
-         * API này dùng để xuất dữ liệu doanh thu của các đơn hàng ra file Excel (yyyy-MM-dd)
+         * API để xuất dữ liệu doanh thu của các đơn hàng ra file Excel (yyyy-MM-dd)
          * @summary Export order revenue report to Excel
          * @param {string} startDate 
          * @param {string} endDate 
@@ -212,7 +266,7 @@ export const StatisticsControllerApiFp = function(configuration?: Configuration)
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * API này dùng để ấy doanh thu theo tháng trong khoảng (startDate (yyyy-MM-dd) đến endDate (yyyy-MM-dd))
+         * API để ấy doanh thu theo tháng trong khoảng (startDate (yyyy-MM-dd) đến endDate (yyyy-MM-dd))
          * @summary Fetched monthly revenue data
          * @param {string} startDate 
          * @param {string} endDate 
@@ -226,7 +280,21 @@ export const StatisticsControllerApiFp = function(configuration?: Configuration)
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * API này dùng để lấy các sản phẩm bán chạy (yyyy-MM-dd)
+         * API lấy tổng số lượng đơn hàng và tổng doanh thu trong khoảng startDate đến endDate (yyyy-MM-dd)
+         * @summary Get total orders and revenue
+         * @param {string} startDate 
+         * @param {string} endDate 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getOrderRevenueSummary(startDate: string, endDate: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseOrderStatsDTO>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOrderRevenueSummary(startDate, endDate, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['StatisticsControllerApi.getOrderRevenueSummary']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * API để lấy các sản phẩm bán chạy (yyyy-MM-dd)
          * @summary Fetched top selling products
          * @param {string} startDate 
          * @param {string} endDate 
@@ -250,7 +318,7 @@ export const StatisticsControllerApiFactory = function (configuration?: Configur
     const localVarFp = StatisticsControllerApiFp(configuration)
     return {
         /**
-         * API này dùng để xuất dữ liệu doanh thu của các đơn hàng ra file Excel (yyyy-MM-dd)
+         * API để xuất dữ liệu doanh thu của các đơn hàng ra file Excel (yyyy-MM-dd)
          * @summary Export order revenue report to Excel
          * @param {StatisticsControllerApiExportOrderRevenueToExcelRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -260,7 +328,7 @@ export const StatisticsControllerApiFactory = function (configuration?: Configur
             return localVarFp.exportOrderRevenueToExcel(requestParameters.startDate, requestParameters.endDate, options).then((request) => request(axios, basePath));
         },
         /**
-         * API này dùng để ấy doanh thu theo tháng trong khoảng (startDate (yyyy-MM-dd) đến endDate (yyyy-MM-dd))
+         * API để ấy doanh thu theo tháng trong khoảng (startDate (yyyy-MM-dd) đến endDate (yyyy-MM-dd))
          * @summary Fetched monthly revenue data
          * @param {StatisticsControllerApiGetMonthlyRevenueRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -270,7 +338,17 @@ export const StatisticsControllerApiFactory = function (configuration?: Configur
             return localVarFp.getMonthlyRevenue(requestParameters.startDate, requestParameters.endDate, options).then((request) => request(axios, basePath));
         },
         /**
-         * API này dùng để lấy các sản phẩm bán chạy (yyyy-MM-dd)
+         * API lấy tổng số lượng đơn hàng và tổng doanh thu trong khoảng startDate đến endDate (yyyy-MM-dd)
+         * @summary Get total orders and revenue
+         * @param {StatisticsControllerApiGetOrderRevenueSummaryRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOrderRevenueSummary(requestParameters: StatisticsControllerApiGetOrderRevenueSummaryRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseOrderStatsDTO> {
+            return localVarFp.getOrderRevenueSummary(requestParameters.startDate, requestParameters.endDate, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * API để lấy các sản phẩm bán chạy (yyyy-MM-dd)
          * @summary Fetched top selling products
          * @param {StatisticsControllerApiGetTopSellingProductsRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
@@ -325,6 +403,27 @@ export interface StatisticsControllerApiGetMonthlyRevenueRequest {
 }
 
 /**
+ * Request parameters for getOrderRevenueSummary operation in StatisticsControllerApi.
+ * @export
+ * @interface StatisticsControllerApiGetOrderRevenueSummaryRequest
+ */
+export interface StatisticsControllerApiGetOrderRevenueSummaryRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof StatisticsControllerApiGetOrderRevenueSummary
+     */
+    readonly startDate: string
+
+    /**
+     * 
+     * @type {string}
+     * @memberof StatisticsControllerApiGetOrderRevenueSummary
+     */
+    readonly endDate: string
+}
+
+/**
  * Request parameters for getTopSellingProducts operation in StatisticsControllerApi.
  * @export
  * @interface StatisticsControllerApiGetTopSellingProductsRequest
@@ -353,7 +452,7 @@ export interface StatisticsControllerApiGetTopSellingProductsRequest {
  */
 export class StatisticsControllerApi extends BaseAPI {
     /**
-     * API này dùng để xuất dữ liệu doanh thu của các đơn hàng ra file Excel (yyyy-MM-dd)
+     * API để xuất dữ liệu doanh thu của các đơn hàng ra file Excel (yyyy-MM-dd)
      * @summary Export order revenue report to Excel
      * @param {StatisticsControllerApiExportOrderRevenueToExcelRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -365,7 +464,7 @@ export class StatisticsControllerApi extends BaseAPI {
     }
 
     /**
-     * API này dùng để ấy doanh thu theo tháng trong khoảng (startDate (yyyy-MM-dd) đến endDate (yyyy-MM-dd))
+     * API để ấy doanh thu theo tháng trong khoảng (startDate (yyyy-MM-dd) đến endDate (yyyy-MM-dd))
      * @summary Fetched monthly revenue data
      * @param {StatisticsControllerApiGetMonthlyRevenueRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -377,7 +476,19 @@ export class StatisticsControllerApi extends BaseAPI {
     }
 
     /**
-     * API này dùng để lấy các sản phẩm bán chạy (yyyy-MM-dd)
+     * API lấy tổng số lượng đơn hàng và tổng doanh thu trong khoảng startDate đến endDate (yyyy-MM-dd)
+     * @summary Get total orders and revenue
+     * @param {StatisticsControllerApiGetOrderRevenueSummaryRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof StatisticsControllerApi
+     */
+    public getOrderRevenueSummary(requestParameters: StatisticsControllerApiGetOrderRevenueSummaryRequest, options?: RawAxiosRequestConfig) {
+        return StatisticsControllerApiFp(this.configuration).getOrderRevenueSummary(requestParameters.startDate, requestParameters.endDate, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * API để lấy các sản phẩm bán chạy (yyyy-MM-dd)
      * @summary Fetched top selling products
      * @param {StatisticsControllerApiGetTopSellingProductsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
