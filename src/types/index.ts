@@ -1,4 +1,4 @@
-import { ORDER_STATUS, USER_ROLE } from "@/enums";
+import { ORDER_STATUS, USER_ROLE } from '@/enums';
 
 export type TUser = {
   id: string;
@@ -7,13 +7,11 @@ export type TUser = {
   password: string;
 };
 
-
 export type TCategory = {
   id: string;
   title: string;
   image: string;
 };
-
 
 export type TOrder = {
   OrderItems: TOrderItem[];
@@ -65,6 +63,7 @@ export type TCartItem = {
 export type TProduct = {
   title: string;
   mainImage: string;
+  images?: string[];
   id: number;
   isAvailable?: boolean;
   name?: string;
@@ -95,4 +94,4 @@ export type TColor = {
   id: number;
   name: string;
   variants?: TVariant[];
-}
+};

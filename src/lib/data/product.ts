@@ -83,23 +83,6 @@ export async function fetchAllProductsApi(
 }
 
 /**
- * Fetch all products for user (public).
- */
-export async function fetchProductDetailsApi(
-  id: number
-): Promise<ProductResponse> {
-  const api = await getProductController();
-  const response = await api.fetchDetailById({ id });
-  if (response.data.code !== 200) {
-    throw response.data;
-  }
-  if (!response.data.result) {
-    throw new Error('ProductResponse is missing in the response.');
-  }
-  return response.data.result as ProductResponse;
-}
-
-/**
  * Fetch all products for admin (admin).
  */
 export async function fetchAllProductsForAdminApi(
@@ -226,6 +209,11 @@ export function transformProductResponseToTProduct(
   return {
     title: apiProduct.name ?? '',
     mainImage: mainImage,
+    images:
+      apiProduct.images?.map((img) => ({
+        imageUrl: img.imageUrl ?? '',
+        id: img.id ?? 0,
+      })) ?? [],
     id: apiProduct.id ?? 0,
     isAvailable: apiProduct.isAvailable ?? false,
     name: apiProduct.name ?? '',

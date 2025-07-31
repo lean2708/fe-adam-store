@@ -6,8 +6,8 @@ import {
   deleteProductApi,
   fetchAllProductsApi,
   searchProductApi,
-  fetchProductDetailsApi,
   fetchProductReviewssApi,
+  fetchProductDetailByIdApi,
 } from '@/lib/data/product';
 import {
   productCreateSchema,
@@ -35,7 +35,7 @@ export async function getAllProductsAction(
 
 export async function getProductDetailsAction(id: string) {
   try {
-    const product = await fetchProductDetailsApi(Number(id));
+    const product = await fetchProductDetailByIdApi(Number(id));
 
     if (!product) {
       return {
