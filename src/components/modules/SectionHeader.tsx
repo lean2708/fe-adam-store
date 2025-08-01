@@ -24,7 +24,7 @@ export default function SectionHeader({
         {description ? (
           <p
             className={cn(
-              "text-sm text-gray-700 dark:text-gray-300 sm:text-base",
+              "text-sm bg-blac text-gray-700 dark:text-gray-300 sm:text-base",
             )}>
             {description}
           </p>
@@ -37,7 +37,7 @@ export default function SectionHeader({
       </div>
       {hasButton ? (
         <Link href={"/category"}>
-          <Button variant="outline"> View all product </Button>
+          <Button variant="default"> View all product </Button>
         </Link>
       ) : null}
     </div>

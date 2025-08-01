@@ -12,9 +12,7 @@ import {
   ResetPasswordRequest,
 } from '@/api-client';
 
-// Import the Configuration class for initializing the API client
-import { Configuration } from '@/api-client/configuration';
-import { getNextAuthConfiguration, getPublicConfiguration, getAuthenticatedAxiosInstance, getNextAuthSession } from '@/lib/nextauth-config';
+import { getAuthenticatedAxiosInstance, getPublicAxiosInstance, getNextAuthSession } from '@/lib/auth/axios-config';
 
 /**
  * Helper function to get an instance of AuthControllerApi with NextAuth.
@@ -22,16 +20,13 @@ import { getNextAuthConfiguration, getPublicConfiguration, getAuthenticatedAxios
 async function getAuthController(token?: string) {
   if (token) {
     // Use provided token (for specific operations like logout)
-    const config = new Configuration({});
-    const instance = await getAuthenticatedAxiosInstance();
-    // Override the authorization header with the provided token
+    const instance = getPublicAxiosInstance();
     instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    return new AuthControllerApi(config, undefined, instance);
+    return new AuthControllerApi(undefined, undefined, instance);
   } else {
     // Use NextAuth session token
-    const config = await getNextAuthConfiguration();
     const instance = await getAuthenticatedAxiosInstance();
-    return new AuthControllerApi(config, undefined, instance);
+    return new AuthControllerApi(undefined, undefined, instance);
   }
 }
 
@@ -39,8 +34,8 @@ async function getAuthController(token?: string) {
  * Helper function to get a public instance of AuthControllerApi (no auth).
  */
 function getPublicAuthController() {
-  const config = getPublicConfiguration();
-  return new AuthControllerApi(config);
+  const instance = getPublicAxiosInstance();
+  return new AuthControllerApi(undefined, undefined, instance);
 }
 
 

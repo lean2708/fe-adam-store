@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/form';
 import { toast } from 'sonner';
 import { verifyRegistrationAction } from '@/actions/nextAuthActions';
-import { useAuth } from '@/hooks/useAuth';
+import { signInWithTokens } from '@/lib/auth/client-token-login';
 
 // Schema validation
 const formSchema = z.object({
@@ -29,7 +29,6 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function VerifyForm({ email }: { email: string }) {
   const router = useRouter();
-  const { signIn } = useAuth();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -50,12 +49,28 @@ export default function VerifyForm({ email }: { email: string }) {
 
     const res = await verifyRegistrationAction(email, formData);
 
-    if (res.success) {
+    if (res.success && res.data) {
       toast.success(`${res.message}`);
 
-      // After successful verification, redirect to login page
-      // User needs to sign in manually with NextAuth
-      router.push('/login?message=verification_success');
+      // Auto-login if tokens are provided
+      if (res.data.shouldAutoLogin && res.data.tokens) {
+        const loginResult = await signInWithTokens(
+          res.data.tokens.accessToken,
+          res.data.tokens.refreshToken,
+          res.data.cookiesToClear || []
+        );
+
+        if (loginResult.success) {
+          toast.success('Đăng nhập thành công!');
+          router.push('/');
+        } else {
+          toast.error('Xác thực thành công nhưng đăng nhập thất bại. Vui lòng đăng nhập thủ công.');
+          router.push('/login?message=verification_success');
+        }
+      } else {
+        // Fallback to manual login
+        router.push('/login?message=verification_success');
+      }
     } else {
       // Xử lý lỗi từng field nếu có
       if (res.errors) {

@@ -1,23 +1,22 @@
 import { BranchControllerApi } from "@/api-client";
-import { getNextAuthConfiguration, getPublicConfiguration, getAuthenticatedAxiosInstance } from "@/lib/nextauth-config";
+import { getAuthenticatedAxiosInstance, getPublicAxiosInstance } from "@/lib/auth/axios-config";
 import { TBranch } from "@/types";
 import { transformBranchResponseToTBranch, transformBranchArrayToTBranchArray } from "./transform/branch";
 
 /**
- * Helper to get an instance of BranchControllerApi with NextAuth config.
+ * Helper to get an instance of BranchControllerApi with NextAuth.
  */
 async function getBranchController() {
-  const config = await getNextAuthConfiguration();
   const axiosInstance = await getAuthenticatedAxiosInstance();
-  return new BranchControllerApi(config, undefined, axiosInstance);
+  return new BranchControllerApi(undefined, undefined, axiosInstance);
 }
 
 /**
- * Helper to get an instance of BranchControllerApi without auth config for public endpoints.
+ * Helper to get an instance of BranchControllerApi for public endpoints.
  */
 function getPublicBranchController() {
-  const config = getPublicConfiguration();
-  return new BranchControllerApi(config);
+  const axiosInstance = getPublicAxiosInstance();
+  return new BranchControllerApi(undefined, undefined, axiosInstance);
 }
 
 
