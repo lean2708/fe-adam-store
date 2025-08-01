@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getProductReviewsAction } from '@/actions/productActions';
+import { getProductReviewsAction } from '@/actions/reviewActions';
 import { ReviewResponse } from '@/api-client';
 
 export default function useReviews(productId: string, pageSize: number) {

@@ -56,34 +56,6 @@ export async function getProductDetailsAction(id: string) {
   }
 }
 
-export async function getProductReviewsAction(
-  id: string,
-  page?: number,
-  size?: number,
-  sort?: string[]
-) {
-  try {
-    const reviews = await fetchProductReviewssApi(Number(id), page, size, sort);
-
-    if (!reviews) {
-      return {
-        status: 404,
-        message: 'Reviews not found',
-      };
-    }
-
-    return {
-      status: 200,
-      reviews,
-    };
-  } catch (error) {
-    return {
-      status: 500,
-      error,
-    };
-  }
-}
-
 export async function deleteProductAction(id: string) {
   try {
     const deleted = await deleteProductApi(Number(id));
