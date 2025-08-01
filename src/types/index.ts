@@ -28,7 +28,7 @@ export type TOrder = {
 };
 
 export type TOrderItem = {
-  id: string;
+  id: number;
   orderId: string;
   quantity: number;
   color: string;
@@ -76,6 +76,26 @@ export type TProduct = {
   createdAt?: string;
   colors?: TColor[];
 };
+export type TAddress = {
+  id?: number;
+  isDefault: boolean;
+  isVisible?: boolean;
+  status?: string;
+  phone?: string;
+  streetDetail: string;
+  ward: {
+    code?: string;
+    name: string;
+  },
+  district: {
+    id?: number;
+    name: string;
+  },
+  province: {
+    id?: number;
+    name: string;
+  }
+}
 export type TEntityBasic = {
   id?: number;
   name?: string;

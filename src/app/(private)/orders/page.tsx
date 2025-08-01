@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import OrderItem from '@/components/ui/order-item';
 import { getAllOrderUserAction } from '@/actions/orderActions';
 import { Skeleton } from '@/components/ui/skeleton';
+import ChooseAddress from '@/components/modules/ChooseAddress';
 type TabStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
 interface TabItem {
   key: TabStatus;
@@ -19,7 +20,9 @@ const tabList: TabItem[] = [
 ];
 
 export default function OrderPage() {
+  const [isVisible, setIsVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [itemOnModule, setItemOnModule] = useState<any>()
   const [activeStatus, setActiveStatus] = useState<TabStatus>('PENDING');
   const [data, setData] = useState<any>({
     orderItems: [
@@ -97,13 +100,7 @@ export default function OrderPage() {
       },
     ]
   })
-  const btnByStatus: Record<TabStatus, React.ReactNode> = {
-    PENDING: <><button className='w-52 px-4 mr-4 py-2 rounded-md border border-black text-sm'>Thay đổi địa chỉ nhận hàng</button><button className='w-40 px-4 py-2 bg-black text-white rounded-md text-sm'>Hủy</button></>,
-    PROCESSING: <><button className='w-52 px-4 mr-4 py-2 rounded-md border border-black text-sm'>Thay đổi địa chỉ nhận hàng</button><button className='w-40 px-4 py-2 bg-black text-white rounded-md text-sm'>Hủy</button></>,
-    SHIPPED: <><button className='w-56 text-gray-400 px-4 py-2 rounded-md border border-gray-400 text-sm'>Xác nhận đã nhận được đơn</button></>,
-    DELIVERED: <><button className='w-28 px-4 py-2 bg-black text-white rounded-md text-sm'>Đánh giá</button></>,
-    CANCELLED: <><button className='w-28 px-4 py-2 bg-black text-white rounded-md text-sm'>Mua lại</button></>
-  }
+
   useEffect(() => { getData() }, [activeStatus])
   const getData = async () => {
     try {
@@ -157,10 +154,7 @@ export default function OrderPage() {
                     'py-2',
                     !isLast && 'border-b-2'
                   )}>
-                    <OrderItem item={item} />
-                    <div className='py-2 text-end'>
-                      {btnByStatus[activeStatus]}
-                    </div>
+                    <OrderItem item={item} activeStatus={activeStatus} openModule={() => { setIsVisible(true); setItemOnModule(item) }} />
                   </div>
                 )
               }
@@ -174,6 +168,7 @@ export default function OrderPage() {
           </div>
         </div>
       </div>
+      <ChooseAddress visible={isVisible} orderItem={itemOnModule} onClose={() => setIsVisible(false)} />
     </main>
   );
 }

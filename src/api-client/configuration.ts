@@ -25,6 +25,9 @@ export interface ConfigurationParameters {
 }
 
 export class Configuration {
+    getAddressesByUser(arg0: { orderStatus: string; }) {
+      throw new Error("Method not implemented.");
+    }
     /**
      * parameter for apiKey security
      * @param name security name

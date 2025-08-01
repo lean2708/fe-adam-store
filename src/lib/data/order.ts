@@ -55,10 +55,8 @@ export async function deleteOrderApi(id: number) {
 // Nếu enum nằm riêng
 
 export async function fetchAllOrdersUserApi(status: GetOrdersForUserOrderStatusEnum) {
-  const api = new OrderControllerApi(await getAuthConfiguration());
-
+  const api = await getOrderController();
   const response = await api.getOrdersForUser({ orderStatus: status });
-
   return response.data.result;
 }
 /**

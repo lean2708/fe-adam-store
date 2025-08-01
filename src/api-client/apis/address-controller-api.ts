@@ -627,6 +627,7 @@ export interface AddressControllerApiUpdate3Request {
  * @extends {BaseAPI}
  */
 export class AddressControllerApi extends BaseAPI {
+    getAddressesByUser: any;
     /**
      * Api dùng để tạo địa chỉ mới
      * @summary Create New Address
