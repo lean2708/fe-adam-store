@@ -1,4 +1,4 @@
-import { OrderControllerApi } from "@/api-client";
+import { GetOrdersForUserOrderStatusEnum, OrderControllerApi } from "@/api-client";
 import { getAuthenticatedAxiosInstance } from "@/lib/auth/axios-config";
 
 /**
@@ -61,6 +61,11 @@ export async function deleteOrderApi(id: number) {
 //   return response.data.result;
 // }
 
+export async function fetchAllOrdersUserApi(status: GetOrdersForUserOrderStatusEnum) {
+  const api = await getOrderController();
+  const response = await api.getOrdersForUser({ orderStatus: status });
+  return response.data.result;
+}
 /**
  * Fetch order detail by ID.
  */

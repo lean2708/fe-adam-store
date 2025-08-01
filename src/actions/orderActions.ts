@@ -2,8 +2,10 @@
 
 import {
   cancelOrderApi,
-  // No API for reject/accept/complete in provided data layer, so leave those as not implemented
+  fetchAllOrdersUserApi,
+  updateOrderAddressApi,
 } from "@/lib/data/order";
+import { TAddress } from "@/types";
 
 /**
  * Cancel an order by ID using API.
@@ -16,7 +18,36 @@ export async function cancelOrderAction(orderId: string) {
     return { status: 500, message: "Server error! Try later", error };
   }
 }
-
+export async function getAllOrderUserAction(status: string) {
+  try {
+    const orders = await fetchAllOrdersUserApi(status as GetOrdersForUserOrderStatusEnum);
+    return {
+      status: 200,
+      orders,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      message: "server error",
+      error,
+    };
+  }
+}
+export async function updateAddressForOrderByID(orderId: number, addressId: TAddress) {
+  try {
+    const orders = await updateOrderAddressApi(orderId, addressId);
+    return {
+      status: 200,
+      orders,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      message: "server error",
+      error,
+    };
+  }
+}
 export async function rejectOrderAction(orderId: string) {
   // Not implemented: No API for reject order
   return { status: 501, message: "Reject order API not implemented" };

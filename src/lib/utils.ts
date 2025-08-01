@@ -103,3 +103,6 @@ export function getAllImagesFromProduct(product: TProduct): string[] {
   // Remove duplicates
   return Array.from(new Set(imageUrls));
 }
+export function formatCurrency(value: number): string {
+  return new Intl.NumberFormat('vi-VN').format(value) + ' VNĐ';
+}
