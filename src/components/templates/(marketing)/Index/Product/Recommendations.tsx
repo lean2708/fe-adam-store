@@ -7,44 +7,19 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-
-import { TProduct } from '@/types';
 import ProductCardIndex from '@/components/modules/ProductCardIndex';
-import { getAllProductsAction } from '@/actions/productActions';
 import { ProductCardWithColorsSkeleton } from '@/components/ui/skeleton';
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import useRecommendations from '@/hooks/(product_details)/useRecommendations';
 
 export default function Recommendations() {
-  const [products, setProducts] = useState<TProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { products, loading } = useRecommendations();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        // Fetch best-selling products (first 10 items, sorted by sold quantity)
-        const response = await getAllProductsAction(0, 10, [
-          'soldQuantity,desc',
-        ]);
+  return (
+    <div className='space-y-6'>
+      <h2 className='text-2xl font-bold text-primary'>Sản phẩm bán chạy</h2>
 
-        if (response.status === 200 && response.products) {
-          setProducts(response.products);
-        }
-      } catch (error) {
-        console.error('Failed to fetch recommend products:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  // Show loading state
-  if (loading) {
-    return (
-      <div className='w-full'>
+      {loading ? (
         <Carousel className='w-full'>
           <CarouselContent>
             {[...Array(5)].map((_, index) => (
@@ -59,36 +34,28 @@ export default function Recommendations() {
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
-      </div>
-    );
-  }
-
-  // Show empty state if no products
-  if (!products.length) {
-    return (
-      <div className='w-full text-center py-8'>
-        <p className='text-gray-500'>Không có sản phẩm bán chạy nào.</p>
-      </div>
-    );
-  }
-  console.log(products);
-
-  return (
-    <div className='space-y-6'>
-      <Carousel className='w-full'>
-        <CarouselContent>
-          {products.map((product) => (
-            <CarouselItem
-              key={product.id}
-              className='basis-1/2 md:basis-1/3 lg:basis-1/5'
-            >
-              <Link href={`${product.id}`}>
-                <ProductCardIndex product={product} badgeText='Bán Chạy' />
-              </Link>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
+      ) : products.length === 0 ? (
+        <div className='w-full text-center py-8'>
+          <p className='text-gray-500'>Không có sản phẩm bán chạy nào.</p>
+        </div>
+      ) : (
+        <Carousel className='w-full'>
+          <CarouselContent>
+            {products.map((product) => (
+              <CarouselItem
+                key={product.id}
+                className='basis-1/2 md:basis-1/3 lg:basis-1/5'
+              >
+                <Link href={`${product.id}`}>
+                  <ProductCardIndex product={product} badgeText='Bán Chạy' />
+                </Link>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      )}
     </div>
   );
 }
