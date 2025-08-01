@@ -1,42 +1,16 @@
-import { CartControllerApi } from "@/api-client";
-import { getAuthenticatedAxiosInstance } from "@/lib/auth/axios-config";
-import type { CartItemResponse } from "@/api-client/models";
+
 import { TCartItem } from "@/types";
-import { fetchProductDetailByIdApi } from "./product";
+import { ControllerFactory } from "./factory-api-client";
+import { transformCartItemResponseToTCartItem } from "./transform/cart";
 
 // Define your app's cart item type
 
-
 /**
- * Helper to get an instance of CartControllerApi with NextAuth.
+ * Helper to get an instance of CartControllerApi with NextAuth using factory.
  */
 async function getCartController() {
-    const axiosInstance = await getAuthenticatedAxiosInstance();
-    return new CartControllerApi(undefined, undefined, axiosInstance);
+    return await ControllerFactory.getCartController();
 }
-
-/**
- * Transform API CartItemResponse to TCartItem.
- */
-export async function transformCartItemResponseToTCartItem(apiCartItem: CartItemResponse): Promise<TCartItem> {
-    const variant = apiCartItem.productVariantBasic;
-    const product = await fetchProductDetailByIdApi(variant?.product?.id ?? 0); // Assuming this function fetches product details by ID
-
-    return {
-        id: apiCartItem.id?.toString() ?? "",
-        quantity: apiCartItem.quantity ?? 0,
-        // price: apiCartItem.price ?? 0,
-        createdAt: new Date(), // Replace with actual date if available
-        updatedAt: new Date(), // Replace with actual date if available
-        color: variant?.color?.name ?? "",
-        size: variant?.size?.name ?? "", // Assuming size is represented by ID
-        productId: product?.id?.toString() ?? "",
-        Product: product,
-
-        userId: "", // Replace with actual user ID if available from context
-    };
-}
-
 
 
 /**

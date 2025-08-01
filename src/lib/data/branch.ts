@@ -1,14 +1,14 @@
 import { BranchControllerApi } from "@/api-client";
-import { getAuthenticatedAxiosInstance, getPublicAxiosInstance } from "@/lib/auth/axios-config";
+import { getPublicAxiosInstance } from "@/lib/auth/axios-config";
 import { TBranch } from "@/types";
+import { ControllerFactory } from "./factory-api-client";
 import { transformBranchResponseToTBranch, transformBranchArrayToTBranchArray } from "./transform/branch";
 
 /**
- * Helper to get an instance of BranchControllerApi with NextAuth.
+ * Helper to get an instance of BranchControllerApi with NextAuth using factory.
  */
 async function getBranchController() {
-  const axiosInstance = await getAuthenticatedAxiosInstance();
-  return new BranchControllerApi(undefined, undefined, axiosInstance);
+  return await ControllerFactory.getBranchController();
 }
 
 /**

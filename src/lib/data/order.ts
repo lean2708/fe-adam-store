@@ -1,12 +1,17 @@
-import { GetOrdersForUserOrderStatusEnum, OrderControllerApi } from "@/api-client";
-import { getAuthenticatedAxiosInstance } from "@/lib/auth/axios-config";
+import {
+  GetOrdersForUserOrderStatusEnum,
+  OrderControllerApi,
+  type OrderResponse,
+  type PageResponseOrderResponse
+} from "@/api-client";
+import { SearchOrdersForAdminOrderStatusEnum } from "@/api-client/apis/order-controller-api";
+import { ControllerFactory } from "./factory-api-client";
 
 /**
- * Helper to get an instance of OrderControllerApi with NextAuth.
+ * Helper to get an instance of OrderControllerApi with NextAuth using factory.
  */
 async function getOrderController() {
-  const axiosInstance = await getAuthenticatedAxiosInstance();
-  return new OrderControllerApi(undefined, undefined, axiosInstance);
+  return await ControllerFactory.getOrderController();
 }
 
 // Example transform function (customize as needed)
@@ -118,4 +123,72 @@ export async function updateOrderAddressApi(orderId: number, orderAddressRequest
   const api = await getOrderController();
   const response = await api.updateAddress({ orderId, orderAddressRequest });
   return response.data.result;
+}
+
+/**
+ * Search orders for admin with filtering
+ */
+export async function searchOrdersForAdmin(
+  startDate: string,
+  endDate: string,
+  page: number = 0,
+  size: number = 10,
+  sort: string[] = ["id,desc"],
+  orderStatus?: SearchOrdersForAdminOrderStatusEnum
+): Promise<PageResponseOrderResponse> {
+  const controller = await ControllerFactory.getOrderController();
+  const response = await controller.searchOrdersForAdmin({
+    startDate,
+    endDate,
+    page,
+    size,
+    sort,
+    orderStatus
+  });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to search orders");
+  }
+
+  return response.data.result!;
+}
+
+/**
+ * Get order details by ID
+ */
+export async function fetchOrderById(id: number): Promise<OrderResponse> {
+  const controller = await ControllerFactory.getOrderController();
+  const response = await controller.fetchDetailById1({ id });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to fetch order details");
+  }
+
+  return response.data.result!;
+}
+
+/**
+ * Delete an order (admin only)
+ */
+export async function deleteOrder(id: number): Promise<void> {
+  const controller = await ControllerFactory.getOrderController();
+  const response = await controller.delete7({ id });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to delete order");
+  }
+}
+
+/**
+ * Cancel an order
+ */
+export async function cancelOrder(orderId: number): Promise<OrderResponse> {
+  const controller = await ControllerFactory.getOrderController();
+  const response = await controller.cancelOrder({ orderId });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to cancel order");
+  }
+
+  return response.data.result!;
 }

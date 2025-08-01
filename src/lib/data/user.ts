@@ -1,15 +1,133 @@
-import { UserControllerApi } from "@/api-client";
-import { getAuthenticatedAxiosInstance } from "../auth/axios-config";
+import { ControllerFactory } from "./factory-api-client";
+import type {
+  UserResponse,
+  UserCreationRequest,
+  UserUpdateRequest,
+  PageResponseUserResponse,
+  PageResponseRoleResponse
+} from "@/api-client/models";
 
-async function getAddressController() {
-  const axiosInstance = await getAuthenticatedAxiosInstance();
-  return new UserControllerApi(undefined, undefined, axiosInstance);
-
+// Legacy function - keeping for backward compatibility
+export async function fetchAllAddressUserApi() {
+  const api = await ControllerFactory.getUserController();
+  const response = await api.getAddressesByUser();
+  return response.data.result;
 }
 
-export async function fetchAllAddressUserApi() {
-  const api = await getAddressController();
+/**
+ * Fetch all users for admin with pagination
+ */
+export async function fetchAllUsersForAdmin(
+  page: number = 0,
+  size: number = 10,
+  sort: string[] = ["id,desc"]
+): Promise<PageResponseUserResponse> {
+  const controller = await ControllerFactory.getUserController();
+  const response = await controller.fetchAllForAdmin({
+    page,
+    size,
+    sort
+  });
 
-  const response =await api.getAddressesByUser();
-  return response.data.result;
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to fetch users");
+  }
+
+  return response.data.result!;
+}
+
+/**
+ * Create a new user
+ */
+export async function createUser(userData: UserCreationRequest): Promise<UserResponse> {
+  const controller = await ControllerFactory.getUserController();
+  const response = await controller.create4({
+    userCreationRequest: userData
+  });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to create user");
+  }
+
+  return response.data.result!;
+}
+
+/**
+ * Update a user
+ */
+export async function updateUser(
+  id: number,
+  userData: UserUpdateRequest
+): Promise<UserResponse> {
+  const controller = await ControllerFactory.getUserController();
+  const response = await controller.update({
+    id,
+    userUpdateRequest: userData
+  });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to update user");
+  }
+
+  return response.data.result!;
+}
+
+/**
+ * Delete a user (soft delete)
+ */
+export async function deleteUser(id: number): Promise<void> {
+  const controller = await ControllerFactory.getUserController();
+  const response = await controller.delete2({ id });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to delete user");
+  }
+}
+
+/**
+ * Restore a user
+ */
+export async function restoreUser(id: number): Promise<UserResponse> {
+  const controller = await ControllerFactory.getUserController();
+  const response = await controller.restore({ id });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to restore user");
+  }
+
+  return response.data.result!;
+}
+
+/**
+ * Fetch user by ID
+ */
+export async function fetchUserById(id: number): Promise<UserResponse> {
+  const controller = await ControllerFactory.getUserController();
+  const response = await controller.fetchById2({ id });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to fetch user");
+  }
+
+  return response.data.result!;
+}
+
+/**
+ * Fetch all roles
+ */
+export async function fetchAllRoles(
+  page: number = 0,
+  size: number = 100
+): Promise<PageResponseRoleResponse> {
+  const controller = await ControllerFactory.getRoleController();
+  const response = await controller.fetchAll8({
+    page,
+    size
+  });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to fetch roles");
+  }
+
+  return response.data.result!;
 }

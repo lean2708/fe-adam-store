@@ -8,11 +8,24 @@ import {
   searchProductApi,
   fetchProductReviewssApi,
   fetchProductDetailByIdApi,
+  fetchAllProductsForAdmin,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  restoreProduct,
+  fetchProductById,
 } from '@/lib/data/product';
 import {
   productCreateSchema,
   productUpdateSchema,
 } from '@/actions/schema/productSchema';
+import type { ActionResponse } from "@/lib/types/actions";
+import type {
+  ProductResponse,
+  ProductRequest,
+  ProductUpdateRequest,
+  PageResponseProductResponse
+} from "@/api-client/models";
 
 export async function getAllProductsAction(
   page?: number,
@@ -144,6 +157,131 @@ export async function searchProductsAction(
     return {
       status: 500,
       error,
+    };
+  }
+}
+
+// Admin Actions
+
+/**
+ * Fetch all products for admin
+ */
+export async function fetchAllProductsForAdminAction(
+  page: number = 0,
+  size: number = 10,
+  sort: string[] = ["id,desc"]
+): Promise<ActionResponse<PageResponseProductResponse>> {
+  try {
+    const data = await fetchAllProductsForAdmin(page, size, sort);
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to fetch products",
+    };
+  }
+}
+
+/**
+ * Create a new product (admin)
+ */
+export async function createProductAdminAction(
+  productData: ProductRequest
+): Promise<ActionResponse<ProductResponse>> {
+  try {
+    const data = await createProduct(productData);
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to create product",
+    };
+  }
+}
+
+/**
+ * Update a product (admin)
+ */
+export async function updateProductAdminAction(
+  id: number,
+  productData: ProductUpdateRequest
+): Promise<ActionResponse<ProductResponse>> {
+  try {
+    const data = await updateProduct(id, productData);
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to update product",
+    };
+  }
+}
+
+/**
+ * Delete a product (soft delete) (admin)
+ */
+export async function deleteProductAdminAction(
+  id: number
+): Promise<ActionResponse<void>> {
+  try {
+    await deleteProduct(id);
+    return {
+      success: true,
+      data: undefined,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to delete product",
+    };
+  }
+}
+
+/**
+ * Restore a product
+ */
+export async function restoreProductAction(
+  id: number
+): Promise<ActionResponse<ProductResponse>> {
+  try {
+    const data = await restoreProduct(id);
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to restore product",
+    };
+  }
+}
+
+/**
+ * Fetch product by ID
+ */
+export async function fetchProductByIdAction(
+  id: number
+): Promise<ActionResponse<ProductResponse>> {
+  try {
+    const data = await fetchProductById(id);
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to fetch product",
     };
   }
 }

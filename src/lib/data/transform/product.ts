@@ -1,0 +1,66 @@
+import type { ProductResponse } from "@/api-client/models";
+import { TProduct, TColor, TVariant } from "@/types";
+
+export function transformProductResponseToTProduct(
+  apiProduct: ProductResponse
+): TProduct {
+  // Group variants by color id
+  const variants = apiProduct.variants ?? [];
+  const groupedByColor: Record<string, TColor> = {};
+
+  variants.forEach((v) => {
+    const colorId = v.color?.id ?? 0;
+    const colorKey = colorId.toString();
+
+    if (!groupedByColor[colorKey]) {
+      groupedByColor[colorKey] = {
+        id: colorId,
+        name: v.color?.name ?? '',
+        variants: [],
+      };
+    }
+
+    const variant: TVariant = {
+      id: v.id ?? 0,
+      price: v.price ?? 0,
+      quantity: v.quantity ?? 0,
+      isAvailable: v.isAvailable ?? false,
+      imageUrl: undefined, // ProductVariantResponse doesn't have image field
+      status: v.status,
+      size: v.size
+        ? {
+            id: v.size.id ?? 0,
+            name: v.size.name ?? '',
+          }
+        : undefined,
+    };
+
+    groupedByColor[colorKey].variants!.push(variant);
+  });
+
+  // Get main image from product images array (first image if available)
+  const mainImage =
+    apiProduct.images && apiProduct.images.length > 0
+      ? apiProduct.images[0]?.imageUrl ?? ''
+      : '';
+
+  return {
+    title: apiProduct.name ?? '',
+    mainImage: mainImage,
+    images:
+      apiProduct.images?.map((img) => ({
+        imageUrl: img.imageUrl ?? '',
+        id: img.id ?? 0,
+      })) ?? [],
+    id: apiProduct.id ?? 0,
+    isAvailable: apiProduct.isAvailable ?? false,
+    name: apiProduct.name ?? '',
+    description: apiProduct.description ?? '',
+    averageRating: apiProduct.averageRating ?? 0,
+    soldQuantity: apiProduct.soldQuantity ?? 0,
+    totalReviews: apiProduct.totalReviews ?? 0,
+    status: apiProduct.status ?? 'INACTIVE',
+    createdAt: apiProduct.createdAt ?? '',
+    colors: Object.values(groupedByColor),
+  };
+}

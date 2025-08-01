@@ -1,22 +1,15 @@
 import type { TCategory } from "@/types";
-import { CategoryControllerApi, CategoryResponse, } from "@/api-client";
-import { getAuthenticatedAxiosInstance, getPublicAxiosInstance } from "@/lib/auth/axios-config";
+import { ControllerFactory } from "./factory-api-client";
+import { transformCategoryResponseToTCategory } from "./transform/category";
 
 /**
- * Helper to get an instance of CategoryControllerApi with NextAuth.
+ * Helper to get an instance of CategoryControllerApi with NextAuth using factory.
  */
 async function getCategoryController() {
-    const axiosInstance = await getAuthenticatedAxiosInstance();
-    return new CategoryControllerApi(undefined, undefined, axiosInstance);
+    return await ControllerFactory.getCategoryController();
 }
 
-/**
- * Helper to get a public instance of CategoryControllerApi (no auth).
- */
-function getPublicCategoryController() {
-    const axiosInstance = getPublicAxiosInstance();
-    return new CategoryControllerApi(undefined, undefined, axiosInstance);
-}
+
 
 /**
  * Fetch all categories for user (public).
@@ -30,16 +23,7 @@ export async function fetchAllCategoriesApi(page?: number, size?: number, sort?:
     return (response.data.result?.items ?? []).map(transformCategoryResponseToTCategory);
 }
 
-/**
- * Transform API CategoryResponse to TCategory.
- */
-export function transformCategoryResponseToTCategory(apiCategory: CategoryResponse): TCategory {
-    return {
-        id: apiCategory.id?.toString() ?? "",
-        title: apiCategory.name ?? "",
-        image: "",
-    };
-}
+
 
 /**
  * Create a new category (admin).

@@ -12,7 +12,7 @@ import {
   ResetPasswordRequest,
 } from '@/api-client';
 
-import { getAuthenticatedAxiosInstance, getPublicAxiosInstance, getNextAuthSession } from '@/lib/auth/axios-config';
+import { getPublicAxiosInstance, getNextAuthSession, getAuthenticatedAxiosInstance } from '@/lib/auth/axios-config';
 
 /**
  * Helper function to get an instance of AuthControllerApi with NextAuth.
@@ -24,9 +24,9 @@ async function getAuthController(token?: string) {
     instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     return new AuthControllerApi(undefined, undefined, instance);
   } else {
-    // Use NextAuth session token
-    const instance = await getAuthenticatedAxiosInstance();
-    return new AuthControllerApi(undefined, undefined, instance);
+    // Use authenticated axios instance for auth operations
+    const authInstance = await getAuthenticatedAxiosInstance();
+    return new AuthControllerApi(undefined, undefined, authInstance);
   }
 }
 

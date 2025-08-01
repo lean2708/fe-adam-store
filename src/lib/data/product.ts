@@ -1,20 +1,22 @@
 import { PageResponseReviewResponse } from './../../api-client/models/page-response-review-response';
-import type { TProduct, TVariant, TEntityBasic, TColor } from '@/types'; // your local template type
+import type { TProduct } from '@/types'; // your local template type
 
 import {
   ProductControllerApi,
   type ProductRequest,
   type ProductUpdateRequest,
   ProductResponse,
+  type PageResponseProductResponse
 } from "@/api-client";
-import { getAuthenticatedAxiosInstance, getPublicAxiosInstance } from "@/lib/auth/axios-config";
+import { ControllerFactory } from "./factory-api-client";
+import { getPublicAxiosInstance } from "@/lib/auth/axios-config";
+import { transformProductResponseToTProduct } from "./transform/product";
 
 /**
- * Helper to get an instance of ProductControllerApi with NextAuth.
+ * Helper to get an instance of ProductControllerApi with NextAuth using factory.
  */
 export async function getProductController() {
-  const axiosInstance = await getAuthenticatedAxiosInstance();
-  return new ProductControllerApi(undefined, undefined, axiosInstance);
+  return await ControllerFactory.getProductController();
 }
 
 /**
@@ -170,66 +172,102 @@ export async function searchProductApi(
   );
 }
 
-export function transformProductResponseToTProduct(
-  apiProduct: ProductResponse
-): TProduct {
-  // Group variants by color id
-  const variants = apiProduct.variants ?? [];
-  const groupedByColor: Record<string, TColor> = {};
-
-  variants.forEach((v) => {
-    const colorId = v.color?.id ?? 0;
-    const colorKey = colorId.toString();
-
-    if (!groupedByColor[colorKey]) {
-      groupedByColor[colorKey] = {
-        id: colorId,
-        name: v.color?.name ?? '',
-        variants: [],
-      };
-    }
-
-    const variant: TVariant = {
-      id: v.id ?? 0,
-      price: v.price ?? 0,
-      quantity: v.quantity ?? 0,
-      isAvailable: v.isAvailable ?? false,
-      imageUrl: undefined, // ProductVariantResponse doesn't have image field
-      status: v.status,
-      size: v.size
-        ? {
-            id: v.size.id ?? 0,
-            name: v.size.name ?? '',
-          }
-        : undefined,
-    };
-
-    groupedByColor[colorKey].variants!.push(variant);
+/**
+ * Fetch all products for admin with pagination (returns raw API response)
+ */
+export async function fetchAllProductsForAdmin(
+  page: number = 0,
+  size: number = 10,
+  sort: string[] = ["id,desc"]
+): Promise<PageResponseProductResponse> {
+  const controller = await ControllerFactory.getProductController();
+  const response = await controller.fetchAllProductsForAdmin({
+    page,
+    size,
+    sort
   });
 
-  // Get main image from product images array (first image if available)
-  const mainImage =
-    apiProduct.images && apiProduct.images.length > 0
-      ? apiProduct.images[0]?.imageUrl ?? ''
-      : '';
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to fetch products");
+  }
 
-  return {
-    title: apiProduct.name ?? '',
-    mainImage: mainImage,
-    images:
-      apiProduct.images?.map((img) => ({
-        imageUrl: img.imageUrl ?? '',
-        id: img.id ?? 0,
-      })) ?? [],
-    id: apiProduct.id ?? 0,
-    isAvailable: apiProduct.isAvailable ?? false,
-    name: apiProduct.name ?? '',
-    description: apiProduct.description ?? '',
-    averageRating: apiProduct.averageRating ?? 0,
-    soldQuantity: apiProduct.soldQuantity ?? 0,
-    totalReviews: apiProduct.totalReviews ?? 0,
-    status: apiProduct.status ?? 'INACTIVE',
-    createdAt: apiProduct.createdAt ?? '',
-    colors: Object.values(groupedByColor),
-  };
+  return response.data.result!;
 }
+
+/**
+ * Create a new product (returns raw API response)
+ */
+export async function createProduct(productData: ProductRequest): Promise<ProductResponse> {
+  const controller = await ControllerFactory.getProductController();
+  const response = await controller.create6({
+    productRequest: productData
+  });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to create product");
+  }
+
+  return response.data.result!;
+}
+
+/**
+ * Update a product (returns raw API response)
+ */
+export async function updateProduct(
+  id: number,
+  productData: ProductUpdateRequest
+): Promise<ProductResponse> {
+  const controller = await ControllerFactory.getProductController();
+  const response = await controller.update5({
+    id,
+    productUpdateRequest: productData
+  });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to update product");
+  }
+
+  return response.data.result!;
+}
+
+/**
+ * Delete a product (soft delete)
+ */
+export async function deleteProduct(id: number): Promise<void> {
+  const controller = await ControllerFactory.getProductController();
+  const response = await controller.delete4({ id });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to delete product");
+  }
+}
+
+/**
+ * Restore a product
+ */
+export async function restoreProduct(id: number): Promise<ProductResponse> {
+  const controller = await ControllerFactory.getProductController();
+  const response = await controller.restore2({ id });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to restore product");
+  }
+
+  return response.data.result!;
+}
+
+/**
+ * Fetch product by ID (returns raw API response)
+ */
+export async function fetchProductById(id: number): Promise<ProductResponse> {
+  const controller = await ControllerFactory.getProductController();
+  const response = await controller.fetchDetailById({ id });
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || "Failed to fetch product");
+  }
+
+  return response.data.result!;
+}
+
+
