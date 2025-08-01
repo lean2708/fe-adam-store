@@ -3,7 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { signInApi, getMyInfoApi, refreshTokenApi } from "@/lib/data/auth";
 import { setCookie, getCookie, deleteCookie } from "@/lib/cookies";
 import type { UserResponse } from "@/api-client/models";
-import { cookies } from "next/headers";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -148,9 +147,8 @@ export const authOptions: NextAuthOptions = {
         const cookiesToClear = (user as any).cookiesToClear;
         if (cookiesToClear && Array.isArray(cookiesToClear) && cookiesToClear.length > 0) {
           try {
-            const cookieStore = cookies();
             for (const cookieName of cookiesToClear) {
-              (await cookieStore).delete(cookieName);
+              await deleteCookie(cookieName);
               console.log(`Cleaned up cookie: ${cookieName}`);
             }
           } catch (error) {
