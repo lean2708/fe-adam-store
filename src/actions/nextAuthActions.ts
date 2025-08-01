@@ -6,7 +6,8 @@ import {
   forgotPasswordApi,
   verifyForgotPasswordCodeApi,
   resetPasswordApi,
-  logoutApi
+  logoutApi,
+  getMyInfoApi
 } from "@/lib/data/auth";
 import { setCookie, getCookie, deleteCookie } from "@/lib/cookies";
 import type { ActionResponse } from "@/lib/types/actions";
@@ -66,7 +67,7 @@ export async function signUpAction(
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 300, // 5 minutes
-      path: '/register/verify',
+      path: '/',
     });
 
     return {
@@ -96,7 +97,7 @@ export async function signUpAction(
 export async function verifyRegistrationAction(
   email: string,
   formData: FormData
-): Promise<ActionResponse<UserResponse>> {
+): Promise<ActionResponse<{ shouldAutoLogin: boolean; tokens?: { accessToken: string; refreshToken?: string }; cookiesToClear?: string[] }>> {
   const validatedFields = verifyRegistrationSchema.safeParse({
     verifyCodeRequest: formData.get('verifyCodeRequest'),
   });
@@ -115,20 +116,24 @@ export async function verifyRegistrationAction(
       verificationCode: validatedFields.data.verifyCodeRequest,
     });
 
-    if (!tokenResponse?.accessToken || !tokenResponse?.refreshToken) {
+    if (!tokenResponse?.accessToken) {
       return {
         success: false,
         message: 'Verification successful, but failed to obtain tokens for login.',
       };
     }
 
-    // Clean up the pending email cookie
-    await deleteCookie('pending_email');
-
     return {
       success: true,
-      message: 'Xác thực thành công! Bạn có thể đăng nhập ngay bây giờ.',
-      data: { email } as any, // User should sign in manually after verification
+      message: 'Xác thực thành công! Đang đăng nhập...',
+      data: {
+        shouldAutoLogin: true,
+        tokens: {
+          accessToken: tokenResponse.accessToken,
+          refreshToken: tokenResponse.refreshToken,
+        },
+        cookiesToClear: ['pending_email'], // Will be cleared after successful login
+      },
     };
   } catch (error) {
     const extractedError = extractErrorMessage(
@@ -181,7 +186,7 @@ export async function forgotPasswordAction(
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 300, // 5 minutes
-      path: '/forgot_password/verify_code',
+      path: '/',
     });
 
     return {
@@ -255,7 +260,7 @@ export async function verifyForgotPasswordCodeAction(
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
         maxAge: 300, // 5 minutes
-        path: '/forgot_password/reset_password',
+        path: '/',
       }
     );
 
@@ -314,7 +319,8 @@ export async function resetPasswordAction(
       confirmPassword: validatedFields.data.confirmPassword,
     });
 
-    // Clean up cookies after successful reset
+    // Note: If the API returns tokens for auto-login, we can implement that here
+    // For now, clean up cookies immediately since no auto-login
     await deleteCookie('forgot_password_token');
     await deleteCookie('forgot_password_email');
 
@@ -361,9 +367,11 @@ export async function handlePendingEmail(): Promise<string | null> {
  */
 export async function logoutAction(): Promise<ActionResponse> {
   try {
-    // If we have an access token, call the API to invalidate it
+    // Call API to invalidate token on server
     await logoutApi();
 
+    // Clear the httpOnly refresh token cookie
+    await deleteCookie('refresh_token');
 
     return {
       success: true,
@@ -376,6 +384,13 @@ export async function logoutAction(): Promise<ActionResponse> {
     );
     console.error('Error in logoutAction:', error);
 
+    // Even if API call fails, still clear the refresh token cookie
+    try {
+      await deleteCookie('refresh_token');
+    } catch (cookieError) {
+      console.error('Error clearing refresh token cookie:', cookieError);
+    }
+
     // Even if API call fails, we still consider logout successful
     // since the client-side session will be cleared by NextAuth
     return {
@@ -385,3 +400,51 @@ export async function logoutAction(): Promise<ActionResponse> {
     };
   }
 }
+
+/**
+ * Validate tokens and return login data for client-side signIn
+ * This is a server action that validates tokens and prepares data for client-side login
+ */
+export async function validateTokensAndPrepareLogin(
+  accessToken: string,
+  refreshToken?: string,
+  cookiesToClear: string[] = []
+): Promise<ActionResponse<{
+  accessToken: string;
+  refreshToken?: string;
+  cookiesToClear: string[];
+  userInfo: any;
+}>> {
+  try {
+    // Validate the access token by getting user info
+    const userInfo = await getMyInfoApi(accessToken);
+
+    if (!userInfo) {
+      return {
+        success: false,
+        message: 'Token không hợp lệ',
+      };
+    }
+
+    // Note: Refresh token will be stored in httpOnly cookie by the auth provider
+
+    return {
+      success: true,
+      message: 'Token hợp lệ',
+      data: {
+        accessToken,
+        refreshToken,
+        cookiesToClear,
+        userInfo
+      }
+    };
+  } catch (error) {
+    console.error("Token validation error:", error);
+    return {
+      success: false,
+      message: "Token không hợp lệ hoặc đã hết hạn",
+    };
+  }
+}
+
+// Note: Cookie cleanup is now handled in the JWT callback

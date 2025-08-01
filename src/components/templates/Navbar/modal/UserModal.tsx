@@ -16,8 +16,8 @@ export default function UserModal({ open, onClose }: { open: boolean, onClose: (
   const handleLogout = async () => {
     try {
       // First call the API to invalidate the token on the server
+      // This will also clear the httpOnly refresh token cookie
       await logoutAction()
-   
 
       // Then sign out with NextAuth (this clears the client session)
       await signOut({

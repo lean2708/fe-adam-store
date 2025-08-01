@@ -6,25 +6,25 @@ declare module "next-auth" {
   interface Session {
     user: UserResponse & {
       accessToken: string;
-      refreshToken: string;
     };
     accessToken: string;
-    refreshToken: string;
+    error?: string;
   }
 
   interface User extends UserResponse {
     accessToken: string;
-    refreshToken: string;
+    refreshToken?: string; // Optional since it's stored in httpOnly cookie
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     accessToken: string;
-    refreshToken: string;
+    accessTokenExpires: number;
+    lastUserValidation?: number;
     user: UserResponse & {
       accessToken: string;
-      refreshToken: string;
     };
+    error?: string;
   }
 }
