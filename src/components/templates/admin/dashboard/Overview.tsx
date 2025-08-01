@@ -3,12 +3,25 @@
 import { useEffect, useState } from "react";
 import { getMonthlyRevenueAction } from "@/actions/statisticsActions";
 import type { RevenueByMonthDTO } from "@/api-client/models";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
+import { Bar, BarChart, XAxis, YAxis } from "recharts";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart";
 
 interface ChartData {
   name: string;
   total: number;
 }
+
+const chartConfig = {
+  total: {
+    label: "Revenue",
+    color: "#8B5CF6", // Purple color to match the design
+  },
+} satisfies ChartConfig;
 
 export function Overview() {
   const [data, setData] = useState<ChartData[]>([]);
@@ -83,41 +96,36 @@ export function Overview() {
   }
 
   return (
-    <ResponsiveContainer width="100%" height={350}>
+    <ChartContainer config={chartConfig} className="h-[350px]">
       <BarChart data={data}>
         <XAxis
           dataKey="name"
-          stroke="#888888"
-          fontSize={12}
           tickLine={false}
           axisLine={false}
+          tickMargin={8}
         />
         <YAxis
-          stroke="#888888"
-          fontSize={12}
           tickLine={false}
           axisLine={false}
+          tickMargin={8}
           tickFormatter={(value) => `₫${value.toLocaleString()}`}
         />
-        <Tooltip
-          formatter={(value: number) => [
-            `₫${value.toLocaleString()}`,
-            "Revenue"
-          ]}
-          labelStyle={{ color: "#000" }}
-          contentStyle={{
-            backgroundColor: "#fff",
-            border: "1px solid #ccc",
-            borderRadius: "6px",
-          }}
+        <ChartTooltip
+          content={
+            <ChartTooltipContent
+              formatter={(value: number) => [
+                `₫${value.toLocaleString()}`,
+                "Revenue"
+              ]}
+            />
+          }
         />
         <Bar
           dataKey="total"
-          fill="currentColor"
+          fill="var(--color-total)"
           radius={[4, 4, 0, 0]}
-          className="fill-primary"
         />
       </BarChart>
-    </ResponsiveContainer>
+    </ChartContainer>
   );
 }

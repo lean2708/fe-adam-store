@@ -37,6 +37,12 @@ export interface CategoryResponse {
      * @type {string}
      * @memberof CategoryResponse
      */
+    'imageUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CategoryResponse
+     */
     'status'?: CategoryResponseStatusEnum;
     /**
      * 

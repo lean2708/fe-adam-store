@@ -60,7 +60,7 @@ export default function Categories() {
           <CategoryItem
             key={category.id}
             title={category.title}
-            imageSrc={"https://images.pexels.com/photos/7049774/pexels-photo-7049774.jpeg?auto=compress&cs=tinysrgb&h=400&w=300"}
+            imageSrc={category.image}
           />
         ))}
       </div>

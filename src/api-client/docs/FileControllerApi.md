@@ -73,13 +73,11 @@ import {
 const configuration = new Configuration();
 const apiInstance = new FileControllerApi(configuration);
 
-let fileType: 'AVATAR' | 'PRODUCT_IMAGE'; // (default to undefined)
 let page: number; //Zero-based page index (0..N) (optional) (default to 0)
 let size: number; //The size of the page to be returned (optional) (default to 10)
 let sort: Array<string>; //Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. (optional) (default to undefined)
 
 const { status, data } = await apiInstance.getAllFiles(
-    fileType,
     page,
     size,
     sort
@@ -90,7 +88,6 @@ const { status, data } = await apiInstance.getAllFiles(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **fileType** | [**&#39;AVATAR&#39; | &#39;PRODUCT_IMAGE&#39;**]**Array<&#39;AVATAR&#39; &#124; &#39;PRODUCT_IMAGE&#39;>** |  | defaults to undefined|
 | **page** | [**number**] | Zero-based page index (0..N) | (optional) defaults to 0|
 | **size** | [**number**] | The size of the page to be returned | (optional) defaults to 10|
 | **sort** | **Array&lt;string&gt;** | Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. | (optional) defaults to undefined|

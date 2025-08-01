@@ -8,6 +8,7 @@ import {
   Users,
   Package,
   ShoppingCart,
+  CreditCard,
   FileImage,
   BarChart3,
   Settings,
@@ -41,6 +42,11 @@ const sidebarItems = [
     title: "Orders",
     href: "/admin/orders",
     icon: ShoppingCart,
+  },
+  {
+    title: "Payment History",
+    href: "/admin/payment-history",
+    icon: CreditCard,
   },
   {
     title: "Files",

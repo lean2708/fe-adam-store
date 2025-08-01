@@ -27,7 +27,6 @@ import {
   deleteFileAction
 } from "@/actions/fileActions";
 import type { FileResponse } from "@/api-client/models";
-import { GetAllFilesFileTypeEnum } from "@/api-client/apis/file-controller-api";
 import { toast } from "sonner";
 import Image from "next/image";
 
@@ -36,7 +35,7 @@ export default function FilesPage() {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [fileTypeFilter, setFileTypeFilter] = useState<GetAllFilesFileTypeEnum | "ALL">("ALL");
+  const [fileTypeFilter, setFileTypeFilter] = useState<string>("ALL");
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
@@ -47,37 +46,24 @@ export default function FilesPage() {
   const fetchFiles = async (page: number = 0) => {
     setLoading(true);
     try {
-      // If "ALL" is selected, fetch both types
-      if (fileTypeFilter === "ALL") {
-        // Fetch both AVATAR and PRODUCT_IMAGE files
-        const [avatarResult, productResult] = await Promise.all([
-          getAllFilesAction(GetAllFilesFileTypeEnum.Avatar, page, pageSize),
-          getAllFilesAction(GetAllFilesFileTypeEnum.ProductImage, page, pageSize)
-        ]);
+      const result = await getAllFilesAction(page, pageSize);
 
-        const allFiles: FileResponse[] = [];
-        if (avatarResult.success && avatarResult.data?.items) {
-          allFiles.push(...avatarResult.data.items);
-        }
-        if (productResult.success && productResult.data?.items) {
-          allFiles.push(...productResult.data.items);
+      if (result.success && result.data) {
+        let filteredFiles = result.data.items || [];
+
+        // Apply client-side filtering if needed
+        if (searchTerm) {
+          filteredFiles = filteredFiles.filter(file =>
+            file.fileName?.toLowerCase().includes(searchTerm.toLowerCase())
+          );
         }
 
-        setFiles(allFiles);
-        setTotalItems(allFiles.length);
-        setTotalPages(Math.ceil(allFiles.length / pageSize));
+        setFiles(filteredFiles);
+        setTotalItems(result.data.totalItems || 0);
+        setTotalPages(result.data.totalPages || 0);
         setCurrentPage(page);
       } else {
-        const result = await getAllFilesAction(fileTypeFilter, page, pageSize);
-        
-        if (result.success && result.data) {
-          setFiles(result.data.items || []);
-          setTotalPages(result.data.totalPages || 0);
-          setTotalItems(result.data.totalItems || 0);
-          setCurrentPage(page);
-        } else {
-          toast.error(result.message || "Failed to fetch files");
-        }
+        toast.error(result.message || "Failed to fetch files");
       }
     } catch (error) {
       toast.error("Failed to fetch files");
@@ -213,17 +199,15 @@ export default function FilesPage() {
                 className="pl-10"
               />
             </div>
-            <Select 
-              value={fileTypeFilter} 
-              onValueChange={(value) => setFileTypeFilter(value as GetAllFilesFileTypeEnum | "ALL")}
+            <Select
+              value={fileTypeFilter}
+              onValueChange={(value) => setFileTypeFilter(value)}
             >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Filter by type" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="ALL">All Files</SelectItem>
-                <SelectItem value="AVATAR">Avatar Images</SelectItem>
-                <SelectItem value="PRODUCT_IMAGE">Product Images</SelectItem>
               </SelectContent>
             </Select>
           </div>

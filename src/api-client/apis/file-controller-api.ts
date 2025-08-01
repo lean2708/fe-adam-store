@@ -72,16 +72,13 @@ export const FileControllerApiAxiosParamCreator = function (configuration?: Conf
         },
         /**
          * 
-         * @param {GetAllFilesFileTypeEnum} fileType 
          * @param {number} [page] Zero-based page index (0..N)
          * @param {number} [size] The size of the page to be returned
          * @param {Array<string>} [sort] Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllFiles: async (fileType: GetAllFilesFileTypeEnum, page?: number, size?: number, sort?: Array<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'fileType' is not null or undefined
-            assertParamExists('getAllFiles', 'fileType', fileType)
+        getAllFiles: async (page?: number, size?: number, sort?: Array<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/admin/files/all`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -108,10 +105,6 @@ export const FileControllerApiAxiosParamCreator = function (configuration?: Conf
 
             if (sort) {
                 localVarQueryParameter['sort'] = sort;
-            }
-
-            if (fileType !== undefined) {
-                localVarQueryParameter['fileType'] = fileType;
             }
 
 
@@ -195,15 +188,14 @@ export const FileControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {GetAllFilesFileTypeEnum} fileType 
          * @param {number} [page] Zero-based page index (0..N)
          * @param {number} [size] The size of the page to be returned
          * @param {Array<string>} [sort] Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllFiles(fileType: GetAllFilesFileTypeEnum, page?: number, size?: number, sort?: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponsePageResponseFileResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllFiles(fileType, page, size, sort, options);
+        async getAllFiles(page?: number, size?: number, sort?: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponsePageResponseFileResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllFiles(page, size, sort, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['FileControllerApi.getAllFiles']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -245,8 +237,8 @@ export const FileControllerApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllFiles(requestParameters: FileControllerApiGetAllFilesRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponsePageResponseFileResponse> {
-            return localVarFp.getAllFiles(requestParameters.fileType, requestParameters.page, requestParameters.size, requestParameters.sort, options).then((request) => request(axios, basePath));
+        getAllFiles(requestParameters: FileControllerApiGetAllFilesRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponsePageResponseFileResponse> {
+            return localVarFp.getAllFiles(requestParameters.page, requestParameters.size, requestParameters.sort, options).then((request) => request(axios, basePath));
         },
         /**
          * API upload hình ảnh (có thể tải nhiều ảnh lên)
@@ -280,13 +272,6 @@ export interface FileControllerApiDelete8Request {
  * @interface FileControllerApiGetAllFilesRequest
  */
 export interface FileControllerApiGetAllFilesRequest {
-    /**
-     * 
-     * @type {'AVATAR' | 'PRODUCT_IMAGE'}
-     * @memberof FileControllerApiGetAllFiles
-     */
-    readonly fileType: GetAllFilesFileTypeEnum
-
     /**
      * Zero-based page index (0..N)
      * @type {number}
@@ -348,8 +333,8 @@ export class FileControllerApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FileControllerApi
      */
-    public getAllFiles(requestParameters: FileControllerApiGetAllFilesRequest, options?: RawAxiosRequestConfig) {
-        return FileControllerApiFp(this.configuration).getAllFiles(requestParameters.fileType, requestParameters.page, requestParameters.size, requestParameters.sort, options).then((request) => request(this.axios, this.basePath));
+    public getAllFiles(requestParameters: FileControllerApiGetAllFilesRequest = {}, options?: RawAxiosRequestConfig) {
+        return FileControllerApiFp(this.configuration).getAllFiles(requestParameters.page, requestParameters.size, requestParameters.sort, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -364,11 +349,3 @@ export class FileControllerApi extends BaseAPI {
     }
 }
 
-/**
- * @export
- */
-export const GetAllFilesFileTypeEnum = {
-    Avatar: 'AVATAR',
-    ProductImage: 'PRODUCT_IMAGE'
-} as const;
-export type GetAllFilesFileTypeEnum = typeof GetAllFilesFileTypeEnum[keyof typeof GetAllFilesFileTypeEnum];

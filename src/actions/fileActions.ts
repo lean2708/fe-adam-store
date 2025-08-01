@@ -5,7 +5,6 @@ import type {
   FileResponse,
   PageResponseFileResponse
 } from "@/api-client/models";
-import { GetAllFilesFileTypeEnum } from "@/api-client/apis/file-controller-api";
 import {
   fetchAllFiles,
   uploadImages,
@@ -16,13 +15,12 @@ import {
  * Get all files
  */
 export async function getAllFilesAction(
-  fileType: GetAllFilesFileTypeEnum,
   page: number = 0,
   size: number = 20,
   sort: string[] = ["id,desc"]
 ): Promise<ActionResponse<PageResponseFileResponse>> {
   try {
-    const data = await fetchAllFiles(fileType, page, size, sort);
+    const data = await fetchAllFiles(page, size, sort);
     return {
       success: true,
       data,

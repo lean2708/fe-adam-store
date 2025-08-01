@@ -13,7 +13,8 @@ import {
   ConversationControllerApi,
   SizeControllerApi,
   ColorControllerApi,
-  PromotionControllerApi
+  PromotionControllerApi,
+  PaymentHistoryControllerApi
 } from "@/api-client";
 import { getAuthenticatedAxiosInstance } from "@/lib/auth/axios-config";
 
@@ -151,6 +152,14 @@ export class ControllerFactory {
   static async getPromotionController(): Promise<PromotionControllerApi> {
     const axiosInstance = await this.getAxiosInstance();
     return new PromotionControllerApi(undefined, undefined, axiosInstance);
+  }
+
+  /**
+   * Get PaymentHistory Controller
+   */
+  static async getPaymentHistoryController(): Promise<PaymentHistoryControllerApi> {
+    const axiosInstance = await this.getAxiosInstance();
+    return new PaymentHistoryControllerApi(undefined, undefined, axiosInstance);
   }
 
   /**

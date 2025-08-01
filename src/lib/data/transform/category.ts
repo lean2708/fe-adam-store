@@ -8,6 +8,6 @@ export function transformCategoryResponseToTCategory(apiCategory: CategoryRespon
     return {
         id: apiCategory.id?.toString() ?? "",
         title: apiCategory.name ?? "",
-        image: "",
+        image: apiCategory.imageUrl ?? "",
     };
 }
