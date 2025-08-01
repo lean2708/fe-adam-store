@@ -1,0 +1,40 @@
+'use client';
+
+import { cn } from '@/lib/utils';
+import { TColor, TVariant } from '@/types';
+import { useState } from 'react';
+
+type ColorsProps = {
+  tColors: TColor[];
+  onChangeColor: (color: number | undefined) => void;
+};
+
+export default function Colors({ tColors, onChangeColor }: ColorsProps) {
+  const [selectedColor, setSelectedColor] = useState(tColors[0]?.id);
+
+  const onSelectColor = (color: number) => {
+    setSelectedColor(color);
+    onChangeColor(color);
+  };
+
+  return (
+    <div>
+      <label className='block text-sm font-medium text-primary mb-2'>
+        Màu sắc:
+      </label>
+      <div className=' flex gap-2'>
+        {tColors.map((tColor) => (
+          <button
+            key={tColor.id}
+            className={cn(
+              'w-14 h-8 rounded-full border border-accent-foreground [&.active]:outline [&.active]:outline-offset-2 [&.active]:outline-accent-foreground',
+              tColor?.id === selectedColor && 'active'
+            )}
+            style={{ backgroundColor: tColor.name }}
+            onClick={() => onSelectColor(tColor.id)}
+          ></button>
+        ))}
+      </div>
+    </div>
+  );
+}

@@ -15,7 +15,7 @@ import { ProductCardWithColorsSkeleton } from '@/components/ui/skeleton';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-export default function BestSellersSwiper() {
+export default function Recommendations() {
   const [products, setProducts] = useState<TProduct[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +32,7 @@ export default function BestSellersSwiper() {
           setProducts(response.products);
         }
       } catch (error) {
-        console.error('Failed to fetch best-selling products:', error);
+        console.error('Failed to fetch recommend products:', error);
       } finally {
         setLoading(false);
       }
@@ -74,21 +74,21 @@ export default function BestSellersSwiper() {
   console.log(products);
 
   return (
-    <Carousel className='w-full'>
-      <CarouselContent>
-        {products.map((product) => (
-          <CarouselItem
-            key={product.id}
-            className='basis-1/2 md:basis-1/3 lg:basis-1/5'
-          >
-            <Link href={`product/${product.id}`}>
-              <ProductCardIndex product={product} badgeText='Bán Chạy' />
-            </Link>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel>
+    <div className='space-y-6'>
+      <Carousel className='w-full'>
+        <CarouselContent>
+          {products.map((product) => (
+            <CarouselItem
+              key={product.id}
+              className='basis-1/2 md:basis-1/3 lg:basis-1/5'
+            >
+              <Link href={`${product.id}`}>
+                <ProductCardIndex product={product} badgeText='Bán Chạy' />
+              </Link>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+    </div>
   );
 }

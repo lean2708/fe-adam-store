@@ -1,5 +1,5 @@
-import { ORDER_STATUS, USER_ROLE } from "@/enums";
-
+import { ImageBasic } from '@/api-client';
+import { ORDER_STATUS, USER_ROLE } from '@/enums';
 
 
 export type TCategory = {
@@ -7,7 +7,6 @@ export type TCategory = {
   title: string;
   image: string;
 };
-
 
 export type TOrder = {
   OrderItems: TOrderItem[];
@@ -59,6 +58,7 @@ export type TCartItem = {
 export type TProduct = {
   title: string;
   mainImage: string;
+  images?: ImageBasic[];
   id: number;
   isAvailable?: boolean;
   name?: string;

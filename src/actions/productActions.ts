@@ -1,4 +1,4 @@
-"use server";
+'use server';
 
 import {
   createProductApi,
@@ -6,19 +6,75 @@ import {
   deleteProductApi,
   fetchAllProductsApi,
   searchProductApi,
-} from "@/lib/data/product";
+  fetchProductReviewssApi,
+  fetchProductDetailByIdApi,
+} from '@/lib/data/product';
 import {
   productCreateSchema,
   productUpdateSchema,
-} from "@/actions/schema/productSchema";
+} from '@/actions/schema/productSchema';
 
-
-export async function getAllProductsAction(page?: number, size?: number, sort?: string[]) {
+export async function getAllProductsAction(
+  page?: number,
+  size?: number,
+  sort?: string[]
+) {
   try {
     const products = await fetchAllProductsApi(page, size, sort);
     return {
       status: 200,
       products,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      error,
+    };
+  }
+}
+
+export async function getProductDetailsAction(id: string) {
+  try {
+    const product = await fetchProductDetailByIdApi(Number(id));
+
+    if (!product) {
+      return {
+        status: 404,
+        message: 'Product not found',
+      };
+    }
+
+    return {
+      status: 200,
+      product,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      error,
+    };
+  }
+}
+
+export async function getProductReviewsAction(
+  id: string,
+  page?: number,
+  size?: number,
+  sort?: string[]
+) {
+  try {
+    const reviews = await fetchProductReviewssApi(Number(id), page, size, sort);
+
+    if (!reviews) {
+      return {
+        status: 404,
+        message: 'Reviews not found',
+      };
+    }
+
+    return {
+      status: 200,
+      reviews,
     };
   } catch (error) {
     return {
@@ -35,7 +91,7 @@ export async function deleteProductAction(id: string) {
     return {
       allProducts,
       status: 202,
-      message: "Product deleted",
+      message: 'Product deleted',
       deleted,
     };
   } catch (error) {
@@ -48,11 +104,11 @@ export async function deleteProductAction(id: string) {
 
 export async function updateProductAction(formData: FormData) {
   // Parse details from formData
-  const dataRaw = formData.get("data");
+  const dataRaw = formData.get('data');
   if (!dataRaw) {
     return {
       status: 400,
-      message: "Missing product data",
+      message: 'Missing product data',
     };
   }
 
@@ -62,7 +118,7 @@ export async function updateProductAction(formData: FormData) {
   } catch {
     return {
       status: 400,
-      message: "Invalid product data format",
+      message: 'Invalid product data format',
     };
   }
 
@@ -71,7 +127,7 @@ export async function updateProductAction(formData: FormData) {
   if (!validated.success) {
     return {
       status: 403,
-      message: "data invalid",
+      message: 'data invalid',
       errors: validated.error.flatten().fieldErrors,
     };
   }
@@ -79,7 +135,7 @@ export async function updateProductAction(formData: FormData) {
   if (!details.id) {
     return {
       status: 400,
-      message: "Missing product id",
+      message: 'Missing product id',
     };
   }
 
@@ -89,7 +145,7 @@ export async function updateProductAction(formData: FormData) {
     return {
       allProducts,
       status: 200,
-      message: "Product updated",
+      message: 'Product updated',
       updated,
     };
   } catch (error) {
@@ -119,4 +175,3 @@ export async function searchProductsAction(
     };
   }
 }
-
