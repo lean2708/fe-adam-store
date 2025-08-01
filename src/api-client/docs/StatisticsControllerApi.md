@@ -6,12 +6,20 @@ All URIs are relative to *https://microservices.appf4.io.vn/adamstore*
 |------------- | ------------- | -------------|
 |[**exportOrderRevenueToExcel**](#exportorderrevenuetoexcel) | **GET** /v1/admin/statistics/orders/revenue-by-date/export | Export order revenue report to Excel|
 |[**getMonthlyRevenue**](#getmonthlyrevenue) | **GET** /v1/admin/statistics/revenues/monthly | Fetched monthly revenue data|
+<<<<<<< HEAD
+=======
+|[**getOrderRevenueSummary**](#getorderrevenuesummary) | **GET** /v1/admin/statistics/orders/summary | Get total orders and revenue|
+>>>>>>> origin/main
 |[**getTopSellingProducts**](#gettopsellingproducts) | **GET** /v1/admin/statistics/products/top-selling | Fetched top selling products|
 
 # **exportOrderRevenueToExcel**
 > exportOrderRevenueToExcel()
 
+<<<<<<< HEAD
 API này dùng để xuất dữ liệu doanh thu của các đơn hàng ra file Excel (yyyy-MM-dd)
+=======
+API để xuất dữ liệu doanh thu của các đơn hàng ra file Excel (yyyy-MM-dd)
+>>>>>>> origin/main
 
 ### Example
 
@@ -65,7 +73,11 @@ void (empty response body)
 # **getMonthlyRevenue**
 > ApiResponseListRevenueByMonthDTO getMonthlyRevenue()
 
+<<<<<<< HEAD
 API này dùng để ấy doanh thu theo tháng trong khoảng (startDate (yyyy-MM-dd) đến endDate (yyyy-MM-dd))
+=======
+API để ấy doanh thu theo tháng trong khoảng (startDate (yyyy-MM-dd) đến endDate (yyyy-MM-dd))
+>>>>>>> origin/main
 
 ### Example
 
@@ -116,10 +128,71 @@ const { status, data } = await apiInstance.getMonthlyRevenue(
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+<<<<<<< HEAD
 # **getTopSellingProducts**
 > ApiResponseListTopSellingDTO getTopSellingProducts()
 
 API này dùng để lấy các sản phẩm bán chạy (yyyy-MM-dd)
+=======
+# **getOrderRevenueSummary**
+> ApiResponseOrderStatsDTO getOrderRevenueSummary()
+
+API lấy tổng số lượng đơn hàng và tổng doanh thu trong khoảng startDate đến endDate (yyyy-MM-dd)
+
+### Example
+
+```typescript
+import {
+    StatisticsControllerApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new StatisticsControllerApi(configuration);
+
+let startDate: string; // (default to undefined)
+let endDate: string; // (default to undefined)
+
+const { status, data } = await apiInstance.getOrderRevenueSummary(
+    startDate,
+    endDate
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **startDate** | [**string**] |  | defaults to undefined|
+| **endDate** | [**string**] |  | defaults to undefined|
+
+
+### Return type
+
+**ApiResponseOrderStatsDTO**
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: */*
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getTopSellingProducts**
+> ApiResponseListTopSellingDTO getTopSellingProducts()
+
+API để lấy các sản phẩm bán chạy (yyyy-MM-dd)
+>>>>>>> origin/main
 
 ### Example
 

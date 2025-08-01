@@ -1,3 +1,4 @@
+
 "use server";
 
 import {
@@ -5,86 +6,25 @@ import {
   updateProductApi,
   deleteProductApi,
   fetchAllProductsApi,
-} from "@/lib/data/product";
+  searchProductApi,
+  fetchProductReviewssApi,
+  fetchProductDetailByIdApi,
+} from '@/lib/data/product';
 import {
   productCreateSchema,
   productUpdateSchema,
-} from "@/actions/schema/productSchema";
+} from '@/actions/schema/productSchema';
 
-// --- Actions ---
-export async function addProductAction(formData: FormData) {
-  // Parse details from formData
-  const detailsRaw = formData.get("details");
-  if (!detailsRaw) {
-    return {
-      status: 400,
-      message: "Missing product details",
-    };
-  }
-
-  let details: any;
+export async function getAllProductsAction(
+  page?: number,
+  size?: number,
+  sort?: string[]
+) {
   try {
-    details = JSON.parse(JSON.parse(JSON.stringify(detailsRaw)));
-  } catch {
+    const products = await fetchAllProductsApi(page, size, sort);
     return {
-      status: 400,
-      message: "Invalid product details format",
-    };
-  }
-
-  // Validate using productCreateSchema
-  const validated = productCreateSchema.safeParse(details);
-  if (!validated.success) {
-    return {
-      status: 403,
-      message: "data invalid",
-      errors: validated.error.flatten().fieldErrors,
-    };
-  }
-
-  // Handle images (mainImage and images)
-  const mainImage = formData.get("mainImage") as File;
-  let images: File[] = [];
-  for (let i = 0; i < 5; i++) {
-    const img = formData.get(`image-${i}`) as File;
-    if (img) images.push(img);
-  }
-
-  if (!mainImage || images.length < 1) {
-    return {
-      status: 403,
-      message: "images invalid",
-    };
-  }
-
-  // NOTE: You must implement or import an image upload API for mainImage/images.
-  // Here we just pass the image file names as placeholders.
-  // Replace this with your actual upload logic.
-  const uploadImageRes = {
-    paths: {
-      mainImage: typeof mainImage === "object" && "name" in mainImage ? mainImage.name : "",
-      images: images.map(img => (typeof img === "object" && "name" in img ? img.name : "")),
-    }
-  };
-
-  if (!uploadImageRes)
-    return { status: 500, message: "upload image failed" };
-
-  try {
-    // Create Product via API
-    const productPayload = {
-      ...validated.data,
-      mainImage: uploadImageRes.paths.mainImage,
-      images: uploadImageRes.paths.images,
-      sales: 0,
-      categoryId: validated.data.categoryId,
-    };
-    const created = await createProductApi(productPayload);
-
-    return {
-      product: created,
-      status: 201,
-      message: "product created successfully",
+      status: 200,
+      products,
     };
   } catch (error) {
     return {
@@ -95,12 +35,49 @@ export async function addProductAction(formData: FormData) {
   }
 }
 
-export async function getAllProductsAction() {
+
+export async function getProductDetailsAction(id: string) {
   try {
-    const products = await fetchAllProductsApi();
+    const product = await fetchProductDetailByIdApi(Number(id));
+
+    if (!product) {
+      return {
+        status: 404,
+        message: 'Product not found',
+      };
+    }
+
     return {
       status: 200,
-      products,
+      product,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      error,
+    };
+  }
+}
+
+export async function getProductReviewsAction(
+  id: string,
+  page?: number,
+  size?: number,
+  sort?: string[]
+) {
+  try {
+    const reviews = await fetchProductReviewssApi(Number(id), page, size, sort);
+
+    if (!reviews) {
+      return {
+        status: 404,
+        message: 'Reviews not found',
+      };
+    }
+
+    return {
+      status: 200,
+      reviews,
     };
   } catch (error) {
     return {
@@ -130,11 +107,12 @@ export async function deleteProductAction(id: string) {
 
 export async function updateProductAction(formData: FormData) {
   // Parse details from formData
-  const dataRaw = formData.get("data");
+
+  const dataRaw = formData.get('data');
   if (!dataRaw) {
     return {
       status: 400,
-      message: "Missing product data",
+      message: 'Missing product data',
     };
   }
 
@@ -144,7 +122,7 @@ export async function updateProductAction(formData: FormData) {
   } catch {
     return {
       status: 400,
-      message: "Invalid product data format",
+      message: 'Invalid product data format',
     };
   }
 
@@ -153,7 +131,7 @@ export async function updateProductAction(formData: FormData) {
   if (!validated.success) {
     return {
       status: 403,
-      message: "data invalid",
+      message: 'data invalid',
       errors: validated.error.flatten().fieldErrors,
     };
   }
@@ -161,7 +139,7 @@ export async function updateProductAction(formData: FormData) {
   if (!details.id) {
     return {
       status: 400,
-      message: "Missing product id",
+      message: 'Missing product id',
     };
   }
 
@@ -171,7 +149,7 @@ export async function updateProductAction(formData: FormData) {
     return {
       allProducts,
       status: 200,
-      message: "Product updated",
+      message: 'Product updated',
       updated,
     };
   } catch (error) {
@@ -182,3 +160,23 @@ export async function updateProductAction(formData: FormData) {
   }
 }
 
+
+export async function searchProductsAction(
+  page?: number,
+  size?: number,
+  sort?: string[],
+  search?: string[]
+) {
+  try {
+    const products = await searchProductApi(page, size, sort, search);
+    return {
+      status: 200,
+      products,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      error,
+    };
+  }
+}

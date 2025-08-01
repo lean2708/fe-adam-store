@@ -22,6 +22,8 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
+import type { ApiResponseListOrderResponse } from '../models';
+// @ts-ignore
 import type { ApiResponseOrderResponse } from '../models';
 // @ts-ignore
 import type { ApiResponsePageResponseOrderResponse } from '../models';
@@ -246,6 +248,7 @@ export const OrderControllerApiAxiosParamCreator = function (configuration?: Con
          * @param {number} [page] Zero-based page index (0..N)
          * @param {number} [size] The size of the page to be returned
          * @param {Array<string>} [sort] Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -601,6 +604,7 @@ export const OrderControllerApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async getOrdersForUser(orderStatus: GetOrdersForUserOrderStatusEnum, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponsePageResponseOrderResponse>> {
+
             const localVarAxiosArgs = await localVarAxiosParamCreator.getOrdersForUser(orderStatus, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrderControllerApi.getOrdersForUser']?.[localVarOperationServerIndex]?.url;
@@ -745,6 +749,7 @@ export const OrderControllerApiFactory = function (configuration?: Configuration
          * @throws {RequiredError}
          */
         getOrdersForUser(requestParameters: OrderControllerApiGetOrdersForUserRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponsePageResponseOrderResponse> {
+
             return localVarFp.getOrdersForUser(requestParameters.orderStatus, options).then((request) => request(axios, basePath));
         },
         /**

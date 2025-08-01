@@ -1,5 +1,6 @@
 'use client';
 
+<<<<<<< HEAD
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
@@ -7,6 +8,14 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signInAction } from '@/actions/authActions';
 import { useAuthStore } from '@/stores/authStore';
+=======
+import React, { useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useAuth } from '@/hooks/useAuth';
+>>>>>>> origin/main
 import { Input } from '@/components/ui/input';
 import { Lock, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -27,9 +36,24 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+<<<<<<< HEAD
 export default function LoginForm() {
   const signIn = useAuthStore((state) => state.signIn);
   const router = useRouter();
+=======
+function LoginFormContent() {
+  const { signIn, isLoading } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Show success message if coming from verification
+  useEffect(() => {
+    const message = searchParams.get('message');
+    if (message === 'verification_success') {
+      toast.success('Xác thực thành công! Bạn có thể đăng nhập ngay bây giờ.');
+    }
+  }, [searchParams]);
+>>>>>>> origin/main
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -46,6 +70,7 @@ export default function LoginForm() {
   } = form;
 
   const onSubmit = async (values: FormValues) => {
+<<<<<<< HEAD
     const formData = new FormData();
     formData.append('email', values.email);
     formData.append('password', values.password);
@@ -71,6 +96,24 @@ export default function LoginForm() {
         });
       }
       toast.error(`${res.message}`);
+=======
+    try {
+      const success = await signIn(values.email, values.password);
+
+      if (success) {
+        toast.success('Đăng nhập thành công!');
+        router.push('/');
+      } else {
+        toast.error('Email hoặc mật khẩu không đúng');
+        setError('email', {
+          type: 'server',
+          message: 'Email hoặc mật khẩu không đúng',
+        });
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      toast.error('Có lỗi xảy ra khi đăng nhập');
+>>>>>>> origin/main
     }
   };
 
@@ -126,10 +169,17 @@ export default function LoginForm() {
         <div className='space-y-1 mt-8 flex justify-between'>
           <Button
             type='submit'
+<<<<<<< HEAD
             disabled={isSubmitting}
             className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 rounded-md font-medium'
           >
             {isSubmitting ? 'Đang đăng nhập...' : 'Đăng nhập'}
+=======
+            disabled={isSubmitting || isLoading}
+            className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 rounded-md font-medium'
+          >
+            {(isSubmitting || isLoading) ? 'Đang đăng nhập...' : 'Đăng nhập'}
+>>>>>>> origin/main
           </Button>
 
           <div className='text-center'>
@@ -145,3 +195,14 @@ export default function LoginForm() {
     </Form>
   );
 }
+<<<<<<< HEAD
+=======
+
+export default function LoginForm() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginFormContent />
+    </Suspense>
+  );
+}
+>>>>>>> origin/main

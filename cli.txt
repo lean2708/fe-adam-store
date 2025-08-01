@@ -1,4 +1,5 @@
-openapi-generator-cli generate \
+
+npx openapi-generator-cli generate \
   -i https://microservices.appf4.io.vn/adamstore/v3/api-docs \
   -g typescript-axios \
   -o ./src/api-client \

@@ -6,6 +6,10 @@ All URIs are relative to *https://microservices.appf4.io.vn/adamstore*
 |------------- | ------------- | -------------|
 |[**create2**](#create2) | **POST** /v1/private/cart-items | |
 |[**delete1**](#delete1) | **DELETE** /v1/private/cart-items/{id} | |
+<<<<<<< HEAD
+=======
+|[**deleteCartItems**](#deletecartitems) | **DELETE** /v1/private/cart-items | |
+>>>>>>> origin/main
 |[**fetchById6**](#fetchbyid6) | **GET** /v1/private/cart-items/{id} | |
 |[**update2**](#update2) | **PUT** /v1/private/cart-items/{id} | |
 
@@ -111,6 +115,60 @@ const { status, data } = await apiInstance.delete1(
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+<<<<<<< HEAD
+=======
+# **deleteCartItems**
+> ApiResponseVoid deleteCartItems(requestBody)
+
+API xoá nhiều cart item theo danh sách ID
+
+### Example
+
+```typescript
+import {
+    CartItemControllerApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new CartItemControllerApi(configuration);
+
+let requestBody: Array<number>; //
+
+const { status, data } = await apiInstance.deleteCartItems(
+    requestBody
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **requestBody** | **Array<number>**|  | |
+
+
+### Return type
+
+**ApiResponseVoid**
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: */*
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+>>>>>>> origin/main
 # **fetchById6**
 > ApiResponseCartItemResponse fetchById6()
 

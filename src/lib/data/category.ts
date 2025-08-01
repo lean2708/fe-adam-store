@@ -1,12 +1,22 @@
 import type { TCategory } from "@/types";
 import { CategoryControllerApi, CategoryResponse, } from "@/api-client";
-import { getAuthConfiguration } from "@/api-client/init-auth-config";
+
+import { getAuthenticatedAxiosInstance, getPublicAxiosInstance } from "@/lib/auth/axios-config";
 
 /**
- * Helper to get an instance of CategoryControllerApi with auth config.
+ * Helper to get an instance of CategoryControllerApi with NextAuth.
  */
 async function getCategoryController() {
-    return new CategoryControllerApi(await getAuthConfiguration());
+    const axiosInstance = await getAuthenticatedAxiosInstance();
+    return new CategoryControllerApi(undefined, undefined, axiosInstance);
+}
+
+/**
+ * Helper to get a public instance of CategoryControllerApi (no auth).
+ */
+function getPublicCategoryController() {
+    const axiosInstance = getPublicAxiosInstance();
+    return new CategoryControllerApi(undefined, undefined, axiosInstance);
 }
 
 /**

@@ -1,7 +1,8 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
-import { useRef, useEffect } from "react"
+
+import { Modal, ModalBody } from "@/components/ui/modal"
 
 type CartItem = {
   id: number
@@ -22,32 +23,22 @@ export default function CartModal({
   cartItems: CartItem[]
   onClose: () => void
 }) {
-  const modalRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!open) return
-    function handleClickOutside(event: MouseEvent) {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose()
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [open, onClose])
-
-  if (!open) return null
 
   // Calculate totals inside the modal
   const cartTotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0)
 
   return (
-    <div
-      ref={modalRef}
-      className="fixed top-15 right-8 mt-2 w-96 bg-white rounded-lg shadow-xl z-50 border border-gray-200 flex flex-col"
-      style={{ maxHeight: "80vh" }}
+
+    <Modal
+      open={open}
+      onClose={onClose}
+      variant="dropdown"
+      size="md"
+      position="top-right"
+      showOverlay={true}
     >
-      <div className="p-4 flex-1 flex flex-col overflow-y-auto">
+      <ModalBody>
         {/* Cart Header */}
         <div className="flex justify-between items-center mb-4">
           <div className="text-sm text-gray-600">
@@ -103,7 +94,8 @@ export default function CartModal({
             Giỏ hàng của bạn
           </Button>
         </div>
-      </div>
-    </div>
+
+      </ModalBody>
+    </Modal>
   )
 }

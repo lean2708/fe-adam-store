@@ -1,5 +1,9 @@
 import { OrderControllerApi, OrderControllerApiCalculateShippingFeeRequest, OrderControllerApiCreate1Request, OrderControllerApiPayCallbackHandlerRequest, OrderControllerApiUpdateAddressRequest } from "@/api-client"; // Adjust path as needed
+<<<<<<< HEAD
 import { getAuthConfiguration } from "@/api-client/init-auth-config"; // Adjust path as needed
+=======
+import { getAuthenticatedAxiosInstance } from "@/lib/auth/axios-config";
+>>>>>>> origin/main
 import type {
     OrderResponse,
     OrderItemResponse,
@@ -18,10 +22,18 @@ import type { ApiResponseVNPayResponse } from "@/api-client/models"; // Add this
 // Assuming you have a product fetching function
 
 /**
+<<<<<<< HEAD
  * Helper to get an instance of OrderControllerApi with auth config.
  */
 async function getOrderController() {
     return new OrderControllerApi(await getAuthConfiguration());
+=======
+ * Helper to get an instance of OrderControllerApi with NextAuth.
+ */
+async function getOrderController() {
+    const axiosInstance = await getAuthenticatedAxiosInstance();
+    return new OrderControllerApi(undefined, undefined, axiosInstance);
+>>>>>>> origin/main
 }
 
 

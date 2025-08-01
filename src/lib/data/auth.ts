@@ -12,23 +12,33 @@ import {
   ResetPasswordRequest,
 } from '@/api-client';
 
-// Import the Configuration class for initializing the API client
-import { Configuration } from '@/api-client/configuration';
 
-// Import your custom Axios helper for authenticated requests
-import { getAuthenticatedAxiosInstance } from '@/lib/axios';
+import { getAuthenticatedAxiosInstance, getPublicAxiosInstance, getNextAuthSession } from '@/lib/auth/axios-config';
 
 /**
- * Helper function to get an instance of AuthControllerApi.
- * (No change)
+ * Helper function to get an instance of AuthControllerApi with NextAuth.
  */
-function getAuthController(token?: string) {
-  const config = new Configuration({
-    basePath: process.env.NEXT_PUBLIC_BACKEND_API_URL,
-  });
-  const instance = getAuthenticatedAxiosInstance(token);
-  return new AuthControllerApi(config, undefined, instance);
+async function getAuthController(token?: string) {
+  if (token) {
+    // Use provided token (for specific operations like logout)
+    const instance = getPublicAxiosInstance();
+    instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    return new AuthControllerApi(undefined, undefined, instance);
+  } else {
+    // Use NextAuth session token
+    const instance = await getAuthenticatedAxiosInstance();
+    return new AuthControllerApi(undefined, undefined, instance);
+  }
 }
+
+/**
+ * Helper function to get a public instance of AuthControllerApi (no auth).
+ */
+function getPublicAuthController() {
+  const instance = getPublicAxiosInstance();
+  return new AuthControllerApi(undefined, undefined, instance);
+}
+
 
 /**
  * Authenticates a user by sending their credentials to the backend.
@@ -42,7 +52,8 @@ export async function signInApi(
   credentials: LoginRequest
 ): Promise<TokenResponse> {
   // <-- Explicitly return TokenResponse
-  const authApi = getAuthController();
+
+  const authApi = getPublicAuthController(); // Use public controller for login
 
   const response = await authApi.login({ loginRequest: credentials });
 
@@ -68,7 +79,8 @@ export async function signUpApi(
   data: RegisterRequest
 ): Promise<VerificationCodeResponse> {
   // <-- Explicitly return TokenResponse
-  const authApi = getAuthController();
+
+  const authApi = getPublicAuthController(); // Use public controller for registration
 
   const registerResponse = await authApi.register({ registerRequest: data });
 
@@ -98,7 +110,9 @@ export async function signUpApi(
 export async function forgotPasswordApi(request: {
   email: string;
 }): Promise<VerificationCodeResponse> {
-  const authApi = getAuthController();
+
+  const authApi = getPublicAuthController(); // Use public controller for forgot password
+
   const response = await authApi.forgotPassword({
     emailRequest: request,
   });
@@ -115,7 +129,9 @@ export async function forgotPasswordApi(request: {
 export async function verifyForgotPasswordCodeApi(
   request: VerifyCodeRequest
 ): Promise<RedisForgotPasswordToken> {
-  const authApi = getAuthController();
+
+  const authApi = getPublicAuthController(); // Use public controller for verification
+
   const response = await authApi.verifyForgotPasswordCode({
     verifyCodeRequest: request,
   });
@@ -133,7 +149,9 @@ export async function verifyForgotPasswordCodeApi(
 export async function resetPasswordApi(
   request: ResetPasswordRequest
 ): Promise<void> {
-  const authApi = getAuthController();
+
+  const authApi = getPublicAuthController(); // Use public controller for password reset
+
   const response = await authApi.resetPassword({
     resetPasswordRequest: request,
   });
@@ -145,10 +163,23 @@ export async function resetPasswordApi(
 
 /**
  * Retrieves the currently authenticated user's information from the backend.
- * (No change)
+
+ * Gets access token from NextAuth session automatically.
  */
-export async function getMyInfoApi(token: string): Promise<UserResponse> {
-  const authApi = getAuthController(token);
+export async function getMyInfoApi(token?: string): Promise<UserResponse> {
+  let accessToken = token;
+
+  // If no token provided, get it from NextAuth session
+  if (!accessToken) {
+    const session = await getNextAuthSession();
+    accessToken = session?.accessToken;
+  }
+
+  if (!accessToken) {
+    throw new Error('No access token available for getMyInfo');
+  }
+
+  const authApi = await getAuthController(accessToken);
 
   const response = await authApi.getMyInfo();
 
@@ -167,7 +198,7 @@ export async function getMyInfoApi(token: string): Promise<UserResponse> {
 export async function verifyRegistrationApi(
   request: VerifyCodeRequest
 ): Promise<TokenResponse> {
-  const authApi = getAuthController();
+  const authApi = getPublicAuthController(); // Use public controller for verification
 
   const response = await authApi.verifyCodeAndRegister({
     verifyCodeRequest: request,
@@ -188,12 +219,21 @@ export async function verifyRegistrationApi(
  * Logs out the user by invalidating their current access token on the backend.
  * (No change)
  */
-export async function logoutApi(token: string): Promise<void> {
-  const authApi = getAuthController(token);
+export async function logoutApi(): Promise<void> {
+  // Get the access token from NextAuth session
+  const session = await getNextAuthSession();
+  const accessToken = session?.accessToken;
+
+  if (!accessToken) {
+    console.warn('No access token found in session for logout');
+    return;
+  }
+
+  const authApi = await getAuthController();
 
   try {
-    const requestFunction = await authApi.logout({
-      tokenRequest: { accessToken: token },
+    await authApi.logout({
+      tokenRequest: { accessToken },
     });
   } catch (error: any) {
     console.warn(
@@ -211,7 +251,7 @@ export async function logoutApi(token: string): Promise<void> {
 export async function refreshTokenApi(refreshRequest: {
   refreshToken: string;
 }): Promise<TokenResponse> {
-  const authApi = getAuthController();
+  const authApi = getPublicAuthController(); // Use public controller for token refresh
   const response = await authApi.refreshToken({ refreshRequest });
   if (response.data.code !== 200 || !response.data.result) {
     throw response.data;

@@ -1,3 +1,4 @@
+
 import { GetOrdersForUserOrderStatusEnum, OrderControllerApi } from "@/api-client";
 import { getAuthConfiguration } from "@/api-client/init-auth-config";
 /**
@@ -6,6 +7,10 @@ import { getAuthConfiguration } from "@/api-client/init-auth-config";
 async function getOrderController() {
   return new OrderControllerApi(await getAuthConfiguration());
 }
+/**
+ * Helper to get an instance of OrderControllerApi with NextAuth.
+ */
+
 
 // Example transform function (customize as needed)
 function transformOrderResponse(apiOrder: any) {
@@ -59,6 +64,16 @@ export async function fetchAllOrdersUserApi(status: GetOrdersForUserOrderStatusE
   const response = await api.getOrdersForUser({ orderStatus: status });
   return response.data.result;
 }
+/*
+ * Fetch all orders (admin).
+ */
+// export async function fetchAllOrdersApi(page?: number, size?: number, sort?: string[]) {
+//   const api = await getOrderController();
+//   const response = await api.fetchAll11({ page, size, sort });
+//   // Optionally transform each order
+//   return response.data.result;
+// }
+
 /**
  * Fetch order detail by ID.
  */

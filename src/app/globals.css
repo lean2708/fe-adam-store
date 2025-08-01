@@ -116,7 +116,6 @@
   * {
     @apply border-border outline-ring/50;
   }
-
   body {
     @apply bg-background text-foreground;
   }
@@ -127,6 +126,131 @@
 /* Light mode styles (default) */
 .adam-store-bg {
   @apply bg-white dark:bg-gray-900;
+}
+
+.adam-store-text {
+  @apply text-black dark:text-white;
+}
+
+.adam-store-text-gray {
+  @apply text-gray-600 dark:text-gray-400;
+}
+
+.adam-store-bg-light {
+  @apply bg-gray-50 dark:bg-gray-800;
+}
+
+.adam-store-border {
+  @apply border-gray-200 dark:border-gray-700;
+}
+
+.adam-store-bg-dark {
+  @apply bg-gray-800 dark:bg-gray-900;
+}
+
+.adam-store-text-light {
+  @apply text-gray-300 dark:text-gray-400;
+}
+
+/* Enhanced Adam Store Components */
+.adam-card {
+  @apply bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 transition-colors;
+}
+
+.adam-card-hover {
+  @apply hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200;
+}
+
+.adam-btn-primary {
+  @apply bg-black dark:bg-white text-white dark:text-black px-6 py-3 rounded-md font-medium transition-colors hover:bg-gray-800 dark:hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:ring-offset-2;
+}
+
+.adam-btn-secondary {
+  @apply bg-gray-100 dark:bg-gray-700 text-black dark:text-white px-6 py-3 rounded-md font-medium transition-colors hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
+}
+
+.adam-btn-outline {
+  @apply border border-gray-300 dark:border-gray-600 text-black dark:text-white px-6 py-3 rounded-md font-medium transition-colors hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
+}
+
+.adam-input {
+  @apply w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent transition-colors placeholder:text-gray-500 dark:placeholder:text-gray-400;
+}
+
+.adam-label {
+  @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2;
+}
+
+/* Typography with dark mode */
+.adam-heading-1 {
+  @apply text-4xl md:text-5xl lg:text-6xl font-bold text-black dark:text-white leading-tight;
+}
+
+.adam-heading-2 {
+  @apply text-3xl md:text-4xl font-bold text-black dark:text-white leading-tight;
+}
+
+.adam-heading-3 {
+  @apply text-2xl md:text-3xl font-semibold text-black dark:text-white leading-tight;
+}
+
+.adam-heading-4 {
+  @apply text-xl md:text-2xl font-semibold text-black dark:text-white leading-tight;
+}
+
+.adam-body-large {
+  @apply text-lg text-gray-700 dark:text-gray-300 leading-relaxed;
+}
+
+.adam-body {
+  @apply text-base text-gray-600 dark:text-gray-400 leading-relaxed;
+}
+
+.adam-body-small {
+  @apply text-sm text-gray-500 dark:text-gray-500 leading-relaxed;
+}
+
+/* Layout utilities */
+.adam-container {
+  @apply container mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.adam-section {
+  @apply py-8 md:py-12 lg:py-16;
+}
+
+.adam-grid-responsive {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+}
+
+.adam-flex-center {
+  @apply flex items-center justify-center;
+}
+
+.adam-flex-between {
+  @apply flex items-center justify-between;
+}
+
+/* Animation utilities */
+.adam-fade-in {
+  @apply animate-in fade-in duration-500;
+}
+
+.adam-slide-up {
+  @apply animate-in slide-in-from-bottom-4 duration-500;
+}
+
+.adam-scale-in {
+  @apply animate-in zoom-in-95 duration-300;
+}
+
+/* Theme-specific overrides */
+.dark .adam-store-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+.adam-store-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .adam-store-text {

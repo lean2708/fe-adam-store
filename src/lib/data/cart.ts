@@ -1,5 +1,7 @@
 import { CartControllerApi } from "@/api-client";
-import { getAuthConfiguration } from "@/api-client/init-auth-config";
+
+import { getAuthenticatedAxiosInstance } from "@/lib/auth/axios-config";
+
 import type { CartItemResponse } from "@/api-client/models";
 import { TCartItem } from "@/types";
 import { fetchProductDetailByIdApi } from "./product";
@@ -8,10 +10,13 @@ import { fetchProductDetailByIdApi } from "./product";
 
 
 /**
- * Helper to get an instance of CartControllerApi with auth config.
+
+ * Helper to get an instance of CartControllerApi with NextAuth.
  */
 async function getCartController() {
-    return new CartControllerApi(await getAuthConfiguration());
+    const axiosInstance = await getAuthenticatedAxiosInstance();
+    return new CartControllerApi(undefined, undefined, axiosInstance);
+
 }
 
 /**

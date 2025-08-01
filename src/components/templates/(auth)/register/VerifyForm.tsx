@@ -17,8 +17,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { toast } from 'sonner';
-import { useAuthStore } from '@/stores/authStore';
-import { verifyRegistrationAction } from '@/actions/authActions';
+import { verifyRegistrationAction } from '@/actions/nextAuthActions';
+import { signInWithTokens } from '@/lib/auth/client-token-login';
 
 // Schema validation
 const formSchema = z.object({
@@ -29,7 +29,6 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function VerifyForm({ email }: { email: string }) {
   const router = useRouter();
-  const signIn = useAuthStore((state) => state.signIn);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -44,21 +43,34 @@ export default function VerifyForm({ email }: { email: string }) {
     setError,
   } = form;
 
-  // TODO: Thay thế bằng action thực tế khi có API đăng ký
-  const onSubmit = async (values: FormValues) => {
-    // Giả lập gọi API
-    const formData = new FormData();
 
+  const onSubmit = async (values: FormValues) => {
+    const formData = new FormData();
     formData.append('verifyCodeRequest', values.verifyCodeRequest);
 
     const res = await verifyRegistrationAction(email, formData);
 
     if (res.success && res.data) {
       toast.success(`${res.message}`);
+      // Auto-login if tokens are provided
+      if (res.data.shouldAutoLogin && res.data.tokens) {
+        const loginResult = await signInWithTokens(
+          res.data.tokens.accessToken,
+          res.data.tokens.refreshToken,
+          res.data.cookiesToClear || []
+        );
 
-      signIn(res.data);
-
-      router.push('/');
+        if (loginResult.success) {
+          toast.success('Đăng nhập thành công!');
+          router.push('/');
+        } else {
+          toast.error('Xác thực thành công nhưng đăng nhập thất bại. Vui lòng đăng nhập thủ công.');
+          router.push('/login?message=verification_success');
+        }
+      } else {
+        // Fallback to manual login
+        router.push('/login?message=verification_success');
+      }
     } else {
       // Xử lý lỗi từng field nếu có
       if (res.errors) {
@@ -70,7 +82,6 @@ export default function VerifyForm({ email }: { email: string }) {
         });
       }
       toast.error(res.message || 'Xác thực thất bại');
-      // Registration successful, but failed to obtain tokens for login
     }
   };
 

@@ -1,11 +1,58 @@
+
+"use client";
+
 import { TCategory } from "@/types";
 import CategoryItem from "./Category/CategoryItem";
+import { getAllCategoriesAction } from "@/actions/categoryActions";
+import { CategorySkeleton } from "@/components/ui/skeleton";
+import { useEffect, useState } from "react";
 
-export default function Categories({
-  categories,
-}: {
-  categories: TCategory[];
-}) {
+export default function Categories() {
+  const [categories, setCategories] = useState<TCategory[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+        const response = await getAllCategoriesAction();
+
+        if (response.status === 200 && response.categories) {
+          setCategories(response.categories);
+        }
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <section>
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-4 px-8">
+          {[...Array(6)].map((_, index) => (
+            <CategorySkeleton key={index} />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  // Show empty state if no categories
+  if (!categories.length) {
+    return (
+      <section>
+        <div className="text-center py-8">
+          <p className="text-gray-500">Không có danh mục nào.</p>
+        </div>
+      </section>
+    );
+  }
   return (
     <section>
       <div className="grid grid-cols-2 md:grid-cols-6 gap-4 px-8">
@@ -13,7 +60,7 @@ export default function Categories({
           <CategoryItem
             key={category.id}
             title={category.title}
-            imageSrc={category.image}
+            imageSrc={"https://images.pexels.com/photos/7049774/pexels-photo-7049774.jpeg?auto=compress&cs=tinysrgb&h=400&w=300"}
           />
         ))}
       </div>

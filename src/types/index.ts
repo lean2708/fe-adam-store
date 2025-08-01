@@ -1,3 +1,5 @@
+
+import { ImageBasic } from "@/api-client/models/image-basic";
 import { ORDER_STATUS, USER_ROLE } from "@/enums";
 
 export type TUser = {
@@ -13,7 +15,6 @@ export type TCategory = {
   title: string;
   image: string;
 };
-
 
 export type TOrder = {
   OrderItems: TOrderItem[];
@@ -65,6 +66,7 @@ export type TCartItem = {
 export type TProduct = {
   title: string;
   mainImage: string;
+  images?: ImageBasic[];
   id: number;
   isAvailable?: boolean;
   name?: string;
@@ -115,4 +117,14 @@ export type TColor = {
   id: number;
   name: string;
   variants?: TVariant[];
+}
+
+export type TBranch = {
+  id: string;
+  name: string;
+  location: string;
+  phone: string;
+  status: 'ACTIVE' | 'INACTIVE';
+  createdAt?: string;
+  updatedAt?: string;
 }
