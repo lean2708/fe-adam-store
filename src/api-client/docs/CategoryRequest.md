@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **name** | **string** |  | [default to undefined]
+**imageUrl** | **string** |  | [default to undefined]
 
 ## Example
 
@@ -14,6 +15,7 @@ import { CategoryRequest } from './api';
 
 const instance: CategoryRequest = {
     name,
+    imageUrl,
 };
 ```
 

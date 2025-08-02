@@ -5,7 +5,22 @@ import { getTopSellingProductsAction } from "@/actions/statisticsActions";
 import type { TopSellingDTO } from "@/api-client/models";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Bar, BarChart, XAxis, YAxis } from "recharts";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart";
 import Link from "next/link";
+
+const chartConfig = {
+  soldQuantity: {
+    label: "Sold Quantity",
+    color: "#8B5CF6", // Purple color to match the design
+  },
+} satisfies ChartConfig;
 
 export function TopProducts() {
   const [products, setProducts] = useState<TopSellingDTO[]>([]);
@@ -94,8 +109,59 @@ export function TopProducts() {
   // Calculate max sold quantity for progress bars
   const maxSoldQuantity = Math.max(...products.map(p => p.soldQuantity || 0));
 
+  // Prepare chart data
+  const chartData = products.slice(0, 5).map((product, index) => ({
+    name: product.productName?.substring(0, 10) + '...' || `Product ${index + 1}`,
+    soldQuantity: product.soldQuantity || 0,
+  }));
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+      {/* Mini Chart */}
+      {products.length > 0 && (
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Top 5 Products Chart</CardTitle>
+            <CardDescription>Visual representation of top selling products</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={chartConfig} className="h-[200px]">
+              <BarChart data={chartData}>
+                <XAxis
+                  dataKey="name"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  fontSize={10}
+                />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  fontSize={10}
+                />
+                <ChartTooltip
+                  content={
+                    <ChartTooltipContent
+                      formatter={(value: number) => [
+                        `${value} units`,
+                        "Sold"
+                      ]}
+                    />
+                  }
+                />
+                <Bar
+                  dataKey="soldQuantity"
+                  fill="var(--color-soldQuantity)"
+                  radius={[2, 2, 0, 0]}
+                />
+              </BarChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Product List */}
       <div className="grid gap-4">
         {products.map((product, index) => (
           <div key={product.productId} className="flex items-center space-x-4 p-4 border rounded-lg">

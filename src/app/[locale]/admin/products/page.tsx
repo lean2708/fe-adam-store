@@ -30,6 +30,9 @@ import {
 import type { ProductResponse } from "@/api-client/models";
 import { toast } from "sonner";
 import Image from "next/image";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<ProductResponse[]>([]);
@@ -38,6 +41,9 @@ export default function ProductsPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
+  const [selectedProduct, setSelectedProduct] = useState<ProductResponse | null>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const pageSize = 10;
 
@@ -85,7 +91,7 @@ export default function ProductsPage() {
   const handleRestoreProduct = async (id: number) => {
     try {
       const result = await restoreProductAction(id);
-      
+
       if (result.success) {
         toast.success("Product restored successfully");
         fetchProducts(currentPage);
@@ -95,6 +101,16 @@ export default function ProductsPage() {
     } catch (error) {
       toast.error("Failed to restore product");
     }
+  };
+
+  const handleViewDetails = (product: ProductResponse) => {
+    setSelectedProduct(product);
+    setIsDetailModalOpen(true);
+  };
+
+  const handleEditProduct = (product: ProductResponse) => {
+    setSelectedProduct(product);
+    setIsEditModalOpen(true);
   };
 
   const getStatusColor = (status: string) => {
@@ -277,11 +293,11 @@ export default function ProductsPage() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleViewDetails(product)}>
                               <Eye className="mr-2 h-4 w-4" />
                               View Details
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleEditProduct(product)}>
                               <Edit className="mr-2 h-4 w-4" />
                               Edit
                             </DropdownMenuItem>
@@ -338,6 +354,156 @@ export default function ProductsPage() {
           )}
         </CardContent>
       </Card>
+
+      {/* Product Detail Modal */}
+      <Dialog open={isDetailModalOpen} onOpenChange={setIsDetailModalOpen}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Product Details</DialogTitle>
+            <DialogDescription>
+              View detailed information about this product
+            </DialogDescription>
+          </DialogHeader>
+          {selectedProduct && (
+            <div className="space-y-6">
+              {/* Product Images */}
+              {selectedProduct.images && selectedProduct.images.length > 0 && (
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Images</Label>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {selectedProduct.images.map((image, index) => (
+                      <div key={index} className="relative aspect-square">
+                        <Image
+                          src={image.imageUrl || '/placeholder.png'}
+                          alt={`Product image ${index + 1}`}
+                          fill
+                          className="object-cover rounded-lg border"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Basic Information */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Product Name</Label>
+                  <p className="text-sm">{selectedProduct.name}</p>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Status</Label>
+                  <Badge className={getStatusColor(selectedProduct.status || 'INACTIVE')}>
+                    {selectedProduct.status}
+                  </Badge>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Average Rating</Label>
+                  <p className="text-sm">
+                    ⭐ {selectedProduct.averageRating?.toFixed(1) || '0.0'}
+                    ({selectedProduct.totalReviews || 0} reviews)
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Sold Quantity</Label>
+                  <p className="text-sm">{selectedProduct.soldQuantity || 0}</p>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Created Date</Label>
+                  <p className="text-sm">
+                    {selectedProduct.createdAt ? new Date(selectedProduct.createdAt).toLocaleDateString() : '-'}
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Available</Label>
+                  <Badge variant={selectedProduct.isAvailable ? 'default' : 'secondary'}>
+                    {selectedProduct.isAvailable ? 'Yes' : 'No'}
+                  </Badge>
+                </div>
+              </div>
+
+              {/* Description */}
+              {selectedProduct.description && (
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Description</Label>
+                  <p className="text-sm text-muted-foreground">{selectedProduct.description}</p>
+                </div>
+              )}
+
+              {/* Variants */}
+              {selectedProduct.variants && selectedProduct.variants.length > 0 && (
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Variants</Label>
+                  <div className="space-y-2">
+                    {selectedProduct.variants.map((variant, index) => (
+                      <div key={index} className="border rounded-lg p-3">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+                          <div>
+                            <span className="font-medium">Color:</span> {variant.color?.name || 'N/A'}
+                          </div>
+                          <div>
+                            <span className="font-medium">Size:</span> {variant.size?.name || 'N/A'}
+                          </div>
+                          <div>
+                            <span className="font-medium">Price:</span> ${variant.price || 0}
+                          </div>
+                          <div>
+                            <span className="font-medium">Quantity:</span> {variant.quantity || 0}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Product Edit Modal */}
+      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Product</DialogTitle>
+            <DialogDescription>
+              Edit product information (Note: This is a basic edit form. Full product editing should be implemented with proper form handling)
+            </DialogDescription>
+          </DialogHeader>
+          {selectedProduct && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="edit-name">Product Name</Label>
+                <Input
+                  id="edit-name"
+                  defaultValue={selectedProduct.name}
+                  placeholder="Enter product name"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit-description">Description</Label>
+                <Textarea
+                  id="edit-description"
+                  defaultValue={selectedProduct.description}
+                  placeholder="Enter product description"
+                  rows={4}
+                />
+              </div>
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" onClick={() => setIsEditModalOpen(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={() => {
+                  toast.info("Edit functionality needs to be implemented with proper form handling and API calls");
+                  setIsEditModalOpen(false);
+                }}>
+                  Save Changes
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

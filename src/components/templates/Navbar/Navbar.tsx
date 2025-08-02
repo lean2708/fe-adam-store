@@ -12,6 +12,8 @@ import MobileSidebar from "./modal/MobileSidebar"
 import ThemeToggle from "@/components/modules/ThemeToggle"
 import Logo from "@/components/modules/Logo"
 import SearchComponent from "./components/SearchComponent"
+import NavigationLocaleSwitcherPublic from "./components/NavigationLocaleSwitcherPublic"
+import { useTranslations } from "next-intl"
 
 export default function Navbar() {
   // Only manage modal open/close triggers here
@@ -64,7 +66,6 @@ export default function Navbar() {
   const handleSearchExpand = useCallback((expanded: boolean) => {
     setIsSearchExpanded(expanded)
   }, [])
-
   return (
     <header className="border-b adam-store-border adam-store-bg relative h-16 flex items-center">
 
@@ -111,8 +112,15 @@ export default function Navbar() {
           </div>
         </div>
       </>
-
-
+      <div className="z-1 flex w-full items-center justify-between gap-2 px-2 sm:px-8">
+        <div className="flex flex-1 items-center justify-start">
+          <div className="sm:hidden">
+            {/* <LinkNav /> */}
+          </div>
+          <NavigationLocaleSwitcherPublic />
+        </div>
+      </div>
+   
       {/* Modals */}
       {isUserModalOpen && (
         <div className=" absolute right-5 top-8 ">

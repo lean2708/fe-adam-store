@@ -3,11 +3,13 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getOrderRevenueSummaryAction } from "@/actions/statisticsActions";
+import { fetchAllUsersAction } from "@/actions/userActions";
 import { DollarSign, ShoppingCart, TrendingUp, Users } from "lucide-react";
 import type { OrderStatsDTO } from "@/api-client/models";
 
 export function DashboardStats() {
   const [stats, setStats] = useState<OrderStatsDTO | null>(null);
+  const [userCount, setUserCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,14 +19,22 @@ export function DashboardStats() {
         const now = new Date();
         const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
         const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-        
+
         const startDate = startOfMonth.toISOString().split('T')[0];
         const endDate = endOfMonth.toISOString().split('T')[0];
-
-        const result = await getOrderRevenueSummaryAction(startDate, endDate);
         
-        if (result.success && result.data) {
-          setStats(result.data);
+        // Fetch order/revenue stats and user count in parallel
+        const [statsResult, usersResult] = await Promise.all([
+          getOrderRevenueSummaryAction("2025-08-10", "2025-07-20"),
+          fetchAllUsersAction(0, 1) // Just get first page to get total count
+        ]);
+        
+        if (statsResult.success && statsResult.data) {
+          setStats(statsResult.data);
+        }
+
+        if (usersResult.success && usersResult.data) {
+          setUserCount(usersResult.data.totalItems || 0);
         }
       } catch (error) {
         console.error("Failed to fetch dashboard stats:", error);
@@ -68,10 +78,10 @@ export function DashboardStats() {
       color: "text-purple-600",
     },
     {
-      title: "Active Users",
-      value: "1,234", // This would come from a separate API
+      title: "Total Users",
+      value: userCount.toLocaleString(),
       icon: Users,
-      description: "Total users",
+      description: "Registered users",
       color: "text-orange-600",
     },
   ];

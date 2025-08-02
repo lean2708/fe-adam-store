@@ -71,7 +71,6 @@ export default function BestSellersSwiper() {
       </div>
     );
   }
-  console.log(products);
 
   return (
     <Carousel className='w-full'>

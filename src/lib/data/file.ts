@@ -1,22 +1,19 @@
 import { ControllerFactory } from "./factory-api-client";
-import type { 
+import type {
   FileResponse,
   PageResponseFileResponse
 } from "@/api-client/models";
-import { GetAllFilesFileTypeEnum } from "@/api-client/apis/file-controller-api";
 
 /**
- * Get all files with filtering
+ * Get all files
  */
 export async function fetchAllFiles(
-  fileType: GetAllFilesFileTypeEnum,
   page: number = 0,
   size: number = 20,
   sort: string[] = ["id,desc"]
 ): Promise<PageResponseFileResponse> {
   const controller = await ControllerFactory.getFileController();
   const response = await controller.getAllFiles({
-    fileType,
     page,
     size,
     sort

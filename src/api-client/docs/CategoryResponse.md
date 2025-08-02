@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **number** |  | [optional] [default to undefined]
 **name** | **string** |  | [optional] [default to undefined]
+**imageUrl** | **string** |  | [optional] [default to undefined]
 **status** | **string** |  | [optional] [default to undefined]
 **createdBy** | **string** |  | [optional] [default to undefined]
 **updatedBy** | **string** |  | [optional] [default to undefined]
@@ -21,6 +22,7 @@ import { CategoryResponse } from './api';
 const instance: CategoryResponse = {
     id,
     name,
+    imageUrl,
     status,
     createdBy,
     updatedBy,

@@ -3,73 +3,35 @@
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { searchOrdersForAdminAction } from "@/actions/orderActions";
+import type { OrderResponse } from "@/api-client/models";
 import Link from "next/link";
 
-// Mock data for now - this would come from an orders API
-interface RecentOrder {
-  id: string;
-  customerName: string;
-  customerEmail: string;
-  customerAvatar?: string;
-  amount: number;
-  status: string;
-  createdAt: string;
-}
-
-const mockOrders: RecentOrder[] = [
-  {
-    id: "ORD-001",
-    customerName: "Nguyễn Văn A",
-    customerEmail: "nguyenvana@example.com",
-    amount: 1250000,
-    status: "COMPLETED",
-    createdAt: "2024-01-15T10:30:00Z",
-  },
-  {
-    id: "ORD-002",
-    customerName: "Trần Thị B",
-    customerEmail: "tranthib@example.com",
-    amount: 890000,
-    status: "PROGRESS",
-    createdAt: "2024-01-15T09:15:00Z",
-  },
-  {
-    id: "ORD-003",
-    customerName: "Lê Văn C",
-    customerEmail: "levanc@example.com",
-    amount: 2100000,
-    status: "SENDING",
-    createdAt: "2024-01-15T08:45:00Z",
-  },
-  {
-    id: "ORD-004",
-    customerName: "Phạm Thị D",
-    customerEmail: "phamthid@example.com",
-    amount: 750000,
-    status: "COMPLETED",
-    createdAt: "2024-01-14T16:20:00Z",
-  },
-  {
-    id: "ORD-005",
-    customerName: "Hoàng Văn E",
-    customerEmail: "hoangvane@example.com",
-    amount: 1680000,
-    status: "PROGRESS",
-    createdAt: "2024-01-14T14:10:00Z",
-  },
-];
-
 export function RecentOrders() {
-  const [orders, setOrders] = useState<RecentOrder[]>([]);
+  const [orders, setOrders] = useState<OrderResponse[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate API call
     const fetchOrders = async () => {
       try {
-        // In a real app, this would be an API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setOrders(mockOrders);
+        // Get recent orders from the last 30 days
+        const now = new Date();
+        const thirtyDaysAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
+
+        const startDate = thirtyDaysAgo.toISOString().split('T')[0];
+        const endDate = now.toISOString().split('T')[0];
+
+        const result = await searchOrdersForAdminAction(
+          startDate,
+          endDate,
+          0, // page
+          5, // size - show only 5 recent orders
+          ["orderDate,desc"] // sort by creation date descending
+        );
+
+        if (result.success && result.data?.items) {
+          setOrders(result.data.items);
+        }
       } catch (error) {
         console.error("Failed to fetch recent orders:", error);
       } finally {
@@ -98,14 +60,16 @@ export function RecentOrders() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'COMPLETED':
+      case 'DELIVERED':
         return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-      case 'PROGRESS':
+      case 'PROCESSING':
         return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
-      case 'SENDING':
+      case 'SHIPPED':
         return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
-      case 'CANCELED':
+      case 'CANCELLED':
         return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+      case 'PENDING':
+        return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300';
       default:
         return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
     }
@@ -113,14 +77,16 @@ export function RecentOrders() {
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'COMPLETED':
-        return 'Completed';
-      case 'PROGRESS':
-        return 'In Progress';
-      case 'SENDING':
-        return 'Sending';
-      case 'CANCELED':
-        return 'Canceled';
+      case 'DELIVERED':
+        return 'Delivered';
+      case 'PROCESSING':
+        return 'Processing';
+      case 'SHIPPED':
+        return 'Shipped';
+      case 'CANCELLED':
+        return 'Cancelled';
+      case 'PENDING':
+        return 'Pending';
       default:
         return status;
     }
@@ -143,46 +109,60 @@ export function RecentOrders() {
     );
   }
 
+  if (orders.length === 0) {
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        No recent orders found
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
-      {orders.map((order) => (
-        <div key={order.id} className="flex items-center space-x-4">
-          <Avatar className="h-9 w-9">
-            <AvatarImage src={order.customerAvatar} alt={order.customerName} />
-            <AvatarFallback>
-              {order.customerName.split(' ').map(n => n[0]).join('').toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium leading-none">
-                  {order.customerName}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {order.customerEmail}
-                </p>
-              </div>
-              <div className="text-right">
-                <div className="text-sm font-medium">
-                  {formatCurrency(order.amount)}
+      {orders.map((order) => {
+        const customerName = order.customerName || 'Unknown Customer';
+        const customerEmail = order.address?.phone || 'No contact info';
+        const customerAvatar = undefined; // No avatar in OrderResponse
+
+        return (
+          <div key={order.id} className="flex items-center space-x-4">
+            <Avatar className="h-9 w-9">
+              <AvatarImage src={customerAvatar} alt={customerName} />
+              <AvatarFallback>
+                {customerName.split(' ').map((n: string) => n[0]).join('').toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium leading-none">
+                    {customerName}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {customerEmail}
+                  </p>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Badge 
-                    variant="secondary" 
-                    className={`text-xs ${getStatusColor(order.status)}`}
-                  >
-                    {getStatusText(order.status)}
-                  </Badge>
+                <div className="text-right">
+                  <div className="text-sm font-medium">
+                    {formatCurrency(order.totalPrice || 0)}
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Badge
+                      variant="secondary"
+                      className={`text-xs ${getStatusColor(order.orderStatus || 'PENDING')}`}
+                    >
+                      {getStatusText(order.orderStatus || 'PENDING')}
+                    </Badge>
+                  </div>
                 </div>
               </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                {order.orderDate ? formatDate(order.orderDate) : order.createdAt ? formatDate(order.createdAt) : 'Unknown date'}
+              </p>
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {formatDate(order.createdAt)}
-            </p>
           </div>
-        </div>
-      ))}
+        );
+      })}
       
       <div className="pt-4 border-t">
         <Link 
