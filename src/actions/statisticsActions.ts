@@ -66,7 +66,7 @@ export async function getTopSellingProductsAction(
     const data = await fetchTopSellingProducts(startDate, endDate);
     return {
       success: true,
-      data,
+      data
     };
   } catch (error) {
     return {

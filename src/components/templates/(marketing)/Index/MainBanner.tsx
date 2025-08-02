@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import MainBannerSwiper from "./MainBanner/MainBannerSwiper";
+import { useTranslations } from "next-intl";
 
 // List of banner image filenames in public/imgs/banner
 const bannerImages = [
@@ -15,6 +16,7 @@ const heroSlides = bannerImages.map((filename, idx) => ({
 }));
 
 export default function MainBanner() {
+    const t = useTranslations("Languages");
     return (
         <section className="mb-16">
             {/* Hero Carousel - Embla carousel */}
@@ -25,7 +27,7 @@ export default function MainBanner() {
             <div className="py-8 px-8">
                 <div className="flex justify-end">
                     <Button className="bg-black hover:bg-gray-800 text-white rounded-full px-6 py-3 shadow-lg">
-                        Chat với chúng tôi
+                        {t("chatwithus")}
                     </Button>
                 </div>
             </div>

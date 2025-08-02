@@ -1,5 +1,8 @@
 import Image from "next/image";
 import { TProduct } from "@/types";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import { useState } from "react";
 
 interface ProductCardIndexProps {
   product: TProduct;
@@ -12,6 +15,7 @@ export default function ProductCardIndex({
   badgeText = "Mới",
   className = ""
 }: ProductCardIndexProps) {
+  const [selectedColor, setSelectedColor] = useState(1)
   return (
     <div className={`group cursor-pointer relative ${className}`}>
       {/* Product Image */}
@@ -40,18 +44,32 @@ export default function ProductCardIndex({
 
           {/* Size Options */}
           <div className="flex justify-center gap-1 sm:gap-2 flex-wrap">
-            <span className="px-2 sm:px-3 py-1 text-xs font-medium bg-gray-100 rounded-full hover:bg-gray-200 cursor-pointer transition-colors border border-gray-200 hover:border-gray-300 shadow-sm">M</span>
-            <span className="px-2 sm:px-3 py-1 text-xs font-medium bg-gray-100 rounded-full hover:bg-gray-200 cursor-pointer transition-colors border border-gray-200 hover:border-gray-300 shadow-sm">L</span>
-            <span className="px-2 sm:px-3 py-1 text-xs font-medium bg-gray-100 rounded-full hover:bg-gray-200 cursor-pointer transition-colors border border-gray-200 hover:border-gray-300 shadow-sm">XL</span>
-            <span className="px-2 sm:px-3 py-1 text-xs font-medium bg-gray-100 text-gray-400 rounded-full line-through cursor-not-allowed border border-gray-200 opacity-60">2XL</span>
-            <span className="px-2 sm:px-3 py-1 text-xs font-medium bg-gray-100 text-gray-400 rounded-full line-through cursor-not-allowed border border-gray-200 opacity-60">3XL</span>
+            {product.colors
+              ?.find((color) => color.id === selectedColor)?.variants
+              ?.slice()
+              .sort((a, b) => {
+                const aId = a.size?.id ?? 0;
+                const bId = b.size?.id ?? 0;
+                return aId - bId;
+              })
+              .map((variant) => (
+                <span key={variant.id} className={cn(
+                  "px-2 sm:px-3 py-1 text-xs font-medium rounded-full border border-gray-200 transition-colors shadow-sm",
+                  variant.status === "available"
+                    ? "bg-gray-100 text-gray-400 line-through cursor-not-allowed opacity-60"
+                    : "bg-gray-100 hover:bg-gray-200 cursor-pointer hover:border-gray-300"
+                )}
+                >
+                  {variant.size?.name}</span>
+              ))}
+
           </div>
         </div>
       </div>
 
       {/* Color dots */}
       <div className="flex items-center gap-2 mb-3">
-        {product.colors?.slice(0, 2).map((color) => (
+        {product.colors?.map((color) => (
           <span
             key={color.id}
             className="inline-block border border-gray-300"
@@ -60,17 +78,9 @@ export default function ProductCardIndex({
               height: '29px',
               borderRadius: '100px',
               opacity: 1,
-              backgroundColor: color.name === "Black" ? "#000000" :
-                             color.name === "White" ? "#ffffff" :
-                             color.name === "Blue" ? "#1e40af" :
-                             color.name === "Beige" ? "#f5f5dc" :
-                             color.name === "Brown" ? "#8b4513" :
-                             color.name === "Đen" ? "#000000" :
-                             color.name === "Trắng" ? "#ffffff" :
-                             color.name === "Xanh" ? "#1e40af" :
-                             color.name === "Be" ? "#f5f5dc" :
-                             color.name === "Nâu" ? "#8b4513" : "#f5f5f5"
+              backgroundColor: color.name
             }}
+            onClick={() => setSelectedColor(color.id)}
           />
         ))}
       </div>

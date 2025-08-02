@@ -1,3 +1,5 @@
+"use server";
+
 import { fetchProductReviewssApi } from '@/lib/data/product';
 
 /**
