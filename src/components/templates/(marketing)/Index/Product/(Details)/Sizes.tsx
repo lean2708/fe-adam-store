@@ -9,11 +9,12 @@ type SizesProps = {
 };
 
 const SIZE_LIST = [
+  { name: 'XS', key: 'XS' },
+  { name: 'S', key: 'S' },
   { name: 'M', key: 'M' },
   { name: 'L', key: 'L' },
   { name: 'XL', key: 'XL' },
-  { name: '2XL', key: '2XL' },
-  { name: '3XL', key: '3XL' },
+  { name: 'XXL', key: 'XXL' },
 ];
 
 export default function Sizes({ tColor, onChangeSize }: SizesProps) {
