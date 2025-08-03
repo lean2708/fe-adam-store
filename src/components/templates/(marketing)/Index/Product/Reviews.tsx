@@ -9,6 +9,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import ReviewItem from './(Reviews)/ReviewItem';
 import useReviews from '@/hooks/(product_details)/useReviews';
+import ImagePreviewModal from './(Reviews)/ImagePreviewModal';
 
 export default function Reviews({ productId }: { productId: string }) {
   const pageSize = 4; // !Số lượng đánh giá trên mỗi trang
@@ -19,6 +20,15 @@ export default function Reviews({ productId }: { productId: string }) {
     currentPage,
     totalPages,
     handlePageChange,
+    // Modal state and handlers
+    selectedReview,
+    selectedImageIndex,
+    isModalOpen,
+    handleImageClick,
+    handleCloseModal,
+    handlePrevImage,
+    handleNextImage,
+    handleThumbnailClick,
   } = useReviews(productId, pageSize);
 
   const scrollToReviews = () => {
@@ -30,9 +40,9 @@ export default function Reviews({ productId }: { productId: string }) {
 
   return (
     <div id='reviews' className='space-y-6'>
-      <h2 className='text-2xl font-bold text-primary'>
+      <h1 className='text-xl md:text-2xl lg:text-3xl font-bold text-primary'>
         Đánh giá ({totalItems})
-      </h2>
+      </h1>
 
       {loading ? (
         <div className='space-y-6'>
@@ -68,9 +78,14 @@ export default function Reviews({ productId }: { productId: string }) {
       ) : reviews.length === 0 ? (
         <p className='text-gray-500'>Chưa có đánh giá nào cho sản phẩm này.</p>
       ) : (
-        <div className='space-y-1'>
+        <div className='-space-y-3'>
           {reviews.map((review) => (
-            <ReviewItem key={review.id} review={review} />
+            <div
+              key={review.id}
+              className='first:border-t-0 border-t-2 border-border'
+            >
+              <ReviewItem review={review} onImageClick={handleImageClick} />
+            </div>
           ))}
 
           {totalItems >= pageSize && totalPages > 1 && (
@@ -99,6 +114,17 @@ export default function Reviews({ productId }: { productId: string }) {
           )}
         </div>
       )}
+
+      {/* Image Preview Modal */}
+      <ImagePreviewModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        review={selectedReview}
+        selectedImageIndex={selectedImageIndex}
+        onPrevImage={handlePrevImage}
+        onNextImage={handleNextImage}
+        onThumbnailClick={handleThumbnailClick}
+      />
     </div>
   );
 }
