@@ -14,10 +14,12 @@ import { getAllProductsAction } from '@/actions/productActions';
 import { ProductCardWithColorsSkeleton } from '@/components/ui/skeleton';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export default function BestSellersSwiper() {
   const [products, setProducts] = useState<TProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  const t = useTranslations('Marketing');
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -67,7 +69,7 @@ export default function BestSellersSwiper() {
   if (!products.length) {
     return (
       <div className='w-full text-center py-8'>
-        <p className='text-gray-500'>Không có sản phẩm bán chạy nào.</p>
+        <p className='text-gray-500'>{t('bestSellers.noProducts')}</p>
       </div>
     );
   }
@@ -81,7 +83,7 @@ export default function BestSellersSwiper() {
             className='basis-1/2 md:basis-1/3 lg:basis-1/5'
           >
             <Link href={`product/${product.id}`}>
-              <ProductCardIndex product={product} badgeText='Bán Chạy' />
+              <ProductCardIndex product={product} badgeText={t('bestSellers.badgeText')} />
             </Link>
           </CarouselItem>
         ))}

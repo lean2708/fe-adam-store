@@ -5,10 +5,12 @@ import CategoryItem from "./Category/CategoryItem";
 import { getAllCategoriesAction } from "@/actions/categoryActions";
 import { CategorySkeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function Categories() {
   const [categories, setCategories] = useState<TCategory[]>([]);
   const [loading, setLoading] = useState(true);
+  const t = useTranslations("Marketing");
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -47,7 +49,7 @@ export default function Categories() {
     return (
       <section>
         <div className="text-center py-8">
-          <p className="text-gray-500">Không có danh mục nào.</p>
+          <p className="text-gray-500">{t("categories.noCategories")}</p>
         </div>
       </section>
     );

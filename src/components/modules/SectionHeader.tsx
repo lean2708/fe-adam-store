@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { notoSans } from "@/config/fonts";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function SectionHeader({
   title,
@@ -14,6 +15,8 @@ export default function SectionHeader({
   className?: string;
   hasButton: boolean;
 }) {
+  const t = useTranslations("Marketing");
+
   return (
     <div
       className={cn(
@@ -37,7 +40,7 @@ export default function SectionHeader({
       </div>
       {hasButton ? (
         <Link href={"/category"}>
-          <Button variant="default"> Tất cả sản phẩm </Button>
+          <Button variant="default">{t("sectionHeader.allProducts")}</Button>
         </Link>
       ) : null}
     </div>
