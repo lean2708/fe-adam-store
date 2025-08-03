@@ -18,7 +18,7 @@ export default function HomePage() {
       <BestSellers />
       {/* Hero Banner */}
       <HeroBanner />
-      {/* Sản phẩm mới */}
+      {/* Newest Products */}
       <NewestProducts />
     </main>
 

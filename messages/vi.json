@@ -1,0 +1,33 @@
+{
+  "Locale": {
+    "key": "vi",
+    "name": "Tiếng Việt",
+    "siteLanguage": "Ngôn ngữ trang web"
+  },
+  "Languages": {
+    "chatwithus": "Chat với chúng tôi"
+  },
+  "Marketing": {
+    "categories": {
+      "noCategories": "Không có danh mục nào."
+    },
+    "bestSellers": {
+      "title": "Bán chạy nhất",
+      "badgeText": "Bán Chạy",
+      "noProducts": "Không có sản phẩm bán chạy nào."
+    },
+    "newestProducts": {
+      "title": "Sản phẩm mới nhất",
+      "badgeText": "Mới nhất",
+      "noProducts": "Không có sản phẩm mới nào."
+    },
+    "heroBanner": {
+      "title": "Các sản phẩm mới",
+      "description": "Khám phá bộ sưu tập mới nhất với những thiết kế độc đáo, chất lượng cao mang đến phong cách thời trang hiện đại. Tìm hiểu những xu hướng mới nhất từ Adam Store để cập nhật phong cách thời trang của bạn.",
+      "buyNow": "Mua ngay"
+    },
+    "sectionHeader": {
+      "allProducts": "Tất cả sản phẩm"
+    }
+  }
+}
