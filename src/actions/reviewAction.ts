@@ -5,7 +5,7 @@ import { createReview, fetchReviewUserById } from "@/lib/data/review";
 export async function createReviewAction(
   rating: number,
   comment: string,
-  imageUrls: (string | undefined)[],
+  imageUrls: string[],
   productId: number) {
   try {
     const review = await createReview(rating, comment, imageUrls, productId);

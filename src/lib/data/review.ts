@@ -8,16 +8,27 @@ async function getReviewController() {
 export async function createReview(
   rating: number,
   comment: string,
-  imageUrls: (string | undefined)[],
+  imageUrls: string[],
   productId: number
 ) {
   const api = await getReviewController();
-  const response = await api.create({rating, comment, imageUrls, productId});
+
+  const cleanedImageUrls = imageUrls.filter((url): url is string => typeof url === 'string');
+
+  const response = await api.create({
+    reviewRequest: {
+      rating,
+      comment,
+      imageUrls: cleanedImageUrls,
+      productId
+    }
+  });
+
   return response.data.result;
 }
 
 export async function fetchReviewUserById(id: number) {
   const api = await getReviewController()
-  const res = await api.getReview({id})
-  return res.data.result
+  const res = await api.getReview({ id })
+  return res.data.result;
 }

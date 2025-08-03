@@ -37,7 +37,7 @@ export interface FileResponse {
      * @type {string}
      * @memberof FileResponse
      */
-    'imageUrl'?: string;
+    'imageUrl': string;
     /**
      * 
      * @type {string}

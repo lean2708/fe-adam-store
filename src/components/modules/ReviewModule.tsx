@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 export default function ReviewModule(props: { visible: boolean, orderItem?: TOrderItem, onClose: () => void }) {
   const { onClose, orderItem, visible } = props;
   const [rating, setRating] = useState<number>(0);
-  const [listImg, setListImg] = useState<(string | undefined)[]>([]);
+  const [listImg, setListImg] = useState<(string)[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [comment, setComment] = useState('');
   const imgFallback = 'https://imgs.search.brave.com/1wFAag6ytkkNPhKwFcQhlennSJKCYwCLseov2L_p3og/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wb3Mu/bnZuY2RuLmNvbS83/Nzg3NzMtMTA1ODc3/L3BzLzIwMjIwODE1/XzJBTDZtTlRMRVNh/UGV3TUpxS2RYdVdt/ZC5qcGc';
@@ -44,21 +44,21 @@ export default function ReviewModule(props: { visible: boolean, orderItem?: TOrd
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
-
-    const uploadPromises = Array.from(files).map((file) => uploadImg(file));
-    const uploadResults = await Promise.all(uploadPromises);
-
-    const allUploadedImgs = uploadResults
-      .filter((res) => res.status === 200 && Array.isArray(res.img))
-      .flatMap((res) => res.img!.map((i) => i.imageUrl));
-    const newListImg = [...listImg, ...(allUploadedImgs ?? [])]
-    setListImg(newListImg)
+    const newListImg: string[] = [];
+    for (const file of files) {
+      const res = await uploadImg(file)
+      if (res.status === 200 &&  Array.isArray(res.img) && res.img[0]?.imageUrl) {
+        newListImg.push(res.img[0].imageUrl)
+        setListImg(newListImg)
+      }
+    }
+    setListImg((prevList) => [...prevList, ...newListImg]);
   };
 
   const handleSubmit = async () => {
     console.log({ rating, comment })
     try {
-      const res = await createReviewAction(rating, comment, listImg, Number(orderItem?.Product.id))
+      const res = await createReviewAction(rating, comment, listImg ?? [], Number(orderItem?.Product.id))
       if (res.status === 200 && res.review) { CloseMoule() }
     } catch (error: any) {
       console.log(error)
