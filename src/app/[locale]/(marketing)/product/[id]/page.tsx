@@ -5,6 +5,7 @@ import Recommendations from '@/components/templates/(marketing)/Index/Product/Re
 import Reviews from '@/components/templates/(marketing)/Index/Product/Reviews';
 import { manrope } from '@/config/fonts';
 import { cn } from '@/lib/utils';
+import { getTranslations } from 'next-intl/server';
 import React from 'react';
 
 type Props = {
@@ -12,7 +13,12 @@ type Props = {
 };
 
 const page = async ({ params }: Props) => {
-  const { id } = await params;
+  // ? tôi không còn lựa chọn nào khác ngoài việc sử dụng getTranslations để lấy các bản dịch
+  // ? vì useTranslations không hoạt động trong server component
+  // ? và tôi không thể sử dụng useTranslations trong server component
+  const t = await getTranslations('Marketing.product_details');
+
+  const { id } = params;
 
   const productResponse = await getProductDetailsAction(id);
 
@@ -22,7 +28,8 @@ const page = async ({ params }: Props) => {
         <div className='max-w-7xl mx-auto px-4 py-8'>
           <h1 className='text-2xl font-bold text-center'>Product Not Found</h1>
           <p className='text-center mt-4'>
-            The product you are looking for does not exist.
+            {t('product_not_found') ||
+              'The product you are looking for does not exist.'}
           </p>
         </div>
       </>
@@ -45,7 +52,7 @@ const page = async ({ params }: Props) => {
           <Reviews productId={id} />
         </div>
         <h1 className='text-xl md:text-2xl lg:text-3xl font-bold text-primary'>
-          Bạn có thể sẽ thích
+          {t('recommendations.title')}
         </h1>
       </main>
       {/* Recommendations Section */}

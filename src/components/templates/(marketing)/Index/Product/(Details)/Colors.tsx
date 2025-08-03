@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { TColor, TVariant } from '@/types';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 type ColorsProps = {
@@ -10,6 +11,8 @@ type ColorsProps = {
 };
 
 export default function Colors({ tColors, onChangeColor }: ColorsProps) {
+  const t = useTranslations('Marketing.product_details');
+
   const [selectedColor, setSelectedColor] = useState(tColors[0]?.id);
 
   const onSelectColor = (color: number) => {
@@ -20,7 +23,7 @@ export default function Colors({ tColors, onChangeColor }: ColorsProps) {
   return (
     <div>
       <label className='block text-sm font-medium text-primary mb-2'>
-        Màu sắc:
+        {t('product_infor.colors')}:
       </label>
       <div className=' flex gap-2'>
         {tColors.map((tColor) => (

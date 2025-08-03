@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import { TReview } from '@/types';
+import { useTranslations } from 'next-intl';
 
 interface ImagePreviewModalProps {
   isOpen: boolean;
@@ -30,6 +31,8 @@ export default function ImagePreviewModal({
   onNextImage,
   onThumbnailClick,
 }: ImagePreviewModalProps) {
+  const t = useTranslations('Marketing.product_details');
+
   if (!review || !review.imageUrls) return null;
 
   const images = Object.values(review.imageUrls) as string[];
@@ -119,7 +122,7 @@ export default function ImagePreviewModal({
 
               {/* Review Date */}
               <p className='text-sm text-muted-foreground mb-4'>
-                Đánh giá vào {review.updatedAt}
+                {t('reviews.images_preview.review_date')}: {review.updatedAt}
               </p>
 
               {/* Review Text */}
@@ -130,7 +133,7 @@ export default function ImagePreviewModal({
               {/* Images in this review */}
               <div>
                 <h4 className='font-bold text-primary mb-3'>
-                  Hình ảnh trong đánh giá này
+                  {t('reviews.images_preview.images_in_this_review')}
                 </h4>
                 <div
                   className='flex gap-2 flex-wrap'

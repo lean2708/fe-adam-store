@@ -28,6 +28,34 @@
     },
     "sectionHeader": {
       "allProducts": "Tất cả sản phẩm"
+    },
+    "product_details": {
+      "product_infor": {
+        "solded": "Đã bán",
+        "colors": "Màu sắc",
+        "sizes": "Kích cỡ",
+        "quantity": "Số lượng",
+        "desc": "Mô tả sản phẩm",
+        "product_actions": {
+          "add_to_cart": "Thêm vào giỏ hàng",
+          "buy_now": "Mua ngay"
+        }
+      },
+      "reviews": {
+        "title": "Đánh giá",
+        "no_reviews": "Chưa có đánh giá nào cho sản phẩm này.",
+        "write_review": "Viết đánh giá",
+        "images_preview": {
+          "title": "Xem trước hình ảnh đánh giá",
+          "review_date": "Ngày đánh giá",
+          "images_in_this_review": "Hình ảnh trong đánh giá này"
+        }
+      },
+      "recommendations": {
+        "title": "Có thể bạn sẽ thích",
+        "no_recommendations": "Không có sản phẩm gợi ý nào."
+      },
+      "product_not_found": "Không tìm thấy sản phẩm."
     }
   }
 }

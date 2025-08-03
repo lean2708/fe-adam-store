@@ -28,6 +28,34 @@
     },
     "sectionHeader": {
       "allProducts": "All Products"
+    },
+    "product_details": {
+      "product_infor": {
+        "solded": "Solded",
+        "colors": "Colors",
+        "sizes": "Sizes",
+        "quantity": "Quantity",
+        "desc": "Product Description",
+        "product_actions": {
+          "add_to_cart": "Add Into Cart",
+          "buy_now": "Buy Now"
+        }
+      },
+      "reviews": {
+        "title": "Reviews",
+        "no_reviews": "No reviews available for this product.",
+        "write_review": "Write review",
+        "images_preview": {
+          "title": "Review Images Preview",
+          "review_date": "Review Date",
+          "images_in_this_review": "Images in this review"
+        }
+      },
+      "recommendations": {
+        "title": "You might also like",
+        "no_recommendations": "No products recommended."
+      },
+      "product_not_found": "The product you are looking for does not exist."
     }
   }
 }

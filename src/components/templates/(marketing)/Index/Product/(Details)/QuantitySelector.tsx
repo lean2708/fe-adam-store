@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl';
+
 export default function QuantitySelector({
   quantity,
   onDecrease,
@@ -7,10 +9,12 @@ export default function QuantitySelector({
   onDecrease: () => void;
   onIncrease: () => void;
 }) {
+  const t = useTranslations('Marketing.product_details');
+
   return (
     <div>
       <label className='block text-sm font-medium text-primary mb-2'>
-        Số lượng:
+        {t('product_infor.quantity')}:
       </label>
       <div className='flex items-center gap-2'>
         <button

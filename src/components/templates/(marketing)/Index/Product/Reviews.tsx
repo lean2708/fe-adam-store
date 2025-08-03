@@ -10,8 +10,11 @@ import { Skeleton } from '@/components/ui/skeleton';
 import ReviewItem from './(Reviews)/ReviewItem';
 import useReviews from '@/hooks/(product_details)/useReviews';
 import ImagePreviewModal from './(Reviews)/ImagePreviewModal';
+import { useTranslations } from 'next-intl';
 
 export default function Reviews({ productId }: { productId: string }) {
+  const t = useTranslations('Marketing.product_details');
+
   const pageSize = 4; // !Số lượng đánh giá trên mỗi trang
   const {
     reviews,
@@ -41,7 +44,7 @@ export default function Reviews({ productId }: { productId: string }) {
   return (
     <div id='reviews' className='space-y-6'>
       <h1 className='text-xl md:text-2xl lg:text-3xl font-bold text-primary'>
-        Đánh giá ({totalItems})
+        {t('reviews.title')} ({totalItems})
       </h1>
 
       {loading ? (
@@ -76,7 +79,7 @@ export default function Reviews({ productId }: { productId: string }) {
           ))}
         </div>
       ) : reviews.length === 0 ? (
-        <p className='text-gray-500'>Chưa có đánh giá nào cho sản phẩm này.</p>
+        <p className='text-gray-500'>{t('reviews.no_reviews')}.</p>
       ) : (
         <div className='-space-y-3'>
           {reviews.map((review) => (
