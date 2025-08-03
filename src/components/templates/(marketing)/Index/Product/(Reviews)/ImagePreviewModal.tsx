@@ -8,13 +8,13 @@ import {
 } from '@/components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
-import type { ReviewResponse } from '@/api-client';
 import Image from 'next/image';
+import { TReview } from '@/types';
 
 interface ImagePreviewModalProps {
   isOpen: boolean;
   onClose: () => void;
-  review: ReviewResponse | null;
+  review: TReview | null;
   selectedImageIndex: number;
   onPrevImage: () => void;
   onNextImage: () => void;

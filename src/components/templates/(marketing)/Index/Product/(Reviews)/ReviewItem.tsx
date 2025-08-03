@@ -1,11 +1,11 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Star } from 'lucide-react';
-import { ReviewResponse } from '@/api-client';
+import { TReview } from '@/types';
 
 interface ReviewItemProps {
-  review: ReviewResponse;
-  onImageClick: (review: ReviewResponse, imageIndex: number) => void;
+  review: TReview;
+  onImageClick: (review: TReview, imageIndex: number) => void;
 }
 
 export default function ReviewItem({ review, onImageClick }: ReviewItemProps) {

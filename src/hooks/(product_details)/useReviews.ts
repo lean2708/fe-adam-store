@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getProductReviewsAction } from '@/actions/reviewActions';
-import { ReviewResponse } from '@/api-client';
+import { TReview } from '@/types';
 
 /**
  * Custom hook to manage product reviews, pagination, and image modal state.
@@ -9,7 +9,7 @@ import { ReviewResponse } from '@/api-client';
  */
 export default function useReviews(productId: string, pageSize: number) {
   // *State to store the list of reviews for the current page
-  const [reviews, setReviews] = useState<ReviewResponse[]>([]);
+  const [reviews, setReviews] = useState<TReview[]>([]);
   // *Total number of review items for the product
   const [totalItems, setTotalItems] = useState(0);
   // *Loading state for fetching reviews
@@ -21,9 +21,7 @@ export default function useReviews(productId: string, pageSize: number) {
   const [totalPages, setTotalPages] = useState(0);
 
   // *State for the currently selected review (for modal display)
-  const [selectedReview, setSelectedReview] = useState<ReviewResponse | null>(
-    null
-  );
+  const [selectedReview, setSelectedReview] = useState<TReview | null>(null);
   // *Index of the currently selected image in the review's imageUrls
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   // *Modal open/close state for image viewer
@@ -70,7 +68,7 @@ export default function useReviews(productId: string, pageSize: number) {
    * @param review - The review whose image is clicked.
    * @param imageIndex - The index of the clicked image.
    */
-  const handleImageClick = (review: ReviewResponse, imageIndex: number) => {
+  const handleImageClick = (review: TReview, imageIndex: number) => {
     setSelectedReview(review);
     setSelectedImageIndex(imageIndex);
     setIsModalOpen(true);
