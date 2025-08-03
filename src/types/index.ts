@@ -24,8 +24,16 @@ export type TOrderItem = {
   id: number;
   orderId: string;
   quantity: number;
-  color: string;
-  size: number;
+  productVariant: {
+    color: {
+      id: number;
+      name: string;
+    };
+    size: {
+      id: number;
+      name: string;
+    };
+  }
   productId: string;
   Product: {
     id: string;

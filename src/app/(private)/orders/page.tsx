@@ -6,6 +6,7 @@ import OrderItem from '@/components/ui/order-item';
 import { getAllOrderUserAction } from '@/actions/orderActions';
 import { Skeleton } from '@/components/ui/skeleton';
 import ChooseAddress from '@/components/modules/ChooseAddress';
+import ReviewModule from '@/components/modules/ReviewModule';
 type TabStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
 interface TabItem {
   key: TabStatus;
@@ -21,8 +22,9 @@ const tabList: TabItem[] = [
 
 export default function OrderPage() {
   const [isVisible, setIsVisible] = useState(false)
+  const [isReview, setIsReview] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [itemOnModule, setItemOnModule] = useState<any>()
+  const [itemOnModule, setItemOnModule] = useState<any>(undefined)
   const [activeStatus, setActiveStatus] = useState<TabStatus>('PENDING');
   const [data, setData] = useState<any>({
     orderItems: [
@@ -154,7 +156,18 @@ export default function OrderPage() {
                     'py-2',
                     !isLast && 'border-b-2'
                   )}>
-                    <OrderItem item={item} activeStatus={activeStatus} openModule={() => { setIsVisible(true); setItemOnModule(item) }} />
+                    <OrderItem item={item} activeStatus={activeStatus} openModule={(type: "address" | "review" | string) => {
+                      switch (type) {
+                        case "address":
+                          setIsVisible(true);
+                          break;
+                        case "review":
+                          setIsReview(true);
+                          break;
+                      }
+                      setItemOnModule(item)
+                    }
+                    } />
                   </div>
                 )
               }
@@ -168,7 +181,8 @@ export default function OrderPage() {
           </div>
         </div>
       </div>
-      <ChooseAddress visible={isVisible} orderItem={itemOnModule} onClose={() => setIsVisible(false)} />
+      <ChooseAddress visible={isVisible} orderItem={itemOnModule} onClose={() => { setIsVisible(false); setItemOnModule(undefined) }} />
+      <ReviewModule visible={isReview} orderItem={itemOnModule} onClose={() => { setIsReview(false); setItemOnModule(undefined) }} />
     </main>
   );
 }

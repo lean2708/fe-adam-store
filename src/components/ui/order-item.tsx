@@ -1,11 +1,11 @@
 import { formatCurrency } from "@/lib/utils"
 type TabStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
-export default function OrderItem(props: { activeStatus: TabStatus, item: any , openModule: ()=> void}) {
+export default function OrderItem(props: { activeStatus: TabStatus, item: any , openModule: (type: string)=> void}) {
   const btnByStatus: Record<TabStatus, React.ReactNode> = {
-    PENDING: <><button onClick={()=>openModule()} className='w-52 px-4 mr-4 py-2 rounded-md border border-black text-sm'>Thay đổi địa chỉ nhận hàng</button><button className='w-40 px-4 py-2 bg-black text-white rounded-md text-sm'>Hủy</button></>,
-    PROCESSING: <><button className='w-52 px-4 mr-4 py-2 rounded-md border border-black text-sm'>Thay đổi địa chỉ nhận hàng</button><button className='w-40 px-4 py-2 bg-black text-white rounded-md text-sm'>Hủy</button></>,
+    PENDING: <><button onClick={()=>openModule('address')} className='w-52 px-4 mr-4 py-2 rounded-md border border-black text-sm'>Thay đổi địa chỉ nhận hàng</button><button className='w-40 px-4 py-2 bg-black text-white rounded-md text-sm'>Hủy</button></>,
+    PROCESSING: <><button onClick={()=>openModule('address')} className='w-52 px-4 mr-4 py-2 rounded-md border border-black text-sm'>Thay đổi địa chỉ nhận hàng</button><button className='w-40 px-4 py-2 bg-black text-white rounded-md text-sm'>Hủy</button></>,
     SHIPPED: <><button className='w-56 text-gray-400 px-4 py-2 rounded-md border border-gray-400 text-sm'>Xác nhận đã nhận được đơn</button></>,
-    DELIVERED: <><button className='w-28 px-4 py-2 bg-black text-white rounded-md text-sm'>Đánh giá</button></>,
+    DELIVERED: <><button  onClick={()=>openModule('review')} className='w-28 px-4 py-2 bg-black text-white rounded-md text-sm'>Đánh giá</button></>,
     CANCELLED: <><button className='w-28 px-4 py-2 bg-black text-white rounded-md text-sm'>Mua lại</button></>
   }
   const { item, activeStatus, openModule } = props

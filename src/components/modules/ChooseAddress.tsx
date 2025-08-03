@@ -6,10 +6,12 @@ import { cn } from "@/lib/utils";
 import { TAddress, TOrderItem } from "@/types";
 import { updateAddressForOrderByID } from "@/actions/orderActions";
 import { getAllAddressUser } from "@/actions/addressActions";
+import ConfirmDialogModule from "./ConfirmDialogModal";
 export default function ChooseAddress(props: { visible: boolean; orderItem: TOrderItem, onClose: () => void }) {
   const { visible, onClose, orderItem } = props;
   const [loading, setLoading] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [confirm, setConfirm] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(0); // chọn địa chỉ
   const [listAddress, setListAddress] = useState<TAddress[]>([
     {
@@ -50,8 +52,8 @@ export default function ChooseAddress(props: { visible: boolean; orderItem: TOrd
       try {
         setLoading(true)
         const res: any = await getAllAddressUser()
-        if (res.status === 200 && res.orders) {
-          setListAddress(res.orders)
+        if (res.status === 200 && res.address) {
+          setListAddress(res.address)
         }
       } catch (error) {
         console.error("Failed to fetch address:", error);
@@ -59,14 +61,14 @@ export default function ChooseAddress(props: { visible: boolean; orderItem: TOrd
         setLoading(false)
       }
     }
-    getAddress()
+    visible && getAddress()
   }, [visible])
 
-  const handleUpdateAddress = async (val: any) => {
+  const handleUpdateAddress = async () => {
     try {
       setIsSubmit(true)
-      const res = await updateAddressForOrderByID(orderItem.id, val)
-      if (res.status === 200) {
+      const res = await updateAddressForOrderByID(orderItem.id, listAddress[selectedIndex])
+      if (res.status === 500) {
         onClose()
       }
     } catch (error) {
@@ -83,7 +85,7 @@ export default function ChooseAddress(props: { visible: boolean; orderItem: TOrd
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
-      onClick={onClose}
+      onClick={confirm ? undefined : stopPropagation}
     >
       <Card
         className="relative w-full max-w-xl bg-white dark:bg-neutral-950 rounded-xl shadow-lg"
@@ -108,7 +110,7 @@ export default function ChooseAddress(props: { visible: boolean; orderItem: TOrd
           {loading && <Skeleton className="h-18 w-full" />}
           {(!loading && listAddress.length !== 0) && listAddress.map((item: TAddress, index) => (
             <li key={index}>
-              <label onChange={() => handleUpdateAddress(item)}
+              <label onClick={() => setConfirm(true)}
                 className={cn(
                   "flex items-center justify-start gap-3 h-18 w-full px-5 py-3 mt-2 rounded-lg border cursor-pointer relative transition-all",
                   selectedIndex === index ? "border-black" : "border-gray-300"
@@ -141,6 +143,7 @@ export default function ChooseAddress(props: { visible: boolean; orderItem: TOrd
           </li>
         </ul>
       </Card>
+      <ConfirmDialogModule onClose={() => setConfirm(false)} onSubmit={handleUpdateAddress} confirm={confirm} />
     </div>
   );
 }

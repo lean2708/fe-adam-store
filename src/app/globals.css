@@ -308,6 +308,7 @@
   border: 1.5px solid black;
   transform: translate(-50%, -50%);
 }
+
 .peer::after {
   position: absolute;
   width: 20px;
@@ -318,7 +319,7 @@
   content: "";
   background-color: transparent;
   border: 1.5px solid rgba(65, 59, 59, 0.53);
-  
+
   transform: translate(-50%, -50%);
 }
 
@@ -326,3 +327,30 @@
 .peer:checked~.peer:active {
   background-position: 0 -24px;
 }
+
+.rating {
+  display: inline-block;
+}
+
+.rating input {
+  display: none;
+}
+
+.rating label {
+  float: right;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.rating label:before {
+  content: "\2605";
+  font-size: 30px;
+}
+
+.rating input:checked~label,
+.rating label:hover,
+.rating label:hover~label {
+  color: #ffd700;
+  transition: color 0.3s;
+}
+
