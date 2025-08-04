@@ -10,6 +10,8 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
+import { formatCurrency } from "@/lib/utils";
+import { useLocale } from "next-intl";
 
 interface ChartData {
   name: string;
@@ -24,6 +26,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function Overview() {
+  const locale = useLocale();
   const [data, setData] = useState<ChartData[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,12 +37,12 @@ export function Overview() {
         const now = new Date();
         const startOfYear = new Date(now.getFullYear(), 0, 1);
         const endOfYear = new Date(now.getFullYear(), 11, 31);
-        
+
         const startDate = startOfYear.toISOString().split('T')[0];
         const endDate = endOfYear.toISOString().split('T')[0];
 
         const result = await getMonthlyRevenueAction(startDate, endDate);
-        
+
         if (result.success && result.data) {
           // Transform the data for the chart
           const chartData = result.data.map((item: RevenueByMonthDTO) => {
@@ -48,25 +51,25 @@ export function Overview() {
             if (item.month) {
               if (typeof item.month === 'string') {
                 const date = new Date(item.month);
-                monthName = date.toLocaleDateString('en-US', { month: 'short' });
+                monthName = date.toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-US', { month: 'short' });
               } else if (typeof item.month === 'object') {
                 // If it's an object, try to extract month information
                 const monthObj = item.month as any;
                 if (monthObj.month) {
                   const monthIndex = monthObj.month - 1; // Assuming 1-based month
                   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                   monthName = monthNames[monthIndex] || "Unknown";
                 }
               }
             }
-            
+
             return {
               name: monthName,
-              total: item.totalAmount || 0,
+              total: (item.totalAmount || 0) / 100000,
             };
           });
-          
+
           setData(chartData);
         }
       } catch (error) {
@@ -108,13 +111,13 @@ export function Overview() {
           tickLine={false}
           axisLine={false}
           tickMargin={8}
-          tickFormatter={(value) => `₫${value.toLocaleString()}`}
+          tickFormatter={(value) => formatCurrency(value, locale)}
         />
         <ChartTooltip
           content={
             <ChartTooltipContent
               formatter={(value: number) => [
-                `₫${value.toLocaleString()}`,
+                formatCurrency(value, locale),
                 "Revenue"
               ]}
             />

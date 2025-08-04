@@ -17,12 +17,13 @@ import {
   PaymentHistoryControllerApi
 } from "@/api-client";
 import { getAuthenticatedAxiosInstance } from "@/lib/auth/axios-config";
+import { AxiosInstance } from "axios";
 
 /**
  * Controller factory for creating authenticated API controller instances
  */
 export class ControllerFactory {
-  private static axiosInstance: any = null;
+  private static axiosInstance: AxiosInstance | null = null;
 
   /**
    * Initialize the factory with authenticated axios instance

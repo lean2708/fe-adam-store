@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/lib/utils";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
@@ -16,6 +18,8 @@ import { fetchAllSizesAction } from "@/actions/sizeActions";
 import type { SizeResponse } from "@/api-client/models";
 
 export default function SizesAdminPage() {
+  const t = useTranslations("Admin");
+  const locale = useLocale();
   const [sizes, setSizes] = useState<SizeResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
@@ -168,8 +172,8 @@ export default function SizesAdminPage() {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-muted-foreground">
-                        {size.createdAt 
-                          ? new Date(size.createdAt).toLocaleDateString()
+                        {size.createdAt
+                          ? formatDate(size.createdAt, locale, { year: 'numeric', month: 'short', day: 'numeric' })
                           : "N/A"
                         }
                       </TableCell>

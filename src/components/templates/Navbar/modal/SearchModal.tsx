@@ -7,6 +7,8 @@ import { Modal, ModalBody, ModalFooter } from "@/components/ui/modal"
 import { ProductCardSkeleton } from "@/components/ui/skeleton"
 import { searchProductsAction } from "@/actions/productActions"
 import { TProduct } from "@/types"
+import { useTranslations, useLocale } from "next-intl"
+import { formatCurrency } from "@/lib/utils"
 
 type SearchModalProps = {
     open: boolean
@@ -16,6 +18,8 @@ type SearchModalProps = {
 }
 
 export default function SearchModal({ open, onClose, searchQuery = "", isSearchExpanded = false }: SearchModalProps) {
+    const t = useTranslations("Marketing")
+    const locale = useLocale()
     const [searchResults, setSearchResults] = useState<TProduct[]>([])
     const [debouncedQuery, setDebouncedQuery] = useState("")
     const [isSearching, setIsSearching] = useState(false)
@@ -134,7 +138,7 @@ export default function SearchModal({ open, onClose, searchQuery = "", isSearchE
                                         </CardContent>
                                         <div className="text-center text-sm">{title}</div>
                                         <div className="mt-2 text-center text-sm font-bold">
-                                            {price.toLocaleString("vi-VN")} VND
+                                            {formatCurrency(price, locale)}
                                         </div>
                                     </Card>
                                 )

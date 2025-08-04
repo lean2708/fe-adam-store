@@ -4,10 +4,12 @@ import { logoutAction } from "@/actions/nextAuthActions"
 import { signOut, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { useTranslations } from "next-intl"
 
 export default function UserModal({ open, onClose }: { open: boolean, onClose: () => void }) {
   const { data: session, status, } = useSession()
   const router = useRouter()
+  const t = useTranslations("Header")
 
   const isLogin = status === "authenticated" && !!session?.user
   const user = session?.user
@@ -29,13 +31,13 @@ export default function UserModal({ open, onClose }: { open: boolean, onClose: (
       onClose()
 
       // Show success message
-      toast.success("Đăng xuất thành công!")
+      toast.success(t("user.logout") + " thành công!")
 
       // Redirect to home page
       router.push("/")
     } catch (error) {
       console.error("Logout error:", error)
-      toast.error("Có lỗi xảy ra khi đăng xuất")
+      toast.error("Có lỗi xảy ra khi " + t("user.logout").toLowerCase())
 
       // Even if there's an error, try to sign out with NextAuth
       try {
@@ -86,7 +88,7 @@ export default function UserModal({ open, onClose }: { open: boolean, onClose: (
           <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center">
             <LogIn className="h-6 w-6 text-gray-400" />
           </div>
-          <span className="text-lg font-medium">Đăng nhập</span>
+          <span className="text-lg font-medium">{t("user.login")}</span>
         </div>
         <div
           className="flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer"
@@ -95,7 +97,7 @@ export default function UserModal({ open, onClose }: { open: boolean, onClose: (
           <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center">
             <UserPlus className="h-6 w-6 text-gray-400" />
           </div>
-          <span className="text-lg font-medium">Đăng ký</span>
+          <span className="text-lg font-medium">{t("user.register")}</span>
         </div>
       </Modal>
     )
@@ -138,7 +140,7 @@ export default function UserModal({ open, onClose }: { open: boolean, onClose: (
         <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center">
           <User className="h-6 w-6 text-gray-400" />
         </div>
-        <span className="text-lg font-medium">Thông tin tài khoản</span>
+        <span className="text-lg font-medium">{t("user.profile")}</span>
       </div>
       <div className="px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer">
         <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center ">
@@ -153,7 +155,7 @@ export default function UserModal({ open, onClose }: { open: boolean, onClose: (
         <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center">
           <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6 text-gray-400" viewBox="0 0 24 24"><path d="M9 16l-4-4m0 0l4-4m-4 4h12"></path></svg>
         </div>
-        <span className="text-lg font-medium">Đăng xuất</span>
+        <span className="text-lg font-medium">{t("user.logout")}</span>
       </div>
     </Modal>
   )

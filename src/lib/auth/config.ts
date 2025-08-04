@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { signInApi, getMyInfoApi, refreshTokenApi } from "@/lib/data/auth";
 import { setCookie, getCookie, deleteCookie } from "@/lib/cookies";
 import type { UserResponse } from "@/api-client/models";
+import type { AuthUser, AuthCredentials, TokenCredentials } from "@/types/auth";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -13,13 +14,12 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials) {
+      async authorize(credentials: AuthCredentials | undefined) {
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
 
         try {
-          // Use your existing signInApi
           const tokenResponse = await signInApi({
             email: credentials.email,
             password: credentials.password,
@@ -29,31 +29,27 @@ export const authOptions: NextAuthOptions = {
             return null;
           }
 
-          // Get user info using the token
           const user = await getMyInfoApi(tokenResponse.accessToken);
 
           if (!user) {
             return null;
           }
 
-          // Store refresh token in httpOnly cookie
           if (tokenResponse.refreshToken) {
             await setCookie('refresh_token', tokenResponse.refreshToken, {
               httpOnly: true,
               secure: process.env.NODE_ENV === 'production',
               sameSite: 'lax',
-              maxAge: 7 * 24 * 60 * 60, // 7 days
+              maxAge: 7 * 24 * 60 * 60,
               path: '/',
             });
           }
 
-          // Return user object that will be stored in the JWT (without refresh token)
           return {
-            id: user.id?.toString() || "",
+            id: String(user.id || 0),
             email: user.email || "",
             name: user.name || "",
             accessToken: tokenResponse.accessToken,
-            // Include any other user properties you need
             roles: user.roles,
             status: user.status,
             avatarUrl: user.avatarUrl,
@@ -61,14 +57,13 @@ export const authOptions: NextAuthOptions = {
             gender: user.gender,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
-          } as any;
+          };
         } catch (error) {
           console.error("Authentication error:", error);
           return null;
         }
       },
     }),
-    // New provider for token-based login (for verification flows)
     CredentialsProvider({
       id: "token-login",
       name: "token-login",
@@ -77,31 +72,28 @@ export const authOptions: NextAuthOptions = {
         refreshToken: { label: "Refresh Token", type: "text" },
         cookiesToClear: { label: "Cookies to Clear", type: "text" }
       },
-      async authorize(credentials) {
+      async authorize(credentials: TokenCredentials | undefined) {
         if (!credentials?.accessToken) {
           return null;
         }
 
         try {
-          // Get user info using the access token
           const user = await getMyInfoApi(credentials.accessToken);
 
           if (!user) {
             return null;
           }
 
-          // Store refresh token in httpOnly cookie
           if (credentials.refreshToken) {
             await setCookie('refresh_token', credentials.refreshToken, {
               httpOnly: true,
               secure: process.env.NODE_ENV === 'production',
               sameSite: 'lax',
-              maxAge: 7 * 24 * 60 * 60, // 7 days
+              maxAge: 7 * 24 * 60 * 60,
               path: '/',
             });
           }
 
-          // Parse cookies to clear
           let cookiesToClear: string[] = [];
           if (credentials.cookiesToClear) {
             try {
@@ -111,14 +103,12 @@ export const authOptions: NextAuthOptions = {
             }
           }
 
-          // Return user object that will be stored in the JWT
           return {
-            id: user.id?.toString() || "",
+            id: String(user.id || 0),
             email: user.email || "",
             name: user.name || "",
             accessToken: credentials.accessToken,
-            cookiesToClear, // Pass cookies to clear to JWT callback
-            // Include any other user properties you need
+            cookiesToClear,
             roles: user.roles,
             status: user.status,
             avatarUrl: user.avatarUrl,
@@ -126,7 +116,7 @@ export const authOptions: NextAuthOptions = {
             gender: user.gender,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
-          } as any;
+          };
         } catch (error) {
           console.error("Token authentication error:", error);
           return null;
@@ -136,15 +126,14 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      // If user is available (first sign in), store user data in token
       if (user) {
-        token.accessToken = (user as any).accessToken;
-        token.user = user as any;
-        token.accessTokenExpires = Date.now() + 15 * 60 * 1000; // 15 minutes
+        const authUser = user as unknown as AuthUser;
+        token.accessToken = authUser.accessToken;
+        token.user = authUser;
+        token.accessTokenExpires = Date.now() + 15 * 60 * 1000;
         console.log("Access token expires at: ", new Date(token.accessTokenExpires).toLocaleString());
 
-        // Clean up cookies after successful authentication
-        const cookiesToClear = (user as any).cookiesToClear;
+        const cookiesToClear = authUser.cookiesToClear;
         if (cookiesToClear && Array.isArray(cookiesToClear) && cookiesToClear.length > 0) {
           try {
             for (const cookieName of cookiesToClear) {
@@ -173,9 +162,10 @@ export const authOptions: NextAuthOptions = {
               return token;
             }
             token.lastUserValidation = Date.now();
-          } catch (error: any) {
+          } catch (error: unknown) {
             // If 401/403/404, user might be deleted
-            if ([401, 403, 404].includes(error.response?.status)) {
+            const errorResponse = error as { response?: { status?: number } };
+            if ([401, 403, 404].includes(errorResponse.response?.status || 0)) {
               token.error = "UserNotFound";
               await deleteCookie('refresh_token');
               return token;

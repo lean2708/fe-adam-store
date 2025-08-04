@@ -1,6 +1,7 @@
 import { TProduct, TVariant } from '@/types';
 import { Star } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import { formatCurrency } from '@/lib/utils';
 
 export default function ProductInfo({
   product,
@@ -10,6 +11,7 @@ export default function ProductInfo({
   selectVariant: TVariant | undefined;
 }) {
   const t = useTranslations('Marketing.product_details');
+  const locale = useLocale();
 
   return (
     <div className='space-y-2'>
@@ -24,7 +26,7 @@ export default function ProductInfo({
         </span>
       </div>
       <div className='text-lg md:text-xl lg:text-2xl font-bold text-primary'>
-        {(selectVariant?.price || 0).toLocaleString('vi-VN')} VNĐ
+        {formatCurrency(selectVariant?.price || 0, locale)}
       </div>
     </div>
   );

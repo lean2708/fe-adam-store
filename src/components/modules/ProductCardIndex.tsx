@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { TProduct } from "@/types";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useLocale } from "next-intl";
 
 interface ProductCardIndexProps {
   product: TProduct;
@@ -15,6 +16,7 @@ export default function ProductCardIndex({
   badgeText = "Mới",
   className = ""
 }: ProductCardIndexProps) {
+  const locale = useLocale();
   const [selectedColor, setSelectedColor] = useState(1)
   return (
     <div className={`group cursor-pointer relative ${className}`}>
@@ -92,7 +94,7 @@ export default function ProductCardIndex({
 
       {/* Price */}
       <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-        {product.colors?.[0]?.variants?.[0]?.price?.toLocaleString('vi-VN')} VND
+        {formatCurrency(product.colors?.[0]?.variants?.[0]?.price || 0, locale)}
       </p>
     </div>
   );
