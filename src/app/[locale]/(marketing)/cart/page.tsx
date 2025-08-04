@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { CartItemsList } from '@/components/templates/(marketing)/Index/Cart/CartItemsList';
 import { CheckOut } from '@/components/templates/(marketing)/Index/Cart/CheckOut';
+import { cn } from '@/lib/utils';
+import { manrope } from '@/config/fonts';
 
 export default function CartPage() {
   const initialCartItems = [
@@ -82,8 +84,8 @@ export default function CartPage() {
 
   return (
     <div className='min-h-screen bg-[#ffffff]'>
-      <main className='max-w-7xl mx-auto px-4 py-8'>
-        <h1 className='text-3xl font-bold text-[#000000] text-center mb-8'>
+      <main className={cn(`max-w-7xl mx-auto px-4 py-8`, manrope.className)}>
+        <h1 className='text-3xl md:text-4xl xl:text-5xl font-semibold text-primary text-center mb-8'>
           Giỏ hàng của bạn
         </h1>
 

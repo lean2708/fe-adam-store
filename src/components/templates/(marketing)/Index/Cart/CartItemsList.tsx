@@ -24,13 +24,13 @@ interface CartItemsListProps {
 
 export function CartItemsList({ items, onQuantityChange }: CartItemsListProps) {
   return (
-    <div className='lg:col-span-2'>
-      <div className='flex items-center gap-2 mb-6'>
+    <div className='lg:col-span-2 mb-24'>
+      <div className='flex items-center gap-2 mb-2'>
         <Checkbox id='select-all' />
-        <label htmlFor='select-all' className='text-[#000000] font-medium'>
+        <label htmlFor='select-all' className='text-primary font-normal '>
           Tất cả sản phẩm
         </label>
-        <span className='ml-auto text-[#888888] cursor-pointer hover:underline'>
+        <span className='ml-auto text-muted-foreground font-normal cursor-pointer hover:underline'>
           Xóa tất cả
         </span>
       </div>
