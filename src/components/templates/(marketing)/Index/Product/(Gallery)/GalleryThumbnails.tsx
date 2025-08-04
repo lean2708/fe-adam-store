@@ -24,7 +24,7 @@ export default function GalleryThumbnails({
   }
 
   return (
-    <div className='flex flex-col gap-2 min-w-[80px]'>
+    <div className='flex flex-col gap-4 min-w-[80px]'>
       {images.map((image, index) => (
         <button
           key={index}

@@ -33,7 +33,7 @@ export default function Details({ product }: { product: TProduct }) {
   };
 
   return (
-    <div className='space-y-6'>
+    <div className='space-y-6 w-full'>
       <ProductInfo product={product} selectVariant={selectVariant} />
 
       <Colors tColors={product.colors || []} onChangeColor={onChangeColor} />

@@ -1,7 +1,6 @@
 import { ImageBasic } from '@/api-client';
 import { ORDER_STATUS, USER_ROLE } from '@/enums';
 
-
 export type TCategory = {
   id: string;
   title: string;
@@ -70,6 +69,18 @@ export type TProduct = {
   createdAt?: string;
   colors?: TColor[];
 };
+
+export type TReview = {
+  id?: number;
+  userName?: string;
+  userAvatarUrl?: string;
+  rating?: number;
+  comment?: string;
+  imageUrls?: object;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
 export type TAddress = {
   id?: number;
   isDefault: boolean;
@@ -80,16 +91,16 @@ export type TAddress = {
   ward: {
     code?: string;
     name: string;
-  },
+  };
   district: {
     id?: number;
     name: string;
-  },
+  };
   province: {
     id?: number;
     name: string;
-  }
-}
+  };
+};
 export type TEntityBasic = {
   id?: number;
   name?: string;
@@ -109,7 +120,7 @@ export type TColor = {
   id: number;
   name: string;
   variants?: TVariant[];
-}
+};
 
 export type TBranch = {
   id: string;
@@ -119,4 +130,4 @@ export type TBranch = {
   status: 'ACTIVE' | 'INACTIVE';
   createdAt?: string;
   updatedAt?: string;
-}
+};

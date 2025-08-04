@@ -1,9 +1,14 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Star } from 'lucide-react';
-import { ReviewResponse } from '@/api-client';
+import { TReview } from '@/types';
 
-export default function ReviewItem({ review }: { review: ReviewResponse }) {
+interface ReviewItemProps {
+  review: TReview;
+  onImageClick: (review: TReview, imageIndex: number) => void;
+}
+
+export default function ReviewItem({ review, onImageClick }: ReviewItemProps) {
   return (
     <Card className='border-border'>
       <CardContent className='p-6'>
@@ -44,18 +49,19 @@ export default function ReviewItem({ review }: { review: ReviewResponse }) {
 
             {review.imageUrls && Object.keys(review.imageUrls).length > 0 && (
               <div className='flex gap-4 mb-3 flex-wrap'>
-                {Object.values(review.imageUrls).map((img, i) => (
-                  <div
+                {Object.values(review.imageUrls).map((img: string, i) => (
+                  <button
                     key={i}
-                    className='size-24 bg-muted rounded overflow-hidden'
+                    onClick={() => onImageClick(review, i)}
+                    className='size-24 bg-muted rounded overflow-hidden hover:opacity-80 transition-opacity cursor-pointer border border-border shadow-md hover:shadow-lg'
                   >
                     <img
-                      src={img as string}
+                      src={img}
                       alt={`Review image ${i + 1}`}
                       className='w-full h-full object-cover'
                       loading='lazy'
                     />
-                  </div>
+                  </button>
                 ))}
               </div>
             )}

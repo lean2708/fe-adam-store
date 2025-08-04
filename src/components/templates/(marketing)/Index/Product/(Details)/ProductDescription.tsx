@@ -1,12 +1,15 @@
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 export default function ProductDescription() {
+  const t = useTranslations('Marketing.product_details');
+
   const [showDescription, setShowDescription] = useState(false);
 
   return (
     <div>
       <div className='text-xl font-bold text-primary space-y-1 flex items-center'>
-        <p className='mr-2'>Mô tả sản phẩm</p>
+        <p className='mr-2'>{t('product_infor.desc')}</p>
         <button
           onClick={() => setShowDescription((prev) => !prev)}
           className='w-6 h-6 text-black flex items-center justify-center border border-gray-300 rounded-full bg-white hover:bg-gray-100 transition'

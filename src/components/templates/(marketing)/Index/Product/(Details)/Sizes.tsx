@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { TColor, TVariant } from '@/types';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 type SizesProps = {
@@ -9,14 +10,17 @@ type SizesProps = {
 };
 
 const SIZE_LIST = [
+  { name: 'XS', key: 'XS' },
+  { name: 'S', key: 'S' },
   { name: 'M', key: 'M' },
   { name: 'L', key: 'L' },
   { name: 'XL', key: 'XL' },
-  { name: '2XL', key: '2XL' },
-  { name: '3XL', key: '3XL' },
+  { name: 'XXL', key: 'XXL' },
 ];
 
 export default function Sizes({ tColor, onChangeSize }: SizesProps) {
+  const t = useTranslations('Marketing.product_details');
+
   // Tìm variant đầu tiên có size hợp lệ để set mặc định
   const firstAvailable = tColor.variants?.find((v) =>
     SIZE_LIST.some((s) => s.name === v.size?.name)
@@ -33,7 +37,9 @@ export default function Sizes({ tColor, onChangeSize }: SizesProps) {
 
   return (
     <div>
-      <span className='block text-sm font-medium text-primary mb-2'>Size:</span>
+      <span className='block text-sm font-medium text-primary mb-2'>
+        {t('product_infor.sizes')}:
+      </span>
       <div className='flex gap-2'>
         {SIZE_LIST.map((size) => {
           // Tìm variant có size tương ứng
