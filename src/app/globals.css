@@ -247,45 +247,52 @@
 
 /* Theme-specific overrides */
 .dark .adam-store-shadow {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
 .adam-store-shadow {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.peer {
+/* ? Tôi phải comment lại các lớp CSS peer */
+/* ? Chúng ghi đè peer checkbox shadcn default và khiến cho :active không hoạt động tốt*/
+
+/* .peer {
   -webkit-appearance: none;
-  /* remove default */
   display: inline-block;
   border-radius: 12px;
   cursor: pointer;
   position: relative;
   vertical-align: middle;
 
-  background-image: -webkit-radial-gradient(rgb(0, 0, 0) 0%, rgb(0, 0, 0) 15%, rgb(0, 0, 0) 60%, rgba(0, 0, 0, 0) 61%, rgba(0, 0, 0, 0) 100%);
+  background-image: -webkit-radial-gradient(
+    rgb(0, 0, 0) 0%,
+    rgb(0, 0, 0) 15%,
+    rgb(0, 0, 0) 60%,
+    rgba(0, 0, 0, 0) 61%,
+    rgba(0, 0, 0, 0) 100%
+  );
   background-color: hsl(0, 0%, 100%);
   background-repeat: no-repeat;
-  -webkit-transition: background-position .15s cubic-bezier(.8, 0, 1, 1),
-    -webkit-transform .25s cubic-bezier(.8, 0, 1, 1);
-  /* outline: black; */
-}
+  -webkit-transition: background-position 0.15s cubic-bezier(0.8, 0, 1, 1),
+    -webkit-transform 0.25s cubic-bezier(0.8, 0, 1, 1);
+} */
 
-.peer:checked {
-  -webkit-transition: background-position .2s .15s cubic-bezier(0, 0, .2, 1),
-    -webkit-transform .25s cubic-bezier(0, 0, .2, 1);
-}
+/* .peer:checked {
+  -webkit-transition: background-position 0.2s 0.15s cubic-bezier(0, 0, 0.2, 1),
+    -webkit-transform 0.25s cubic-bezier(0, 0, 0.2, 1);
+} */
 
-.peer:active {
+/* .peer:active {
   -webkit-transform: scale(1.5);
-  -webkit-transition: -webkit-transform .1s cubic-bezier(0, 0, .2, 1);
-}
-
-
+  -webkit-transition: -webkit-transform 0.1s cubic-bezier(0, 0, 0.2, 1);
+} */
 
 /* The up/down direction logic */
 
-.peer,
+/* .peer,
 .peer:active {
   background-position: 0 24px;
 }
@@ -293,36 +300,35 @@
 .peer:checked {
   background-position: 0 0;
   box-shadow: hsla(0, 0%, 0%, 0.104) 0 1px 1px, inset hsl(0, 0%, 0%) 0 0 0 1.5px;
+} */
 
-}
-
-.peer:checked::after {
+/* .peer:checked::after {
   position: absolute;
   width: 21px;
   height: 21px;
   top: 50%;
   left: 50%;
   border-radius: 50%;
-  content: "";
+  content: '';
   background-color: transparent;
   border: 1.5px solid black;
   transform: translate(-50%, -50%);
-}
-.peer::after {
+} */
+/* .peer::after {
   position: absolute;
   width: 20px;
   height: 20px;
   top: 50%;
   left: 50%;
   border-radius: 50%;
-  content: "";
+  content: '';
   background-color: transparent;
   border: 1.5px solid rgba(65, 59, 59, 0.53);
-  
-  transform: translate(-50%, -50%);
-}
 
-.peer:checked~.peer,
-.peer:checked~.peer:active {
+  transform: translate(-50%, -50%);
+} */
+
+/* .peer:checked ~ .peer,
+.peer:checked ~ .peer:active {
   background-position: 0 -24px;
-}
+} */
