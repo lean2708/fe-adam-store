@@ -5,7 +5,7 @@ import ThemeProvider from '@/providers/theme-provider';
 import AuthProvider from '@/providers/auth-provider';
 import { fontVariables } from '@/config/fonts';
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, getRequestConfig, setRequestLocale } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { QueryProvider } from '@/providers/react-query-provider';
 
 export const metadata: Metadata = {

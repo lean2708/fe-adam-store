@@ -11,6 +11,8 @@ import { Search, Trash2, Filter } from "lucide-react";
 import { searchPaymentHistoriesAction, deletePaymentHistoryAction } from "@/actions/paymentHistoryActions";
 import type { PaymentHistoryResponse } from "@/api-client/models";
 import { toast } from "sonner";
+import { formatCurrency, formatDate } from "@/lib/utils";
+import { useLocale } from "next-intl";
 
 export default function PaymentHistoryPage() {
   const [paymentHistories, setPaymentHistories] = useState<PaymentHistoryResponse[]>([]);
@@ -23,7 +25,7 @@ export default function PaymentHistoryPage() {
   const [paymentStatus, setPaymentStatus] = useState<'PAID' | 'PENDING' | 'REFUNDED' | 'CANCELED' | 'FAILED' | undefined>(undefined);
 
   const pageSize = 10;
-
+  const locale = useLocale();
   useEffect(() => {
     // Set default date range (last 30 days)
     const now = new Date();
@@ -102,22 +104,9 @@ export default function PaymentHistoryPage() {
     fetchPaymentHistories();
   };
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND'
-    }).format(amount);
-  };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('vi-VN', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
+
+
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -264,7 +253,7 @@ export default function PaymentHistoryPage() {
                       <TableCell className="font-medium">#{payment.id}</TableCell>
                       <TableCell>{payment.paymentMethod || 'N/A'}</TableCell>
                       <TableCell className="font-medium">
-                        {formatCurrency(payment.totalAmount || 0)}
+                        {formatCurrency(payment.totalAmount || 0,locale)}
                       </TableCell>
                       <TableCell>
                         <Badge 
@@ -275,7 +264,7 @@ export default function PaymentHistoryPage() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        {payment.paymentTime ? formatDate(payment.paymentTime) : 'N/A'}
+                        {payment.paymentTime ? formatDate(payment.paymentTime, locale) : 'N/A'}
                       </TableCell>
                       <TableCell>
                         {payment.isPrimary ? (

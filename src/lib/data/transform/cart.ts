@@ -1,4 +1,4 @@
-import type { CartItemResponse } from "@/api-client/models";
+import type { CartItemResponse, EntityBasic } from "@/api-client/models";
 import { TCartItem, TProduct, TColor } from "@/types";
 import { fetchProductDetailByIdApi } from "../product";
 

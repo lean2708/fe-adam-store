@@ -31,8 +31,12 @@ import {
   restorePromotionAction
 } from "@/actions/promotionActions";
 import type { PromotionResponse, PromotionRequest } from "@/api-client/models";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/lib/utils";
 
 export default function PromotionsAdminPage() {
+  const t = useTranslations("Admin");
+  const locale = useLocale();
   const [promotions, setPromotions] = useState<PromotionResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
@@ -170,10 +174,7 @@ export default function PromotionsAdminPage() {
     }
   };
 
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return "N/A";
-    return new Date(dateString).toLocaleDateString();
-  };
+
 
   const isPromotionActive = (promotion: PromotionResponse) => {
     if (!promotion.isActive) return false;
@@ -334,8 +335,8 @@ export default function PromotionsAdminPage() {
                       </TableCell>
                       <TableCell>
                         <div className="text-sm">
-                          <div>{formatDate(promotion.startDate)} -</div>
-                          <div>{formatDate(promotion.endDate)}</div>
+                          <div>{formatDate(promotion.startDate, locale, { year: 'numeric', month: 'short', day: 'numeric' })} -</div>
+                          <div>{formatDate(promotion.endDate, locale, { year: 'numeric', month: 'short', day: 'numeric' })}</div>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -346,7 +347,7 @@ export default function PromotionsAdminPage() {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-muted-foreground">
-                        {formatDate(promotion.createdAt)}
+                        {formatDate(promotion.createdAt, locale, { year: 'numeric', month: 'short', day: 'numeric' })}
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">

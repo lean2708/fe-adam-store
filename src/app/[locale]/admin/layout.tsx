@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import AdminSidebar from "@/components/templates/admin/AdminSidebar";
 import AdminHeader from "@/components/templates/admin/AdminHeader";
 import Spinner from "@/components/ui/Spinner";
-import { QueryProvider } from "@/providers/react-query-provider";
 
 interface AdminLayoutProps {
   children: React.ReactNode;

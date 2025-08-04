@@ -103,6 +103,33 @@ export function getAllImagesFromProduct(product: TProduct): string[] {
   // Remove duplicates
   return Array.from(new Set(imageUrls));
 }
-export function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('vi-VN').format(value) + ' VNĐ';
+export function formatCurrency(value: number, locale: string = 'vi'): string {
+  if (locale === 'vi') {
+    return new Intl.NumberFormat('vi-VN').format(value) + ' VNĐ';
+  } else {
+    return new Intl.NumberFormat('en', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(value);
+  }
+}
+
+export function formatDate(dateString: string | undefined, locale: string = 'vi', options?: Intl.DateTimeFormatOptions): string {
+  if (!dateString) return "N/A";
+
+  const defaultOptions: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  };
+
+  const formatOptions = options || defaultOptions;
+
+  if (locale === 'vi') {
+    return new Date(dateString).toLocaleDateString('vi-VN', formatOptions);
+  } else {
+    return new Date(dateString).toLocaleDateString('en-US', formatOptions);
+  }
 }

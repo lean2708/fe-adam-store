@@ -16,16 +16,16 @@ async function getCartItemController() {
 /**
  * Fetch a cart item by its ID.
  */
-export async function fetchCartItemByIdApi(id: number): Promise<TCartItem | null> {
-    const api = await getCartItemController();
-    const response = await api.fetchById6({ id });
-    const item = response.data.result;
-    if (!item) return null;
-    // Pass product to avoid recursion if already fetched
-    const variant = item.productVariantBasic;
-    const product = variant?.product ?? null;
-    return transformCartItemResponseToTCartItemWithProduct(item, product);
-}
+// export async function fetchCartItemByIdApi(id: number): Promise<TCartItem | null> {
+//     const api = await getCartItemController();
+//     const response = await api.fetchById6({ id });
+//     const item = response.data.result;
+//     if (!item) return null;
+//     // Pass product to avoid recursion if already fetched
+//     const variant = item.productVariantBasic;
+//     const product = variant?.product ?? null;
+//     return transformCartItemResponseToTCartItemWithProduct(item, product);
+// }
 
 /**
  * Add a new cart item.

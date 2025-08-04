@@ -29,8 +29,12 @@ import {
 import type { FileResponse } from "@/api-client/models";
 import { toast } from "sonner";
 import Image from "next/image";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/lib/utils";
 
 export default function FilesPage() {
+  const t = useTranslations("Admin");
+  const locale = useLocale();
   const [files, setFiles] = useState<FileResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -298,7 +302,7 @@ export default function FilesPage() {
                       </div>
                       <div className="text-xs text-muted-foreground">
                         <div>By: {file.createdBy}</div>
-                        <div>{file.createdAt ? new Date(file.createdAt).toLocaleDateString() : '-'}</div>
+                        <div>{file.createdAt ? formatDate(file.createdAt, locale, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</div>
                       </div>
                     </div>
                   </CardContent>

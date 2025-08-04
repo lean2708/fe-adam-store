@@ -10,6 +10,8 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
+import { formatCurrency } from "@/lib/utils";
+import { useLocale } from "next-intl";
 
 interface ChartData {
   name: string;
@@ -24,6 +26,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function Overview() {
+  const locale = useLocale();
   const [data, setData] = useState<ChartData[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -48,7 +51,7 @@ export function Overview() {
             if (item.month) {
               if (typeof item.month === 'string') {
                 const date = new Date(item.month);
-                monthName = date.toLocaleDateString('en-US', { month: 'short' });
+                monthName = date.toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-US', { month: 'short' });
               } else if (typeof item.month === 'object') {
                 // If it's an object, try to extract month information
                 const monthObj = item.month as any;
@@ -108,13 +111,13 @@ export function Overview() {
           tickLine={false}
           axisLine={false}
           tickMargin={8}
-          tickFormatter={(value) => `₫${value.toLocaleString()}`}
+          tickFormatter={(value) => formatCurrency(value, locale)}
         />
         <ChartTooltip
           content={
             <ChartTooltipContent
               formatter={(value: number) => [
-                `₫${value.toLocaleString()}`,
+                formatCurrency(value, locale),
                 "Revenue"
               ]}
             />

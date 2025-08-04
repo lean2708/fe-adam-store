@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -34,6 +34,7 @@ import Image from "next/image";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { formatCurrency, formatDate } from "@/lib/utils";
 
 export default function ProductsPage() {
   const t = useTranslations("Admin");
@@ -49,6 +50,8 @@ export default function ProductsPage() {
 
   const pageSize = 10;
 
+  const locale = useLocale();
+  
   const fetchProducts = async (page: number = 0) => {
     setLoading(true);
     try {
@@ -126,12 +129,7 @@ export default function ProductsPage() {
     }
   };
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND'
-    }).format(amount);
-  };
+  
 
   const getProductPrice = (product: ProductResponse) => {
     if (product.variants && product.variants.length > 0) {
@@ -140,9 +138,9 @@ export default function ProductsPage() {
       const maxPrice = Math.max(...prices);
       
       if (minPrice === maxPrice) {
-        return formatCurrency(minPrice);
+        return formatCurrency(minPrice, locale);
       } else {
-        return `${formatCurrency(minPrice)} - ${formatCurrency(maxPrice)}`;
+        return `${formatCurrency(minPrice, locale)} - ${formatCurrency(maxPrice, locale)}`;
       }
     }
     return "N/A";
@@ -284,7 +282,7 @@ export default function ProductsPage() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        {product.createdAt ? new Date(product.createdAt).toLocaleDateString() : '-'}
+                        {product.createdAt ? formatDate(product.createdAt, locale, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}
                       </TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
@@ -413,7 +411,7 @@ export default function ProductsPage() {
                 <div className="space-y-2">
                   <Label className="text-sm font-medium">Created Date</Label>
                   <p className="text-sm">
-                    {selectedProduct.createdAt ? new Date(selectedProduct.createdAt).toLocaleDateString() : '-'}
+                    {selectedProduct.createdAt ? formatDate(selectedProduct.createdAt, locale, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}
                   </p>
                 </div>
                 <div className="space-y-2">

@@ -6,10 +6,13 @@ import { Badge } from "@/components/ui/badge";
 import { searchOrdersForAdminAction } from "@/actions/orderActions";
 import type { OrderResponse } from "@/api-client/models";
 import Link from "next/link";
+import { formatCurrency, formatDate } from "@/lib/utils";
+import { useLocale } from "next-intl";
 
 export function RecentOrders() {
   const [orders, setOrders] = useState<OrderResponse[]>([]);
   const [loading, setLoading] = useState(true);
+  const locale = useLocale();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -42,21 +45,7 @@ export function RecentOrders() {
     fetchOrders();
   }, []);
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND'
-    }).format(amount);
-  };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('vi-VN', {
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -144,7 +133,7 @@ export function RecentOrders() {
                 </div>
                 <div className="text-right">
                   <div className="text-sm font-medium">
-                    {formatCurrency(order.totalPrice || 0)}
+                    {formatCurrency(order.totalPrice || 0, locale)}
                   </div>
                   <div className="flex items-center space-x-2">
                     <Badge
@@ -157,7 +146,7 @@ export function RecentOrders() {
                 </div>
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                {order.orderDate ? formatDate(order.orderDate) : order.createdAt ? formatDate(order.createdAt) : 'Unknown date'}
+                {order.orderDate ? formatDate(order.orderDate, locale, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Unknown date'}
               </p>
             </div>
           </div>

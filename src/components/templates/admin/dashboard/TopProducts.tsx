@@ -14,6 +14,8 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import Link from "next/link";
+import { formatCurrency } from "@/lib/utils";
+import { useLocale } from "next-intl";
 
 const chartConfig = {
   soldQuantity: {
@@ -25,6 +27,7 @@ const chartConfig = {
 export function TopProducts() {
   const [products, setProducts] = useState<TopSellingDTO[]>([]);
   const [loading, setLoading] = useState(true);
+  const locale = useLocale();
 
   useEffect(() => {
     const fetchTopProducts = async () => {
@@ -52,12 +55,7 @@ export function TopProducts() {
     fetchTopProducts();
   }, []);
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND'
-    }).format(amount);
-  };
+
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -185,7 +183,7 @@ export function TopProducts() {
               <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
                 <span>Sold: {product.soldQuantity || 0} units</span>
                 <span className="font-medium text-foreground">
-                  {formatCurrency(product.totalRevenue || 0)}
+                  {formatCurrency(product.totalRevenue || 0, locale)}
                 </span>
               </div>
               

@@ -6,8 +6,11 @@ import { fetchAllUsersAction } from "@/actions/userActions";
 import { DollarSign, ShoppingCart, TrendingUp, Users } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { formatCurrency } from "@/lib/utils";
+import { useLocale } from "next-intl";
 
 export function DashboardStats() {
+  const locale = useLocale();
+
   // Query for order/revenue stats
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ['dashboard-stats', '2025-08-10', '2025-07-20'],
@@ -40,7 +43,7 @@ export function DashboardStats() {
   const statsCards = [
     {
       title: "Total Revenue",
-      value: stats?.totalRevenue ? formatCurrency(stats.totalRevenue) : "₫0",
+      value: stats?.totalRevenue ? formatCurrency(stats.totalRevenue, locale) : "₫0",
       icon: DollarSign,
       description: "This month",
       color: "text-green-600",
@@ -54,8 +57,8 @@ export function DashboardStats() {
     },
     {
       title: "Average Order Value",
-      value: stats?.totalOrders && stats?.totalRevenue 
-        ? formatCurrency(stats.totalRevenue / stats.totalOrders)
+      value: stats?.totalOrders && stats?.totalRevenue
+        ? formatCurrency(stats.totalRevenue / stats.totalOrders, locale)
         : "₫0",
       icon: TrendingUp,
       description: "Per order",
@@ -63,7 +66,7 @@ export function DashboardStats() {
     },
     {
       title: "Total Users",
-      value: userCount.toLocaleString(),
+      value: userCount.toLocaleString(locale === 'vi' ? 'vi-VN' : 'en-US'),
       icon: Users,
       description: "Registered users",
       color: "text-orange-600",

@@ -2,7 +2,8 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { Modal, ModalBody } from "@/components/ui/modal"
-import { useTranslations } from "next-intl"
+import { useTranslations, useLocale } from "next-intl"
+import { formatCurrency } from "@/lib/utils"
 
 type CartItem = {
   id: number
@@ -24,6 +25,7 @@ export default function CartModal({
   onClose: () => void
 }) {
   const t = useTranslations("Header")
+  const locale = useLocale()
 
   // Calculate totals inside the modal
   const cartTotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
@@ -42,7 +44,7 @@ export default function CartModal({
         {/* Cart Header */}
         <div className="flex justify-between items-center mb-4">
           <div className="text-sm text-gray-600">
-            {t("cart.subtotal")}: <span className="font-semibold">{cartTotal.toLocaleString("vi-VN")} VND</span> (
+            {t("cart.subtotal")}: <span className="font-semibold">{formatCurrency(cartTotal, locale)}</span> (
             {cartItemCount} {t("cart.products")})
           </div>
           <div className="text-sm font-medium">{t("cart.selected")}-{cartItemCount}</div>
@@ -67,7 +69,7 @@ export default function CartModal({
                 </p>
                 <div className="flex items-center justify-between mt-1">
                   <span className="text-sm font-semibold text-gray-900">
-                    {item.price.toLocaleString("vi-VN")} VND
+                    {formatCurrency(item.price, locale)}
                   </span>
                   <span className="text-xs text-gray-500">x{item.quantity}</span>
                 </div>
