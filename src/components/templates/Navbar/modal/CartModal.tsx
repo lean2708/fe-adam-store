@@ -2,6 +2,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { Modal, ModalBody } from "@/components/ui/modal"
+import { useTranslations } from "next-intl"
 
 type CartItem = {
   id: number
@@ -22,6 +23,8 @@ export default function CartModal({
   cartItems: CartItem[]
   onClose: () => void
 }) {
+  const t = useTranslations("Header")
+
   // Calculate totals inside the modal
   const cartTotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0)
@@ -39,10 +42,10 @@ export default function CartModal({
         {/* Cart Header */}
         <div className="flex justify-between items-center mb-4">
           <div className="text-sm text-gray-600">
-            Tạm tính: <span className="font-semibold">{cartTotal.toLocaleString("vi-VN")} VND</span> (
-            {cartItemCount} sản phẩm)
+            {t("cart.subtotal")}: <span className="font-semibold">{cartTotal.toLocaleString("vi-VN")} VND</span> (
+            {cartItemCount} {t("cart.products")})
           </div>
-          <div className="text-sm font-medium">Đã Chọn-{cartItemCount}</div>
+          <div className="text-sm font-medium">{t("cart.selected")}-{cartItemCount}</div>
         </div>
         {/* Cart Items */}
         <div className="space-y-3 mb-6">
@@ -81,14 +84,14 @@ export default function CartModal({
             className="w-full bg-black hover:bg-gray-800 text-white py-3 rounded-md font-medium"
             onClick={onClose}
           >
-            Mua ngay
+            {t("cart.buyNow")}
           </Button>
           <Button
             variant="outline"
             className="w-full border-gray-300 text-gray-700 py-3 rounded-md font-medium bg-transparent"
             onClick={onClose}
           >
-            Giỏ hàng của bạn
+            {t("cart.viewCart")}
           </Button>
         </div>
       </ModalBody>

@@ -34,12 +34,12 @@ export function Overview() {
         const now = new Date();
         const startOfYear = new Date(now.getFullYear(), 0, 1);
         const endOfYear = new Date(now.getFullYear(), 11, 31);
-        
+
         const startDate = startOfYear.toISOString().split('T')[0];
         const endDate = endOfYear.toISOString().split('T')[0];
 
         const result = await getMonthlyRevenueAction(startDate, endDate);
-        
+
         if (result.success && result.data) {
           // Transform the data for the chart
           const chartData = result.data.map((item: RevenueByMonthDTO) => {
@@ -55,18 +55,18 @@ export function Overview() {
                 if (monthObj.month) {
                   const monthIndex = monthObj.month - 1; // Assuming 1-based month
                   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                   monthName = monthNames[monthIndex] || "Unknown";
                 }
               }
             }
-            
+
             return {
               name: monthName,
-              total: item.totalAmount || 0,
+              total: (item.totalAmount || 0) / 100000,
             };
           });
-          
+
           setData(chartData);
         }
       } catch (error) {

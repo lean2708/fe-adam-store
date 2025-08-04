@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useTranslations } from "next-intl";
 import {
   Table,
   TableBody,
@@ -39,6 +40,7 @@ import { SearchOrdersForAdminOrderStatusEnum } from "@/api-client/apis/order-con
 import { toast } from "sonner";
 
 export default function OrdersPage() {
+  const t = useTranslations("Admin");
   const [orders, setOrders] = useState<OrderResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -142,15 +144,15 @@ export default function OrdersPage() {
   const getStatusText = (status: string) => {
     switch (status) {
       case 'PENDING':
-        return 'Pending';
+        return t('orders.pending');
       case 'PROCESSING':
-        return 'Processing';
+        return t('orders.processing');
       case 'SHIPPED':
-        return 'Shipped';
+        return t('orders.shipped');
       case 'DELIVERED':
-        return 'Delivered';
+        return t('orders.delivered');
       case 'CANCELLED':
-        return 'Cancelled';
+        return t('orders.cancelled');
       default:
         return status;
     }
@@ -173,9 +175,9 @@ export default function OrdersPage() {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('orders.title')}</h1>
           <p className="text-muted-foreground">
-            Manage customer orders and track their status
+            {t('orders.description')}
           </p>
         </div>
       </div>
@@ -183,9 +185,9 @@ export default function OrdersPage() {
       {/* Search and Filters */}
       <Card>
         <CardHeader>
-          <CardTitle>Order Management</CardTitle>
+          <CardTitle>{t('orders.title')}</CardTitle>
           <CardDescription>
-            View and manage all customer orders
+            {t('orders.description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -193,7 +195,7 @@ export default function OrdersPage() {
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
-                placeholder="Search orders..."
+                placeholder={t('common.search') + ' ' + t('orders.title').toLowerCase() + '...'}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
