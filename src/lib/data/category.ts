@@ -1,4 +1,5 @@
 import type { TCategory } from "@/types";
+import type { CategoryRequest } from "@/api-client/models";
 import { ControllerFactory } from "./factory-api-client";
 import { transformCategoryResponseToTCategory } from "./transform/category";
 
@@ -28,7 +29,7 @@ export async function fetchAllCategoriesApi(page?: number, size?: number, sort?:
 /**
  * Create a new category (admin).
  */
-export async function createCategoryApi(data: any): Promise<TCategory> {
+export async function createCategoryApi(data: CategoryRequest): Promise<TCategory> {
     const api = await getCategoryController();
     const response = await api.create8({ categoryRequest: data });
     if (response.data.code !== 200) {
@@ -41,7 +42,7 @@ export async function createCategoryApi(data: any): Promise<TCategory> {
 /**
  * Update a category (admin).
  */
-export async function updateCategoryApi(id: number, data: any): Promise<TCategory> {
+export async function updateCategoryApi(id: number, data: CategoryRequest): Promise<TCategory> {
     const api = await getCategoryController();
     const response = await api.update7({ id, categoryRequest: data });
     if (response.data.code !== 200) {

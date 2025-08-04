@@ -1,57 +1,41 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getOrderRevenueSummaryAction } from "@/actions/statisticsActions";
 import { fetchAllUsersAction } from "@/actions/userActions";
 import { DollarSign, ShoppingCart, TrendingUp, Users } from "lucide-react";
-import type { OrderStatsDTO } from "@/api-client/models";
+import { useQuery } from "@tanstack/react-query";
+import { formatCurrency } from "@/lib/utils";
 
 export function DashboardStats() {
-  const [stats, setStats] = useState<OrderStatsDTO | null>(null);
-  const [userCount, setUserCount] = useState<number>(0);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        // Get stats for the current month
-        const now = new Date();
-        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-
-        const startDate = startOfMonth.toISOString().split('T')[0];
-        const endDate = endOfMonth.toISOString().split('T')[0];
-        
-        // Fetch order/revenue stats and user count in parallel
-        const [statsResult, usersResult] = await Promise.all([
-          getOrderRevenueSummaryAction("2025-08-10", "2025-07-20"),
-          fetchAllUsersAction(0, 1) // Just get first page to get total count
-        ]);
-        
-        if (statsResult.success && statsResult.data) {
-          setStats(statsResult.data);
-        }
-
-        if (usersResult.success && usersResult.data) {
-          setUserCount(usersResult.data.totalItems || 0);
-        }
-      } catch (error) {
-        console.error("Failed to fetch dashboard stats:", error);
-      } finally {
-        setLoading(false);
+  // Query for order/revenue stats
+  const { data: stats, isLoading: statsLoading } = useQuery({
+    queryKey: ['dashboard-stats', '2025-08-10', '2025-07-20'],
+    queryFn: async () => {
+      const result = await getOrderRevenueSummaryAction("2025-08-10", "2025-07-20");
+      if (!result.success) {
+        throw new Error(result.message || 'Failed to fetch stats');
       }
-    };
+      return result.data;
+    },
+  });
 
-    fetchStats();
-  }, []);
+  // Query for user count
+  const { data: usersData, isLoading: usersLoading } = useQuery({
+    queryKey: ['users-count'],
+    queryFn: async () => {
+      const result = await fetchAllUsersAction(0, 1);
+      if (!result.success) {
+        throw new Error(result.message || 'Failed to fetch users');
+      }
+      return result.data;
+    },
+  });
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND'
-    }).format(amount);
-  };
+  const loading = statsLoading || usersLoading;
+  const userCount = usersData?.totalItems || 0;
+
+
 
   const statsCards = [
     {

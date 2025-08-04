@@ -5,9 +5,9 @@ import { ApiErrorResponse } from "@/api-client/models/api-error-response";
 
 // Global variables for token refresh management
 let isRefreshing = false;
-let failedQueue: { resolve: (value?: unknown) => void; reject: (reason?: any) => void; }[] = [];
+let failedQueue: { resolve: (value?: unknown) => void; reject: (reason?: unknown) => void; }[] = [];
 
-const processQueue = (error: any | null) => {
+const processQueue = (error: unknown | null) => {
   failedQueue.forEach(prom => {
     if (error) {
       prom.reject(error);
