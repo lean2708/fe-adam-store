@@ -61,7 +61,7 @@ export default function SizesAdminPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page-container">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Size Management</h1>
@@ -77,7 +77,7 @@ export default function SizesAdminPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
+        <Card className="admin-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Sizes</CardTitle>
             <Ruler className="h-4 w-4 text-muted-foreground" />
@@ -90,7 +90,7 @@ export default function SizesAdminPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="admin-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Current Page</CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
@@ -103,7 +103,7 @@ export default function SizesAdminPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="admin-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Items per Page</CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
@@ -118,7 +118,7 @@ export default function SizesAdminPage() {
       </div>
 
       {/* Sizes Table */}
-      <Card>
+      <Card className="admin-card">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Ruler className="h-5 w-5" />

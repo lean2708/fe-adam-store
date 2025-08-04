@@ -34,12 +34,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="flex">
         <AdminSidebar />
         <div className="flex-1 flex flex-col">
           <AdminHeader />
-            <main className="flex-1 p-6">
+            <main className="flex-1 p-6 bg-gray-50 dark:bg-gray-900">
               {children}
             </main>
         </div>

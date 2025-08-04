@@ -135,7 +135,7 @@ export default function UsersPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page-container">
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -172,7 +172,8 @@ export default function UsersPage() {
           </div>
 
           {/* Users Table */}
-          <div className="rounded-md border">
+          <div className="admin-table-container">
+            <div className="rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -286,6 +287,7 @@ export default function UsersPage() {
                 )}
               </TableBody>
             </Table>
+            </div>
           </div>
 
           {/* Pagination */}

@@ -188,7 +188,7 @@ export default function PromotionsAdminPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page-container">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Promotion Management</h1>

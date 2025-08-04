@@ -147,7 +147,7 @@ export default function ChatAdminPage() {
 
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page-container">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Chat Management</h1>
         <p className="text-muted-foreground">
@@ -157,7 +157,7 @@ export default function ChatAdminPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Conversations Panel */}
-        <Card>
+        <Card className="admin-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Users className="h-5 w-5" />
@@ -221,7 +221,7 @@ export default function ChatAdminPage() {
         </Card>
 
         {/* Messages Panel */}
-        <Card>
+        <Card className="admin-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <MessageCircle className="h-5 w-5" />

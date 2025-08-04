@@ -24,7 +24,7 @@ export default function AdminDashboard() {
 
       {/* Charts and Tables */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
+        <Card className="col-span-4 bg-white dark:bg-gray-800 border-0 shadow-sm">
           <CardHeader>
             <CardTitle>{t("dashboard.overview.title")}</CardTitle>
             <CardDescription>
@@ -36,7 +36,7 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="col-span-3">
+        <Card className="col-span-3 bg-white dark:bg-gray-800 border-0 shadow-sm">
           <CardHeader>
             <CardTitle>{t("dashboard.recentOrders.title")}</CardTitle>
             <CardDescription>
@@ -50,7 +50,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Top Products */}
-      <Card>
+      <Card className="bg-white dark:bg-gray-800 border-0 shadow-sm">
         <CardHeader>
           <CardTitle>{t("dashboard.topProducts.title")}</CardTitle>
           <CardDescription>

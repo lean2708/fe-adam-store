@@ -152,7 +152,7 @@ export default function ProductsPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page-container">
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -189,7 +189,8 @@ export default function ProductsPage() {
           </div>
 
           {/* Products Table */}
-          <div className="rounded-md border">
+          <div className="admin-table-container">
+            <div className="rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -324,6 +325,7 @@ export default function ProductsPage() {
                 )}
               </TableBody>
             </Table>
+            </div>
           </div>
 
           {/* Pagination */}

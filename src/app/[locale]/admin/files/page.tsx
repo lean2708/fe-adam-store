@@ -156,7 +156,7 @@ export default function FilesPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page-container">
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>

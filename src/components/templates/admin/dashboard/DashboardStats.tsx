@@ -2,8 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getOrderRevenueSummaryAction } from "@/actions/statisticsActions";
-import { fetchAllUsersAction } from "@/actions/userActions";
-import { DollarSign, ShoppingCart, TrendingUp, Users } from "lucide-react";
+import { DollarSign, ShoppingCart } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { formatCurrency } from "@/lib/utils";
 import { useLocale } from "next-intl";
@@ -23,70 +22,46 @@ export function DashboardStats() {
     },
   });
 
-  // Query for user count
-  const { data: usersData, isLoading: usersLoading } = useQuery({
-    queryKey: ['users-count'],
-    queryFn: async () => {
-      const result = await fetchAllUsersAction(0, 1);
-      if (!result.success) {
-        throw new Error(result.message || 'Failed to fetch users');
-      }
-      return result.data;
-    },
-  });
 
-  const loading = statsLoading || usersLoading;
-  const userCount = usersData?.totalItems || 0;
 
+  const loading = statsLoading;
 
 
   const statsCards = [
     {
-      title: "Total Revenue",
-      value: stats?.totalRevenue ? formatCurrency(stats.totalRevenue, locale) : "₫0",
+      title: locale === 'vi' ? "Tổng doanh thu" : "Total Revenue",
+      value: stats?.totalRevenue ? formatCurrency(stats.totalRevenue, locale) : (locale === 'vi' ? "0 VNĐ" : "$0"),
       icon: DollarSign,
-      description: "This month",
+      // description: locale === 'vi' ? "so với tháng trước" : "vs last month",
+      change: "+20.25%",
       color: "text-green-600",
+      bgColor: "bg-green-50 dark:bg-green-900/20",
     },
     {
-      title: "Total Orders",
-      value: stats?.totalOrders?.toString() || "0",
+      title: locale === 'vi' ? "Số lượng đơn hàng" : "Total Orders",
+      value: stats?.totalOrders?.toLocaleString(locale === 'vi' ? 'vi-VN' : 'en-US') || (locale === 'vi' ? "0" : "0"),
       icon: ShoppingCart,
-      description: "This month",
+      // description: locale === 'vi' ? "so với tháng trước" : "vs last month",
+      change: "-20.25%",
       color: "text-blue-600",
-    },
-    {
-      title: "Average Order Value",
-      value: stats?.totalOrders && stats?.totalRevenue
-        ? formatCurrency(stats.totalRevenue / stats.totalOrders, locale)
-        : "₫0",
-      icon: TrendingUp,
-      description: "Per order",
-      color: "text-purple-600",
-    },
-    {
-      title: "Total Users",
-      value: userCount.toLocaleString(locale === 'vi' ? 'vi-VN' : 'en-US'),
-      icon: Users,
-      description: "Registered users",
-      color: "text-orange-600",
+      bgColor: "bg-blue-50 dark:bg-blue-900/20",
     },
   ];
 
   if (loading) {
     return (
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <Card key={i}>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <Card key={i} className="bg-white dark:bg-gray-800 border-0 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                <div className="h-4 bg-muted rounded animate-pulse" />
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
               </CardTitle>
-              <div className="h-4 w-4 bg-muted rounded animate-pulse" />
+              <div className="h-4 w-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
             </CardHeader>
             <CardContent>
-              <div className="h-8 bg-muted rounded animate-pulse mb-1" />
-              <div className="h-3 bg-muted rounded animate-pulse w-20" />
+              <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-1" />
+              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded animate-pulse w-20" />
             </CardContent>
           </Card>
         ))}
@@ -95,22 +70,33 @@ export function DashboardStats() {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {statsCards.map((stat, index) => {
         const Icon = stat.icon;
         return (
-          <Card key={index}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                {stat.title}
-              </CardTitle>
-              <Icon className={`h-4 w-4 ${stat.color}`} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">
-                {stat.description}
-              </p>
+          <Card key={index} className="relative overflow-hidden bg-white dark:bg-gray-800 border-0 shadow-sm">
+            <CardContent className="p-6">
+              {stat.change && (
+                <div className="flex justify-end items-center space-x-1 px-1">
+                  <span className={`text-xs font-medium ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                    {stat.change}
+                  </span>
+                </div>
+              )}
+              <div className="flex items-start justify-between">
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    {stat.title}
+                  </p>
+                  <div className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                    {stat.value}
+                  </div>
+                </div>
+                <div className={`rounded-full p-3 ${stat.bgColor}`}>
+                  <Icon className={`h-6 w-6 ${stat.color}`} />
+                </div>
+              </div>
             </CardContent>
           </Card>
         );

@@ -193,7 +193,7 @@ export default function ColorsAdminPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page-container">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Color Management</h1>
@@ -215,7 +215,7 @@ export default function ColorsAdminPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
+        <Card className="admin-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Colors</CardTitle>
             <Palette className="h-4 w-4 text-muted-foreground" />
@@ -228,7 +228,7 @@ export default function ColorsAdminPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="admin-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Current Page</CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
@@ -241,7 +241,7 @@ export default function ColorsAdminPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="admin-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Items per Page</CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
@@ -256,7 +256,7 @@ export default function ColorsAdminPage() {
       </div>
 
       {/* Colors Table */}
-      <Card>
+      <Card className="admin-card">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Palette className="h-5 w-5" />

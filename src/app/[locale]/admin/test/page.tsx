@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export default function AdminTestPage() {
   return (
-    <div className="space-y-6">
+    <div className="admin-page-container">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Admin Test Page</h1>
         <p className="text-muted-foreground">
@@ -12,7 +12,7 @@ export default function AdminTestPage() {
         </p>
       </div>
 
-      <Card>
+      <Card className="admin-card">
         <CardHeader>
           <CardTitle>Admin Interface Status</CardTitle>
           <CardDescription>

@@ -143,7 +143,7 @@ export default function PaymentHistoryPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page-container">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Payment History</h1>
@@ -154,7 +154,7 @@ export default function PaymentHistoryPage() {
       </div>
 
       {/* Filters */}
-      <Card>
+      <Card className="admin-card">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Filter className="h-5 w-5" />
