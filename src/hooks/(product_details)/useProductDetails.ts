@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { TProduct, TVariant } from '@/types';
 import { toast } from 'sonner';
+import { fetchProductVariantByColorAndSize } from '@/actions/productVariantsActions';
+import { addToCartAction } from '@/actions/cartActions';
 
 export default function useProductDetails(product: TProduct) {
   const [selectVariant, setSelectVariant] = useState<TVariant | undefined>(
@@ -50,6 +52,25 @@ export default function useProductDetails(product: TProduct) {
     setQuantity((prev) => prev - 1);
   };
 
+  const handleAddToCart = async () => {
+    const res = await addToCartAction({
+      productVariantId: selectVariant?.id ?? 0,
+      quantity: quantity,
+    });
+
+    console.log('Add to cart response:', res);
+
+    if (res.status === 200) {
+      return toast.success(`${res.message}`);
+    }
+
+    return toast.error(`${res.message}`);
+  };
+
+  const handleBuyNow = () => {
+    // Logic mua ngay
+  };
+
   return {
     selectVariant,
     quantity,
@@ -57,6 +78,11 @@ export default function useProductDetails(product: TProduct) {
     onChangeSize,
     increaseQuantity,
     decreaseQuantity,
+    handleAddToCart,
+    handleBuyNow,
+    // Trả về các giá trị đã chọn
+    selectedVariant: selectVariant,
+    selectedQuantity: quantity,
     selectedColor: selectedColor.current,
     selectedSize: selectedSize.current,
   };

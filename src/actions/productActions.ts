@@ -19,13 +19,13 @@ import {
   productCreateSchema,
   productUpdateSchema,
 } from '@/actions/schema/productSchema';
-import type { ActionResponse } from "@/lib/types/actions";
+import type { ActionResponse } from '@/lib/types/actions';
 import type {
   ProductResponse,
   ProductRequest,
   ProductUpdateRequest,
-  PageResponseProductResponse
-} from "@/api-client/models";
+  PageResponseProductResponse,
+} from '@/api-client/models';
 
 export async function getAllProductsAction(
   page?: number,
@@ -169,7 +169,7 @@ export async function searchProductsAction(
 export async function fetchAllProductsForAdminAction(
   page: number = 0,
   size: number = 10,
-  sort: string[] = ["id,desc"]
+  sort: string[] = ['id,desc']
 ): Promise<ActionResponse<PageResponseProductResponse>> {
   try {
     const data = await fetchAllProductsForAdmin(page, size, sort);
@@ -180,7 +180,8 @@ export async function fetchAllProductsForAdminAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch products",
+      message:
+        error instanceof Error ? error.message : 'Failed to fetch products',
     };
   }
 }
@@ -200,7 +201,8 @@ export async function createProductAdminAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to create product",
+      message:
+        error instanceof Error ? error.message : 'Failed to create product',
     };
   }
 }
@@ -221,7 +223,8 @@ export async function updateProductAdminAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to update product",
+      message:
+        error instanceof Error ? error.message : 'Failed to update product',
     };
   }
 }
@@ -241,7 +244,8 @@ export async function deleteProductAdminAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to delete product",
+      message:
+        error instanceof Error ? error.message : 'Failed to delete product',
     };
   }
 }
@@ -261,7 +265,8 @@ export async function restoreProductAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to restore product",
+      message:
+        error instanceof Error ? error.message : 'Failed to restore product',
     };
   }
 }
@@ -281,7 +286,8 @@ export async function fetchProductByIdAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch product",
+      message:
+        error instanceof Error ? error.message : 'Failed to fetch product',
     };
   }
 }

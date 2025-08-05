@@ -1,12 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CartItemsList } from '@/components/templates/(marketing)/Index/Cart/CartItemsList';
 import { CheckOut } from '@/components/templates/(marketing)/Index/Cart/CheckOut';
 import { cn } from '@/lib/utils';
 import { manrope } from '@/config/fonts';
+import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
 
 export default function CartPage() {
+  const { isAuthenticated, isLoading, user } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated && !user) {
+      router.push('/login');
+    }
+  }, [isAuthenticated, user, isLoading, router]);
+
   const initialCartItems = [
     {
       id: 'item1',
@@ -63,16 +74,6 @@ export default function CartPage() {
   ];
   const [cartItems, setCartItems] = useState(initialCartItems);
 
-  const updateQuantity = (itemId: string, change: number) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === itemId
-          ? { ...item, quantity: Math.max(1, item.quantity + change) }
-          : item
-      )
-    );
-  };
-
   // Calculate totals
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -90,7 +91,7 @@ export default function CartPage() {
         </h1>
 
         <div className='grid lg:grid-cols-3 gap-8'>
-          <CartItemsList items={cartItems} onQuantityChange={updateQuantity} />
+          <CartItemsList userId={user?.id + ''} />
 
           <div className='lg:col-span-1'>
             <CheckOut

@@ -17,7 +17,7 @@ export function CheckOut({
   total,
 }: CheckOutProps) {
   return (
-    <Card className='rounded-xl border border-gray-200 bg-white text-gray-950 shadow dark:border-gray-800 dark:bg-gray-950 dark:text-gray-50'>
+    <Card className=' sticky top-4 rounded-xl border border-gray-200 bg-white text-gray-950 shadow dark:border-gray-800 dark:bg-gray-950 dark:text-gray-50'>
       <CardContent className='p-6 '>
         <h2 className='font-bold text-lg text-primary mb-4'>
           Tổng đơn hàng ({itemCount} sản phẩm)
