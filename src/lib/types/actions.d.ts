@@ -8,4 +8,10 @@ export interface ActionResponse<T = undefined> {
     data?: T; // For successful data return
     apiError?: ApiErrorResponse; // For raw API error details
     code?: number; // Optional error code
+    actionSizeResponse?: ActionSizeResponse;
+}
+export interface ActionSizeResponse {
+    size: number;
+    totalPages: number;
+    totalItems: number; // For Zod validation errors
 }

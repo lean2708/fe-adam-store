@@ -1,9 +1,12 @@
 import { ControllerFactory } from "./factory-api-client";
 import { getPublicAxiosInstance } from "@/lib/auth/axios-config";
 import { SizeControllerApi } from "@/api-client";
-import type { 
+import type {
   PageResponseSizeResponse
 } from "@/api-client/models";
+import { transformApiResponsePageResponseSizeToActionResponse, transformSizeResponseToTSize } from "./transform/size";
+import { TSize } from "@/types";
+import { ActionResponse } from "../types/actions";
 
 /**
  * Helper to get an instance of SizeControllerApi with NextAuth using factory.
@@ -27,7 +30,7 @@ export async function fetchAllSizes(
   page: number = 0,
   size: number = 20,
   sort: string[] = ["id,asc"]
-): Promise<PageResponseSizeResponse> {
+): Promise<ActionResponse<TSize[]>> {
   const controller = getPublicSizeController();
   const response = await controller.fetchAll({
     page,
@@ -39,5 +42,5 @@ export async function fetchAllSizes(
     throw new Error(response.data.message || "Failed to fetch sizes");
   }
 
-  return response.data.result!;
+  return transformApiResponsePageResponseSizeToActionResponse(response.data);
 }

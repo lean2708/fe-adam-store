@@ -1,12 +1,11 @@
 "use server";
 
 import type { ActionResponse } from "@/lib/types/actions";
-import type { 
-  PromotionResponse,
+import type {
   PromotionRequest,
-  PromotionUpdateRequest,
-  PageResponsePromotionResponse
+  PromotionUpdateRequest
 } from "@/api-client/models";
+import type { TPromotion } from "@/types";
 import {
   fetchAllPromotionsForAdmin,
   fetchPromotionById,
@@ -15,6 +14,7 @@ import {
   deletePromotion,
   restorePromotion
 } from "@/lib/data/promotion";
+import { transformPromotionResponse, transformPromotionResponses } from "@/lib/transformations";
 
 /**
  * Fetch all promotions for admin
@@ -23,12 +23,16 @@ export async function fetchAllPromotionsForAdminAction(
   page: number = 0,
   size: number = 20,
   sort: string[] = ["id,desc"]
-): Promise<ActionResponse<PageResponsePromotionResponse>> {
+): Promise<ActionResponse<{ items: TPromotion[]; totalItems: number; totalPages: number }>> {
   try {
     const data = await fetchAllPromotionsForAdmin(page, size, sort);
     return {
       success: true,
-      data,
+      data: {
+        items: transformPromotionResponses(data.items || []),
+        totalItems: data.totalItems || 0,
+        totalPages: data.totalPages || 0
+      },
     };
   } catch (error) {
     return {
@@ -41,12 +45,12 @@ export async function fetchAllPromotionsForAdminAction(
 /**
  * Fetch promotion by ID
  */
-export async function fetchPromotionByIdAction(id: number): Promise<ActionResponse<PromotionResponse>> {
+export async function fetchPromotionByIdAction(id: number): Promise<ActionResponse<TPromotion>> {
   try {
     const data = await fetchPromotionById(id);
     return {
       success: true,
-      data,
+      data: transformPromotionResponse(data),
     };
   } catch (error) {
     return {
@@ -61,12 +65,12 @@ export async function fetchPromotionByIdAction(id: number): Promise<ActionRespon
  */
 export async function createPromotionAction(
   promotionData: PromotionRequest
-): Promise<ActionResponse<PromotionResponse>> {
+): Promise<ActionResponse<TPromotion>> {
   try {
     const data = await createPromotion(promotionData);
     return {
       success: true,
-      data,
+      data: transformPromotionResponse(data),
     };
   } catch (error) {
     return {
@@ -82,12 +86,12 @@ export async function createPromotionAction(
 export async function updatePromotionAction(
   id: number,
   promotionData: PromotionUpdateRequest
-): Promise<ActionResponse<PromotionResponse>> {
+): Promise<ActionResponse<TPromotion>> {
   try {
     const data = await updatePromotion(id, promotionData);
     return {
       success: true,
-      data,
+      data: transformPromotionResponse(data),
     };
   } catch (error) {
     return {
@@ -100,12 +104,12 @@ export async function updatePromotionAction(
 /**
  * Delete a promotion
  */
-export async function deletePromotionAction(id: number): Promise<ActionResponse<PromotionResponse>> {
+export async function deletePromotionAction(id: number): Promise<ActionResponse<TPromotion>> {
   try {
     const data = await deletePromotion(id);
     return {
       success: true,
-      data,
+      data: transformPromotionResponse(data),
     };
   } catch (error) {
     return {
@@ -118,12 +122,12 @@ export async function deletePromotionAction(id: number): Promise<ActionResponse<
 /**
  * Restore a promotion
  */
-export async function restorePromotionAction(id: number): Promise<ActionResponse<PromotionResponse>> {
+export async function restorePromotionAction(id: number): Promise<ActionResponse<TPromotion>> {
   try {
     const data = await restorePromotion(id);
     return {
       success: true,
-      data,
+      data: transformPromotionResponse(data),
     };
   } catch (error) {
     return {

@@ -4,11 +4,10 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useTranslations, useLocale } from "next-intl";
-import { formatDate } from "@/lib/utils";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import {
   Ruler,
   RefreshCw,
@@ -16,8 +15,10 @@ import {
 } from "lucide-react";
 import { fetchAllSizesAction } from "@/actions/sizeActions";
 import type { SizeResponse } from "@/api-client/models";
+import { AdminPagination } from "@/components/ui/pagination";
 
 export default function SizesAdminPage() {
+  const t = useTranslations("Admin.sizes");
   const [sizes, setSizes] = useState<SizeResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
@@ -34,14 +35,14 @@ export default function SizesAdminPage() {
     try {
       const result = await fetchAllSizesAction(page, 20);
       if (result.success && result.data) {
-        setSizes(result.data.items || []);
-        setTotalPages(result.data.totalPages || 0);
-        setTotalElements(result.data.totalItems || 0);
+        setSizes(result.data || []);
+        setTotalPages(result.actionSizeResponse?.totalPages || 0);
+        setTotalElements(result.actionSizeResponse?.totalItems || 0);
         setCurrentPage(page);
       } else {
         toast.error(result.message || "Failed to load sizes");
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to load sizes");
     } finally {
       setLoading(false);
@@ -62,14 +63,14 @@ export default function SizesAdminPage() {
     <div className="admin-page-container">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Size Management</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t("title")}</h1>
           <p className="text-muted-foreground">
-            Manage product sizes
+            {t("description")}
           </p>
         </div>
         <Button onClick={handleRefresh} variant="outline">
           <RefreshCw className="h-4 w-4 mr-2" />
-          Refresh
+          {t("refresh")}
         </Button>
       </div>
 
@@ -77,39 +78,39 @@ export default function SizesAdminPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="admin-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Sizes</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("totalSizes")}</CardTitle>
             <Ruler className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalElements}</div>
             <p className="text-xs text-muted-foreground">
-              Available product sizes
+              {t("availableProductSizes")}
             </p>
           </CardContent>
         </Card>
 
         <Card className="admin-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Current Page</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("currentPage")}</CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{currentPage + 1}</div>
             <p className="text-xs text-muted-foreground">
-              of {totalPages} pages
+              {t("ofPages", { totalPages })}
             </p>
           </CardContent>
         </Card>
 
         <Card className="admin-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Items per Page</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("itemsPerPage")}</CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{sizes.length}</div>
             <p className="text-xs text-muted-foreground">
-              showing on current page
+              {t("showingOnCurrentPage")}
             </p>
           </CardContent>
         </Card>
@@ -120,10 +121,10 @@ export default function SizesAdminPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Ruler className="h-5 w-5" />
-            Product Sizes
+            {t("productSizes")}
           </CardTitle>
           <CardDescription>
-            List of all available product sizes
+            {t("listOfAllAvailableSizes")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -136,15 +137,15 @@ export default function SizesAdminPage() {
           ) : sizes.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <Ruler className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p>No sizes found</p>
+              <p>{t("noSizesFound")}</p>
             </div>
           ) : (
             <>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>ID</TableHead>
-                    <TableHead>Name</TableHead>
+                    <TableHead>{t("id")}</TableHead>
+                    <TableHead>{t("name")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -160,52 +161,21 @@ export default function SizesAdminPage() {
                           </Badge>
                         </div>
                       </TableCell>
+
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
 
               {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex items-center justify-between mt-4">
-                  <div className="text-sm text-muted-foreground">
-                    Showing {currentPage * 20 + 1} to {Math.min((currentPage + 1) * 20, totalElements)} of {totalElements} sizes
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handlePageChange(currentPage - 1)}
-                      disabled={currentPage === 0}
-                    >
-                      Previous
-                    </Button>
-                    <div className="flex items-center gap-1">
-                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                        const pageNum = Math.max(0, Math.min(totalPages - 5, currentPage - 2)) + i;
-                        return (
-                          <Button
-                            key={pageNum}
-                            variant={pageNum === currentPage ? "default" : "outline"}
-                            size="sm"
-                            onClick={() => handlePageChange(pageNum)}
-                          >
-                            {pageNum + 1}
-                          </Button>
-                        );
-                      })}
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handlePageChange(currentPage + 1)}
-                      disabled={currentPage >= totalPages - 1}
-                    >
-                      Next
-                    </Button>
-                  </div>
-                </div>
-              )}
+              <AdminPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+                totalItems={totalElements}
+                itemsPerPage={20}
+                itemName="sizes"
+              />
             </>
           )}
         </CardContent>

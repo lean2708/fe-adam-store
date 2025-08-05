@@ -1,8 +1,10 @@
-import { BranchControllerApi } from "@/api-client";
+import { ApiResponseVoid, BranchControllerApi } from "@/api-client";
 import { getPublicAxiosInstance } from "@/lib/auth/axios-config";
 import { TBranch } from "@/types";
 import { ControllerFactory } from "./factory-api-client";
-import { transformBranchResponseToTBranch, transformBranchArrayToTBranchArray } from "./transform/branch";
+import { transformBranchResponseToTBranch, transformBranchArrayToTBranchArray, transformApiResponsePageResponseSizeToActionResponse } from "./transform/branch";
+import { ActionResponse } from "../types/actions";
+import { extractErrorMessage } from "../utils";
 
 /**
  * Helper to get an instance of BranchControllerApi with NextAuth using factory.
@@ -12,6 +14,7 @@ async function getBranchController() {
 }
 
 /**
+ * 
  * Helper to get an instance of BranchControllerApi for public endpoints.
  */
 function getPublicBranchController() {
@@ -28,7 +31,8 @@ export async function fetchAllBranchesApi(
   page?: number,
   size?: number,
   sort?: string[]
-): Promise<TBranch[]> {
+): Promise<ActionResponse<TBranch[]>
+> {
   try {
     const api = await getBranchController();
     const response = await api.fetchAllBranchesForAdmin({
@@ -37,13 +41,13 @@ export async function fetchAllBranchesApi(
       sort,
     });
 
-    // Transform API response to TBranch format
-    const branches = response.data?.result?.items || [];
-
-    return transformBranchArrayToTBranchArray(branches);
+    return transformApiResponsePageResponseSizeToActionResponse(response.data);
   } catch (error) {
     console.error("Error fetching branches:", error);
-    return [];
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to fetch sizes",
+    };
   }
 }
 
@@ -74,7 +78,7 @@ export async function createBranchApi(branchData: {
   name: string;
   location: string;
   phone: string;
-}): Promise<TBranch | null> {
+}): Promise<ActionResponse<TBranch>> {
   try {
     const api = await getBranchController();
     const response = await api.create9({
@@ -84,14 +88,21 @@ export async function createBranchApi(branchData: {
         phone: branchData.phone,
       },
     });
+    console.log(response);
 
-    const branch = response.data?.result;
-    if (!branch) return null;
-
-    return transformBranchResponseToTBranch(branch);
+    return {
+      success: response.data.code == 201,
+      message: response.data.message,
+      data: transformBranchResponseToTBranch(response.data?.result || {}),
+      code: response.data.code,
+    };
   } catch (error) {
-    console.error("Error creating branch:", error);
-    return null;
+    const extractedError = extractErrorMessage(error, "Tạo chi nhánh thất bại");
+    return {
+      success: false,
+      message: extractedError.message,
+      code: 500,
+    };
   }
 }
 
@@ -105,7 +116,7 @@ export async function updateBranchApi(
     location?: string;
     phone?: string;
   }
-): Promise<TBranch | null> {
+): Promise<ActionResponse<TBranch>> {
   try {
     const api = await getBranchController();
     const response = await api.update8({
@@ -116,30 +127,39 @@ export async function updateBranchApi(
         phone: branchData.phone,
       },
     });
-
-    const branch = response.data?.result;
-    if (!branch) return null;
-
-    return transformBranchResponseToTBranch(branch);
+    return {
+      success: response.data.code == 200,
+      message: response.data.message,
+      data: transformBranchResponseToTBranch(response.data?.result || {}),
+      code: response.data.code,
+    };
   } catch (error) {
-    console.error("Error updating branch:", error);
-    return null;
+    const extractedError = extractErrorMessage(error, "Cập nhật nhánh thất bại");
+    return {
+      success: false,
+      message: extractedError.message,
+      code: 500,
+    };
   }
 }
 
 /**
  * Delete a branch
  */
-export async function deleteBranchApi(id: number): Promise<boolean> {
+export async function deleteBranchApi(id: number): Promise<ApiResponseVoid> {
   try {
     const api = await getBranchController();
-    await api.delete11({
+    const result = await api.delete11({
       id,
     });
-    return true;
+
+    return result.data;
   } catch (error) {
     console.error("Error deleting branch:", error);
-    return false;
+    return {
+      code: 500,
+      message: "Failed to delete branch",
+    };
   }
 }
 
@@ -159,4 +179,13 @@ export async function fetchActiveBranchesApi(): Promise<TBranch[]> {
     console.error("Error fetching active branches:", error);
     return [];
   }
+}
+export async function restoreBranchesApi(id: number): Promise<TBranch> {
+  const api = await getBranchController();
+  const response = await api.restore5({ id });
+  if (response.data.code !== 200) {
+    throw response.data;
+  }
+  if (!response.data.result) throw new Error("No category returned");
+  return transformBranchResponseToTBranch(response.data.result);
 }

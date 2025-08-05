@@ -129,5 +129,33 @@ export type TBranch = {
   phone: string;
   status: 'ACTIVE' | 'INACTIVE';
   createdAt?: string;
+  createdBy?: string;
   updatedAt?: string;
+  updatedBy?: string;
+};
+
+export type TSize = {
+  id: number;
+  name: string;
+};
+
+export type TPaymentHistory = {
+  id: number;
+  isPrimary?: boolean;
+  paymentMethod?: string;
+  totalAmount?: number;
+  paymentStatus?: 'PAID' | 'PENDING' | 'REFUNDED' | 'CANCELED' | 'FAILED';
+  paymentTime?: string;
+};
+
+export type TPromotion = {
+  id: number;
+  code?: string;
+  description?: string;
+  discountPercent?: number;
+  startDate?: string;
+  endDate?: string;
+  status?: 'ACTIVE' | 'INACTIVE';
+  createdBy?: string;
+  createdAt?: string;
 };
