@@ -17,32 +17,26 @@
 /**
  * 
  * @export
- * @interface ReviewRequest
+ * @interface ApiResponseBoolean
  */
-export interface ReviewRequest {
+export interface ApiResponseBoolean {
     /**
      * 
      * @type {number}
-     * @memberof ReviewRequest
+     * @memberof ApiResponseBoolean
      */
-    'rating': number;
+    'code'?: number;
     /**
      * 
      * @type {string}
-     * @memberof ReviewRequest
+     * @memberof ApiResponseBoolean
      */
-    'comment': string;
+    'message'?: string;
     /**
      * 
-     * @type {Array<string>}
-     * @memberof ReviewRequest
+     * @type {boolean}
+     * @memberof ApiResponseBoolean
      */
-    'imageUrls'?: Array<string>;
-    /**
-     * 
-     * @type {number}
-     * @memberof ReviewRequest
-     */
-    'orderItemId': number;
+    'result'?: boolean;
 }
 

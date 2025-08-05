@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **rating** | **number** |  | [default to undefined]
 **comment** | **string** |  | [default to undefined]
 **imageUrls** | **Array&lt;string&gt;** |  | [optional] [default to undefined]
-**productId** | **number** |  | [default to undefined]
+**orderItemId** | **number** |  | [default to undefined]
 
 ## Example
 
@@ -19,7 +19,7 @@ const instance: ReviewRequest = {
     rating,
     comment,
     imageUrls,
-    productId,
+    orderItemId,
 };
 ```
 

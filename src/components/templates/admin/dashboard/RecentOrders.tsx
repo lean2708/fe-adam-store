@@ -9,7 +9,14 @@ import Link from "next/link";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { useLocale } from "next-intl";
 
-export function RecentOrders() {
+interface RecentOrdersProps {
+  dateRange?: {
+    from: string;
+    to: string;
+  };
+}
+
+export function RecentOrders({ dateRange }: RecentOrdersProps) {
   const [orders, setOrders] = useState<OrderResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const locale = useLocale();
@@ -17,12 +24,22 @@ export function RecentOrders() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        // Get recent orders from the last 30 days
-        const now = new Date();
-        const thirtyDaysAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
+        // Use dateRange if provided, otherwise default to last 30 days
+        let startDate: string;
+        let endDate: string;
 
-        const startDate = thirtyDaysAgo.toISOString().split('T')[0];
-        const endDate = now.toISOString().split('T')[0];
+        if (dateRange) {
+          startDate = dateRange.from;
+          endDate = dateRange.to;
+          console.log("RecentOrders: Using date range", { startDate, endDate });
+        } else {
+          // Default to last 30 days
+          const now = new Date();
+          const thirtyDaysAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
+          startDate = thirtyDaysAgo.toISOString().split('T')[0];
+          endDate = now.toISOString().split('T')[0];
+          console.log("RecentOrders: Using default 30-day range", { startDate, endDate });
+        }
 
         const result = await searchOrdersForAdminAction(
           startDate,
@@ -43,7 +60,7 @@ export function RecentOrders() {
     };
 
     fetchOrders();
-  }, []);
+  }, [dateRange]);
 
 
 

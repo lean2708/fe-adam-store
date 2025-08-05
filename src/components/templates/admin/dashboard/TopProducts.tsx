@@ -24,7 +24,14 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function TopProducts() {
+interface TopProductsProps {
+  dateRange?: {
+    from: string;
+    to: string;
+  };
+}
+
+export function TopProducts({ dateRange }: TopProductsProps) {
   const [products, setProducts] = useState<TopSellingDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const locale = useLocale();
@@ -32,13 +39,23 @@ export function TopProducts() {
   useEffect(() => {
     const fetchTopProducts = async () => {
       try {
-        // Get top products for the current month
-        const now = new Date();
-        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-        
-        const startDate = startOfMonth.toISOString().split('T')[0];
-        const endDate = endOfMonth.toISOString().split('T')[0];
+        // Use dateRange if provided, otherwise default to current month
+        let startDate: string;
+        let endDate: string;
+
+        if (dateRange) {
+          startDate = dateRange.from;
+          endDate = dateRange.to;
+          console.log("TopProducts: Using date range", { startDate, endDate });
+        } else {
+          // Default to current month
+          const now = new Date();
+          const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+          const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+          startDate = startOfMonth.toISOString().split('T')[0];
+          endDate = endOfMonth.toISOString().split('T')[0];
+          console.log("TopProducts: Using default month range", { startDate, endDate });
+        }
 
         const result = await getTopSellingProductsAction(startDate, endDate);
         
@@ -53,7 +70,7 @@ export function TopProducts() {
     };
 
     fetchTopProducts();
-  }, []);
+  }, [dateRange]);
 
 
 

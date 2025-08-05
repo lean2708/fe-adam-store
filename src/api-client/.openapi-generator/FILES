@@ -33,6 +33,7 @@ docs/AddressControllerApi.md
 docs/AddressRequest.md
 docs/AddressResponse.md
 docs/ApiResponseAddressResponse.md
+docs/ApiResponseBoolean.md
 docs/ApiResponseBranchResponse.md
 docs/ApiResponseCartItemResponse.md
 docs/ApiResponseCategoryResponse.md
@@ -194,6 +195,7 @@ index.ts
 models/address-request.ts
 models/address-response.ts
 models/api-response-address-response.ts
+models/api-response-boolean.ts
 models/api-response-branch-response.ts
 models/api-response-cart-item-response.ts
 models/api-response-category-response.ts

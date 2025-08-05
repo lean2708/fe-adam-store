@@ -7,14 +7,39 @@ import { useQuery } from "@tanstack/react-query";
 import { formatCurrency } from "@/lib/utils";
 import { useLocale } from "next-intl";
 
-export function DashboardStats() {
+interface DashboardStatsProps {
+  dateRange?: {
+    from: string;
+    to: string;
+  };
+}
+
+export function DashboardStats({ dateRange }: DashboardStatsProps) {
   const locale = useLocale();
+
+  // Use dateRange or default dates
+  const getDateRange = () => {
+    if (dateRange) {
+      return { from: dateRange.from, to: dateRange.to };
+    }
+    // Default to last 30 days
+    const today = new Date();
+    const lastMonth = new Date();
+    lastMonth.setMonth(today.getMonth() - 1);
+    return {
+      from: lastMonth.toISOString().split("T")[0],
+      to: today.toISOString().split("T")[0]
+    };
+  };
+
+  const { from, to } = getDateRange();
 
   // Query for order/revenue stats
   const { data: stats, isLoading: statsLoading } = useQuery({
-    queryKey: ['dashboard-stats', '2025-08-10', '2025-07-20'],
+    queryKey: ['dashboard-stats', from, to],
     queryFn: async () => {
-      const result = await getOrderRevenueSummaryAction("2025-08-10", "2025-07-20");
+      console.log("DashboardStats: Fetching data for range", { from, to });
+      const result = await getOrderRevenueSummaryAction(from, to);
       if (!result.success) {
         throw new Error(result.message || 'Failed to fetch stats');
       }
@@ -70,20 +95,12 @@ export function DashboardStats() {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 grid-cols-2">
       {statsCards.map((stat, index) => {
         const Icon = stat.icon;
         return (
           <Card key={index} className="relative overflow-hidden bg-white dark:bg-gray-800 border-0 shadow-sm">
             <CardContent className="p-6">
-              {stat.change && (
-                <div className="flex justify-end items-center space-x-1 px-1">
-                  <span className={`text-xs font-medium ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                    {stat.change}
-                  </span>
-                </div>
-              )}
               <div className="flex items-start justify-between">
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -93,9 +110,17 @@ export function DashboardStats() {
                     {stat.value}
                   </div>
                 </div>
-                <div className={`rounded-full p-3 ${stat.bgColor}`}>
-                  <Icon className={`h-6 w-6 ${stat.color}`} />
-                </div>
+                {stat.change && (
+                  <div className="flex flex-col justify-center items-center space-y-1 px-1">
+                    <span className={`text-xs font-medium ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
+                      {stat.change}
+                    </span>
+                    <div className={`rounded-full p-3 ${stat.bgColor}`}>
+                      <Icon className={`h-6 w-6 ${stat.color}`} />
+                    </div>
+                  </div>
+                )}
+
               </div>
             </CardContent>
           </Card>

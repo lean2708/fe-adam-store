@@ -29,18 +29,22 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { createUserAction, updateUserAction, fetchAllRolesAction } from "@/actions/userActions";
-import type { UserResponse, RoleResponse } from "@/api-client/models";
+import { type UserResponse, type RoleResponse, UserUpdateRequestGenderEnum, UserUpdateRequest, EntityBasic } from "@/api-client/models";
 import { toast } from "sonner";
 
 const userSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters").optional(),
-  dob: z.string().optional(),
-  gender: z.enum(["MALE", "FEMALE", "OTHER"]).optional(),
-  roleIds: z.array(z.number()).min(1, "At least one role is required"),
+  name: z.string().min(1, "Tên người dùng là bắt buộc"),
+  email: z.string().email("Địa chỉ email không hợp lệ"),
+  password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự").optional(),
+  confirmPassword: z.string().optional(),
+  roleIds: z.array(z.number()).min(1, "Ít nhất một vai trò là bắt buộc"),
+}).refine((data) => {
+  if (!data.password && !data.confirmPassword) return true;
+  return data.password === data.confirmPassword;
+}, {
+  message: "Mật khẩu không khớp",
+  path: ["confirmPassword"],
 });
 
 type UserFormData = z.infer<typeof userSchema>;
@@ -64,8 +68,7 @@ export function UserDialog({ open, onClose, user }: UserDialogProps) {
       name: "",
       email: "",
       password: "",
-      dob: "",
-      gender: undefined,
+      confirmPassword: "",
       roleIds: [],
     },
   });
@@ -84,17 +87,15 @@ export function UserDialog({ open, onClose, user }: UserDialogProps) {
         name: user.name || "",
         email: user.email || "",
         password: "", // Don't populate password for editing
-        dob: user.dob || "",
-        gender: user.gender as "MALE" | "FEMALE" | "OTHER" | undefined,
-        roleIds: user.roles ? Array.from(user.roles).map((role: any) => role.id) : [],
+        confirmPassword: "",
+        roleIds: user.roles ? Array.from(user.roles).map((role: EntityBasic) => role.id) : [],
       });
     } else {
       form.reset({
         name: "",
         email: "",
         password: "",
-        dob: "",
-        gender: undefined,
+        confirmPassword: "",
         roleIds: [],
       });
     }
@@ -115,24 +116,25 @@ export function UserDialog({ open, onClose, user }: UserDialogProps) {
   };
 
   const onSubmit = async (data: UserFormData) => {
+    console.log("Form data:", data);
     setLoading(true);
     try {
       if (isEditing) {
         // Update user
-        const updateData = {
+        const updateData: UserUpdateRequest = {
           name: data.name,
-          dob: data.dob || "",
-          gender: data.gender || "OTHER",
           roleIds: new Set(data.roleIds),
+          dob: "2025-08-04",
+          gender: UserUpdateRequestGenderEnum.Female
         };
 
         const result = await updateUserAction(user.id!, updateData);
-        
+
         if (result.success) {
-          toast.success("User updated successfully");
+          toast.success("Cập nhật người dùng thành công");
           onClose(true);
         } else {
-          toast.error(result.message || "Failed to update user");
+          toast.error(result.message || "Không thể cập nhật người dùng");
         }
       } else {
         // Create user
@@ -144,16 +146,16 @@ export function UserDialog({ open, onClose, user }: UserDialogProps) {
         };
 
         const result = await createUserAction(createData);
-        
+
         if (result.success) {
-          toast.success("User created successfully");
+          toast.success("Tạo người dùng thành công");
           onClose(true);
         } else {
-          toast.error(result.message || "Failed to create user");
+          toast.error(result.message || "Không thể tạo người dùng");
         }
       }
     } catch (error) {
-      toast.error(isEditing ? "Failed to update user" : "Failed to create user");
+      toast.error(isEditing ? "Không thể cập nhật người dùng" : "Không thể tạo người dùng");
     } finally {
       setLoading(false);
     }
@@ -161,15 +163,15 @@ export function UserDialog({ open, onClose, user }: UserDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={() => onClose()}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>
-            {isEditing ? "Edit User" : "Create New User"}
+            {isEditing ? "Chỉnh sửa người dùng" : "Thêm người dùng"}
           </DialogTitle>
           <DialogDescription>
-            {isEditing 
-              ? "Update user information and roles." 
-              : "Create a new user account with roles."
+            {isEditing
+              ? "Cập nhật thông tin người dùng và vai trò."
+              : "Tạo tài khoản người dùng mới với vai trò."
             }
           </DialogDescription>
         </DialogHeader>
@@ -181,9 +183,9 @@ export function UserDialog({ open, onClose, user }: UserDialogProps) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Tên người dùng</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter user name" {...field} />
+                    <Input placeholder="Nhập tên người dùng" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -197,11 +199,11 @@ export function UserDialog({ open, onClose, user }: UserDialogProps) {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input 
-                      type="email" 
-                      placeholder="Enter email address" 
+                    <Input
+                      type="email"
+                      placeholder="Nhập email"
                       disabled={isEditing}
-                      {...field} 
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -209,127 +211,82 @@ export function UserDialog({ open, onClose, user }: UserDialogProps) {
               )}
             />
 
-            {!isEditing && (
+            <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="password"
+                name="roleIds"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="password" 
-                        placeholder="Enter password" 
-                        {...field} 
-                      />
-                    </FormControl>
+                    <FormLabel>Vai trò</FormLabel>
+                    <Select
+                      onValueChange={(value) => field.onChange([parseInt(value)])}
+                      defaultValue={field.value?.[0]?.toString()}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Quản lý" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {roles.map((role) => (
+                          <SelectItem key={role.id} value={role.id!.toString()}>
+                            {role.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            )}
+            </div>
 
+            {/* {!isEditing && ( */}
             <FormField
               control={form.control}
-              name="dob"
+              name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date of Birth</FormLabel>
+                  <FormLabel>Mật khẩu</FormLabel>
                   <FormControl>
-                    <Input 
-                      type="date" 
-                      {...field} 
+                    <Input
+                      type="password"
+                      placeholder="Nhập mật khẩu"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            {/* )} */}
 
+            {/* {!isEditing && ( */}
             <FormField
               control={form.control}
-              name="gender"
+              name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Gender</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select gender" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="MALE">Male</SelectItem>
-                      <SelectItem value="FEMALE">Female</SelectItem>
-                      <SelectItem value="OTHER">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>Nhập lại mật khẩu</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Nhập lại mật khẩu"
+                      {...field}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name="roleIds"
-              render={() => (
-                <FormItem>
-                  <FormLabel>Roles</FormLabel>
-                  <div className="space-y-2">
-                    {rolesLoading ? (
-                      <div className="text-sm text-muted-foreground">Loading roles...</div>
-                    ) : (
-                      roles.map((role) => (
-                        <FormField
-                          key={role.id}
-                          control={form.control}
-                          name="roleIds"
-                          render={({ field }) => {
-                            return (
-                              <FormItem
-                                key={role.id}
-                                className="flex flex-row items-start space-x-3 space-y-0"
-                              >
-                                <FormControl>
-                                  <Checkbox
-                                    checked={field.value?.includes(role.id!)}
-                                    onCheckedChange={(checked) => {
-                                      return checked
-                                        ? field.onChange([...field.value, role.id!])
-                                        : field.onChange(
-                                            field.value?.filter(
-                                              (value) => value !== role.id
-                                            )
-                                          )
-                                    }}
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  {role.name}
-                                  {role.description && (
-                                    <span className="text-muted-foreground text-xs block">
-                                      {role.description}
-                                    </span>
-                                  )}
-                                </FormLabel>
-                              </FormItem>
-                            )
-                          }}
-                        />
-                      ))
-                    )}
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {/* )} */}
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onClose()}>
-                Cancel
+                Hủy bỏ
               </Button>
               <Button type="submit" disabled={loading}>
-                {loading ? "Saving..." : isEditing ? "Update User" : "Create User"}
+                {loading ? "Đang lưu..." : isEditing ? "Cập nhật" : "Xác nhận"}
               </Button>
             </DialogFooter>
           </form>

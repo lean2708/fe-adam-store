@@ -9,8 +9,8 @@ import { formatDate } from "@/lib/utils";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-import { 
-  Ruler, 
+import {
+  Ruler,
   RefreshCw,
   Package
 } from "lucide-react";
@@ -18,8 +18,6 @@ import { fetchAllSizesAction } from "@/actions/sizeActions";
 import type { SizeResponse } from "@/api-client/models";
 
 export default function SizesAdminPage() {
-  const t = useTranslations("Admin");
-  const locale = useLocale();
   const [sizes, setSizes] = useState<SizeResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
@@ -147,8 +145,6 @@ export default function SizesAdminPage() {
                   <TableRow>
                     <TableHead>ID</TableHead>
                     <TableHead>Name</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Created Date</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -163,19 +159,6 @@ export default function SizesAdminPage() {
                             {size.name}
                           </Badge>
                         </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge 
-                          variant={size.status === 'ACTIVE' ? 'default' : 'secondary'}
-                        >
-                          {size.status || 'UNKNOWN'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">
-                        {size.createdAt
-                          ? formatDate(size.createdAt, locale, { year: 'numeric', month: 'short', day: 'numeric' })
-                          : "N/A"
-                        }
                       </TableCell>
                     </TableRow>
                   ))}
