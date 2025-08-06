@@ -7,7 +7,7 @@ import {
 import { toast } from 'sonner';
 import { TCartItem, TColor, TEntityBasic, TProduct } from '@/types';
 
-export const useCart = (
+export const useCartItem = (
   cartItem: TCartItem,
   product: Omit<TProduct, 'Category'>,
   updateCartItem: (id: string, item: any) => void,

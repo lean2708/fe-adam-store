@@ -1,11 +1,12 @@
 'use client';
 
 import { Checkbox } from '@/components/ui/checkbox';
-import { CartItem } from './CartItem/CartItem';
+import { CartItem } from '../CartItem/CartItem';
 import { useEffect, useState } from 'react';
 import { fetchCartItemsAction } from '@/actions/cartActions';
 import { useCartStore } from '@/stores/cartStore';
-import EmptyCart from './EmptyCart';
+import EmptyCart from '../EmptyCart';
+import ClearCartButton from './ClearItemsButton';
 
 export function CartItemsList({ userId }: { userId: string }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -39,9 +40,8 @@ export function CartItemsList({ userId }: { userId: string }) {
             <label htmlFor='select-all' className='text-primary font-normal '>
               Tất cả sản phẩm
             </label>
-            <span className='ml-auto text-muted-foreground font-normal cursor-pointer hover:underline'>
-              Xóa tất cả
-            </span>
+
+            <ClearCartButton userId={userId} />
           </div>
 
           <div className='space-y-4'>

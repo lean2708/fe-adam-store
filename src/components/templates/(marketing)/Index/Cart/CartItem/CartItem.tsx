@@ -12,7 +12,7 @@ import Sizes from './Sizes';
 import Colors from './Colors';
 import { useCartStore } from '@/stores/cartStore';
 import { useState } from 'react';
-import { useCart } from '@/hooks/useCart';
+import { useCartItem } from '@/hooks/(cart)/useCartItem';
 import Quantity from './Quanity';
 
 type ProductProps = {
@@ -40,7 +40,7 @@ export function CartItem({ cartItem, product }: ProductProps) {
     onRemoveItem,
     increaseQuantity,
     decreaseQuantity,
-  } = useCart(cartItem, product, updateCartItem, removeCartItem);
+  } = useCartItem(cartItem, product, updateCartItem, removeCartItem);
 
   return (
     <Card className='border-border border-b-2 first:border-t-2'>

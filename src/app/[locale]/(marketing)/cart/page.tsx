@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { CartItemsList } from '@/components/templates/(marketing)/Index/Cart/CartItemsList';
+import { CartItemsList } from '@/components/templates/(marketing)/Index/Cart/CartItemsList/CartItemsList';
 import { CheckOut } from '@/components/templates/(marketing)/Index/Cart/CheckOut';
 import { cn } from '@/lib/utils';
 import { manrope } from '@/config/fonts';
