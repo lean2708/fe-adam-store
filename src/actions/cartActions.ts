@@ -10,6 +10,7 @@ import type { ActionResponse } from '@/lib/types/actions';
 import { extractErrorMessage } from '@/lib/utils';
 import { TCartItem } from '@/types';
 import { CartItemRequest } from '@/api-client';
+import { number } from 'zod';
 
 /**
  * Fetch all cart items for the current user (paginated).
@@ -56,24 +57,6 @@ export async function getCartItemsAction(userId: string) {
   }
 }
 
-export async function changeCartItemQuantityAction(
-  cartItemId: string,
-  quantity: number
-) {
-  try {
-    const cartItemUpdateRequest = { quantity };
-    const item = await updateCartItemApi(
-      Number(cartItemId),
-      cartItemUpdateRequest
-    );
-    // Optionally, fetch all items again for updated cart
-    const items = await fetchCartItemsApi();
-    return { status: 204, cart: items };
-  } catch (error) {
-    return { status: 500, error };
-  }
-}
-
 export async function deleteCartItemAction(cartItemId: string) {
   try {
     await deleteCartItemApi(Number(cartItemId));
@@ -98,37 +81,34 @@ export async function deleteAllCartItemsAction(userId: string) {
   }
 }
 
-export async function changeCartItemSizeAction(
+export async function changeCartItemVariantAction(
   cartItemId: string,
-  size: number
+  colorId: number,
+  sizeId: number,
+  quantity?: number
 ) {
   try {
-    const cartItemUpdateRequest = { size };
-    const item = await updateCartItemApi(
-      Number(cartItemId),
-      cartItemUpdateRequest
-    );
-    const items = await fetchCartItemsApi();
-    return { status: 202, cart: items };
-  } catch (error) {
-    return { status: 500, error };
-  }
-}
+    const cartItemUpdateRequest = { sizeId, colorId, quantity };
 
-export async function changeCartItemColorAction(
-  cartItemId: string,
-  color: string
-) {
-  try {
-    const cartItemUpdateRequest = { color };
     const item = await updateCartItemApi(
       Number(cartItemId),
       cartItemUpdateRequest
     );
-    const items = await fetchCartItemsApi();
-    return { status: 202, cart: items };
+
+    // const items = await fetchCartItemsApi();
+    return {
+      status: 202,
+      success: true,
+      cart: item,
+      message: 'Thay đổi sản phẩm thành công',
+    };
   } catch (error) {
-    return { status: 500, error };
+    const extracted = extractErrorMessage(error, 'Cập nhật giỏ hàng thất bại');
+    return {
+      success: false,
+      message: extracted.message,
+      apiError: extracted,
+    };
   }
 }
 

@@ -7,20 +7,6 @@ import { fetchCartItemsAction } from '@/actions/cartActions';
 import { useCartStore } from '@/stores/cartStore';
 import EmptyCart from './EmptyCart';
 
-export interface CartItem {
-  id: string;
-  name: string;
-  color: string;
-  image: string;
-  price: number;
-  originalPrice: number;
-  quantity: number;
-  colorOptions: { value: string; label: string }[];
-  sizeOptions: { value: string; label: string }[];
-  selectedColor: string;
-  selectedSize: string;
-}
-
 export function CartItemsList({ userId }: { userId: string }) {
   const [isLoading, setIsLoading] = useState(true);
   const cartItems = useCartStore((state) => state.cartItems);
@@ -28,7 +14,7 @@ export function CartItemsList({ userId }: { userId: string }) {
 
   useEffect(() => {
     const fetchCartItems = async () => {
-      const res = await fetchCartItemsAction();
+      const res = await fetchCartItemsAction(0, 10, ['id,desc']);
       setCartItems(res.success ? res.data ?? [] : []);
       setIsLoading(false);
     };

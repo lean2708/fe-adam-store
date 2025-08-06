@@ -1,0 +1,59 @@
+import React from 'react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Loader2, Minus, Plus } from 'lucide-react';
+
+const Quantity = React.memo(
+  ({
+    quantity,
+    maxQuantity,
+    onIncrease,
+    onDecrease,
+    isUpdating,
+  }: {
+    quantity: number;
+    maxQuantity: number;
+    onIncrease: () => void;
+    onDecrease: () => void;
+    isUpdating?: boolean;
+  }) => {
+    return (
+      <div className='flex items-center gap-2 border border-border rounded-full'>
+        <Button
+          size='icon'
+          className={cn(
+            'h-8 w-8 bg-transparent text-primary hover:bg-gray-100 cursor-pointer',
+            isUpdating && 'opacity-50 cursor-not-allowed'
+          )}
+          onClick={onDecrease}
+          disabled={isUpdating || quantity <= 1}
+        >
+          <Minus className='h-3 w-3' />
+        </Button>
+
+        <div className='w-8 text-center'>
+          {isUpdating ? (
+            <Loader2 className='animate-spin size-4 mx-auto' />
+          ) : (
+            quantity
+          )}
+        </div>
+
+        <Button
+          size='icon'
+          className={cn(
+            'h-8 w-8 bg-transparent text-primary hover:bg-gray-100 cursor-pointer',
+            isUpdating && 'opacity-50 cursor-not-allowed'
+          )}
+          onClick={onIncrease}
+          disabled={isUpdating || quantity >= maxQuantity}
+        >
+          <Plus className='h-3 w-3' />
+        </Button>
+      </div>
+    );
+  }
+);
+
+Quantity.displayName = 'Quantity';
+export default Quantity;

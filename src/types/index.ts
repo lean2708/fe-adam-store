@@ -44,8 +44,8 @@ export type TOrderItem = {
 };
 export type TCartItem = {
   id: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | string;
+  updatedAt: Date | string;
   quantity: number;
   color: string;
   size: string;
