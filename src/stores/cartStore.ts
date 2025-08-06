@@ -11,6 +11,8 @@ export type State = {
 export type Actions = {
   setCartItems: (cartItems: TCartItem[]) => void;
   updateCartItem: (itemId: string, newData: Partial<TCartItem>) => void;
+  removeCartItem: (id: string) => void;
+  clearCart: () => void;
 };
 
 export const useCartStore = create<State & Actions>()((set) => ({
@@ -46,4 +48,9 @@ export const useCartStore = create<State & Actions>()((set) => ({
         totalPrice: totalPrice.toFixed(2),
       };
     }),
+  removeCartItem: (id) =>
+    set((state) => ({
+      cartItems: state.cartItems.filter((ci) => ci.id !== id),
+    })),
+  clearCart: () => set({ cartItems: [] }),
 }));

@@ -1,13 +1,17 @@
 // hooks/useCartItemActions.ts
 import { useState, useCallback, useMemo } from 'react';
-import { changeCartItemVariantAction } from '@/actions/cartActions';
+import {
+  changeCartItemVariantAction,
+  deleteCartItemAction,
+} from '@/actions/cartActions';
 import { toast } from 'sonner';
 import { TCartItem, TColor, TEntityBasic, TProduct } from '@/types';
 
 export const useCart = (
   cartItem: TCartItem,
   product: Omit<TProduct, 'Category'>,
-  updateCartItem: (id: string, item: any) => void
+  updateCartItem: (id: string, item: any) => void,
+  removeCartItem: (id: string) => void
 ) => {
   // *Tìm màu và kích thước ban đầu
   const initialColor = useMemo(
@@ -182,6 +186,21 @@ export const useCart = (
     ]
   );
 
+  const onRemoveItem = useCallback(async () => {
+    try {
+      const res = await deleteCartItemAction(cartItem.id);
+
+      if (res.success) {
+        removeCartItem(cartItem.id);
+        toast.success('Đã xóa sản phẩm khỏi giỏ hàng');
+      } else {
+        toast.error(res.message || 'Xóa sản phẩm thất bại');
+      }
+    } catch (error) {
+      toast.error('Đã xảy ra lỗi khi xóa sản phẩm');
+    }
+  }, [cartItem.id, removeCartItem]);
+
   const increaseQuantity = useCallback(
     () => handleQuantityChange(quantity + 1),
     [handleQuantityChange, quantity]
@@ -202,6 +221,7 @@ export const useCart = (
     currentColor,
     onChangeColor,
     onChangeSize,
+    onRemoveItem,
     increaseQuantity,
     decreaseQuantity,
   };

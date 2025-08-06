@@ -3,7 +3,7 @@
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
-import { Trash2 } from 'lucide-react';
+import { Loader2, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { roboto } from '@/config/fonts';
@@ -22,6 +22,9 @@ type ProductProps = {
 
 export function CartItem({ cartItem, product }: ProductProps) {
   const updateCartItem = useCartStore((state) => state.updateCartItem);
+  const removeCartItem = useCartStore((state) => state.removeCartItem);
+  const clearCart = useCartStore((state) => state.clearCart);
+
   const [isImageError, setImageError] = useState(false);
   const isExternalImage = product.mainImage?.startsWith('http');
 
@@ -34,9 +37,10 @@ export function CartItem({ cartItem, product }: ProductProps) {
     currentColor,
     onChangeColor,
     onChangeSize,
+    onRemoveItem,
     increaseQuantity,
     decreaseQuantity,
-  } = useCart(cartItem, product, updateCartItem);
+  } = useCart(cartItem, product, updateCartItem, removeCartItem);
 
   return (
     <Card className='border-border border-b-2 first:border-t-2'>
@@ -50,13 +54,13 @@ export function CartItem({ cartItem, product }: ProductProps) {
                 : `/images/no-image.jpg`
             }
             alt={cartItem.Product.name || 'Product Image'}
-            width={100}
-            height={100}
+            width={135}
+            height={180}
             className='rounded-lg object-cover'
             onError={() => setImageError(true)}
             unoptimized
           />
-          <div className='flex-1'>
+          <div className='grid grid-rows-3 w-full'>
             <div className='flex justify-between'>
               <div>
                 <h3 className='font-bold text-primary mb-1'>
@@ -80,7 +84,7 @@ export function CartItem({ cartItem, product }: ProductProps) {
               </div>
             </div>
 
-            <div className='flex gap-4 mb-2'>
+            <div className='flex gap-4 mb-2 -mt-2'>
               <Colors
                 cartItemId={cartItem.id}
                 color={currentColor?.name ?? cartItem.color}
@@ -102,12 +106,24 @@ export function CartItem({ cartItem, product }: ProductProps) {
               />
             </div>
 
-            <div className='flex items-center justify-between'>
+            <div className='flex items-end-safe justify-between'>
               <div className='flex justify-center items-center'>
-                <Trash2 className='size-5 mr-1 text-muted-foreground' />
-                <span className='text-muted-foreground font-medium cursor-pointer hover:underline'>
-                  Xóa
-                </span>
+                <button
+                  onClick={onRemoveItem}
+                  className='flex justify-center items-center group'
+                  disabled={isChanged || isQuantityUpdating}
+                >
+                  {isChanged || isQuantityUpdating ? (
+                    <Loader2 className='size-5 mr-1 text-muted-foreground animate-spin' />
+                  ) : (
+                    <>
+                      <Trash2 className=' cursor-pointer size-5 mr-1 text-muted-foreground group-hover:text-destructive' />
+                      <span className=' cursor-pointer text-muted-foreground font-medium group-hover:text-destructive group-hover:underline'>
+                        Xóa
+                      </span>
+                    </>
+                  )}
+                </button>
               </div>
 
               <Quantity

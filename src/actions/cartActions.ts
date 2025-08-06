@@ -61,9 +61,14 @@ export async function deleteCartItemAction(cartItemId: string) {
   try {
     await deleteCartItemApi(Number(cartItemId));
     const items = await fetchCartItemsApi();
-    return { status: 202, message: 'Cart item deleted', cart: items };
+    return {
+      status: 202,
+      success: true,
+      message: 'Cart item deleted',
+      cart: items,
+    };
   } catch (error) {
-    return { status: 500, error };
+    return { status: 500, success: false, error };
   }
 }
 
@@ -77,7 +82,15 @@ export async function deleteAllCartItemsAction(userId: string) {
     );
     return { status: 204, message: 'The shopping cart is empty' };
   } catch (error) {
-    return { status: 500, error, message: 'There is a problem' };
+    const extracted = extractErrorMessage(
+      error,
+      'Xóa vật phẩm trong giỏ hàng thất bại'
+    );
+    return {
+      success: false,
+      message: extracted.message,
+      apiError: extracted,
+    };
   }
 }
 
