@@ -1,5 +1,5 @@
 // hooks/useCartItemActions.ts
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import {
   changeCartItemVariantAction,
   deleteCartItemAction,
@@ -57,6 +57,25 @@ export const useCartItem = (
     [currentVariant]
   );
 
+  const [price, setPrice] = useState(currentVariant?.price);
+
+  // TODO: Hiệu ứng để cập nhật giá khi variant thay đổi
+  useEffect(() => {
+    if (currentVariant?.price) {
+      setPrice(currentVariant.price);
+    } else {
+      const initialVariant = initialColor?.variants?.find(
+        (v) => v.size?.name === initialSize
+      );
+      setPrice(initialVariant?.price ?? 0);
+    }
+  }, [currentVariant, initialColor, initialSize]);
+
+  const totalPrice = useMemo(() => {
+    if (!price) return 0;
+    return price * quantity;
+  }, [price, quantity]);
+
   // TODO: Handler thay đổi màu sắc
   const onChangeColor = useCallback(
     async (colorId: number | undefined) => {
@@ -90,6 +109,14 @@ export const useCartItem = (
           updateCartItem(cartItem.id, res.cart);
           setSelectedColorId(colorId);
           setSelectedSizeName(newSizeName);
+
+          // *Cập nhật giá từ variant mới
+          const newVariant = newColor.variants?.find(
+            (v) => v.size?.id === sizeId
+          );
+          if (newVariant?.price) {
+            setPrice(newVariant.price);
+          }
 
           toast.success('Đã cập nhật màu sản phẩm');
         } else {
@@ -125,6 +152,14 @@ export const useCartItem = (
           if (newSizeName) setSelectedSizeName(newSizeName);
 
           updateCartItem(cartItem.id, res.cart);
+
+          // Cập nhật giá từ variant mới
+          const newVariant = currentColor?.variants?.find(
+            (v) => v.size?.id === sizeId
+          );
+          if (newVariant?.price) {
+            setPrice(newVariant.price);
+          }
 
           toast.success('Đã cập nhật kích thước sản phẩm');
         } else {
@@ -166,6 +201,7 @@ export const useCartItem = (
         );
 
         if (res.success && res.cart) {
+          // setPrice(res.cart);
           updateCartItem(cartItem.id, res.cart);
         } else {
           toast.error(res.message || 'Cập nhật số lượng thất bại');
@@ -218,7 +254,9 @@ export const useCartItem = (
     isQuantityUpdating,
     isChanged,
     maxQuantity,
+    totalPrice,
     currentColor,
+    currentVariant,
     onChangeColor,
     onChangeSize,
     onRemoveItem,

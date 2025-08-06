@@ -5,7 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, Trash2 } from 'lucide-react';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { cn, formatCurrency } from '@/lib/utils';
 import { roboto } from '@/config/fonts';
 import { TCartItem, TEntityBasic, TProduct } from '@/types';
 import Sizes from './Sizes';
@@ -14,6 +14,7 @@ import { useCartStore } from '@/stores/cartStore';
 import { useState } from 'react';
 import { useCartItem } from '@/hooks/(cart)/useCartItem';
 import Quantity from './Quanity';
+import { useLocale } from 'next-intl';
 
 type ProductProps = {
   cartItem: TCartItem;
@@ -21,6 +22,8 @@ type ProductProps = {
 };
 
 export function CartItem({ cartItem, product }: ProductProps) {
+  const locale = useLocale();
+
   const updateCartItem = useCartStore((state) => state.updateCartItem);
   const removeCartItem = useCartStore((state) => state.removeCartItem);
   const clearCart = useCartStore((state) => state.clearCart);
@@ -34,7 +37,9 @@ export function CartItem({ cartItem, product }: ProductProps) {
     isQuantityUpdating,
     isChanged,
     maxQuantity,
+    totalPrice,
     currentColor,
+    currentVariant,
     onChangeColor,
     onChangeSize,
     onRemoveItem,
@@ -78,9 +83,13 @@ export function CartItem({ cartItem, product }: ProductProps) {
 
               <div className='text-right'>
                 <p className='text-sm text-primary font-normal mb-1'>
+                  {formatCurrency(currentVariant?.price || 0, locale)} ×{' '}
                   {cartItem.quantity}
                 </p>
-                <p className='font-bold text-primary mb-2'>VNĐ</p>
+
+                <p className='font-bold text-primary mb-2'>
+                  {formatCurrency(totalPrice)}
+                </p>
               </div>
             </div>
 
@@ -110,19 +119,18 @@ export function CartItem({ cartItem, product }: ProductProps) {
               <div className='flex justify-center items-center'>
                 <button
                   onClick={onRemoveItem}
-                  className='flex justify-center items-center group'
+                  className={cn(
+                    'flex justify-center items-center group',
+                    isChanged || isQuantityUpdating
+                      ? 'opacity-50 cursor-not-allowed'
+                      : ''
+                  )}
                   disabled={isChanged || isQuantityUpdating}
                 >
-                  {isChanged || isQuantityUpdating ? (
-                    <Loader2 className='size-5 mr-1 text-muted-foreground animate-spin' />
-                  ) : (
-                    <>
-                      <Trash2 className=' cursor-pointer size-5 mr-1 text-muted-foreground group-hover:text-destructive' />
-                      <span className=' cursor-pointer text-muted-foreground font-medium group-hover:text-destructive group-hover:underline'>
-                        Xóa
-                      </span>
-                    </>
-                  )}
+                  <Trash2 className='  size-5 mr-1 text-muted-foreground group-hover:text-destructive' />
+                  <span className='  text-muted-foreground font-medium group-hover:text-destructive group-hover:underline'>
+                    Xóa
+                  </span>
                 </button>
               </div>
 
