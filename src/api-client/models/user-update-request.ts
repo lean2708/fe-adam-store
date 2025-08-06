@@ -31,19 +31,19 @@ export interface UserUpdateRequest {
      * @type {string}
      * @memberof UserUpdateRequest
      */
-    'dob': string;
+    'dob'?: string;
     /**
      * 
      * @type {string}
      * @memberof UserUpdateRequest
      */
-    'gender': UserUpdateRequestGenderEnum;
+    'gender': string;
     /**
      * 
      * @type {Set<number>}
      * @memberof UserUpdateRequest
      */
-    'roleIds'?: Set<number>;
+    'roleIds'?: number;
 }
 
 export const UserUpdateRequestGenderEnum = {

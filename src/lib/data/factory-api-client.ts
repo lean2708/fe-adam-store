@@ -14,7 +14,11 @@ import {
   SizeControllerApi,
   ColorControllerApi,
   PromotionControllerApi,
-  PaymentHistoryControllerApi
+  PaymentHistoryControllerApi,
+  ProvinceControllerApi,
+  DistrictControllerApi,
+  AddressControllerApi,
+  AuthControllerApi
 } from "@/api-client";
 import { getAuthenticatedAxiosInstance } from "@/lib/auth/axios-config";
 import { AxiosInstance } from "axios";
@@ -42,7 +46,18 @@ export class ControllerFactory {
     const axiosInstance = await this.getAxiosInstance();
     return new StatisticsControllerApi(undefined, undefined, axiosInstance);
   }
-
+   static async getAddressController(): Promise<AddressControllerApi> {
+    const axiosInstance = await this.getAxiosInstance();
+    return new AddressControllerApi(undefined, undefined, axiosInstance);
+  }
+  static async getProvinceController(): Promise<ProvinceControllerApi> {
+    const axiosInstance = await this.getAxiosInstance();
+    return new ProvinceControllerApi(undefined, undefined, axiosInstance);
+  }
+    static async getDistrictController(): Promise<DistrictControllerApi> {
+    const axiosInstance = await this.getAxiosInstance();
+    return new DistrictControllerApi(undefined, undefined, axiosInstance);
+  }
   /**
    * Get User Controller
    */
@@ -50,7 +65,10 @@ export class ControllerFactory {
     const axiosInstance = await this.getAxiosInstance();
     return new UserControllerApi(undefined, undefined, axiosInstance);
   }
-
+  static async getAuthController(): Promise<AuthControllerApi> {
+    const axiosInstance = await this.getAxiosInstance();
+    return new AuthControllerApi(undefined, undefined, axiosInstance);
+  }
   /**
    * Get Product Controller
    */

@@ -57,21 +57,29 @@ export async function createUser(userData: UserCreationRequest): Promise<UserRes
  */
 export async function updateUser(
   id: number,
-  userData: UserUpdateRequest
-): Promise<UserResponse> {
-  const controller = await ControllerFactory.getUserController();
-  const response = await controller.update({
-    id,
-    userUpdateRequest: userData
-  });
-
-  if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to update user");
+  userData: {
+    name: string;
+    dob?: string;
+    gender: string;
+    roleIds: number[];
   }
-
+): Promise<UserResponse> {
+  const api = await ControllerFactory.getUserController();
+  const response = await api.update({ id: id, userUpdateRequest: userData })
   return response.data.result!;
 }
 
+
+export async function changeAvatar(
+  file: File
+): Promise<UserResponse> {
+  const controller = await ControllerFactory.getUserController();
+  const response = await controller.updateAvatar({
+    file: file
+  });
+
+  return response.data.result!;
+}
 /**
  * Delete a user (soft delete)
  */
@@ -82,6 +90,7 @@ export async function deleteUser(id: number): Promise<void> {
   if (response.data.code !== 200) {
     throw new Error(response.data.message || "Failed to delete user");
   }
+
 }
 
 /**

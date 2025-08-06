@@ -15,7 +15,6 @@ export default async function authLayout({
             <div>
                 <Suspense fallback={<Loading />}>{children}</Suspense>
             </div>
-
             <Footer />
         </div>
     );

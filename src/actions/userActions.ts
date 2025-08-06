@@ -15,8 +15,9 @@ import {
   deleteUser,
   restoreUser,
   fetchUserById,
-  fetchAllRoles
+  fetchAllRoles,
 } from "@/lib/data/user";
+import { changePassword1, getMyInfoApi } from "@/lib/data/auth";
 
 
 /**
@@ -66,8 +67,13 @@ export async function createUserAction(
  */
 export async function updateUserAction(
   id: number,
-  userData: UserUpdateRequest
-): Promise<ActionResponse<UserResponse>> {
+  userData: {
+    name: string;
+    dob?: string;
+    gender: string;
+    roleIds: number[];
+  }
+) {
   try {
     const data = await updateUser(id, userData);
     return {
@@ -75,6 +81,7 @@ export async function updateUserAction(
       data,
     };
   } catch (error) {
+    console.error("Error occurred during user update:", error);
     return {
       success: false,
       message: error instanceof Error ? error.message : "Failed to update user",
@@ -151,6 +158,38 @@ export async function fetchUserByIdAction(
 ): Promise<ActionResponse<UserResponse>> {
   try {
     const data = await fetchUserById(id);
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to fetch user",
+    };
+  }
+}
+export async function getInfoUser() {
+  try {
+    const data = await getMyInfoApi();
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to fetch user",
+    };
+  }
+}
+export async function changePasswordAction(newPass: {
+  oldPassword: string,
+  newPassword: string,
+  confirmPassword: string
+}) {
+  try {
+    const data = await changePassword1(newPass);
     return {
       success: true,
       data,

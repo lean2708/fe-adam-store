@@ -10,6 +10,7 @@ import {
   uploadImages,
   deleteFile
 } from "@/lib/data/file";
+import { changeAvatar } from "@/lib/data/user";
 
 /**
  * Get all files
@@ -41,6 +42,22 @@ export async function uploadImagesAction(
 ): Promise<ActionResponse<FileResponse[]>> {
   try {
     const data = await uploadImages(files);
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to upload images",
+    };
+  }
+}
+export async function changeAvatarAction(
+  files: File
+) {
+  try {
+    const data = await changeAvatar(files);
     return {
       success: true,
       data,
