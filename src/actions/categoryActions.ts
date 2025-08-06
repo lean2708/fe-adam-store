@@ -86,3 +86,29 @@ export async function getAllCategoriesAction(page?: number, size?: number, sort?
     };
   }
 }
+
+import { fetchAllCategoriesForAdminApi } from "@/lib/data/category";
+import type { ActionResponse } from "@/lib/types/actions";
+import type { TCategory } from "@/types";
+
+/**
+ * Fetch all categories for admin
+ */
+export async function fetchAllCategoriesForAdminAction(
+  page: number = 0,
+  size: number = 100,
+  sort: string[] = ["id,asc"]
+): Promise<ActionResponse<TCategory[]>> {
+  try {
+    const categories = await fetchAllCategoriesForAdminApi(page, size, sort);
+    return {
+      success: true,
+      data: categories,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to fetch categories",
+    };
+  }
+}

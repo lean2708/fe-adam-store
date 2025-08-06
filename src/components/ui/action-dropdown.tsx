@@ -8,13 +8,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Edit, Trash2, RotateCcw } from "lucide-react";
+import { MoreHorizontal, Edit, Trash2, RotateCcw, Eye } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 interface ActionDropdownProps {
   onEdit?: () => void;
   onDelete?: () => void;
   onRestore?: () => void;
+  onViewDetails?: () => void;
   showRestore?: boolean;
   disabled?: boolean;
   translationNamespace?: string;
@@ -26,6 +27,7 @@ export function ActionDropdown({
   onEdit,
   onDelete,
   onRestore,
+  onViewDetails,
   showRestore = false,
   disabled = false,
   translationNamespace = "Admin.branches",
@@ -49,6 +51,18 @@ export function ActionDropdown({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 bg-white border border-gray-200 shadow-lg">
+        {onViewDetails && (
+          <DropdownMenuItem
+            onClick={onViewDetails}
+            className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-blue-50 hover:text-blue-700 cursor-pointer"
+          >
+            <Eye className="h-4 w-4" />
+            <span>
+              {translationNamespace.includes("products") ? t("viewDetails") || "Chi tiết" : t("viewDetails")}
+            </span>
+          </DropdownMenuItem>
+        )}
+
         {onEdit && (
           <DropdownMenuItem
             onClick={onEdit}

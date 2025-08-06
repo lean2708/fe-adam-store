@@ -70,6 +70,17 @@ export type TProduct = {
   colors?: TColor[];
 };
 
+// Extended product type for admin table display with individual color/size combinations
+export type TProductExpanded = TProduct & {
+  variantId: number;
+  price?: number;
+  quantity?: number;
+  variantStatus?: 'ACTIVE' | 'INACTIVE';
+  variantIsAvailable?: boolean;
+  color?: TEntityBasic;
+  size?: TEntityBasic;
+};
+
 export type TReview = {
   id?: number;
   userName?: string;
@@ -159,3 +170,4 @@ export type TPromotion = {
   createdBy?: string;
   createdAt?: string;
 };
+
