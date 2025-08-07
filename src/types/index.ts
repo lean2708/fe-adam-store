@@ -1,6 +1,5 @@
-import { ImageBasic } from '@/api-client';
-import { ORDER_STATUS, USER_ROLE } from '@/enums';
-
+import { ImageBasic } from "@/api-client";
+import { ORDER_STATUS, USER_ROLE } from "@/enums";
 
 export type TCategory = {
   id: string;
@@ -60,6 +59,8 @@ export type TProduct = {
   mainImage: string;
   images?: ImageBasic[];
   id: number;
+  minPrice: number;
+  maxPrice: number;
   isAvailable?: boolean;
   name?: string;
   description?: string;
@@ -80,16 +81,16 @@ export type TAddress = {
   ward: {
     code?: string;
     name: string;
-  },
+  };
   district: {
     id?: number;
     name: string;
-  },
+  };
   province: {
     id?: number;
     name: string;
-  }
-}
+  };
+};
 export type TEntityBasic = {
   id?: number;
   name?: string;
@@ -109,14 +110,14 @@ export type TColor = {
   id: number;
   name: string;
   variants?: TVariant[];
-}
+};
 
 export type TBranch = {
   id: string;
   name: string;
   location: string;
   phone: string;
-  status: 'ACTIVE' | 'INACTIVE';
+  status: "ACTIVE" | "INACTIVE";
   createdAt?: string;
   updatedAt?: string;
-}
+};

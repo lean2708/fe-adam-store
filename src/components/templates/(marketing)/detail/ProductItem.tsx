@@ -1,31 +1,53 @@
 import Image from "next/image";
-import { TProduct } from "@/types";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { ProductResponse } from "@/api-client";
+import { transformProductResponseToTProduct } from "@/lib/data/transform/product";
+import { TProduct } from "@/types";
 
 interface ProductCardIndexProps {
-  product: TProduct;
+  product: ProductResponse;
   badgeText?: string;
   className?: string;
 }
 
-export default function ProductCardIndex({
+export default function ProductItme({
   product,
   badgeText = "Mới",
   className = "",
 }: ProductCardIndexProps) {
-  const [selectedColor, setSelectedColor] = useState(1);
+  // Transform ProductResponse to TProduct for easier rendering
+  const tProduct: TProduct | null = useMemo(() => {
+    if (!product) return null;
+    try {
+      return transformProductResponseToTProduct(product);
+    } catch {
+      return null;
+    }
+  }, [product]);
+
+  // Default selected color is the first color's id, or 0
+  const [selectedColor, setSelectedColor] = useState(
+    tProduct?.colors?.[0]?.id ?? 0
+  );
+
+  if (!tProduct) return null;
+
+  // Find the selected color object
+  const selectedColorObj = tProduct.colors?.find(
+    (color) => color.id === selectedColor
+  );
+
   return (
     <div className={`group cursor-pointer relative ${className}`}>
       {/* Product Image */}
       <div className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden mb-3 relative">
         <Image
           src={
-            product.mainImage ||
+            tProduct.mainImage ||
             "https://images.pexels.com/photos/6069525/pexels-photo-6069525.jpeg?auto=compress&cs=tinysrgb&h=400&w=300"
           }
-          alt={product.name || "Product image"}
+          alt={tProduct.title || "Product image"}
           width={300}
           height={400}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -47,9 +69,8 @@ export default function ProductCardIndex({
 
           {/* Size Options */}
           <div className="flex justify-center gap-1 sm:gap-2 flex-wrap">
-            {product.colors
-              ?.find((color) => color.id === selectedColor)
-              ?.variants?.slice()
+            {selectedColorObj?.variants
+              ?.slice()
               .sort((a, b) => {
                 const aId = a.size?.id ?? 0;
                 const bId = b.size?.id ?? 0;
@@ -60,7 +81,7 @@ export default function ProductCardIndex({
                   key={variant.id}
                   className={cn(
                     "px-2 sm:px-3 py-1 text-xs font-medium rounded-full border border-gray-200 transition-colors shadow-sm",
-                    variant.status === "available"
+                    !variant.isAvailable
                       ? "bg-gray-100 text-gray-400 line-through cursor-not-allowed opacity-60"
                       : "bg-gray-100 hover:bg-gray-200 cursor-pointer hover:border-gray-300"
                   )}
@@ -74,16 +95,19 @@ export default function ProductCardIndex({
 
       {/* Color dots */}
       <div className="flex items-center gap-2 mb-3">
-        {product.colors?.map((color) => (
+        {tProduct.colors?.map((color) => (
           <span
             key={color.id}
-            className="inline-block border border-gray-300"
+            className={`inline-block border border-gray-300 ${
+              selectedColor === color.id ? "ring-2 ring-black" : ""
+            }`}
             style={{
               width: "50px",
               height: "29px",
               borderRadius: "100px",
               opacity: 1,
               backgroundColor: color.name,
+              cursor: "pointer",
             }}
             onClick={() => setSelectedColor(color.id)}
           />
@@ -92,13 +116,12 @@ export default function ProductCardIndex({
 
       {/* Product Title */}
       <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2 uppercase tracking-wide">
-        {product.title}
+        {tProduct.title}
       </h3>
 
       {/* Price */}
       <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-        {/* {product.colors?.[0]?.variants?.[0]?.price?.toLocaleString("vi-VN")} VND */}
-        {product.minPrice.toLocaleString("vi-VN")} VNĐ
+        {tProduct.minPrice?.toLocaleString("vi-VN")} VND
       </p>
     </div>
   );

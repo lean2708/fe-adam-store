@@ -5,6 +5,7 @@ import {
   createCategoryApi,
   deleteCategoryApi,
   fetchAllCategoriesApi,
+  fetchAllProductByCategoryApi,
 } from "@/lib/data/category";
 import { categorySchema } from "./schema/categorySchema";
 
@@ -33,7 +34,8 @@ export async function addCategoryAction(formData: FormData) {
   // NOTE: You must implement or import an image upload API for image.
   // Here we just pass the image file name as a placeholder.
   // Replace this with your actual upload logic.
-  const imagePath = typeof image === "object" && "name" in image ? image.name : "";
+  const imagePath =
+    typeof image === "object" && "name" in image ? image.name : "";
 
   try {
     const created = await createCategoryApi({
@@ -71,7 +73,11 @@ export async function deleteCategoryAction(categoryId: string) {
   }
 }
 
-export async function getAllCategoriesAction(page?: number, size?: number, sort?: string[]) {
+export async function getAllCategoriesAction(
+  page?: number,
+  size?: number,
+  sort?: string[]
+) {
   try {
     const categories = await fetchAllCategoriesApi(page, size, sort);
     return {
@@ -86,3 +92,34 @@ export async function getAllCategoriesAction(page?: number, size?: number, sort?
     };
   }
 }
+
+export const getProductByCategoryAction = async ({
+  categoryId,
+  page,
+  size,
+  sort,
+}: {
+  categoryId: string;
+  page?: number;
+  size?: number;
+  sort: string[];
+}) => {
+  try {
+    const items = await fetchAllProductByCategoryApi(
+      categoryId,
+      page,
+      size,
+      sort
+    );
+    return {
+      status: 200,
+      items,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      message: "server error",
+      error,
+    };
+  }
+};

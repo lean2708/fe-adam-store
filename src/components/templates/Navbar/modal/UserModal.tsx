@@ -1,57 +1,62 @@
-import { User, ShoppingBag, LogIn, UserPlus } from "lucide-react"
-import { Modal } from "@/components/ui/modal"
-import { logoutAction } from "@/actions/nextAuthActions"
-import { signOut, useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
+import { User, ShoppingBag, LogIn, UserPlus } from "lucide-react";
+import { Modal } from "@/components/ui/modal";
+import { logoutAction } from "@/actions/nextAuthActions";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-export default function UserModal({ open, onClose }: { open: boolean, onClose: () => void }) {
-  const { data: session, status, } = useSession()
-  const router = useRouter()
+export default function UserModal({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
-  const isLogin = status === "authenticated" && !!session?.user
-  const user = session?.user
-
+  const isLogin = status === "authenticated" && !!session?.user;
+  const user = session?.user;
 
   const handleLogout = async () => {
     try {
       // First call the API to invalidate the token on the server
       // This will also clear the httpOnly refresh token cookie
-      await logoutAction()
+      await logoutAction();
 
       // Then sign out with NextAuth (this clears the client session)
       await signOut({
         redirect: false,
-        callbackUrl: "/"
-      })
+        callbackUrl: "/",
+      });
 
       // Close the modal
-      onClose()
+      onClose();
 
       // Show success message
-      toast.success("Đăng xuất thành công!")
+      toast.success("Đăng xuất thành công!");
 
       // Redirect to home page
-      router.push("/")
+      router.push("/");
     } catch (error) {
-      console.error("Logout error:", error)
-      toast.error("Có lỗi xảy ra khi đăng xuất")
+      console.error("Logout error:", error);
+      toast.error("Có lỗi xảy ra khi đăng xuất");
 
       // Even if there's an error, try to sign out with NextAuth
       try {
-        await signOut({ redirect: false })
-        onClose()
-        router.push("/")
+        await signOut({ redirect: false });
+        onClose();
+        router.push("/");
       } catch (signOutError) {
-        console.error("NextAuth signOut error:", signOutError)
+        console.error("NextAuth signOut error:", signOutError);
       }
     }
-  }
+  };
 
   const handleNavigation = (path: string) => {
-    onClose()
-    router.push(path)
-  }
+    onClose();
+    router.push(path);
+  };
 
   // If user is not logged in, show login/register options
   if (!isLogin) {
@@ -98,7 +103,7 @@ export default function UserModal({ open, onClose }: { open: boolean, onClose: (
           <span className="text-lg font-medium">Đăng ký</span>
         </div>
       </Modal>
-    )
+    );
   }
 
   // If user is logged in, show user menu
@@ -151,10 +156,20 @@ export default function UserModal({ open, onClose }: { open: boolean, onClose: (
         onClick={handleLogout}
       >
         <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center">
-          <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6 text-gray-400" viewBox="0 0 24 24"><path d="M9 16l-4-4m0 0l4-4m-4 4h12"></path></svg>
+          <svg
+            width="24"
+            height="24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="h-6 w-6 text-gray-400"
+            viewBox="0 0 24 24"
+          >
+            <path d="M9 16l-4-4m0 0l4-4m-4 4h12"></path>
+          </svg>
         </div>
         <span className="text-lg font-medium">Đăng xuất</span>
       </div>
     </Modal>
-  )
+  );
 }

@@ -1,74 +1,75 @@
+"use client";
 
-"use client"
-
-import { useState, useCallback, useMemo } from "react"
-import { ShoppingBag, User, Menu } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useState, useCallback, useMemo } from "react";
+import { ShoppingBag, User, Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 // Import modals from modal folder
-import UserModal from "./modal/UserModal"
-import CartModal from "./modal/CartModal"
-import MobileSidebar from "./modal/MobileSidebar"
-import ThemeToggle from "@/components/modules/ThemeToggle"
-import Logo from "@/components/modules/Logo"
-import SearchComponent from "./components/SearchComponent"
-import NavigationLocaleSwitcherPublic from "./components/NavigationLocaleSwitcherPublic"
-import { useTranslations } from "next-intl"
+import UserModal from "./modal/UserModal";
+import CartModal from "./modal/CartModal";
+import MobileSidebar from "./modal/MobileSidebar";
+import ThemeToggle from "@/components/modules/ThemeToggle";
+import Logo from "@/components/modules/Logo";
+import SearchComponent from "./components/SearchComponent";
+import NavigationLocaleSwitcherPublic from "./components/NavigationLocaleSwitcherPublic";
+import { useTranslations } from "next-intl";
 
 export default function Navbar() {
   // Only manage modal open/close triggers here
-  const [isCartOpen, setIsCartOpen] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isUserModalOpen, setIsUserModalOpen] = useState(false)
-  const [isSearchExpanded, setIsSearchExpanded] = useState(false)
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
   // Memoized cart data and calculations
-  const cartItems = useMemo(() => [
-    {
-      id: 1,
-      name: "Áo in cotton Care & Share",
-      color: "trắng kem",
-      size: "3XL",
-      price: 700000,
-      quantity: 1,
-      image: "/placeholder.svg?height=80&width=80",
-    },
-    {
-      id: 2,
-      name: "Áo in cotton Care & Share",
-      color: "trắng kem",
-      size: "3XL",
-      price: 700000,
-      quantity: 1,
-      image: "/placeholder.svg?height=80&width=80",
-    },
-  ], [])
+  const cartItems = useMemo(
+    () => [
+      {
+        id: 1,
+        name: "Áo in cotton Care & Share",
+        color: "trắng kem",
+        size: "3XL",
+        price: 700000,
+        quantity: 1,
+        image: "/placeholder.svg?height=80&width=80",
+      },
+      {
+        id: 2,
+        name: "Áo in cotton Care & Share",
+        color: "trắng kem",
+        size: "3XL",
+        price: 700000,
+        quantity: 1,
+        image: "/placeholder.svg?height=80&width=80",
+      },
+    ],
+    []
+  );
 
-  const cartItemCount = useMemo(() =>
-    cartItems.reduce((total, item) => total + item.quantity, 0),
+  const cartItemCount = useMemo(
+    () => cartItems.reduce((total, item) => total + item.quantity, 0),
     [cartItems]
-  )
+  );
 
   // Modal close handlers
   const handleCartModalClose = useCallback(() => {
-    setIsCartOpen(false)
-  }, [])
+    setIsCartOpen(false);
+  }, []);
 
   const handleUserModalClose = useCallback(() => {
-    setIsUserModalOpen(false)
-  }, [])
+    setIsUserModalOpen(false);
+  }, []);
 
   const handleMobileSidebarClose = useCallback(() => {
-    setIsMobileMenuOpen(false)
-  }, [])
+    setIsMobileMenuOpen(false);
+  }, []);
 
   // Handle search expansion from SearchComponent
   const handleSearchExpand = useCallback((expanded: boolean) => {
-    setIsSearchExpanded(expanded)
-  }, [])
+    setIsSearchExpanded(expanded);
+  }, []);
   return (
     <header className="border-b adam-store-border adam-store-bg relative h-16 flex items-center">
-
       {/* Hide other content when search is expanded */}
       <>
         {/* Mobile Menu Button */}
@@ -92,13 +93,21 @@ export default function Navbar() {
         <SearchComponent onSearchExpand={handleSearchExpand} />
         <div className="absolute right-5 top-0 h-16 flex items-center z-20">
           <div className="flex items-center space-x-4">
-
             {/* User and Cart Icons */}
             <div className="flex items-center space-x-2">
-              <Button variant="ghost" size="sm" onClick={() => setIsUserModalOpen((v) => !v)}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsUserModalOpen((v) => !v)}
+              >
                 <User className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="sm" onClick={() => setIsCartOpen(!isCartOpen)} className="relative">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsCartOpen(!isCartOpen)}
+                className="relative"
+              >
                 <ShoppingBag className="h-5 w-5" />
                 {cartItemCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -107,20 +116,17 @@ export default function Navbar() {
                 )}
               </Button>
               <ThemeToggle />
-
             </div>
           </div>
         </div>
       </>
       <div className="z-1 flex w-full items-center justify-between gap-2 px-2 sm:px-8">
         <div className="flex flex-1 items-center justify-start">
-          <div className="sm:hidden">
-            {/* <LinkNav /> */}
-          </div>
+          <div className="sm:hidden">{/* <LinkNav /> */}</div>
           <NavigationLocaleSwitcherPublic />
         </div>
       </div>
-   
+
       {/* Modals */}
       {isUserModalOpen && (
         <div className=" absolute right-5 top-8 ">
@@ -138,8 +144,11 @@ export default function Navbar() {
         </div>
       )}
       {isMobileMenuOpen && (
-        <MobileSidebar open={isMobileMenuOpen} onClose={handleMobileSidebarClose} />
+        <MobileSidebar
+          open={isMobileMenuOpen}
+          onClose={handleMobileSidebarClose}
+        />
       )}
     </header>
-  )
+  );
 }

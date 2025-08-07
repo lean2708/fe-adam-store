@@ -1,12 +1,13 @@
-import { PageResponseReviewResponse } from './../../api-client/models/page-response-review-response';
-import type { TProduct } from '@/types'; // your local template type
+import { PageResponseReviewResponse } from "./../../api-client/models/page-response-review-response";
+import type { TProduct } from "@/types"; // your local template type
 
 import {
   ProductControllerApi,
   type ProductRequest,
   type ProductUpdateRequest,
   ProductResponse,
-  type PageResponseProductResponse
+  type PageResponseProductResponse,
+  ApiResponsePageResponseProductResponse,
 } from "@/api-client";
 import { ControllerFactory } from "./factory-api-client";
 import { getPublicAxiosInstance } from "@/lib/auth/axios-config";
@@ -143,7 +144,7 @@ export async function fetchProductReviewssApi(
     throw response.data;
   }
   if (!response.data.result) {
-    throw new Error('ProductResponse is missing in the response.');
+    throw new Error("ProductResponse is missing in the response.");
   }
   return response.data.result as PageResponseReviewResponse;
 }
@@ -184,7 +185,7 @@ export async function fetchAllProductsForAdmin(
   const response = await controller.fetchAllProductsForAdmin({
     page,
     size,
-    sort
+    sort,
   });
 
   if (response.data.code !== 200) {
@@ -197,10 +198,12 @@ export async function fetchAllProductsForAdmin(
 /**
  * Create a new product (returns raw API response)
  */
-export async function createProduct(productData: ProductRequest): Promise<ProductResponse> {
+export async function createProduct(
+  productData: ProductRequest
+): Promise<ProductResponse> {
   const controller = await ControllerFactory.getProductController();
   const response = await controller.create6({
-    productRequest: productData
+    productRequest: productData,
   });
 
   if (response.data.code !== 200) {
@@ -220,7 +223,7 @@ export async function updateProduct(
   const controller = await ControllerFactory.getProductController();
   const response = await controller.update5({
     id,
-    productUpdateRequest: productData
+    productUpdateRequest: productData,
   });
 
   if (response.data.code !== 200) {
@@ -269,5 +272,3 @@ export async function fetchProductById(id: number): Promise<ProductResponse> {
 
   return response.data.result!;
 }
-
-
