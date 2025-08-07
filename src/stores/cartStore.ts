@@ -1,15 +1,18 @@
 'use client';
 
+import { fetchCartItemsAction } from '@/actions/cartActions';
 import { TCartItem } from '@/types';
 import { create } from 'zustand';
 
 export type State = {
   cartItems: TCartItem[];
+  status: 'idle' | 'loading' | 'success' | 'error';
   totalPrice: string;
   selectedItems: number[];
 };
 
 export type Actions = {
+  fetchCart: (userId: number) => Promise<void>;
   setCartItems: (cartItems: TCartItem[]) => void;
   toggleItemSelection: (id: number) => void;
   toggleAllItems: (select: boolean) => void;
@@ -22,6 +25,17 @@ export const useCartStore = create<State & Actions>()((set) => ({
   cartItems: [],
   totalPrice: '0',
   selectedItems: [],
+  status: 'idle',
+
+  fetchCart: async (userId: number) => {
+    set({ status: 'loading' });
+    try {
+      const response = await fetchCartItemsAction(userId, 0, 10, ['id,desc']);
+      set({ cartItems: response.data, status: 'success' });
+    } catch (err) {
+      set({ status: 'error' });
+    }
+  },
 
   setCartItems: (cartItems) =>
     set(() => {

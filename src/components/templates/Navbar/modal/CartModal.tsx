@@ -8,13 +8,18 @@ import { useRouter } from 'next/navigation';
 import { TCartItem } from '@/types';
 import { manrope } from '@/config/fonts';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useCartStore } from '@/stores/cartStore';
+import { useEffect, useState } from 'react';
+import { fetchCartItemsAction } from '@/actions/cartActions';
 
 export default function CartModal({
+  userId,
   open,
   cartItems,
   totalPrice,
   onClose,
 }: {
+  userId: number;
   open: boolean;
   cartItems: TCartItem[];
   totalPrice: number;
@@ -25,10 +30,29 @@ export default function CartModal({
 
   const router = useRouter();
 
+  const setCartItems = useCartStore((s) => s.setCartItems);
+  const [isLoaded, setIsLoading] = useState(true);
+
   const cartItemCount = cartItems.reduce(
     (total, item) => total + item.quantity,
     0
   );
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      const res = await fetchCartItemsAction(Number(userId), 0, 10, [
+        'id,desc',
+      ]);
+      setCartItems(res.success ? res.data ?? [] : []);
+      setIsLoading(false);
+    };
+
+    fetchCartItems();
+  }, [userId, setCartItems]);
+
+  if (isLoaded) {
+    return <div>loading...</div>;
+  }
 
   return (
     <Modal

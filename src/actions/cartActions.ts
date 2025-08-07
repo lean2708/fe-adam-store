@@ -16,12 +16,13 @@ import { number } from 'zod';
  * Fetch all cart items for the current user (paginated).
  */
 export async function fetchCartItemsAction(
+  userId: number,
   page?: number,
   size?: number,
   sort?: string[]
 ): Promise<ActionResponse<TCartItem[]>> {
   try {
-    const items = await fetchCartItemsApi(page, size, sort);
+    const items = await fetchCartItemsApi(userId, page, size, sort);
     return { success: true, data: items };
   } catch (error) {
     const extracted = extractErrorMessage(error, 'Failed to fetch cart items.');
@@ -32,11 +33,14 @@ export async function fetchCartItemsAction(
 /**
  * Add a new cart item using API.
  */
-export async function addToCartAction(cartItemRequest: CartItemRequest) {
+export async function addToCartAction(
+  cartItemRequest: CartItemRequest,
+  userId: number
+) {
   try {
     // The API expects a cartItemRequest object
 
-    const item = await createCartItemApi(cartItemRequest);
+    const item = await createCartItemApi(cartItemRequest, userId);
     return {
       status: 200,
       message: 'New product added in your cart',
@@ -47,20 +51,20 @@ export async function addToCartAction(cartItemRequest: CartItemRequest) {
   }
 }
 
-export async function getCartItemsAction(userId: string) {
-  try {
-    // No userId filter in API, so just fetch all for current user
-    const items = await fetchCartItemsApi();
-    return { status: 200, cart: items };
-  } catch (error) {
-    return { status: 500, error };
-  }
-}
+// export async function getCartItemsAction(userId: string) {
+//   try {
+//     // No userId filter in API, so just fetch all for current user
+//     const items = await fetchCartItemsApi();
+//     return { status: 200, cart: items };
+//   } catch (error) {
+//     return { status: 500, error };
+//   }
+// }
 
-export async function deleteCartItemAction(cartItemId: string) {
+export async function deleteCartItemAction(cartItemId: string, userId: number) {
   try {
     await deleteCartItemApi(Number(cartItemId));
-    const items = await fetchCartItemsApi();
+    const items = await fetchCartItemsApi(userId);
     return {
       status: 202,
       success: true,
@@ -75,8 +79,9 @@ export async function deleteCartItemAction(cartItemId: string) {
 export async function deleteAllCartItemsAction(userId: string) {
   try {
     // No bulk delete in API, so fetch all and delete one by one
-    const items = await fetchCartItemsApi();
+    const items = await fetchCartItemsApi(Number(userId));
     const userItems = items.filter((item) => item.userId === userId);
+    console.log(items);
     await Promise.all(
       userItems.map((item) => deleteCartItemApi(Number(item.id)))
     );
@@ -99,6 +104,7 @@ export async function deleteAllCartItemsAction(userId: string) {
 }
 
 export async function changeCartItemVariantAction(
+  userId: number,
   cartItemId: string,
   colorId: number,
   sizeId: number,
@@ -108,6 +114,7 @@ export async function changeCartItemVariantAction(
     const cartItemUpdateRequest = { sizeId, colorId, quantity };
 
     const item = await updateCartItemApi(
+      userId,
       Number(cartItemId),
       cartItemUpdateRequest
     );
@@ -134,12 +141,12 @@ export async function checkoutAction(address: string) {
   return { status: 501, message: 'Checkout API not implemented' };
 }
 
-export async function getCart(userId: string) {
-  // Just fetch all items for the current user
-  try {
-    const items = await fetchCartItemsApi();
-    return items.filter((item) => item.userId === userId);
-  } catch (error) {
-    return [];
-  }
-}
+// export async function getCart(userId: string) {
+//   // Just fetch all items for the current user
+//   try {
+//     const items = await fetchCartItemsApi();
+//     return items.filter((item) => item.userId === userId);
+//   } catch (error) {
+//     return [];
+//   }
+// }

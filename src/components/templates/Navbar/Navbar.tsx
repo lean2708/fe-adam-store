@@ -14,8 +14,11 @@ import SearchComponent from './components/SearchComponent';
 import NavigationLocaleSwitcherPublic from './components/NavigationLocaleSwitcherPublic';
 import { useTranslations } from 'next-intl';
 import { useCartStore } from '@/stores/cartStore';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Navbar() {
+  const { user } = useAuth();
+
   const cartItems = useCartStore((state) => state.cartItems);
   const totalPrice = useCartStore((state) => state.totalPrice);
   // Only manage modal open/close triggers here
@@ -115,6 +118,7 @@ export default function Navbar() {
       {isCartOpen && (
         <div className=' absolute right-5 top-2 '>
           <CartModal
+            userId={user?.id || 0}
             open={isCartOpen}
             cartItems={cartItems}
             totalPrice={Number(totalPrice)}

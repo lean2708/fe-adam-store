@@ -2,23 +2,21 @@
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { CartItem } from './CartItem/CartItem';
-import { useEffect, useState } from 'react';
-import { fetchCartItemsAction } from '@/actions/cartActions';
+import { useEffect } from 'react';
 import { useCartStore } from '@/stores/cartStore';
 import EmptyCart from './EmptyCart';
 import ClearCartButton from './CartItemsList/ClearItemsButton';
 import { Label } from '@/components/ui/label';
 
 export function CartItemsList({ userId }: { userId: string }) {
-  const [isLoading, setIsLoading] = useState(true);
+  const cartItems = useCartStore((s) => s.cartItems);
+  const selectedItems = useCartStore((s) => s.selectedItems);
 
-  const cartItems = useCartStore((state) => state.cartItems);
-  const setCartItems = useCartStore((state) => state.setCartItems);
-  const selectedItems = useCartStore((state) => state.selectedItems);
-  const toggleItemSelection = useCartStore(
-    (state) => state.toggleItemSelection
-  );
-  const toggleAllItems = useCartStore((state) => state.toggleAllItems);
+  const toggleItemSelection = useCartStore((s) => s.toggleItemSelection);
+  const toggleAllItems = useCartStore((s) => s.toggleAllItems);
+
+  const fetchCart = useCartStore((s) => s.fetchCart);
+  const status = useCartStore((s) => s.status);
 
   // *Kiểm tra xem checkbox tất cả có được chọn không
   const allSelected =
@@ -26,18 +24,22 @@ export function CartItemsList({ userId }: { userId: string }) {
 
   useEffect(() => {
     const fetchCartItems = async () => {
-      const res = await fetchCartItemsAction(0, 10, ['id,desc']);
-      setCartItems(res.success ? res.data ?? [] : []);
-      setIsLoading(false);
+      if (status === 'idle') {
+        await fetchCart(Number(userId));
+      }
     };
 
     fetchCartItems();
-  }, [userId, setCartItems]);
+  }, [userId, status, fetchCart]);
 
   // console.log('Cart items:', cartItems);
 
-  if (isLoading) {
+  if (status === 'loading' || status === 'idle') {
     return <div>loading...</div>;
+  }
+
+  if (status === 'error') {
+    return <div>Đã có lỗi xảy ra khi tải giỏ hàng.</div>;
   }
 
   return (

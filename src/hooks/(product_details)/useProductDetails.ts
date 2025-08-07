@@ -1,10 +1,12 @@
 import { useState, useRef } from 'react';
 import { TProduct, TVariant } from '@/types';
 import { toast } from 'sonner';
-import { fetchProductVariantByColorAndSize } from '@/actions/productVariantsActions';
 import { addToCartAction } from '@/actions/cartActions';
+import { useAuth } from '../useAuth';
 
 export default function useProductDetails(product: TProduct) {
+  const { user } = useAuth();
+
   const [selectVariant, setSelectVariant] = useState<TVariant | undefined>(
     product.colors?.[0]?.variants?.[0]
   );
@@ -53,10 +55,13 @@ export default function useProductDetails(product: TProduct) {
   };
 
   const handleAddToCart = async () => {
-    const res = await addToCartAction({
-      productVariantId: selectVariant?.id ?? 0,
-      quantity: quantity,
-    });
+    const res = await addToCartAction(
+      {
+        productVariantId: selectVariant?.id ?? 0,
+        quantity: quantity,
+      },
+      user?.id || 0
+    );
 
     console.log('Add to cart response:', res);
 

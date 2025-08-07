@@ -18,7 +18,7 @@ const page = async ({ params }: Props) => {
   // ? và tôi không thể sử dụng useTranslations trong server component
   const t = await getTranslations('Marketing.product_details');
 
-  const { id } = params;
+  const { id } = await params;
 
   const productResponse = await getProductDetailsAction(id);
 

@@ -5,7 +5,8 @@ import {
   deleteCartItemAction,
 } from '@/actions/cartActions';
 import { toast } from 'sonner';
-import { TCartItem, TColor, TEntityBasic, TProduct } from '@/types';
+import { TCartItem, TProduct } from '@/types';
+import { useAuth } from '../useAuth';
 
 export const useCartItem = (
   cartItem: TCartItem,
@@ -13,6 +14,8 @@ export const useCartItem = (
   updateCartItem: (id: string, item: any) => void,
   removeCartItem: (id: string) => void
 ) => {
+  const { user } = useAuth();
+
   // *Tìm màu và kích thước ban đầu
   const initialColor = useMemo(
     () =>
@@ -100,6 +103,7 @@ export const useCartItem = (
         if (!sizeId) throw new Error('Không tìm thấy kích thước phù hợp');
 
         const res = await changeCartItemVariantAction(
+          user?.id || 0,
           cartItem.id,
           colorId,
           sizeId
@@ -139,6 +143,7 @@ export const useCartItem = (
 
       try {
         const res = await changeCartItemVariantAction(
+          user?.id || 0,
           cartItem.id,
           selectedColorId,
           sizeId
@@ -194,6 +199,7 @@ export const useCartItem = (
         }
 
         const res = await changeCartItemVariantAction(
+          user?.id || 0,
           cartItem.id,
           selectedColorId,
           sizeId,
@@ -224,7 +230,7 @@ export const useCartItem = (
 
   const onRemoveItem = useCallback(async () => {
     try {
-      const res = await deleteCartItemAction(cartItem.id);
+      const res = await deleteCartItemAction(cartItem.id, user?.id || 0);
 
       if (res.success) {
         removeCartItem(cartItem.id);
