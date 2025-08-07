@@ -43,7 +43,7 @@ export interface UserUpdateRequest {
      * @type {Set<number>}
      * @memberof UserUpdateRequest
      */
-    'roleIds'?: number;
+    'roleIds'?: number[];
 }
 
 export const UserUpdateRequestGenderEnum = {

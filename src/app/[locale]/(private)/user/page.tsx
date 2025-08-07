@@ -13,7 +13,7 @@ const tabList = [
 export default function UserPage() {
   const [activeStatus, setActiveStatus] = useState<string>('Info');
   return (
-    <main className="flex justify-center items-start pt-10 mt-4 px-4" style={{ minHeight: '68vh' }}>
+    <main className="flex justify-center pb-10 items-start pt-10 mt-4 px-4" style={{ minHeight: '68vh' }}>
       <div className="w-full max-w-7xl flex gap-10">
         <div className="max-w-xs flex flex-col items-center">
           <h3 className="font-bold text-3xl">Thông tin tài khoản</h3>

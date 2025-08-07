@@ -54,10 +54,10 @@ export async function uploadImagesAction(
   }
 }
 export async function changeAvatarAction(
-  files: File
+  file: File
 ) {
   try {
-    const data = await changeAvatar(files);
+    const data = await changeAvatar(file);
     return {
       success: true,
       data,

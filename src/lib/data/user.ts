@@ -77,7 +77,6 @@ export async function changeAvatar(
   const response = await controller.updateAvatar({
     file: file
   });
-
   return response.data.result!;
 }
 /**

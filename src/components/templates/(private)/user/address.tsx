@@ -1,10 +1,11 @@
 import { deteleAddressById, getAllAddressUser } from "@/actions/addressActions"
 import { AddressResponse } from "@/api-client"
 import ConfirmDialogModule from "@/components/modules/ConfirmDialogModule"
+import { Skeleton } from "@/components/ui/skeleton"
 import { SquarePen, Trash } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-
+import { toast } from 'sonner'
 export default function Address() {
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -25,14 +26,38 @@ export default function Address() {
       setLoading(true)
       if (selectAddressId) {
         const res = await deteleAddressById(selectAddressId)
-        if (res.status === 200) { await getAddress(); setVisible(false) }
+        if (res.status === 200) { await getAddress(); setVisible(false); toast.success('Xóa địa chỉ thành công') } else { toast.error('Lỗi khi xóa địa chỉ!') }
       }
     } catch (error) {
-
+      toast.error('Lỗi khi xóa địa chỉ!')
     } finally {
       setLoading(false)
     }
   }
+  if (!listAddress) return (
+    <div className="mt-8 w-full h-90">
+      <div className="flex w-full justify-between">
+        <h5 className="font-bold text-3xl">Địa chỉ của tôi</h5>
+        <Link href={'/address'} className="py-2 px-8 bg-black rounded-lg text-white">Thêm địa chỉ mới</Link>
+      </div>
+      <ul className="mt-5">
+        <Skeleton className="w-full bg-gray-100 mt-3 py-9 px-6 flex items-center justify-between shadow" />
+      </ul>
+    </div>
+  )
+  if (listAddress.length === 0) return (
+    <div className="mt-8 w-full h-90">
+      <div className="flex w-full justify-between">
+        <h5 className="font-bold text-3xl">Địa chỉ của tôi</h5>
+        <Link href={'/address'} className="py-2 px-8 bg-black rounded-lg text-white">Thêm địa chỉ mới</Link>
+      </div>
+      <ul className="mt-5">
+        <div className="w-full bg-gray-100 mt-3 py-9 px-6 flex items-center justify-center shadow">
+          <p>Không có địa chỉ nào cả</p>
+        </div>
+      </ul>
+    </div>
+  )
   return (
     <div className="mt-8 w-full h-90">
       <div className="flex w-full justify-between">

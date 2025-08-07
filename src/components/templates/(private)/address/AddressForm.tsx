@@ -1,13 +1,17 @@
 'use client';
 import { createAddressByIdAction, fetchAddressById, fetchDistrictByProvinceId, fetchProvince, fetchWardByDistrictId, updateAddressByIdAction } from "@/actions/addressActions";
 import { DistrictResponse, ProvinceResponse, WardResponse } from "@/api-client";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 type Props = {
   params: { id: string };
 };
 
 export default function AddressForm({ params }: Props) {
   const { id } = params;
+  const router = useRouter()
   const [listWard, setListWard] = useState<WardResponse[]>([]);
   const [listDistrict, setListDistrict] = useState<DistrictResponse[]>([]);
   const [listProvince, setListProvince] = useState<ProvinceResponse[]>([]);
@@ -92,22 +96,97 @@ export default function AddressForm({ params }: Props) {
   }
 
   const handleSaveChanges = async () => {
+    if (addressSet.provinceId === 0 || addressSet.districtId === 0 || addressSet.wardCode === '' || addressSet.streetDetail === '' || addressSet.phone === '') { toast.warning('Vui lòng nhập đủ các thông tin'); return }
+    if (!/^(0[0-9]{9})$/.test(addressSet.phone)) {
+      toast.warning('Số điện thoại bắt đầu bằng 0, chỉ chứa các chữ số và có đủ 10 ký tự.');
+      return;
+    }
     try {
       if (id) {
         const res = await updateAddressByIdAction(Number(id), addressSet)
-        if (res.status === 200 && res.newAddress)
-          console.log("da sua")
+        if (res.status === 200 && res.newAddress) {
+          toast.success('Sửa địa chỉ thành công')
+          router.push('/user')
+        }
+        else
+          toast.error('Lỗi khi sửa địa chỉ !')
       } else {
         const res = await createAddressByIdAction(addressSet)
-        // if (res.status === 200 && res.newAddress)
-        console.log(res)
+        if (res.status === 200 && res.newAddress) {
+          toast.success('Thêm địa chỉ thành công')
+          router.push('/user')
+        }
+        else
+          toast.error('Lỗi khi thêm địa chỉ !')
       }
     } catch (error) {
       console.log(error)
     }
 
   };
+  if (id && addressSet.provinceId === 0 && addressSet.districtId === 0 && addressSet.wardCode === '') return (
+    <main className="max-w-3xl mx-auto p-4 pt-5">
+      <h3 className="font-bold text-3xl w-full text-center">{id ? 'Chỉnh sửa' : 'Thêm'} địa chỉ mới</h3>
+      <div className="mt-5 w-full p-5 min-h-110 border-2 border-black rounded-lg shadow">
+        <div className="w-full flex mt-5 h-10 items-center">
+          <span className="w-70">Tỉnh/Thành phố:</span>
+          <Skeleton
 
+            className="h-9 rounded-lg w-full border p-2 outline-none"
+
+          >
+
+          </Skeleton>
+        </div>
+        <div className="w-full flex mt-5 h-10 items-center">
+          <span className="w-70">Quận/Huyện/Thị xã:</span>
+          <Skeleton
+
+            className="h-9 rounded-lg w-full border p-2 outline-none"
+
+          >
+
+          </Skeleton>
+        </div>
+        <div className="w-full flex mt-5 h-10 items-center">
+          <span className="w-70">Xã/Phường/Thị trấn:</span>
+          <Skeleton
+            className="h-9 rounded-lg w-full border p-2 outline-none"
+          >
+          </Skeleton>
+        </div>
+        <div className="w-full flex mt-5 h-10 items-center">
+          <span className="w-70">Địa chỉ cụ thể:</span>
+          <Skeleton
+            className="h-9 w-full border rounded p-2 rounded-lg outline-none"
+          />
+        </div>
+        <div className="w-full flex mt-5 h-10 items-center">
+          <span className="w-70">Số điện thoại:</span>
+          <Skeleton
+
+            className="h-9 w-full border rounded p-2 rounded-lg outline-none"
+          />
+        </div>
+        <div className="w-full flex mt-5 h-10 items-center">
+          <span className="!w-50">Đặt làm mặc định:</span>
+
+          <label className="switch text-start">
+            <input type="checkbox" disabled />
+            <span className="slider"></span>
+          </label>
+        </div>
+        <div className="w-full text-center pt-4">
+          <button
+            className="py-2 px-6 bg-black text-white rounded-lg"
+            disabled
+          >
+            {id ? 'Lưu địa chỉ' : 'Thêm địa chỉ'}
+          </button>
+        </div>
+      </div>
+    </main>
+  )
   return (
     <main className="max-w-3xl mx-auto p-4 pt-5">
       <h3 className="font-bold text-3xl w-full text-center">{id ? 'Chỉnh sửa' : 'Thêm'} địa chỉ mới</h3>
@@ -116,7 +195,7 @@ export default function AddressForm({ params }: Props) {
           <span className="w-70">Tỉnh/Thành phố:</span>
           <select
             value={addressSet.provinceId || ''}
-            className="rounded-lg w-full border rounded p-2 outline-none"
+            className="rounded-lg w-full border p-2 outline-none"
             onChange={(e) => {
               const id = Number(e.target.value);
               setAddress({ ...addressSet, provinceId: id });
@@ -138,7 +217,7 @@ export default function AddressForm({ params }: Props) {
           <span className="w-70">Quận/Huyện/Thị xã:</span>
           <select
             value={addressSet.districtId || ''}
-            className="rounded-lg w-full border rounded p-2 outline-none"
+            className="rounded-lg w-full border p-2 outline-none"
             onChange={(e) => {
               const id = Number(e.target.value);
               setAddress({ ...addressSet, districtId: id });
@@ -157,7 +236,7 @@ export default function AddressForm({ params }: Props) {
           <span className="w-70">Xã/Phường/Thị trấn:</span>
           <select
             value={addressSet.wardCode || ''}
-            className="rounded-lg w-full border rounded p-2 outline-none"
+            className="rounded-lg w-full border p-2 outline-none"
             onChange={(e) => {
               const code = e.target.value;
               setAddress({ ...addressSet, wardCode: code });
@@ -177,7 +256,7 @@ export default function AddressForm({ params }: Props) {
             type="text"
             value={addressSet.streetDetail || ''}
             placeholder="Nhập địa chỉ cụ thể"
-            className="w-full border rounded p-2 rounded-lg outline-none"
+            className="w-full border p-2 rounded-lg outline-none"
             onChange={(e) => setAddress({ ...addressSet, streetDetail: e.target.value })}
           />
         </div>
@@ -185,9 +264,9 @@ export default function AddressForm({ params }: Props) {
           <span className="w-70">Số điện thoại:</span>
           <input
             type="text"
-            value={addressSet.phone || ''}
+            value={(addressSet.phone) || ''}
             placeholder="Nhập Số điện thoại"
-            className="w-full border rounded p-2 rounded-lg outline-none"
+            className="w-full border p-2 rounded-lg outline-none"
             onChange={(e) => setAddress({ ...addressSet, phone: e.target.value })}
           />
         </div>
