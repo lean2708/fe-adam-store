@@ -22,7 +22,7 @@ const Quantity = React.memo(
         <Button
           size='icon'
           className={cn(
-            'h-8 w-8 bg-transparent text-primary hover:bg-gray-100 cursor-pointer',
+            'h-8 w-8 bg-transparent text-primary hover:bg-muted rounded-bl-2xl rounded-tl-2xl cursor-pointer',
             isUpdating && 'opacity-50 cursor-not-allowed'
           )}
           onClick={onDecrease}
@@ -42,7 +42,7 @@ const Quantity = React.memo(
         <Button
           size='icon'
           className={cn(
-            'h-8 w-8 bg-transparent text-primary hover:bg-gray-100 cursor-pointer',
+            'h-8 w-8 bg-transparent text-primary hover:bg-muted rounded-br-2xl rounded-tr-2xl cursor-pointer',
             isUpdating && 'opacity-50 cursor-not-allowed'
           )}
           onClick={onIncrease}

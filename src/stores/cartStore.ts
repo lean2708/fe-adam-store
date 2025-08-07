@@ -6,10 +6,13 @@ import { create } from 'zustand';
 export type State = {
   cartItems: TCartItem[];
   totalPrice: string;
+  selectedItems: number[];
 };
 
 export type Actions = {
   setCartItems: (cartItems: TCartItem[]) => void;
+  toggleItemSelection: (id: number) => void;
+  toggleAllItems: (select: boolean) => void;
   updateCartItem: (itemId: string, newData: Partial<TCartItem>) => void;
   removeCartItem: (id: string) => void;
   clearCart: () => void;
@@ -18,6 +21,8 @@ export type Actions = {
 export const useCartStore = create<State & Actions>()((set) => ({
   cartItems: [],
   totalPrice: '0',
+  selectedItems: [],
+
   setCartItems: (cartItems) =>
     set(() => {
       let totalPrice = 0;
@@ -53,4 +58,26 @@ export const useCartStore = create<State & Actions>()((set) => ({
       cartItems: state.cartItems.filter((ci) => ci.id !== id),
     })),
   clearCart: () => set({ cartItems: [] }),
+
+  toggleItemSelection: (id) =>
+    set((state) => {
+      const selectedItems = [...state.selectedItems];
+      const index = selectedItems.indexOf(id);
+
+      if (index === -1) {
+        selectedItems.push(id);
+      } else {
+        selectedItems.splice(index, 1);
+      }
+
+      return { selectedItems };
+    }),
+  toggleAllItems: (select) =>
+    set((state) => {
+      if (select) {
+        const allIds = state.cartItems.map((item) => Number(item.id));
+        return { selectedItems: allIds };
+      }
+      return { selectedItems: [] };
+    }),
 }));

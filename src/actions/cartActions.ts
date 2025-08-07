@@ -80,7 +80,11 @@ export async function deleteAllCartItemsAction(userId: string) {
     await Promise.all(
       userItems.map((item) => deleteCartItemApi(Number(item.id)))
     );
-    return { status: 204, message: 'The shopping cart is empty' };
+    return {
+      status: 204,
+      success: true,
+      message: 'The shopping cart is empty',
+    };
   } catch (error) {
     const extracted = extractErrorMessage(
       error,

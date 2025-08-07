@@ -19,14 +19,20 @@ import { useLocale } from 'next-intl';
 type ProductProps = {
   cartItem: TCartItem;
   product: Omit<TProduct, 'Category'>;
+  selected: boolean;
+  onSelect: () => void;
 };
 
-export function CartItem({ cartItem, product }: ProductProps) {
+export function CartItem({
+  cartItem,
+  product,
+  selected,
+  onSelect,
+}: ProductProps) {
   const locale = useLocale();
 
   const updateCartItem = useCartStore((state) => state.updateCartItem);
   const removeCartItem = useCartStore((state) => state.removeCartItem);
-  const clearCart = useCartStore((state) => state.clearCart);
 
   const [isImageError, setImageError] = useState(false);
   const isExternalImage = product.mainImage?.startsWith('http');
@@ -51,7 +57,11 @@ export function CartItem({ cartItem, product }: ProductProps) {
     <Card className='border-border border-b-2 first:border-t-2'>
       <CardContent className='py-4 px-0 relative'>
         <div className='flex gap-4'>
-          <Checkbox className='my-auto' />
+          <Checkbox
+            className='my-auto'
+            checked={selected}
+            onCheckedChange={onSelect}
+          />
           <Image
             src={
               isExternalImage && !isImageError
@@ -88,7 +98,7 @@ export function CartItem({ cartItem, product }: ProductProps) {
                 </p>
 
                 <p className='font-bold text-primary mb-2'>
-                  {formatCurrency(totalPrice)}
+                  {formatCurrency(totalPrice, locale)}
                 </p>
               </div>
             </div>
