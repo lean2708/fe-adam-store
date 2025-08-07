@@ -13,6 +13,7 @@ import {
 } from '@/api-client';
 
 import { getPublicAxiosInstance, getNextAuthSession, getAuthenticatedAxiosInstance } from '@/lib/auth/axios-config';
+import { ControllerFactory } from './factory-api-client';
 
 /**
  * Helper function to get an instance of AuthControllerApi with NextAuth.
@@ -164,15 +165,11 @@ export async function getMyInfoApi(token?: string): Promise<UserResponse> {
     const session = await getNextAuthSession();
     accessToken = session?.accessToken;
   }
-
-  if (!accessToken) {
-    throw new Error('No access token available for getMyInfo');
-  }
-
   const authApi = await getAuthController(accessToken);
 
   const response = await authApi.getMyInfo();
 
+  console.log(response)
   if (response.data.code !== 200 || !response.data.result) {
     throw response.data;
   }
@@ -247,4 +244,15 @@ export async function refreshTokenApi(refreshRequest: {
     throw response.data;
   }
   return response.data.result;
+}
+export async function changePassword1(newPass: {
+  oldPassword: string,
+  newPassword: string,
+  confirmPassword: string
+}) {
+  const authApi = await getAuthController();
+  const response = await authApi.changePassword({
+    changePasswordRequest: newPass,
+  });
+  return response.data.result
 }

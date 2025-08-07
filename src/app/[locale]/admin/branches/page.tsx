@@ -1,4 +1,3 @@
-"use client";
 
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -52,7 +51,9 @@ export default function BranchesAdminPage() {
     setLoading(true);
     try {
       const result = await getAllBranchesAction();
+
       if (result.success && result.data) {
+              console.log("co du lieu")
         setBranches(result.data);
       } else {
         toast.error(result.message || "Failed to load branches");

@@ -24,88 +24,14 @@ export default function OrderPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [itemOnModule, setItemOnModule] = useState<any>()
   const [activeStatus, setActiveStatus] = useState<TabStatus>('PENDING');
-  const [data, setData] = useState<any>({
-    orderItems: [
-      {
-        id: 1,
-        unitPrice: 200000,
-        quantity: 1,
-        image: {
-          id: 0,
-          imageUrl: "https://imgs.search.brave.com/1wFAag6ytkkNPhKwFcQhlennSJKCYwCLseov2L_p3og/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wb3Mu/bnZuY2RuLmNvbS83/Nzg3NzMtMTA1ODc3/L3BzLzIwMjIwODE1/XzJBTDZtTlRMRVNh/UGV3TUpxS2RYdVdt/ZC5qcGc"
-        },
-        productVariant: {
-          id: 1,
-          color: {
-            id: 0,
-            name: "Den"
-          },
-          size: {
-            id: 0,
-            name: "XL"
-          },
-          product: {
-            id: 0,
-            name: "Áo phông thương hiệu Việt Nam..."
-          }
-        }
-      },
-      {
-        id: 2,
-        unitPrice: 200000,
-        quantity: 2,
-        image: {
-          id: 0,
-          imageUrl: "https://imgs.search.brave.com/1wFAag6ytkkNPhKwFcQhlennSJKCYwCLseov2L_p3og/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wb3Mu/bnZuY2RuLmNvbS83/Nzg3NzMtMTA1ODc3/L3BzLzIwMjIwODE1/XzJBTDZtTlRMRVNh/UGV3TUpxS2RYdVdt/ZC5qcGc"
-        },
-        productVariant: {
-          id: 1,
-          color: {
-            id: 0,
-            name: "Den"
-          },
-          size: {
-            id: 0,
-            name: "L"
-          },
-          product: {
-            id: 0,
-            name: "Áo phông thương hiệu Việt Nam..."
-          }
-        }
-      },
-      {
-        id: 3,
-        unitPrice: 250000,
-        quantity: 3,
-        image: {
-          id: 0,
-          imageUrl: "https://imgs.search.brave.com/1wFAag6ytkkNPhKwFcQhlennSJKCYwCLseov2L_p3og/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wb3Mu/bnZuY2RuLmNvbS83/Nzg3NzMtMTA1ODc3/L3BzLzIwMjIwODE1/XzJBTDZtTlRMRVNh/UGV3TUpxS2RYdVdt/ZC5qcGc"
-        },
-        productVariant: {
-          id: 1,
-          color: {
-            id: 0,
-            name: "Den"
-          },
-          size: {
-            id: 0,
-            name: "XL"
-          },
-          product: {
-            id: 0,
-            name: "Áo phông thương hiệu Việt Nam..."
-          }
-        }
-      },
-    ]
-  })
+  const [data, setData] = useState<any>({})
 
   useEffect(() => { getData() }, [activeStatus])
   const getData = async () => {
     try {
       setIsLoading(true)
-      const res: any = await getAllOrderUserAction(activeStatus)
+      const res = await getAllOrderUserAction(activeStatus)
+      console.log(res)
       if (res.status === 200 && res.orders) {
         setData(res.orders)
       }
