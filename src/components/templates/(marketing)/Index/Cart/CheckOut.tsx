@@ -7,24 +7,16 @@ import Fee from './CheckOut/Fee';
 import { useCartStore } from '@/stores/cartStore';
 
 export function CheckOut() {
-  const cartItems = useCartStore((state) => state.cartItems);
+  const selectedTotalPrice = useCartStore((state) => state.selectedTotalPrice);
   const selectedItems = useCartStore((state) => state.selectedItems);
 
-  // Tính tổng giá các sản phẩm được chọn
-  const selectedTotal = cartItems.reduce((total, item) => {
-    if (selectedItems.includes(Number(item.id))) {
-      // Tính giá dựa trên variant hiện tại
-      const color = item.Product.colors?.find((c) => c.name === item.color);
-      const variant = color?.variants?.find((v) => v.size?.name === item.size);
-      return total + (variant?.price || 0) * item.quantity;
-    }
-    return total;
-  }, 0);
+  // Nếu không có sản phẩm nào được chọn, tổng giá là 0
+  const totalPrice = selectedItems.length > 0 ? selectedTotalPrice : 0;
 
   // Tính phí vận chuyển (miễn phí nếu tổng > 300,000 VND)
-  const shippingFee =
-    selectedTotal === 0 ? 0 : selectedTotal > 300000 ? 0 : 10000;
-  const total = selectedTotal + shippingFee;
+  const shippingFee = totalPrice === 0 ? 0 : totalPrice > 300000 ? 0 : 10000;
+
+  const total = totalPrice + shippingFee;
   const selectedCount = selectedItems.length;
 
   return (
@@ -34,7 +26,7 @@ export function CheckOut() {
           Tổng đơn hàng ({selectedCount} sản phẩm)
         </h2>
 
-        <Fee subtotal={selectedTotal} shippingFee={shippingFee} />
+        <Fee subtotal={Number(totalPrice)} shippingFee={shippingFee} />
 
         <Total total={total} />
 

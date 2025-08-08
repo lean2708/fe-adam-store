@@ -11,8 +11,8 @@ import { useAuth } from '../useAuth';
 export const useCartItem = (
   cartItem: TCartItem,
   product: Omit<TProduct, 'Category'>,
-  updateCartItem: (id: string, item: any) => void,
-  removeCartItem: (id: string) => void
+  updateCartItem?: (id: string, item: any) => void,
+  removeCartItem?: (id: string) => void
 ) => {
   const { user } = useAuth();
 
@@ -110,7 +110,7 @@ export const useCartItem = (
         );
 
         if (res.success && res.cart) {
-          updateCartItem(cartItem.id, res.cart);
+          updateCartItem?.(cartItem.id, res.cart);
           setSelectedColorId(colorId);
           setSelectedSizeName(newSizeName);
 
@@ -156,7 +156,7 @@ export const useCartItem = (
 
           if (newSizeName) setSelectedSizeName(newSizeName);
 
-          updateCartItem(cartItem.id, res.cart);
+          updateCartItem?.(cartItem.id, res.cart);
 
           // Cập nhật giá từ variant mới
           const newVariant = currentColor?.variants?.find(
@@ -208,7 +208,7 @@ export const useCartItem = (
 
         if (res.success && res.cart) {
           // setPrice(res.cart);
-          updateCartItem(cartItem.id, res.cart);
+          updateCartItem?.(cartItem.id, res.cart);
         } else {
           toast.error(res.message || 'Cập nhật số lượng thất bại');
         }
@@ -233,7 +233,7 @@ export const useCartItem = (
       const res = await deleteCartItemAction(cartItem.id, user?.id || 0);
 
       if (res.success) {
-        removeCartItem(cartItem.id);
+        removeCartItem?.(cartItem.id);
         toast.success('Đã xóa sản phẩm khỏi giỏ hàng');
       } else {
         toast.error(res.message || 'Xóa sản phẩm thất bại');

@@ -24,7 +24,7 @@ export function CartItemsList({ userId }: { userId: string }) {
 
   useEffect(() => {
     const fetchCartItems = async () => {
-      if (status === 'idle') {
+      if (status === 'idle' && userId) {
         await fetchCart(Number(userId));
       }
     };
