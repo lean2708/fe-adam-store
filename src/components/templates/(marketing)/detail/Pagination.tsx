@@ -1,57 +1,79 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getProductByCategoryAction } from "@/actions/categoryActions";
+import { useEffect } from "react";
 
-interface PaginationProps {
-  currentPage: number;
-  totalPages: number;
-  itemsCount: number;
-  onPageChange: (page: number) => void;
-}
+export default function Pagination() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-export default function Pagination({
-  currentPage,
-  totalPages,
-  itemsCount,
+  // Lấy các tham số từ URL, nếu không có thì sẽ tự động set page=1, size=10 lên URL
+  const pageParam = searchParams.get("page");
+  const sizeParam = searchParams.get("size");
+  const page = Number(pageParam) || 1;
+  const size = Number(sizeParam) || 10;
+  // Sửa lại lấy category từ "category" thay vì "categoryId" cho đồng bộ
+  const categoryId = searchParams.get("category") || "";
+  const sort = ["desc"];
 
-  onPageChange,
-}: PaginationProps) {
+  // Tự động set page=1, size=10 lên URL nếu chưa có
+  useEffect(() => {
+    let shouldUpdate = false;
+    const params = new URLSearchParams(searchParams.toString());
+    if (!pageParam) {
+      params.set("page", "1");
+      shouldUpdate = true;
+    }
+    if (!sizeParam) {
+      params.set("size", "10");
+      shouldUpdate = true;
+    }
+    if (shouldUpdate) {
+      router.replace(`?${params.toString()}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, router]);
+
+  const { data } = useQuery({
+    queryKey: ["product", { page, size, sort, categoryId }],
+    queryFn: () => getProductByCategoryAction({ categoryId, page, size, sort }),
+    enabled: !!categoryId,
+  });
+
+  const totalItems = data?.result?.totalItems;
+  const totalPages = data?.result?.totalPages;
+
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", String(newPage));
+    router.replace(`?${params.toString()}`);
+  };
+
+  // Nếu không có categoryId thì không hiển thị phân trang
+  if (!categoryId || !totalItems || !totalPages) return null;
+
   return (
     <>
       <div className="flex items-center justify-center gap-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-          disabled={currentPage === 1}
-        >
-          <ChevronLeft className="w-4 h-4" />
-        </Button>
-
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        {Array.from({ length: totalPages || 1 }, (_, i) => i + 1).map((p) => (
           <Button
-            key={page}
-            variant={currentPage === page ? "default" : "outline"}
+            key={p}
+            variant={page === p ? "default" : "outline"}
             size="sm"
-            onClick={() => onPageChange(page)}
-            className={currentPage === page ? "bg-black text-white" : ""}
+            onClick={() => handlePageChange(p)}
+            className={page === p ? "bg-black text-white" : ""}
           >
-            {page}
+            {p}
           </Button>
         ))}
-
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
-          disabled={currentPage === totalPages}
-        >
-          <ChevronRight className="w-4 h-4" />
-        </Button>
       </div>
 
       {/* Footer Text */}
       <div className="text-center text-xs text-gray-500 mt-6">
-        Trang {currentPage} / {totalPages} - Đang hiển thị {itemsCount} sản phẩm
+        Trang {page} / {totalPages} - Đang hiển thị {totalItems} sản phẩm
       </div>
     </>
   );

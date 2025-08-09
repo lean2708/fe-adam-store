@@ -44,13 +44,8 @@ export default function SectionHeader({
         </h2>
       </div>
       {hasButton ? (
-<<<<<<< HEAD
         <Link href={to}>
           <Button variant="default"> Tất cả sản phẩm </Button>
-=======
-        <Link href={"/category"}>
-          <Button variant="default">{t("sectionHeader.allProducts")}</Button>
->>>>>>> b123cf7f83c805fe68a5ef76852a3a674b76c392
         </Link>
       ) : null}
     </div>

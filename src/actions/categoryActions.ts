@@ -8,6 +8,7 @@ import {
   fetchAllProductByCategoryApi,
 } from "@/lib/data/category";
 import { categorySchema } from "./schema/categorySchema";
+import { ApiResponsePageResponseProductResponse } from "@/api-client";
 
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = ["image/png", "image/webp"];
@@ -103,23 +104,17 @@ export const getProductByCategoryAction = async ({
   page?: number;
   size?: number;
   sort: string[];
-}) => {
+}): Promise<ApiResponsePageResponseProductResponse> => {
   try {
-    const items = await fetchAllProductByCategoryApi(
+    const data = await fetchAllProductByCategoryApi(
       categoryId,
       page,
       size,
       sort
     );
-    return {
-      status: 200,
-      items,
-    };
+    return data;
   } catch (error) {
-    return {
-      status: 500,
-      message: "server error",
-      error,
-    };
+    console.log(error);
+    throw new Error(error as string);
   }
 };

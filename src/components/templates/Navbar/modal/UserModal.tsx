@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { User, ShoppingBag, LogIn, UserPlus } from "lucide-react";
 import { Modal } from "@/components/ui/modal";
 import { logoutAction } from "@/actions/nextAuthActions";
@@ -15,23 +14,6 @@ export default function UserModal({
 }) {
   const { data: session, status } = useSession();
   const router = useRouter();
-=======
-import { User, ShoppingBag, LogIn, UserPlus } from "lucide-react"
-import { Modal } from "@/components/ui/modal"
-import { logoutAction } from "@/actions/nextAuthActions"
-import { signOut, useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
-import { useTranslations } from "next-intl"
-
-export default function UserModal({ open, onClose }: { open: boolean, onClose: () => void }) {
-  const { data: session, status, } = useSession()
-  const router = useRouter()
-  const t = useTranslations("Header")
-
-  const isLogin = status === "authenticated" && !!session?.user
-  const user = session?.user
->>>>>>> b123cf7f83c805fe68a5ef76852a3a674b76c392
 
   const isLogin = status === "authenticated" && !!session?.user;
   const user = session?.user;
@@ -52,22 +34,13 @@ export default function UserModal({ open, onClose }: { open: boolean, onClose: (
       onClose();
 
       // Show success message
-<<<<<<< HEAD
       toast.success("Đăng xuất thành công!");
-=======
-      toast.success(t("user.logout") + " thành công!")
->>>>>>> b123cf7f83c805fe68a5ef76852a3a674b76c392
 
       // Redirect to home page
       router.push("/");
     } catch (error) {
-<<<<<<< HEAD
       console.error("Logout error:", error);
       toast.error("Có lỗi xảy ra khi đăng xuất");
-=======
-      console.error("Logout error:", error)
-      toast.error("Có lỗi xảy ra khi " + t("user.logout").toLowerCase())
->>>>>>> b123cf7f83c805fe68a5ef76852a3a674b76c392
 
       // Even if there's an error, try to sign out with NextAuth
       try {
