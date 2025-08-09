@@ -12,6 +12,7 @@ export function CheckOut() {
 
   const selectedTotalPrice = useCartStore((state) => state.selectedTotalPrice);
   const selectedItems = useCartStore((state) => state.selectedItems);
+  const cartItems = useCartStore((state) => state.cartItems);
 
   // Nếu không có sản phẩm nào được chọn, tổng giá là 0
   const totalPrice = selectedItems.length > 0 ? selectedTotalPrice : 0;
@@ -21,6 +22,8 @@ export function CheckOut() {
 
   const total = totalPrice + shippingFee;
   const selectedCount = selectedItems.length;
+
+  if (cartItems.length === 0) return null;
 
   return (
     <Card className='sticky top-4 rounded-xl border border-border bg-background text-primary shadow '>

@@ -8,9 +8,15 @@ import ClearCartButton from './CartItemsList/ClearItemsButton';
 import { Label } from '@/components/ui/label';
 import { CartItemSkeleton } from '@/components/ui/skeleton';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/useAuth';
+import EmptyCart from './EmptyCart';
 
-export function CartItemsList({ userId }: { userId: string }) {
+export function CartItemsList() {
   const t = useTranslations('Header');
+
+  const { isAuthenticated, isLoading, user } = useAuth();
+  const router = useRouter();
 
   const cartItems = useCartStore((s) => s.cartItems);
   const selectedItems = useCartStore((s) => s.selectedItems);
@@ -26,14 +32,20 @@ export function CartItemsList({ userId }: { userId: string }) {
     cartItems.length > 0 && selectedItems.length === cartItems.length;
 
   useEffect(() => {
+    if (!isLoading && !isAuthenticated && !user) {
+      router.push('/login');
+    }
+  }, [isAuthenticated, user, isLoading, router]);
+
+  useEffect(() => {
     const fetchCartItems = async () => {
-      if (status === 'idle' && userId) {
-        await fetchCart(Number(userId));
+      if (status === 'idle' && user?.id) {
+        await fetchCart(Number(user?.id));
       }
     };
 
     fetchCartItems();
-  }, [userId, status, fetchCart]);
+  }, [user?.id, status, fetchCart]);
 
   // console.log('Cart items:', cartItems);
 
@@ -52,34 +64,40 @@ export function CartItemsList({ userId }: { userId: string }) {
   }
 
   return (
-    <div className='lg:col-span-2 mb-24'>
-      <div className='flex items-center gap-2 mb-2'>
-        <Checkbox
-          id='select-all'
-          checked={allSelected}
-          onCheckedChange={() => toggleAllItems(!allSelected)}
-        />
-        <Label
-          htmlFor='select-all'
-          className='text-primary text-base font-normal '
-        >
-          {t('cart.allProducts')}
-        </Label>
+    <>
+      {cartItems.length === 0 ? (
+        <EmptyCart className=' order-2' />
+      ) : (
+        <div className='lg:col-span-2 mb-24'>
+          <div className='flex items-center gap-2 mb-2'>
+            <Checkbox
+              id='select-all'
+              checked={allSelected}
+              onCheckedChange={() => toggleAllItems(!allSelected)}
+            />
+            <Label
+              htmlFor='select-all'
+              className='text-primary text-base font-normal '
+            >
+              {t('cart.allProducts')}
+            </Label>
 
-        <ClearCartButton userId={userId} />
-      </div>
+            <ClearCartButton userId={user?.id + ''} />
+          </div>
 
-      <div className='space-y-4'>
-        {cartItems.map((item) => (
-          <CartItem
-            key={item.id}
-            cartItem={item}
-            product={item.Product}
-            selected={selectedItems.includes(Number(item.id))}
-            onSelect={() => toggleItemSelection(Number(item.id))}
-          />
-        ))}
-      </div>
-    </div>
+          <div className='space-y-4'>
+            {cartItems.map((item) => (
+              <CartItem
+                key={item.id}
+                cartItem={item}
+                product={item.Product}
+                selected={selectedItems.includes(Number(item.id))}
+                onSelect={() => toggleItemSelection(Number(item.id))}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   );
 }

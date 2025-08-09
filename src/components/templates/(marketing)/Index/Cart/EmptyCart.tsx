@@ -13,7 +13,6 @@ export default function EmptyCart({ className }: { className?: string }) {
         className
       )}
     >
-      {/* Shopping cart icon */}
       <div className='mb-6'>
         <ShoppingCart className='size-20' />
       </div>
