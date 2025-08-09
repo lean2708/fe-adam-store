@@ -7,6 +7,7 @@ import { useCartStore } from '@/stores/cartStore';
 import EmptyCart from './EmptyCart';
 import ClearCartButton from './CartItemsList/ClearItemsButton';
 import { Label } from '@/components/ui/label';
+import { CartItemSkeleton } from '@/components/ui/skeleton';
 
 export function CartItemsList({ userId }: { userId: string }) {
   const cartItems = useCartStore((s) => s.cartItems);
@@ -35,7 +36,13 @@ export function CartItemsList({ userId }: { userId: string }) {
   // console.log('Cart items:', cartItems);
 
   if (status === 'loading' || status === 'idle') {
-    return <div>loading...</div>;
+    return (
+      <div className='lg:col-span-2 mb-24 space-y-4'>
+        {Array.from({ length: (cartItems?.length ?? 0) || 4 }).map((_, idx) => (
+          <CartItemSkeleton key={idx} />
+        ))}
+      </div>
+    );
   }
 
   if (status === 'error') {
@@ -43,40 +50,34 @@ export function CartItemsList({ userId }: { userId: string }) {
   }
 
   return (
-    <>
-      {cartItems.length === 0 ? (
-        <EmptyCart />
-      ) : (
-        <div className='lg:col-span-2 mb-24'>
-          <div className='flex items-center gap-2 mb-2'>
-            <Checkbox
-              id='select-all'
-              checked={allSelected}
-              onCheckedChange={() => toggleAllItems(!allSelected)}
-            />
-            <Label
-              htmlFor='select-all'
-              className='text-primary text-base font-normal '
-            >
-              Tất cả sản phẩm
-            </Label>
+    <div className='lg:col-span-2 mb-24'>
+      <div className='flex items-center gap-2 mb-2'>
+        <Checkbox
+          id='select-all'
+          checked={allSelected}
+          onCheckedChange={() => toggleAllItems(!allSelected)}
+        />
+        <Label
+          htmlFor='select-all'
+          className='text-primary text-base font-normal '
+        >
+          Tất cả sản phẩm
+        </Label>
 
-            <ClearCartButton userId={userId} />
-          </div>
+        <ClearCartButton userId={userId} />
+      </div>
 
-          <div className='space-y-4'>
-            {cartItems.map((item) => (
-              <CartItem
-                key={item.id}
-                cartItem={item}
-                product={item.Product}
-                selected={selectedItems.includes(Number(item.id))}
-                onSelect={() => toggleItemSelection(Number(item.id))}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-    </>
+      <div className='space-y-4'>
+        {cartItems.map((item) => (
+          <CartItem
+            key={item.id}
+            cartItem={item}
+            product={item.Product}
+            selected={selectedItems.includes(Number(item.id))}
+            onSelect={() => toggleItemSelection(Number(item.id))}
+          />
+        ))}
+      </div>
+    </div>
   );
 }

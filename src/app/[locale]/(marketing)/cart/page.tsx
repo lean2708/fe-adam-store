@@ -7,10 +7,14 @@ import { cn } from '@/lib/utils';
 import { manrope } from '@/config/fonts';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
+import { useCartStore } from '@/stores/cartStore';
+import EmptyCart from '@/components/templates/(marketing)/Index/Cart/EmptyCart';
 
 export default function CartPage() {
   const { isAuthenticated, isLoading, user } = useAuth();
   const router = useRouter();
+
+  const cartItems = useCartStore((s) => s.cartItems);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated && !user) {
@@ -19,20 +23,28 @@ export default function CartPage() {
   }, [isAuthenticated, user, isLoading, router]);
 
   return (
-    <div className='min-h-screen bg-background'>
-      <main className={cn(`max-w-7xl mx-auto px-4 py-8`, manrope.className)}>
-        <h1 className='text-3xl md:text-4xl xl:text-5xl font-semibold text-primary text-center mb-8'>
-          Giỏ hàng của bạn
-        </h1>
+    <>
+      {cartItems.length === 0 ? (
+        <EmptyCart />
+      ) : (
+        <div className='min-h-screen bg-background'>
+          <main
+            className={cn(`max-w-7xl mx-auto px-4 py-8`, manrope.className)}
+          >
+            <h1 className='text-3xl md:text-4xl xl:text-5xl font-semibold text-primary text-center mb-8'>
+              Giỏ hàng của bạn
+            </h1>
 
-        <div className='grid lg:grid-cols-3 gap-8'>
-          <CartItemsList userId={user?.id + ''} />
+            <div className='grid lg:grid-cols-3 gap-8'>
+              <CartItemsList userId={user?.id + ''} />
 
-          <div className='lg:col-span-1'>
-            <CheckOut />
-          </div>
+              <div className='lg:col-span-1'>
+                <CheckOut />
+              </div>
+            </div>
+          </main>
         </div>
-      </main>
-    </div>
+      )}
+    </>
   );
 }
