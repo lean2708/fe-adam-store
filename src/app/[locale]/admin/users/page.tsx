@@ -50,9 +50,9 @@ export default function UsersPage() {
       const result = await fetchAllUsersAction(page, pageSize);
 
       if (result.success && result.data) {
-        setUsers(result.data.items || []);
-        setTotalPages(result.data.totalPages || 0);
-        setTotalElements(result.data.totalItems || 0);
+        setUsers(result.data || []);
+        setTotalPages(result.actionSizeResponse?.totalPages || 0);
+        setTotalElements(result.actionSizeResponse?.totalItems || 0);
         setCurrentPage(page);
       } else {
         toast.error(result.message || "Failed to fetch users");

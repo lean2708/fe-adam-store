@@ -207,7 +207,7 @@ export function ProductCreateModal({ open, onClose }: ProductCreateModalProps) {
               <SelectContent>
                 {categories.map((category: TCategory) => (
                   <SelectItem key={category.id} value={category.id.toString()}>
-                    {category.title}
+                    {category.name}
                   </SelectItem>
                 ))}
               </SelectContent>

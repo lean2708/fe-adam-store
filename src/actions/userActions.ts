@@ -17,26 +17,26 @@ import {
   fetchUserById,
   fetchAllRoles
 } from "@/lib/data/user";
+import { extractErrorMessage } from "@/lib/utils";
 
 
 /**
  * Fetch all users for admin
  */
 export async function fetchAllUsersAction(
-  page: number = 0,
-  size: number = 10,
-  sort: string[] = ["id,desc"]
-): Promise<ActionResponse<PageResponseUserResponse>> {
+  page?: number,
+  size?: number,
+  sort?: string[]
+): Promise<ActionResponse<UserResponse[]>> {
   try {
-    const data = await fetchAllUsersForAdmin(page, size, sort);
-    return {
-      success: true,
-      data,
-    };
+    const users = await fetchAllUsersForAdmin(page, size, sort);
+    return users;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch users",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -48,15 +48,14 @@ export async function createUserAction(
   userData: UserCreationRequest
 ): Promise<ActionResponse<UserResponse>> {
   try {
-    const data = await createUser(userData);
-    return {
-      success: true,
-      data,
-    };
+    const result = await createUser(userData);
+    return result;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to create user",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -69,15 +68,14 @@ export async function updateUserAction(
   userData: UserUpdateRequest
 ): Promise<ActionResponse<UserResponse>> {
   try {
-    const data = await updateUser(id, userData);
-    return {
-      success: true,
-      data,
-    };
+    const result = await updateUser(id, userData);
+    return result;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to update user",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -109,15 +107,14 @@ export async function restoreUserAction(
   id: number
 ): Promise<ActionResponse<UserResponse>> {
   try {
-    const data = await restoreUser(id);
-    return {
-      success: true,
-      data,
-    };
+    const result = await restoreUser(id);
+    return result;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to restore user",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }

@@ -14,30 +14,25 @@ import {
   deletePromotion,
   restorePromotion
 } from "@/lib/data/promotion";
-import { transformPromotionResponse, transformPromotionResponses } from "@/lib/transformations";
+import { extractErrorMessage } from "@/lib/utils";
 
 /**
  * Fetch all promotions for admin
  */
 export async function fetchAllPromotionsForAdminAction(
-  page: number = 0,
-  size: number = 20,
-  sort: string[] = ["id,desc"]
-): Promise<ActionResponse<{ items: TPromotion[]; totalItems: number; totalPages: number }>> {
+  page?: number,
+  size?: number,
+  sort?: string[]
+): Promise<ActionResponse<TPromotion[]>> {
   try {
-    const data = await fetchAllPromotionsForAdmin(page, size, sort);
-    return {
-      success: true,
-      data: {
-        items: transformPromotionResponses(data.items || []),
-        totalItems: data.totalItems || 0,
-        totalPages: data.totalPages || 0
-      },
-    };
+    const promotions = await fetchAllPromotionsForAdmin(page, size, sort);
+    return promotions;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch promotions",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -67,15 +62,14 @@ export async function createPromotionAction(
   promotionData: PromotionRequest
 ): Promise<ActionResponse<TPromotion>> {
   try {
-    const data = await createPromotion(promotionData);
-    return {
-      success: true,
-      data: transformPromotionResponse(data),
-    };
+    const result = await createPromotion(promotionData);
+    return result;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to create promotion",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -88,15 +82,14 @@ export async function updatePromotionAction(
   promotionData: PromotionUpdateRequest
 ): Promise<ActionResponse<TPromotion>> {
   try {
-    const data = await updatePromotion(id, promotionData);
-    return {
-      success: true,
-      data: transformPromotionResponse(data),
-    };
+    const result = await updatePromotion(id, promotionData);
+    return result;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to update promotion",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -106,15 +99,14 @@ export async function updatePromotionAction(
  */
 export async function deletePromotionAction(id: number): Promise<ActionResponse<TPromotion>> {
   try {
-    const data = await deletePromotion(id);
-    return {
-      success: true,
-      data: transformPromotionResponse(data),
-    };
+    const result = await deletePromotion(id);
+    return result;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to delete promotion",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -124,15 +116,14 @@ export async function deletePromotionAction(id: number): Promise<ActionResponse<
  */
 export async function restorePromotionAction(id: number): Promise<ActionResponse<TPromotion>> {
   try {
-    const data = await restorePromotion(id);
-    return {
-      success: true,
-      data: transformPromotionResponse(data),
-    };
+    const result = await restorePromotion(id);
+    return result;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to restore promotion",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }

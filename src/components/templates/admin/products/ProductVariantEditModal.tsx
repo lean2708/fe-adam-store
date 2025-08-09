@@ -36,7 +36,6 @@ const variantCreateSchema = z.object({
 });
 
 type VariantEditFormData = z.infer<typeof variantEditSchema>;
-type VariantCreateFormData = z.infer<typeof variantCreateSchema>;
 
 interface ProductVariantEditModalProps {
   open: boolean;
@@ -59,9 +58,7 @@ export function ProductVariantEditModal({
   open,
   onClose,
   variant,
-  productName,
   productId,
-  onAddNewVariant,
   onSuccess
 }: ProductVariantEditModalProps) {
   const t = useTranslations("Admin.products");
@@ -95,8 +92,12 @@ export function ProductVariantEditModal({
     },
   });
 
-  const colors = Array.isArray(colorsData) ? colorsData : ((colorsData as any)?.items || []);
-  const sizes = Array.isArray(sizesData) ? sizesData : ((sizesData as any)?.items || []);
+  const colors: TColor[] = Array.isArray(colorsData)
+    ? colorsData
+    : (colorsData as unknown as { items?: TColor[] })?.items || [];
+  const sizes: TSize[] = Array.isArray(sizesData)
+    ? sizesData
+    : (sizesData as unknown as { items?: TSize[] })?.items || [];
 
   // Update form when variant changes
   useEffect(() => {

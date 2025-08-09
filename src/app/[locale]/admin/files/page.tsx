@@ -53,7 +53,7 @@ export default function FilesPage() {
       const result = await getAllFilesAction(page, pageSize);
 
       if (result.success && result.data) {
-        let filteredFiles = result.data.items || [];
+        let filteredFiles = result.data || [];
 
         // Apply client-side filtering if needed
         if (searchTerm) {
@@ -63,8 +63,8 @@ export default function FilesPage() {
         }
 
         setFiles(filteredFiles);
-        setTotalItems(result.data.totalItems || 0);
-        setTotalPages(result.data.totalPages || 0);
+        setTotalItems(result.actionSizeResponse?.totalItems || 0);
+        setTotalPages(result.actionSizeResponse?.totalPages || 0);
         setCurrentPage(page);
       } else {
         toast.error(result.message || "Failed to fetch files");

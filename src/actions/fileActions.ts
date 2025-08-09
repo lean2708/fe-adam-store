@@ -10,25 +10,25 @@ import {
   uploadImages,
   deleteFile
 } from "@/lib/data/file";
+import { extractErrorMessage } from "@/lib/utils";
 
 /**
  * Get all files
  */
 export async function getAllFilesAction(
-  page: number = 0,
-  size: number = 20,
-  sort: string[] = ["id,desc"]
-): Promise<ActionResponse<PageResponseFileResponse>> {
+  page?: number,
+  size?: number,
+  sort?: string[]
+): Promise<ActionResponse<FileResponse[]>> {
   try {
-    const data = await fetchAllFiles(page, size, sort);
-    return {
-      success: true,
-      data,
-    };
+    const files = await fetchAllFiles(page, size, sort);
+    return files;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch files",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -40,15 +40,14 @@ export async function uploadImagesAction(
   files: File[]
 ): Promise<ActionResponse<FileResponse[]>> {
   try {
-    const data = await uploadImages(files);
-    return {
-      success: true,
-      data,
-    };
+    const result = await uploadImages(files);
+    return result;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to upload images",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }

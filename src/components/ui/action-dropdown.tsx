@@ -92,6 +92,7 @@ export function ActionDropdown({
                translationNamespace.includes("colors") ? t("deleteColor") :
                translationNamespace.includes("orders") ? t("deleteOrder") :
                translationNamespace.includes("promotions") ? t("deletePromotion") :
+               translationNamespace.includes("products") ? t("deleteProduct") :
                t("deletePayment")}
             </span>
           </DropdownMenuItem>

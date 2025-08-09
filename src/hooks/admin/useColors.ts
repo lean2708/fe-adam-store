@@ -24,7 +24,7 @@ export function useColors(page: number = 0, size: number = 20) {
       if (!result.success) {
         throw new Error(result.message || "Failed to load colors");
       }
-      return result.data || { items: [], totalItems: 0, totalPages: 0 };
+      return result;
     },
   });
 
@@ -63,9 +63,9 @@ export function useColors(page: number = 0, size: number = 20) {
   };
 
   return {
-    colors: colorData?.items || [],
-    totalElements: colorData?.totalItems || 0,
-    totalPages: colorData?.totalPages || 0,
+    colors: colorData?.data || [],
+    totalElements: colorData?.actionSizeResponse?.totalItems || 0,
+    totalPages: colorData?.actionSizeResponse?.totalPages || 0,
     loading,
     handleDelete,
     handleRestore,

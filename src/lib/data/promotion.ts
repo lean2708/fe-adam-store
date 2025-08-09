@@ -1,10 +1,14 @@
 import { ControllerFactory } from "./factory-api-client";
-import type { 
+import type {
   PromotionResponse,
   PromotionRequest,
   PromotionUpdateRequest,
   PageResponsePromotionResponse
 } from "@/api-client/models";
+import { ActionResponse } from "../types/actions";
+import { extractErrorMessage } from "../utils";
+import { transformPromotionResponseToTPromotion, transformApiResponsePageResponsePromotionToActionResponse } from "./transform/promotion";
+import { TPromotion } from "@/types";
 
 /**
  * Helper to get an instance of PromotionControllerApi with NextAuth using factory.
@@ -20,19 +24,23 @@ export async function fetchAllPromotionsForAdmin(
   page: number = 0,
   size: number = 20,
   sort: string[] = ["id,desc"]
-): Promise<PageResponsePromotionResponse> {
-  const controller = await getPromotionController();
-  const response = await controller.fetchAll9({
-    page,
-    size,
-    sort
-  });
+): Promise<ActionResponse<TPromotion[]>> {
+  try {
+    const controller = await getPromotionController();
+    const response = await controller.fetchAll9({
+      page,
+      size,
+      sort
+    });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to fetch promotions");
+    return transformApiResponsePageResponsePromotionToActionResponse(response.data);
+  } catch (error) {
+    console.error("Error fetching promotions:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to fetch promotions",
+    };
   }
-
-  return response.data.result!;
 }
 
 /**
@@ -52,17 +60,27 @@ export async function fetchPromotionById(id: number): Promise<PromotionResponse>
 /**
  * Create a new promotion (admin)
  */
-export async function createPromotion(promotionData: PromotionRequest): Promise<PromotionResponse> {
-  const controller = await getPromotionController();
-  const response = await controller.create5({
-    promotionRequest: promotionData
-  });
+export async function createPromotion(promotionData: PromotionRequest): Promise<ActionResponse<TPromotion>> {
+  try {
+    const controller = await getPromotionController();
+    const response = await controller.create5({
+      promotionRequest: promotionData
+    });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to create promotion");
+    return {
+      success: response.data.code === 200,
+      message: response.data.message,
+      data: transformPromotionResponseToTPromotion(response.data?.result || {}),
+      code: response.data.code,
+    };
+  } catch (error) {
+    const extractedError = extractErrorMessage(error, "Tạo khuyến mãi thất bại");
+    return {
+      success: false,
+      message: extractedError.message,
+      code: 500,
+    };
   }
-
-  return response.data.result!;
 }
 
 /**
@@ -71,44 +89,74 @@ export async function createPromotion(promotionData: PromotionRequest): Promise<
 export async function updatePromotion(
   id: number,
   promotionData: PromotionUpdateRequest
-): Promise<PromotionResponse> {
-  const controller = await getPromotionController();
-  const response = await controller.update4({
-    id,
-    promotionUpdateRequest: promotionData
-  });
+): Promise<ActionResponse<TPromotion>> {
+  try {
+    const controller = await getPromotionController();
+    const response = await controller.update4({
+      id,
+      promotionUpdateRequest: promotionData
+    });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to update promotion");
+    return {
+      success: response.data.code === 200,
+      message: response.data.message,
+      data: transformPromotionResponseToTPromotion(response.data?.result || {}),
+      code: response.data.code,
+    };
+  } catch (error) {
+    const extractedError = extractErrorMessage(error, "Cập nhật khuyến mãi thất bại");
+    return {
+      success: false,
+      message: extractedError.message,
+      code: 500,
+    };
   }
-
-  return response.data.result!;
 }
 
 /**
  * Soft delete a promotion (admin)
  */
-export async function deletePromotion(id: number): Promise<PromotionResponse> {
-  const controller = await getPromotionController();
-  const response = await controller.delete3({ id });
+export async function deletePromotion(id: number): Promise<ActionResponse<TPromotion>> {
+  try {
+    const controller = await getPromotionController();
+    const response = await controller.delete3({ id });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to delete promotion");
+    return {
+      success: response.data.code === 200,
+      message: response.data.message,
+      data: transformPromotionResponseToTPromotion(response.data?.result || {}),
+      code: response.data.code,
+    };
+  } catch (error) {
+    const extractedError = extractErrorMessage(error, "Xóa khuyến mãi thất bại");
+    return {
+      success: false,
+      message: extractedError.message,
+      code: 500,
+    };
   }
-
-  return response.data.result!;
 }
 
 /**
  * Restore a deleted promotion (admin)
  */
-export async function restorePromotion(id: number): Promise<PromotionResponse> {
-  const controller = await getPromotionController();
-  const response = await controller.restore1({ id });
+export async function restorePromotion(id: number): Promise<ActionResponse<TPromotion>> {
+  try {
+    const controller = await getPromotionController();
+    const response = await controller.restore1({ id });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to restore promotion");
+    return {
+      success: response.data.code === 200,
+      message: response.data.message,
+      data: transformPromotionResponseToTPromotion(response.data?.result || {}),
+      code: response.data.code,
+    };
+  } catch (error) {
+    const extractedError = extractErrorMessage(error, "Khôi phục khuyến mãi thất bại");
+    return {
+      success: false,
+      message: extractedError.message,
+      code: 500,
+    };
   }
-
-  return response.data.result!;
 }

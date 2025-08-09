@@ -10,7 +10,6 @@ import {
 } from "@/lib/data/color";
 import { colorSchema, updateColorSchema } from "./schema/colorSchema";
 import { extractErrorMessage } from "@/lib/utils";
-import { transformColorResponse, transformColorResponses } from "@/lib/transformations";
 
 /**
  * Create a new color
@@ -31,22 +30,11 @@ export async function addColorAction(formData: FormData): Promise<ActionResponse
   }
 
   try {
-    const created = await createColor({
+    const result = await createColor({
       name,
     });
 
-    if (!created) {
-      return {
-        success: false,
-        message: "Không thể tạo màu",
-      };
-    }
-
-    return {
-      success: true,
-      message: "Tạo màu thành công",
-      data: transformColorResponse(created),
-    };
+    return result;
   } catch (error) {
     const extractedError = extractErrorMessage(error, "Tạo màu thất bại");
     return {
@@ -77,20 +65,9 @@ export async function updateColorAction(colorId: string, formData: FormData): Pr
   }
 
   try {
-    const updated = await updateColor(parseInt(colorId), updateData);
+    const result = await updateColor(parseInt(colorId), updateData);
 
-    if (!updated) {
-      return {
-        success: false,
-        message: "Không thể cập nhật màu",
-      };
-    }
-
-    return {
-      success: true,
-      message: "Cập nhật màu thành công",
-      data: transformColorResponse(updated),
-    };
+    return result;
   } catch (error) {
     const extractedError = extractErrorMessage(error, "Cập nhật màu thất bại");
     return {
@@ -105,24 +82,19 @@ export async function updateColorAction(colorId: string, formData: FormData): Pr
  * Fetch all colors
  */
 export async function fetchAllColorsAction(
-  page: number = 0,
-  size: number = 20,
-  sort: string[] = ["id,asc"]
-): Promise<ActionResponse<{ items: TColor[]; totalItems: number; totalPages: number }>> {
+  page?: number,
+  size?: number,
+  sort?: string[]
+): Promise<ActionResponse<TColor[]>> {
   try {
-    const data = await fetchAllColors(page, size, sort);
-    return {
-      success: true,
-      data: {
-        items: transformColorResponses(data.items || []),
-        totalItems: data.totalItems || 0,
-        totalPages: data.totalPages || 0
-      },
-    };
+    const colors = await fetchAllColors(page, size, sort);
+    return colors;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch colors",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }

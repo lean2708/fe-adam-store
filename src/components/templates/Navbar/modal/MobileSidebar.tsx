@@ -62,12 +62,12 @@ export default function MobileSidebar({ open, onClose }: { open: boolean, onClos
                     ) : (
                         categories.map((category) => (
                             <Link
-                                key={category.id || category.title}
+                                key={category.id || category.name}
                                 href="/products/new"
                                 className="block py-4 px-2 text-gray-900 font-medium border-b border-gray-100 hover:bg-gray-50"
                                 onClick={onClose}
                             >
-                                {category.title}
+                                {category.name}
                             </Link>
                         ))
                     )}

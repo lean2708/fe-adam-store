@@ -27,10 +27,7 @@ export default function ProductsPage() {
     setIsCreateModalOpen(false);
   };
 
-  const handleCreateVariant = () => {
-    setEditingProduct(null);
-    setIsDialogOpen(true);
-  };
+
 
   const handleEditProduct = (product: TProduct) => {
     setEditingProduct(product);

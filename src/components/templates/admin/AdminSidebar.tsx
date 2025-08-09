@@ -18,7 +18,8 @@ import {
   Ruler,
   Palette,
   Building,
-  Tag
+  Tag,
+  FolderTree
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -75,6 +76,11 @@ const getSidebarItems = (t: any) => [
     icon: Building,
   },
   {
+    titleKey: "navigation.categories",
+    href: "/admin/categories",
+    icon: FolderTree,
+  },
+  {
     titleKey: "navigation.promotions",
     href: "/admin/promotions",
     icon: Tag,
@@ -109,7 +115,7 @@ export default function AdminSidebar() {
         {sidebarItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
-          
+
           return (
             <Link
               key={item.href}

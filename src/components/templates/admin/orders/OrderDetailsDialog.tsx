@@ -74,7 +74,7 @@ export function OrderDetailsDialog({ open, onClose, order }: OrderDetailsDialogP
           {/* Order Status and Date */}
           <div className="flex items-center justify-between">
             <div>
-              <Badge 
+              <Badge
                 variant="secondary"
                 className={`${getStatusColor(order.orderStatus || 'PENDING')} text-sm`}
               >
@@ -83,14 +83,14 @@ export function OrderDetailsDialog({ open, onClose, order }: OrderDetailsDialogP
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <Calendar className="h-4 w-4" />
-              {order.orderDate 
-                ? formatDate(order.orderDate, locale, { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  }) 
+              {order.orderDate
+                ? formatDate(order.orderDate, locale, {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })
                 : '-'
               }
             </div>
@@ -116,7 +116,7 @@ export function OrderDetailsDialog({ open, onClose, order }: OrderDetailsDialogP
                       <div>
                         <div>{order.address.streetDetail}</div>
                         <div className="text-sm text-gray-600">
-                          {order.address.ward}, {order.address.district}, {order.address.province}
+                          {order.address.ward?.name}, {order.address.district?.name}, {order.address.province?.name}
                         </div>
                       </div>
                     </div>
@@ -158,18 +158,18 @@ export function OrderDetailsDialog({ open, onClose, order }: OrderDetailsDialogP
                   </div>
                   <div className="text-right">
                     <div className="font-medium text-gray-900">
-                      {formatCurrency(item.price || 0, locale)}
+                      {formatCurrency(item.unitPrice || 0, locale)}
                     </div>
                     <div className="text-sm text-gray-600">
-                      {formatCurrency((item.price || 0) * (item.quantity || 1), locale)}
+                      {formatCurrency((item.unitPrice || 0) * (item.quantity || 1), locale)}
                     </div>
                   </div>
                 </div>
               )) || (
-                <div className="text-center py-4 text-gray-500">
-                  No items found
-                </div>
-              )}
+                  <div className="text-center py-4 text-gray-500">
+                    No items found
+                  </div>
+                )}
             </div>
           </div>
 

@@ -3,8 +3,13 @@ import { ORDER_STATUS, USER_ROLE } from '@/enums';
 
 export type TCategory = {
   id: string;
-  title: string;
-  image: string;
+  name: string;
+  imageUrl: string;
+  status?: string;
+  createdBy?: string;
+  updatedBy?: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type TOrder = {

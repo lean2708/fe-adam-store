@@ -30,9 +30,9 @@ export function usePromotions(
       if (!result.success) {
         throw new Error(result.message || "Failed to load promotions");
       }
-      
-      let filteredItems = result.data?.items || [];
-      
+
+      let filteredItems = result.data || [];
+
       // Apply status filter on client side if needed
       if (statusFilter !== "ALL") {
         filteredItems = filteredItems.filter(promotion => promotion.status === statusFilter);
@@ -40,8 +40,8 @@ export function usePromotions(
 
       return {
         items: filteredItems,
-        totalItems: result.data?.totalItems || 0,
-        totalPages: result.data?.totalPages || 0
+        totalItems: result.actionSizeResponse?.totalItems || 0,
+        totalPages: result.actionSizeResponse?.totalPages || 0
       };
     },
   });

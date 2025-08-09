@@ -1,17 +1,11 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { useTranslations, useLocale } from "next-intl";
-import { formatCurrency } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ActionDropdown } from "@/components/ui/action-dropdown";
-import {
-  Package,
-  Palette,
-  Ruler,
-  DollarSign
-} from "lucide-react";
+import { Package } from "lucide-react";
 import Image from "next/image";
 import type { TProduct } from "@/types";
 
@@ -33,7 +27,6 @@ export function ProductVariantsTable({
   onViewDetails
 }: ProductVariantsTableProps) {
   const t = useTranslations("Admin.products");
-  const locale = useLocale();
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -49,36 +42,38 @@ export function ProductVariantsTable({
   if (loading) {
     return (
       <div className="rounded-md border">
-        <Table>
+        <div className="overflow-x-auto">
+          <Table className="min-w-[800px]">
           <TableHeader>
             <TableRow>
-              <TableHead>{t("id") || "ID"}</TableHead>
-              <TableHead>{t("productName") || "Tên sản phẩm"}</TableHead>
-              <TableHead>{t("description") || "Mô tả"}</TableHead>
-              <TableHead>{t("rating") || "Điểm đánh giá"}</TableHead>
-              <TableHead>{t("soldQuantity") || "Số lượng đã bán"}</TableHead>
-              <TableHead>{t("variantCount") || "Số biến thể"}</TableHead>
-              <TableHead>{t("image") || "Hình ảnh"}</TableHead>
-              <TableHead>{t("status") || "Trạng thái"}</TableHead>
-              <TableHead className="text-right">{t("actions") || "Hành động"}</TableHead>
+              <TableHead className="min-w-[60px]">{t("id") || "ID"}</TableHead>
+              <TableHead className="min-w-[180px]">{t("productName") || "Tên sản phẩm"}</TableHead>
+              <TableHead className="max-w-[150px] hidden md:table-cell">{t("description") || "Mô tả"}</TableHead>
+              <TableHead className="min-w-[100px] hidden lg:table-cell">{t("rating") || "Điểm đánh giá"}</TableHead>
+              <TableHead className="min-w-[100px] hidden lg:table-cell">{t("soldQuantity") || "Số lượng đã bán"}</TableHead>
+              <TableHead className="min-w-[80px] hidden sm:table-cell">{t("variantCount") || "Số biến thể"}</TableHead>
+              <TableHead className="min-w-[80px]">{t("image") || "Hình ảnh"}</TableHead>
+              <TableHead className="min-w-[100px]">{t("status") || "Trạng thái"}</TableHead>
+              <TableHead className="text-right min-w-[100px]">{t("actions") || "Hành động"}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {Array.from({ length: 5 }).map((_, i) => (
               <TableRow key={i}>
-                <TableCell><Skeleton className="h-4 w-16" /></TableCell>
+                <TableCell><Skeleton className="h-4 w-12" /></TableCell>
                 <TableCell><Skeleton className="h-4 w-32" /></TableCell>
-                <TableCell><Skeleton className="h-4 w-24" /></TableCell>
-                <TableCell><Skeleton className="h-4 w-16" /></TableCell>
-                <TableCell><Skeleton className="h-4 w-16" /></TableCell>
-                <TableCell><Skeleton className="h-4 w-16" /></TableCell>
+                <TableCell className="hidden md:table-cell"><Skeleton className="h-4 w-24" /></TableCell>
+                <TableCell className="hidden lg:table-cell"><Skeleton className="h-4 w-16" /></TableCell>
+                <TableCell className="hidden lg:table-cell"><Skeleton className="h-4 w-16" /></TableCell>
+                <TableCell className="hidden sm:table-cell"><Skeleton className="h-4 w-12" /></TableCell>
                 <TableCell><Skeleton className="h-4 w-16" /></TableCell>
                 <TableCell><Skeleton className="h-4 w-16" /></TableCell>
                 <TableCell><Skeleton className="h-4 w-8" /></TableCell>
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+          </Table>
+        </div>
       </div>
     );
   }
@@ -86,18 +81,19 @@ export function ProductVariantsTable({
   if (variants.length === 0) {
     return (
       <div className="rounded-md border">
-        <Table>
+        <div className="overflow-x-auto">
+          <Table className="min-w-[800px]">
           <TableHeader>
             <TableRow>
-              <TableHead>{t("id") || "ID"}</TableHead>
-              <TableHead>{t("productName") || "Tên sản phẩm"}</TableHead>
-              <TableHead>{t("description") || "Mô tả"}</TableHead>
-              <TableHead>{t("rating") || "Điểm đánh giá"}</TableHead>
-              <TableHead>{t("soldQuantity") || "Số lượng đã bán"}</TableHead>
-              <TableHead>{t("variantCount") || "Số biến thể"}</TableHead>
-              <TableHead>{t("image") || "Hình ảnh"}</TableHead>
-              <TableHead>{t("status") || "Trạng thái"}</TableHead>
-              <TableHead className="text-right">{t("actions") || "Hành động"}</TableHead>
+              <TableHead className="min-w-[60px]">{t("id") || "ID"}</TableHead>
+              <TableHead className="min-w-[180px]">{t("productName") || "Tên sản phẩm"}</TableHead>
+              <TableHead className="max-w-[150px] hidden md:table-cell">{t("description") || "Mô tả"}</TableHead>
+              <TableHead className="min-w-[100px] hidden lg:table-cell">{t("rating") || "Điểm đánh giá"}</TableHead>
+              <TableHead className="min-w-[100px] hidden lg:table-cell">{t("soldQuantity") || "Số lượng đã bán"}</TableHead>
+              <TableHead className="min-w-[80px] hidden sm:table-cell">{t("variantCount") || "Số biến thể"}</TableHead>
+              <TableHead className="min-w-[80px]">{t("image") || "Hình ảnh"}</TableHead>
+              <TableHead className="min-w-[100px]">{t("status") || "Trạng thái"}</TableHead>
+              <TableHead className="text-right min-w-[100px]">{t("actions") || "Hành động"}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -109,25 +105,99 @@ export function ProductVariantsTable({
               </TableCell>
             </TableRow>
           </TableBody>
-        </Table>
+          </Table>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="rounded-md border">
-      <Table>
+    <>
+      {/* Mobile Card View - Show on very small screens */}
+      <div className="block sm:hidden space-y-4">
+        {variants.map((product) => (
+          <div key={product.id} className="bg-white border rounded-lg p-4 shadow-sm">
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex items-center space-x-3 flex-1 min-w-0">
+                <div className="w-12 h-12 relative rounded overflow-hidden bg-muted flex-shrink-0">
+                  {product.images && product.images.length > 0 ? (
+                    <Image
+                      src={product.images[0].imageUrl || "/placeholder.png"}
+                      alt={product.name || "Product"}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground">
+                      <Package className="h-4 w-4 text-gray-600" />
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-sm truncate">
+                    {product.name || product.title || `Product #${product.id}`}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">ID: {product.id}</p>
+                  <div className="flex items-center space-x-1 mt-1">
+                    <span className="text-xs">⭐</span>
+                    <span className="text-xs">{product.averageRating?.toFixed(1) || '0.0'}</span>
+                    <span className="text-xs text-muted-foreground">({product.totalReviews || 0})</span>
+                  </div>
+                </div>
+              </div>
+              <ActionDropdown
+                onEdit={() => onEdit(product)}
+                onDelete={() => onDelete(product.id)}
+                onRestore={product.status === 'INACTIVE' && onRestore ? () => onRestore(product.id) : undefined}
+                showRestore={product.status === 'INACTIVE' && !!onRestore}
+                onViewDetails={onViewDetails ? () => onViewDetails(product) : undefined}
+                translationNamespace="Admin.products"
+                customEditLabel={t("editProduct") || "Edit Product"}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div>
+                <span className="text-muted-foreground">{t("soldQuantity") || "Đã bán"}: </span>
+                <span className="font-medium text-blue-600">{product.soldQuantity || 0}</span>
+              </div>
+              <div className="text-right">
+                <Badge
+                  variant="secondary"
+                  className={getStatusColor(product.status || 'INACTIVE')}
+                >
+                  {t(product.status || 'INACTIVE') || product.status || 'INACTIVE'}
+                </Badge>
+              </div>
+              <div>
+                <span className="text-muted-foreground">{t("variantCount") || "Biến thể"}: </span>
+                <span className="font-medium">
+                  {product.colors?.reduce((total, color) => total + (color.variants?.length || 0), 0) || 0}
+                </span>
+              </div>
+              <div className="text-right text-muted-foreground truncate" title={product.description || 'No description'}>
+                {product.description || 'No description'}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop Table View - Hidden on mobile */}
+      <div className="hidden sm:block rounded-md border">
+        <div className="overflow-x-auto">
+          <Table className="min-w-[800px]">
         <TableHeader>
           <TableRow>
-            <TableHead>{t("id") || "ID"}</TableHead>
-            <TableHead>{t("productName") || "Tên sản phẩm"}</TableHead>
-            <TableHead>{t("description") || "Mô tả"}</TableHead>
-            <TableHead>{t("rating") || "Điểm đánh giá"}</TableHead>
-            <TableHead>{t("soldQuantity") || "Số lượng đã bán"}</TableHead>
-            <TableHead>{t("variantCount") || "Số biến thể"}</TableHead>
-            <TableHead>{t("image") || "Hình ảnh"}</TableHead>
-            <TableHead>{t("status") || "Trạng thái"}</TableHead>
-            <TableHead className="text-right">{t("actions") || "Hành động"}</TableHead>
+            <TableHead className="min-w-[60px]">{t("id") || "ID"}</TableHead>
+            <TableHead className="min-w-[180px]">{t("productName") || "Tên sản phẩm"}</TableHead>
+            <TableHead className="max-w-[150px] hidden md:table-cell">{t("description") || "Mô tả"}</TableHead>
+            <TableHead className="min-w-[100px] hidden lg:table-cell">{t("rating") || "Điểm đánh giá"}</TableHead>
+            <TableHead className="min-w-[100px] hidden lg:table-cell">{t("soldQuantity") || "Số lượng đã bán"}</TableHead>
+            <TableHead className="min-w-[80px] hidden sm:table-cell">{t("variantCount") || "Số biến thể"}</TableHead>
+            <TableHead className="min-w-[80px]">{t("image") || "Hình ảnh"}</TableHead>
+            <TableHead className="min-w-[100px]">{t("status") || "Trạng thái"}</TableHead>
+            <TableHead className="text-right min-w-[100px]">{t("actions") || "Hành động"}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -146,14 +216,17 @@ export function ProductVariantsTable({
               </TableCell>
 
               {/* Mô tả */}
-              <TableCell>
-                <span className="text-sm text-muted-foreground max-w-[200px] truncate">
+              <TableCell className="max-w-[150px] hidden md:table-cell">
+                <div
+                  className="text-sm text-muted-foreground truncate cursor-help"
+                  title={product.description || 'No description'}
+                >
                   {product.description || 'No description'}
-                </span>
+                </div>
               </TableCell>
 
               {/* Điểm đánh giá */}
-              <TableCell>
+              <TableCell className="hidden lg:table-cell">
                 <div className="flex items-center space-x-1">
                   <span className="text-sm">⭐</span>
                   <span className="text-sm">
@@ -166,14 +239,14 @@ export function ProductVariantsTable({
               </TableCell>
 
               {/* Số lượng đã bán */}
-              <TableCell>
+              <TableCell className="hidden lg:table-cell">
                 <span className="font-medium text-blue-600">
                   {product.soldQuantity || 0}
                 </span>
               </TableCell>
 
               {/* Số biến thể */}
-              <TableCell>
+              <TableCell className="hidden sm:table-cell">
                 <span className="font-medium">
                   {product.colors?.reduce((total, color) => total + (color.variants?.length || 0), 0) || 0}
                 </span>
@@ -210,7 +283,7 @@ export function ProductVariantsTable({
               {/* Hành động */}
               <TableCell className="text-right">
                 <ActionDropdown
-                  onEdit={() => onEdit(product)}
+                  onEdit={undefined}
                   onDelete={() => onDelete(product.id)}
                   onRestore={product.status === 'INACTIVE' && onRestore ? () => onRestore(product.id) : undefined}
                   showRestore={product.status === 'INACTIVE' && !!onRestore}
@@ -222,7 +295,9 @@ export function ProductVariantsTable({
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+        </Table>
+      </div>
     </div>
+    </>
   );
 }
