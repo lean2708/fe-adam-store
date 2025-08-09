@@ -5,8 +5,11 @@ import Total from './CheckOut/Total';
 import CheckOutActions from './CheckOut/CheckOutActions';
 import Fee from './CheckOut/Fee';
 import { useCartStore } from '@/stores/cartStore';
+import { useTranslations } from 'next-intl';
 
 export function CheckOut() {
+  const t = useTranslations('Header');
+
   const selectedTotalPrice = useCartStore((state) => state.selectedTotalPrice);
   const selectedItems = useCartStore((state) => state.selectedItems);
 
@@ -23,7 +26,7 @@ export function CheckOut() {
     <Card className='sticky top-4 rounded-xl border border-border bg-background text-primary shadow '>
       <CardContent className='p-6 '>
         <h2 className='font-bold text-lg text-primary mb-4'>
-          Tổng đơn hàng ({selectedCount} sản phẩm)
+          {t('cart.checkOut.title', { count: selectedCount })}
         </h2>
 
         <Fee subtotal={Number(totalPrice)} shippingFee={shippingFee} />

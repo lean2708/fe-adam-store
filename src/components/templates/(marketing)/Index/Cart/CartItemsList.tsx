@@ -4,12 +4,14 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { CartItem } from './CartItem/CartItem';
 import { useEffect } from 'react';
 import { useCartStore } from '@/stores/cartStore';
-import EmptyCart from './EmptyCart';
 import ClearCartButton from './CartItemsList/ClearItemsButton';
 import { Label } from '@/components/ui/label';
 import { CartItemSkeleton } from '@/components/ui/skeleton';
+import { useTranslations } from 'next-intl';
 
 export function CartItemsList({ userId }: { userId: string }) {
+  const t = useTranslations('Header');
+
   const cartItems = useCartStore((s) => s.cartItems);
   const selectedItems = useCartStore((s) => s.selectedItems);
 
@@ -61,7 +63,7 @@ export function CartItemsList({ userId }: { userId: string }) {
           htmlFor='select-all'
           className='text-primary text-base font-normal '
         >
-          Tất cả sản phẩm
+          {t('cart.allProducts')}
         </Label>
 
         <ClearCartButton userId={userId} />

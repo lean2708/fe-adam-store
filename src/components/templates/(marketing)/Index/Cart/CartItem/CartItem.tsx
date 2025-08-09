@@ -14,7 +14,7 @@ import { useCartStore } from '@/stores/cartStore';
 import { useState } from 'react';
 import { useCartItem } from '@/hooks/(cart)/useCartItem';
 import Quantity from './Quanity';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 type ProductProps = {
   cartItem: TCartItem;
@@ -29,6 +29,7 @@ export function CartItem({
   selected,
   onSelect,
 }: ProductProps) {
+  const t = useTranslations('Header');
   const locale = useLocale();
 
   const updateCartItem = useCartStore((state) => state.updateCartItem);
@@ -87,7 +88,7 @@ export function CartItem({
                     roboto.className
                   )}
                 >
-                  Màu sắc: {cartItem.color}
+                  {t('cart.color')} / {t('cart.size')}
                 </p>
               </div>
 
@@ -139,7 +140,7 @@ export function CartItem({
                 >
                   <Trash2 className='  size-5 mr-1 text-muted-foreground group-hover:text-destructive' />
                   <span className='  text-muted-foreground font-medium group-hover:text-destructive group-hover:underline'>
-                    Xóa
+                    {t('cart.remove')}
                   </span>
                 </button>
               </div>

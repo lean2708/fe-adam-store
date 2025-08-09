@@ -2,9 +2,12 @@
 
 import { useCart } from '@/hooks/(cart)/useCart';
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 export default function ClearCartButton({ userId }: { userId: string }) {
+  const t = useTranslations('Header');
+
   const { handleDeleteAllItems, cartItems } = useCart(userId);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -28,7 +31,7 @@ export default function ClearCartButton({ userId }: { userId: string }) {
       {isDeleting ? (
         <Loader2 className='mr-2 h-4 w-4 animate-spin' />
       ) : (
-        <span>Xóa tất cả</span>
+        <span>{t('cart.deleteAll')}</span>
       )}
     </button>
   );

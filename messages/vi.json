@@ -64,13 +64,32 @@
       "noResults": "Không tìm thấy sản phẩm nào"
     },
     "cart": {
-      "title": "Giỏ hàng",
-      "empty": "Giỏ hàng của bạn đang trống",
+      "title": "Giỏ hàng của bạn",
       "viewCart": "Giỏ hàng của bạn",
+      "allProducts": "Tất cả sản phẩm",
+      "empty": {
+        "title": "Giỏ hàng của bạn đang trống",
+        "desc": "Có vẻ như bạn chưa thêm bất kỳ sản phẩm nào vào giỏ hàng. Hãy bắt đầu mua sắm và bổ sung những sản phẩm yêu thích của bạn vào giỏ hàng!",
+        "action": "Tiếp tục mua sắm"
+      },
       "buyNow": "Mua ngay",
       "subtotal": "Tạm tính",
       "products": "sản phẩm",
-      "selected": "Đã Chọn"
+      "selected": "Đã Chọn",
+      "checkOut": {
+        "title": "Tổng đơn hàng ({count} sản phẩm)",
+        "productFeeTotal": "Tổng tiền hàng",
+        "shippingFee": "Phí vận chuyển",
+        "total": "Tổng cộng",
+        "action": {
+          "order": "Đặt hàng",
+          "continue_to_buy": "Tiếp tục mua sắm"
+        }
+      },
+      "color": "Màu sắc",
+      "size": "Kích thước",
+      "remove": "Xóa",
+      "deleteAll": "Xóa tất cả"
     },
     "user": {
       "login": "Đăng nhập",

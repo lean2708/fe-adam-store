@@ -9,8 +9,11 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/stores/cartStore';
 import EmptyCart from '@/components/templates/(marketing)/Index/Cart/EmptyCart';
+import { useTranslations } from 'next-intl';
 
 export default function CartPage() {
+  const t = useTranslations('Header');
+
   const { isAuthenticated, isLoading, user } = useAuth();
   const router = useRouter();
 
@@ -32,7 +35,7 @@ export default function CartPage() {
             className={cn(`max-w-7xl mx-auto px-4 py-8`, manrope.className)}
           >
             <h1 className='text-3xl md:text-4xl xl:text-5xl font-semibold text-primary text-center mb-8'>
-              Giỏ hàng của bạn
+              {t('cart.title')}
             </h1>
 
             <div className='grid lg:grid-cols-3 gap-8'>

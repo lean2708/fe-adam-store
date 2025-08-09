@@ -64,13 +64,32 @@
       "noResults": "No products found"
     },
     "cart": {
-      "title": "Shopping Cart",
-      "empty": "Your cart is empty",
+      "title": "Your Shopping Cart",
+      "allProducts": "All Products",
+      "empty": {
+        "title": "Your cart is empty",
+        "desc": "Looks like you haven&apos;t added anything to your cart yet. Start shopping and fill it up with your favorite items!",
+        "action": "Continue Shopping"
+      },
       "viewCart": "Your Cart",
       "buyNow": "Buy Now",
       "subtotal": "Subtotal",
       "products": "products",
-      "selected": "Selected"
+      "selected": "Selected",
+      "checkOut": {
+        "title": "Total orders ({count} products)",
+        "productFeeTotal": "Total cost of goods",
+        "shippingFee": "Shipping fee",
+        "total": "Total",
+        "action": {
+          "order": "Order",
+          "continue_to_buy": "Continue Shopping"
+        }
+      },
+      "color": "Color",
+      "size": "Size",
+      "remove": "Remove",
+      "deleteAll": "Delete All"
     },
     "user": {
       "login": "Login",
