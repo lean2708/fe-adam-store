@@ -1,4 +1,4 @@
-import type { CartItemResponse } from "@/api-client/models";
+import type { CartItemResponse, EntityBasic } from "@/api-client/models";
 import { TCartItem, TProduct, TColor } from "@/types";
 import { fetchProductDetailByIdApi } from "../product";
 
@@ -28,7 +28,7 @@ export async function transformCartItemResponseToTCartItem(apiCartItem: CartItem
  * Transform API CartItemResponse to TCartItem.
  * Prevent infinite recursion by not calling fetchProductDetailByIdApi if already called.
  */
-export async function transformCartItemResponseToTCartItemWithProduct(apiCartItem: CartItemResponse, productOverride?: any): Promise<TCartItem> {
+export async function transformCartItemResponseToTCartItemWithProduct(apiCartItem: CartItemResponse, productOverride?: TProduct): Promise<TCartItem> {
     const variant = apiCartItem.productVariantBasic;
     // Only fetch product if not provided (prevents recursion)
     const product: TProduct | null = productOverride ?? (variant?.product?.id ? await fetchProductDetailByIdApi(variant.product.id) : null);

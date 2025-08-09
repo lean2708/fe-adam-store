@@ -2,10 +2,11 @@ import type { Metadata } from 'next';
 import '../globals.css';
 import { Toaster } from 'sonner';
 import ThemeProvider from '@/providers/theme-provider';
-import AuthProvider from '@/providers/AuthProvider';
+import AuthProvider from '@/providers/auth-provider';
 import { fontVariables } from '@/config/fonts';
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, getRequestConfig, setRequestLocale } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
+import { QueryProvider } from '@/providers/react-query-provider';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -41,7 +42,9 @@ export default async function RootLayout({
           <NextIntlClientProvider locale={locale} messages={messages}>
 
             <AuthProvider>
-              {children}
+              <QueryProvider>
+                {children}
+              </QueryProvider>
               <Toaster
                 richColors
                 position="top-right"

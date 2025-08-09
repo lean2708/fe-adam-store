@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import {
   LayoutDashboard,
   Users,
@@ -22,72 +23,70 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 
-const sidebarItems = [
+const getSidebarItems = (t: any) => [
   {
-    title: "Dashboard",
+    titleKey: "navigation.dashboard",
     href: "/admin",
     icon: LayoutDashboard,
   },
   {
-    title: "Users",
+    titleKey: "navigation.users",
     href: "/admin/users",
     icon: Users,
   },
   {
-    title: "Products",
+    titleKey: "navigation.products",
     href: "/admin/products",
     icon: Package,
   },
   {
-    title: "Orders",
+    titleKey: "navigation.orders",
     href: "/admin/orders",
     icon: ShoppingCart,
   },
   {
-    title: "Payment History",
+    titleKey: "navigation.paymentHistory",
     href: "/admin/payment-history",
     icon: CreditCard,
   },
   {
-    title: "Files",
+    titleKey: "navigation.files",
     href: "/admin/files",
     icon: FileImage,
   },
   {
-    title: "Chat",
+    titleKey: "navigation.chat",
     href: "/admin/chat",
     icon: MessageCircle,
   },
   {
-    title: "Sizes",
+    titleKey: "navigation.sizes",
     href: "/admin/sizes",
     icon: Ruler,
   },
   {
-    title: "Colors",
+    titleKey: "navigation.colors",
     href: "/admin/colors",
     icon: Palette,
   },
   {
-    title: "Branches",
+    titleKey: "navigation.branches",
     href: "/admin/branches",
     icon: Building,
   },
   {
-    title: "Promotions",
+    titleKey: "navigation.promotions",
     href: "/admin/promotions",
     icon: Tag,
-  },
-  {
-    title: "Statistics",
-    href: "/admin/statistics",
-    icon: BarChart3,
   },
 ];
 
 export default function AdminSidebar() {
   const pathname = usePathname();
   const { logout } = useAuth();
+  const t = useTranslations("Admin");
+
+  const sidebarItems = getSidebarItems(t);
 
   const handleLogout = async () => {
     await logout();
@@ -123,7 +122,7 @@ export default function AdminSidebar() {
               )}
             >
               <Icon className="w-5 h-5" />
-              <span>{item.title}</span>
+              <span>{t(item.titleKey)}</span>
             </Link>
           );
         })}

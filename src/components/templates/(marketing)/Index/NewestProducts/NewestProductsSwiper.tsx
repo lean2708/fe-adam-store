@@ -12,10 +12,12 @@ import ProductCardIndex from "@/components/modules/ProductCardIndex";
 import { getAllProductsAction } from "@/actions/productActions";
 import { ProductCardWithColorsSkeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function NewestProductsSwiper() {
     const [products, setProducts] = useState<TProduct[]>([]);
     const [loading, setLoading] = useState(true);
+    const t = useTranslations("Marketing");
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -60,7 +62,7 @@ export default function NewestProductsSwiper() {
     if (!products.length) {
         return (
             <div className="w-full text-center py-8">
-                <p className="text-gray-500">Không có sản phẩm mới nào.</p>
+                <p className="text-gray-500">{t("newestProducts.noProducts")}</p>
             </div>
         );
     }
@@ -72,7 +74,7 @@ export default function NewestProductsSwiper() {
                     <CarouselItem key={product.id} className="basis-1/2 md:basis-1/3 lg:basis-1/5">
                         <ProductCardIndex
                             product={product}
-                            badgeText="Mới nhất"
+                            badgeText={t("newestProducts.badgeText")}
                         />
                     </CarouselItem>
                 ))}

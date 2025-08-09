@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { ImageBasic } from "@/api-client";
 import { ORDER_STATUS, USER_ROLE } from "@/enums";
+=======
+import { ImageBasic } from '@/api-client';
+import { ORDER_STATUS, USER_ROLE } from '@/enums';
+>>>>>>> b123cf7f83c805fe68a5ef76852a3a674b76c392
 
 export type TCategory = {
   id: string;
@@ -71,6 +76,18 @@ export type TProduct = {
   createdAt?: string;
   colors?: TColor[];
 };
+
+export type TReview = {
+  id?: number;
+  userName?: string;
+  userAvatarUrl?: string;
+  rating?: number;
+  comment?: string;
+  imageUrls?: object;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
 export type TAddress = {
   id?: number;
   isDefault: boolean;

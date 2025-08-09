@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import AdminSidebar from "@/components/templates/admin/AdminSidebar";
 import AdminHeader from "@/components/templates/admin/AdminHeader";
-import Loader from "@/components/modules/Loader";
+import Spinner from "@/components/ui/Spinner";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -24,7 +24,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader />
+        <Spinner />
       </div>
     );
   }
@@ -39,9 +39,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <AdminSidebar />
         <div className="flex-1 flex flex-col">
           <AdminHeader />
-          <main className="flex-1 p-6">
-            {children}
-          </main>
+            <main className="flex-1 p-6">
+              {children}
+            </main>
         </div>
       </div>
     </div>

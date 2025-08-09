@@ -1,16 +1,25 @@
-import { Noto_Sans, Roboto ,Geist, Geist_Mono} from "next/font/google";
+import {
+  Noto_Sans,
+  Roboto,
+  Geist,
+  Geist_Mono,
+  Manrope,
+} from 'next/font/google';
 
 export const notoSans = Noto_Sans({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
 
 export const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '700'],
 });
 
-
+export const manrope = Manrope({
+  subsets: ['latin'],
+  weight: ['200', '300', '400', '500', '600', '700', '800'],
+});
 
 // Configure Geist Sans font with optimized settings
 export const geistSans = Geist({

@@ -32,7 +32,7 @@ export async function fetchAllFiles(
 export async function uploadImages(files: File[]): Promise<FileResponse[]> {
   const controller = await ControllerFactory.getFileController();
   const response = await controller.uploadImage({
-    files
+    files: files
   });
 
   if (response.data.code !== 200) {

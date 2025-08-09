@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { useTranslations } from 'next-intl';
 
 export default function ProductActions({
   onAddToCart,
@@ -7,19 +8,23 @@ export default function ProductActions({
   onAddToCart: () => void;
   onBuyNow: () => void;
 }) {
+  const t = useTranslations('Marketing.product_details');
+
   return (
-    <div className='flex gap-2'>
+    <div className='flex gap-2 '>
       <Button
+        variant={'outline'}
         onClick={onAddToCart}
-        className='px-10 py-3 rounded-md font-semibold text-white bg-neutral-800 hover:bg-neutral-700'
+        className='px-10 py-3  rounded-md font-semibold text-primary text-lg cursor-pointer'
       >
-        Thêm vào giỏ hàng
+        {t('product_infor.product_actions.add_to_cart')}
       </Button>
       <Button
+        variant={'default'}
         onClick={onBuyNow}
-        className='px-10 py-3 rounded-md font-semibold text-white bg-blue-800 hover:bg-blue-700'
+        className='px-10 py-3  rounded-md font-semibold text-lg cursor-pointer'
       >
-        Mua Ngay
+        {t('product_infor.product_actions.buy_now')}
       </Button>
     </div>
   );

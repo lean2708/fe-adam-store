@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -29,6 +31,8 @@ import { toast } from "sonner";
 import { UserDialog } from "@/components/templates/admin/users/UserDialog";
 
 export default function UsersPage() {
+  const t = useTranslations("Admin");
+  const locale = useLocale();
   const [users, setUsers] = useState<UserResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -135,14 +139,14 @@ export default function UsersPage() {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Users</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('users.title')}</h1>
           <p className="text-muted-foreground">
-            Manage user accounts and permissions
+            {t('users.description')}
           </p>
         </div>
         <Button onClick={handleCreateUser}>
           <Plus className="mr-2 h-4 w-4" />
-          Add User
+          {t('users.addUser')}
         </Button>
       </div>
 
@@ -244,7 +248,7 @@ export default function UsersPage() {
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '-'}
+                        {user.createdAt ? formatDate(user.createdAt, locale, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}
                       </TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>

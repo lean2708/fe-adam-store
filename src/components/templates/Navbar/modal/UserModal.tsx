@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { User, ShoppingBag, LogIn, UserPlus } from "lucide-react";
 import { Modal } from "@/components/ui/modal";
 import { logoutAction } from "@/actions/nextAuthActions";
@@ -14,6 +15,23 @@ export default function UserModal({
 }) {
   const { data: session, status } = useSession();
   const router = useRouter();
+=======
+import { User, ShoppingBag, LogIn, UserPlus } from "lucide-react"
+import { Modal } from "@/components/ui/modal"
+import { logoutAction } from "@/actions/nextAuthActions"
+import { signOut, useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
+import { useTranslations } from "next-intl"
+
+export default function UserModal({ open, onClose }: { open: boolean, onClose: () => void }) {
+  const { data: session, status, } = useSession()
+  const router = useRouter()
+  const t = useTranslations("Header")
+
+  const isLogin = status === "authenticated" && !!session?.user
+  const user = session?.user
+>>>>>>> b123cf7f83c805fe68a5ef76852a3a674b76c392
 
   const isLogin = status === "authenticated" && !!session?.user;
   const user = session?.user;
@@ -34,13 +52,22 @@ export default function UserModal({
       onClose();
 
       // Show success message
+<<<<<<< HEAD
       toast.success("Đăng xuất thành công!");
+=======
+      toast.success(t("user.logout") + " thành công!")
+>>>>>>> b123cf7f83c805fe68a5ef76852a3a674b76c392
 
       // Redirect to home page
       router.push("/");
     } catch (error) {
+<<<<<<< HEAD
       console.error("Logout error:", error);
       toast.error("Có lỗi xảy ra khi đăng xuất");
+=======
+      console.error("Logout error:", error)
+      toast.error("Có lỗi xảy ra khi " + t("user.logout").toLowerCase())
+>>>>>>> b123cf7f83c805fe68a5ef76852a3a674b76c392
 
       // Even if there's an error, try to sign out with NextAuth
       try {
@@ -91,7 +118,7 @@ export default function UserModal({
           <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center">
             <LogIn className="h-6 w-6 text-gray-400" />
           </div>
-          <span className="text-lg font-medium">Đăng nhập</span>
+          <span className="text-lg font-medium">{t("user.login")}</span>
         </div>
         <div
           className="flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer"
@@ -100,7 +127,7 @@ export default function UserModal({
           <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center">
             <UserPlus className="h-6 w-6 text-gray-400" />
           </div>
-          <span className="text-lg font-medium">Đăng ký</span>
+          <span className="text-lg font-medium">{t("user.register")}</span>
         </div>
       </Modal>
     );
@@ -143,7 +170,7 @@ export default function UserModal({
         <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center">
           <User className="h-6 w-6 text-gray-400" />
         </div>
-        <span className="text-lg font-medium">Thông tin tài khoản</span>
+        <span className="text-lg font-medium">{t("user.profile")}</span>
       </div>
       <div className="px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer">
         <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center ">
@@ -168,7 +195,7 @@ export default function UserModal({
             <path d="M9 16l-4-4m0 0l4-4m-4 4h12"></path>
           </svg>
         </div>
-        <span className="text-lg font-medium">Đăng xuất</span>
+        <span className="text-lg font-medium">{t("user.logout")}</span>
       </div>
     </Modal>
   );

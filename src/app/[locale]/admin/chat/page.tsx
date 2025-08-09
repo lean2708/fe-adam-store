@@ -24,8 +24,11 @@ import {
   searchConversationsByNameAction
 } from "@/actions/chatActions";
 import type { ConversationResponse, ChatMessageResponse } from "@/api-client/models";
+import { formatDate } from "@/lib/utils";
+import { useLocale } from "next-intl";
 
 export default function ChatAdminPage() {
+  const locale = useLocale();
   const [conversations, setConversations] = useState<ConversationResponse[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<ConversationResponse | null>(null);
   const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
@@ -141,10 +144,7 @@ export default function ChatAdminPage() {
     }
   };
 
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return "N/A";
-    return new Date(dateString).toLocaleString();
-  };
+
 
   return (
     <div className="space-y-6">
@@ -294,7 +294,7 @@ export default function ChatAdminPage() {
                         <p className="text-sm mb-2">{message.message}</p>
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <Clock className="h-3 w-3" />
-                          {formatDate(message.createdDate)}
+                          {formatDate(message.createdDate, locale)}
                         </div>
                       </div>
                       <Button

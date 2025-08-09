@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Table,
   TableBody,
@@ -37,8 +38,10 @@ import {
 import type { OrderResponse } from "@/api-client/models";
 import { SearchOrdersForAdminOrderStatusEnum } from "@/api-client/apis/order-controller-api";
 import { toast } from "sonner";
+import { formatCurrency, formatDate } from "@/lib/utils";
 
 export default function OrdersPage() {
+  const t = useTranslations("Admin");
   const [orders, setOrders] = useState<OrderResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -49,6 +52,9 @@ export default function OrdersPage() {
 
   const pageSize = 10;
 
+
+  const locale = useLocale();
+
   const fetchOrders = async (page: number = 0) => {
     setLoading(true);
     try {
@@ -56,7 +62,7 @@ export default function OrdersPage() {
       const now = new Date();
       const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
       const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-      
+
       const startDate = startOfMonth.toISOString().split('T')[0];
       const endDate = endOfMonth.toISOString().split('T')[0];
 
@@ -68,7 +74,7 @@ export default function OrdersPage() {
         ["id,desc"],
         statusFilter === "ALL" ? undefined : statusFilter
       );
-      
+
       if (result.success && result.data) {
         setOrders(result.data.items || []);
         setTotalPages(result.data.totalPages || 0);
@@ -93,7 +99,7 @@ export default function OrdersPage() {
 
     try {
       const result = await deleteOrderAction(id);
-      
+
       if (result.success) {
         toast.success("Order deleted successfully");
         fetchOrders(currentPage);
@@ -110,7 +116,7 @@ export default function OrdersPage() {
 
     try {
       const result = await cancelOrderAdminAction(id);
-      
+
       if (result.success) {
         toast.success("Order cancelled successfully");
         fetchOrders(currentPage);
@@ -142,26 +148,21 @@ export default function OrdersPage() {
   const getStatusText = (status: string) => {
     switch (status) {
       case 'PENDING':
-        return 'Pending';
+        return t('orders.pending');
       case 'PROCESSING':
-        return 'Processing';
+        return t('orders.processing');
       case 'SHIPPED':
-        return 'Shipped';
+        return t('orders.shipped');
       case 'DELIVERED':
-        return 'Delivered';
+        return t('orders.delivered');
       case 'CANCELLED':
-        return 'Cancelled';
+        return t('orders.cancelled');
       default:
         return status;
     }
   };
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND'
-    }).format(amount);
-  };
+
 
   const filteredOrders = orders.filter(order =>
     order.customerName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -173,9 +174,9 @@ export default function OrdersPage() {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('orders.title')}</h1>
           <p className="text-muted-foreground">
-            Manage customer orders and track their status
+            {t('orders.description')}
           </p>
         </div>
       </div>
@@ -183,9 +184,9 @@ export default function OrdersPage() {
       {/* Search and Filters */}
       <Card>
         <CardHeader>
-          <CardTitle>Order Management</CardTitle>
+          <CardTitle>{t('orders.title')}</CardTitle>
           <CardDescription>
-            View and manage all customer orders
+            {t('orders.description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -193,14 +194,14 @@ export default function OrdersPage() {
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
-                placeholder="Search orders..."
+                placeholder={t('common.search') + ' ' + t('orders.title').toLowerCase() + '...'}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
               />
             </div>
-            <Select 
-              value={statusFilter} 
+            <Select
+              value={statusFilter}
               onValueChange={(value) => setStatusFilter(value as SearchOrdersForAdminOrderStatusEnum | "ALL")}
             >
               <SelectTrigger className="w-[180px]">
@@ -265,11 +266,11 @@ export default function OrdersPage() {
                         </div>
                       </TableCell>
                       <TableCell className="font-medium">
-                        {formatCurrency(order.totalPrice || 0)}
+                        {formatCurrency(order.totalPrice || 0, locale)}
                       </TableCell>
                       <TableCell>
-                        <Badge 
-                          variant="secondary" 
+                        <Badge
+                          variant="secondary"
                           className={`${getStatusColor(order.orderStatus || 'PENDING')}`}
                         >
                           {getStatusText(order.orderStatus || 'PENDING')}
@@ -279,7 +280,7 @@ export default function OrdersPage() {
                         {order.orderItems?.length || 0} items
                       </TableCell>
                       <TableCell>
-                        {order.orderDate ? new Date(order.orderDate).toLocaleDateString() : '-'}
+                        {order.orderDate ? formatDate(order.orderDate, locale, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}
                       </TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
@@ -296,7 +297,7 @@ export default function OrdersPage() {
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             {order.orderStatus !== 'CANCELLED' && order.orderStatus !== 'DELIVERED' && (
-                              <DropdownMenuItem 
+                              <DropdownMenuItem
                                 onClick={() => handleCancelOrder(order.id!)}
                                 className="text-orange-600"
                               >
@@ -304,7 +305,7 @@ export default function OrdersPage() {
                                 Cancel Order
                               </DropdownMenuItem>
                             )}
-                            <DropdownMenuItem 
+                            <DropdownMenuItem
                               onClick={() => handleDeleteOrder(order.id!)}
                               className="text-destructive"
                             >

@@ -17,8 +17,6 @@ export default function Recommendations() {
 
   return (
     <div className='space-y-6'>
-      <h2 className='text-2xl font-bold text-primary'>Sản phẩm bán chạy</h2>
-
       {loading ? (
         <Carousel className='w-full'>
           <CarouselContent>

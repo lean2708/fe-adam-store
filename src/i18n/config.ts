@@ -4,14 +4,7 @@ export const defaultLocale = "en" as const;
 
 export const locales = [
   "en",
-  "zh",
-  "de",
-  "es",
-  "fr",
-  "it",
-  "ja",
-  "ko",
-  "ru",
+  "vi"
 ] as const;
 
 export const pathnames: Pathnames<typeof locales> = {};

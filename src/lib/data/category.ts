@@ -1,4 +1,5 @@
 import type { TCategory } from "@/types";
+import type { CategoryRequest } from "@/api-client/models";
 import { ControllerFactory } from "./factory-api-client";
 import { transformCategoryResponseToTCategory } from "./transform/category";
 import { transformProductResponseToTProduct } from "./transform/product";
@@ -32,6 +33,7 @@ export async function fetchAllCategoriesApi(
 /**
  * Create a new category (admin).
  */
+<<<<<<< HEAD
 export async function createCategoryApi(data: any): Promise<TCategory> {
   const api = await getCategoryController();
   const response = await api.create8({ categoryRequest: data });
@@ -40,11 +42,22 @@ export async function createCategoryApi(data: any): Promise<TCategory> {
   }
   if (!response.data.result) throw new Error("No category returned");
   return transformCategoryResponseToTCategory(response.data.result);
+=======
+export async function createCategoryApi(data: CategoryRequest): Promise<TCategory> {
+    const api = await getCategoryController();
+    const response = await api.create8({ categoryRequest: data });
+    if (response.data.code !== 200) {
+        throw response.data;
+    }
+    if (!response.data.result) throw new Error("No category returned");
+    return transformCategoryResponseToTCategory(response.data.result);
+>>>>>>> b123cf7f83c805fe68a5ef76852a3a674b76c392
 }
 
 /**
  * Update a category (admin).
  */
+<<<<<<< HEAD
 export async function updateCategoryApi(
   id: number,
   data: any
@@ -56,6 +69,16 @@ export async function updateCategoryApi(
   }
   if (!response.data.result) throw new Error("No category returned");
   return transformCategoryResponseToTCategory(response.data.result);
+=======
+export async function updateCategoryApi(id: number, data: CategoryRequest): Promise<TCategory> {
+    const api = await getCategoryController();
+    const response = await api.update7({ id, categoryRequest: data });
+    if (response.data.code !== 200) {
+        throw response.data;
+    }
+    if (!response.data.result) throw new Error("No category returned");
+    return transformCategoryResponseToTCategory(response.data.result);
+>>>>>>> b123cf7f83c805fe68a5ef76852a3a674b76c392
 }
 
 /**

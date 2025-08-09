@@ -32,6 +32,7 @@ export async function cancelOrderAction(orderId: string) {
 export async function getAllOrderUserAction(status: string) {
   try {
     const orders = await fetchAllOrdersUserApi(status as GetOrdersForUserOrderStatusEnum);
+    console.log(orders)
     return {
       status: 200,
       orders,
@@ -44,7 +45,7 @@ export async function getAllOrderUserAction(status: string) {
     };
   }
 }
-export async function updateAddressForOrderByID(orderId: number, addressId: TAddress) {
+export async function updateAddressForOrderByID(orderId: number, addressId: any) {
   try {
     const orders = await updateOrderAddressApi(orderId, addressId);
     return {

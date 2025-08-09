@@ -1,6 +1,9 @@
-import { formatCurrency } from "@/lib/utils"
+import { formatCurrency } from "@/lib/utils";
+import { useLocale } from "next-intl";
+
 type TabStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
 export default function OrderItem(props: { activeStatus: TabStatus, item: any , openModule: ()=> void}) {
+  const locale = useLocale();
   const btnByStatus: Record<TabStatus, React.ReactNode> = {
     PENDING: <><button onClick={()=>openModule()} className='w-52 px-4 mr-4 py-2 rounded-md border border-black text-sm'>Thay đổi địa chỉ nhận hàng</button><button className='w-40 px-4 py-2 bg-black text-white rounded-md text-sm'>Hủy</button></>,
     PROCESSING: <><button className='w-52 px-4 mr-4 py-2 rounded-md border border-black text-sm'>Thay đổi địa chỉ nhận hàng</button><button className='w-40 px-4 py-2 bg-black text-white rounded-md text-sm'>Hủy</button></>,
@@ -21,8 +24,8 @@ export default function OrderItem(props: { activeStatus: TabStatus, item: any , 
         </div>
         <div>
           <p className="text-gray-500 text-end">Số lượng: {item.quantity}</p>
-          <p className="text-end">{formatCurrency(item.unitPrice)}</p>
-          <p>Tổng số tiền ({item.quantity} sản phẩm): <b>{formatCurrency(item.unitPrice * item.quantity)}</b></p>
+          <p className="text-end">{formatCurrency(item.unitPrice, locale)}</p>
+          <p>Tổng số tiền ({item.quantity} sản phẩm): <b>{formatCurrency(item.unitPrice * item.quantity, locale)}</b></p>
         </div>
 
       </div>

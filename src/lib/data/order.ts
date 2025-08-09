@@ -1,8 +1,11 @@
 import {
   GetOrdersForUserOrderStatusEnum,
-  OrderControllerApi,
   type OrderResponse,
-  type PageResponseOrderResponse
+  type PageResponseOrderResponse,
+  type OrderRequest,
+  type ShippingRequest,
+  type PaymentCallbackRequest,
+  type OrderAddressRequest
 } from "@/api-client";
 import { SearchOrdersForAdminOrderStatusEnum } from "@/api-client/apis/order-controller-api";
 import { ControllerFactory } from "./factory-api-client";
@@ -14,16 +17,10 @@ async function getOrderController() {
   return await ControllerFactory.getOrderController();
 }
 
-// Example transform function (customize as needed)
-function transformOrderResponse(apiOrder: any) {
-  // Map API order response to your app's order type if needed
-  return apiOrder;
-}
-
 /**
  * Calculate shipping fee for an order.
  */
-export async function calculateShippingFeeApi(shippingRequest: any) {
+export async function calculateShippingFeeApi(shippingRequest: ShippingRequest) {
   const api = await getOrderController();
   const response = await api.calculateShippingFee({ shippingRequest });
   return response.data.result;
@@ -41,7 +38,7 @@ export async function cancelOrderApi(orderId: number) {
 /**
  * Create a new order.
  */
-export async function createOrderApi(orderRequest: any) {
+export async function createOrderApi(orderRequest: OrderRequest) {
   const api = await getOrderController();
   const response = await api.create1({ orderRequest });
   return response.data.result;
@@ -92,7 +89,7 @@ export async function payOrderApi(orderId: number) {
 /**
  * Payment callback handler for order.
  */
-export async function payCallbackHandlerApi(paymentCallbackRequest: any) {
+export async function payCallbackHandlerApi(paymentCallbackRequest: PaymentCallbackRequest) {
   const api = await getOrderController();
   const response = await api.payCallbackHandler({ paymentCallbackRequest });
   return response.data.result;
@@ -119,7 +116,7 @@ export async function retryPaymentApi(orderId: number) {
 /**
  * Update address for an order.
  */
-export async function updateOrderAddressApi(orderId: number, orderAddressRequest: any) {
+export async function updateOrderAddressApi(orderId: number, orderAddressRequest: OrderAddressRequest) {
   const api = await getOrderController();
   const response = await api.updateAddress({ orderId, orderAddressRequest });
   return response.data.result;

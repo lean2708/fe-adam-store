@@ -4,223 +4,375 @@
     "name": "English",
     "siteLanguage": "Site language"
   },
-  "Error": {
-    "description": "<p>We've unfortunately encountered an error.</p><p>You can try to <retry>reload the page</retry> you were visiting.</p>",
-    "title": "Something went wrong!"
-  },
-  "NotFoundPage": {
-    "description": "Please double-check the browser address bar or use the navigation to go to a known page.",
-    "title": "Page not found"
-  },
-  "Navigation": {
-    "review": "Review",
-    "learn": "Learn",
-    "conversation": "Conversation",
-    "write": "Write",
-    "event": "Event"
-  },
-  "PublicLayout": {
-    "title": "Puchi - Master Vietnamese. Learn on the go.",
-    "description": "Puchi is an interactive platform that makes learning Vietnamese fun and engaging. Join us for an enjoyable language learning experience."
-  },
-  "Hero": {
-    "continueLearning": "Continue Learning"
-  },
   "Languages": {
-    "multiLanguage": "Multi-language",
-    "supportWebsite": "support website",
-    "chatwithus": "Chat với chúng tôi"
+    "chatwithus": "Chat with us"
   },
-  "Metrics": {
-    "byThe": "by the",
-    "numbers": "numbers",
-    "hoursOfFunContent": "hours of fun content",
-    "languageCourses": "language courses",
-    "usersGlobally": "users globally",
-    "fluencyInTwoMonths": "fluency in two months"
+  "Marketing": {
+    "categories": {
+      "noCategories": "No categories available."
+    },
+    "bestSellers": {
+      "title": "Best Sellers",
+      "badgeText": "Best Seller",
+      "noProducts": "No best-selling products available."
+    },
+    "newestProducts": {
+      "title": "Newest Products",
+      "badgeText": "Latest",
+      "noProducts": "No newest products available."
+    },
+    "heroBanner": {
+      "title": "New Products",
+      "description": "Discover our latest collection with unique designs and high quality that bring modern fashion style. Learn about the latest trends from Adam Store to update your fashion style.",
+      "buyNow": "Buy Now"
+    },
+    "sectionHeader": {
+      "allProducts": "All Products"
+    },
+    "product_details": {
+      "product_infor": {
+        "solded": "Solded",
+        "colors": "Colors",
+        "sizes": "Sizes",
+        "quantity": "Quantity",
+        "desc": "Product Description",
+        "product_actions": {
+          "add_to_cart": "Add Into Cart",
+          "buy_now": "Buy Now"
+        }
+      },
+      "reviews": {
+        "title": "Reviews",
+        "no_reviews": "No reviews available for this product.",
+        "write_review": "Write review",
+        "images_preview": {
+          "title": "Review Images Preview",
+          "review_date": "Review Date",
+          "images_in_this_review": "Images in this review"
+        }
+      },
+      "recommendations": {
+        "title": "You might also like",
+        "no_recommendations": "No products recommended."
+      },
+      "product_not_found": "The product you are looking for does not exist."
+    }
   },
-  "Reasons": {
-    "the": "The",
-    "future": "future",
-    "of": "of",
-    "learning": "learning",
-    "items": [
-      "Learn 5x faster, 5x more fun",
-      "Custom lessons backed by science",
-      "Fun challenges to stay motivated",
-      "Use Puchi wherever you go"
-    ]
+  "Header": {
+    "search": {
+      "placeholder": "Search products...",
+      "noResults": "No products found"
+    },
+    "cart": {
+      "title": "Shopping Cart",
+      "empty": "Your cart is empty",
+      "viewCart": "Your Cart",
+      "buyNow": "Buy Now",
+      "subtotal": "Subtotal",
+      "products": "products",
+      "selected": "Selected"
+    },
+    "user": {
+      "login": "Login",
+      "register": "Register",
+      "profile": "Profile",
+      "logout": "Logout"
+    }
   },
   "Footer": {
-    "startYourLanguageJourneyHere": "start your language journey here.",
-    "learnAnytimeLearnAnywhere": "learn anytime, learn anywhere.",
-    "start": "start"
-  },
-  "HelpPage": {
-    "breadcrumbs": {
-      "helpCenter": "HELP CENTER",
-      "home": "HOME"
+    "brand": {
+      "title": "Adam Store listens to you!",
+      "description": "We always appreciate and look forward to receiving all feedback from customers to be able to upgrade service experience and better products.",
+      "feedbackButton": "Give Feedback"
     },
-    "faqTitle": "Frequently Asked Questions",
-    "sections": {
-      "usingPuchi": "Using Puchi",
-      "accountManagement": "Account Management"
-    },
-    "questions": {
-      "whatIsStreak": "What is a streak?",
-      "whatAreLeaderboards": "What are leaderboards and leagues?",
-      "openSourceLibraries": "Does Puchi use any open source libraries?",
-      "changeUsernameOrEmail": "How do I change my username or email address?",
-      "findFollowBlockUsers": "How do I find, follow, and block users on Puchi?"
-    },
-    "answers": {
-      "whatIsStreak": {
-        "part1": "Your streak (flame icon) represents the number of days in a row you've completed a lesson on Puchi.",
-        "part2": "Language learning is about building goals over time, and the streak is a proven way to motivate you to keep learning and practicing every day.",
-        "part3": "Tip: Practice reminders can be a great help for remembering to do your lessons. In your notification settings you can turn on practice reminders and set the time that will work best for you."
-      },
-      "whatAreLeaderboards": {
-        "part1": "Leaderboards are a fun way to compete with other Puchi learners in a weekly contest. As you earn more XP (experience points) with each lesson, you'll rise in the ranks of your leaderboard. You'll face a new group of competitors each week. Check out the Leaderboards tab in the app to get the competition started!"
-      },
-      "openSourceLibraries": {
-        "part1": "Yes. You can view our open source attributions and learn more from this",
-        "linkText": "page"
-      },
-      "changeUsernameOrEmail": {
-        "part1": "If you want to edit your Puchi username or email address, go to your settings",
-        "linkText": "go to your settings",
-        "part2": "and edit the username or email address. Your username appears on your weekly leaderboard. Remember to tap “Save changes” when you make any changes."
-      },
-      "findFollowBlockUsers": {
-        "part1": "You can connect with other learners on Puchi!",
-        "part2": "When you follow someone, they'll show up on your friends list and you can encourage each other to stick with your language goals!!"
+    "contact": {
+      "hotline": "Hotline: 19001004 446",
+      "hours": {
+        "weekdays": "Mon - Fri: 8am - 8pm",
+        "weekends": "Sat - Sun: 8am - 1pm"
       }
     },
-    "feedbackPrompt": "Still unsure about something?",
-    "sendFeedback": "SEND FEEDBACK"
-  },
-  "PrivacyPage": {
-    "title": "Privacy Policy",
-    "lastRevised": "Please note that Privacy Policy was last revised on November 10th, 2024",
-    "footer": "Last revised on November 10th, 2024",
-    "sections": {
-      "general": {
-        "title": "General",
-        "part1": "At Puchi, we care about your personal information, so we have prepared this Privacy Policy to explain how we collect, use, and share it.",
-        "part2": "This Privacy Policy applies to Puchi websites, mobile apps, and related services (“Service”). By using the Service, you agree with Puchi’s collection, use, and sharing of your personal information in accordance with the terms of this Privacy Policy."
-      },
-      "updates": {
-        "title": "Privacy Policy Updates",
-        "part1": "We may update our Privacy Policy to reflect changes to our information practices.",
-        "part2": "If we do this and the changes are material, we will post a notice that we have made changes to this Privacy Policy on the Website for at least seven (7) days before the changes are made."
-      },
-      "retention": {
-        "title": "Data Retention",
-        "part1": "Puchi will generally retain your personal information until your account is deleted. However, Puchi may retain certain information longer if necessary to provide our Service, defend our legitimate interests or those of third parties, comply with legal requirements, resolve or defend ourselves in disputes, investigate misuse or disruption of the Service, or perform agreements."
-      },
-      "doNotTrack": {
-        "title": "Do Not Track",
-        "part1": "The Service is not designed to respond to “do not track” signals sent by some browsers."
-      },
-      "contactUs": {
-        "title": "Contact Us",
-        "part1": "Puchi, Inc. is the data controller of your data for the purposes of the General Data Protection Regulation (“GDPR”) and any relevant local legislation.",
-        "part2": "Puchi’s headquarters are located within the Viet Nam at:",
-        "part3": "Ha Noi, Viet Nam",
-        "email": "For all data privacy inquiries and any questions or concerns you have about this Privacy Policy, please contact our Data Protection Officer at: lehoan.dev@gmail.com"
-      }
+    "social": {
+      "title": "FOLLOW US",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "community": "Community"
+    },
+    "policies": {
+      "title": "POLICIES",
+      "return": "Return Policy",
+      "shipping": "Shipping Policy",
+      "privacy": "Privacy Policy",
+      "delivery": "Delivery Policy"
+    },
+    "customerCare": {
+      "title": "CUSTOMER CARE",
+      "sizeGuide": "Size Guide",
+      "careInstructions": "Care Instructions",
+      "faq": "FAQ",
+      "contact": "Contact Us"
+    },
+    "about": {
+      "title": "ABOUT ADAM STORE",
+      "story": "Our Story",
+      "careers": "Careers",
+      "news": "News",
+      "sustainability": "Sustainability"
+    },
+    "branches": {
+      "title": "BRANCH ADDRESSES",
+      "phone": "Tel"
     }
   },
-  "AboutPage": {
-    "title": "About Puchi",
-    "intro": "Puchi is an innovative platform designed to help users master Vietnamese. With support for multiple languages, Puchi ensures accessibility for learners worldwide.",
-    "technologies": "Built with modern technologies such as Next.js 15, Shadcn UI, and Clerk authentication, Puchi offers a fast, secure, and seamless learning experience. Internationalization (i18n) is a core feature, allowing users to explore content in their preferred language.",
-    "creator": "Created by Lê Công Hoan, a passionate developer dedicated to leveraging technology for education.",
-    "joinCommunity": "Join our community on <facebookLink>Facebook</facebookLink> to connect with other learners, or explore the project source code on <githubLink>GitHub</githubLink>."
-  },
-  "ProfileActions": {
-    "actions": {
-      "title": "Actions",
-      "accountSettings": {
-        "title": "Account Settings",
-        "description": "Manage personal information and security"
+  "Admin": {
+    "dashboard": {
+      "title": "Dashboard",
+      "welcome": "Welcome to your admin dashboard. Here's what's happening with your store today.",
+      "overview": {
+        "title": "Overview",
+        "description": "Monthly revenue for the current year"
       },
-      "security": {
-        "title": "Security",
-        "description": "Change password and two-factor authentication"
+      "recentOrders": {
+        "title": "Recent Orders",
+        "description": "Latest orders from your customers"
       },
-      "signOut": {
-        "title": "Sign Out",
-        "description": "Sign out of current account"
+      "topProducts": {
+        "title": "Top Selling Products",
+        "description": "Your best performing products this month"
       }
     },
-    "dangerZone": {
-      "title": "Danger Zone",
-      "deleteAccount": {
-        "title": "Delete Account",
-        "description": "This action cannot be undone. All data will be permanently deleted."
-      }
+    "navigation": {
+      "dashboard": "Dashboard",
+      "products": "Products",
+      "orders": "Orders",
+      "users": "Users",
+      "branches": "Branches",
+      "colors": "Colors",
+      "sizes": "Sizes",
+      "promotions": "Promotions",
+      "files": "Files",
+      "chat": "Chat",
+      "paymentHistory": "Payment History"
     },
-    "deleteAccount": {
-      "success": "Account deleted successfully",
-      "error": {
-        "confirmationRequired": "Please enter 'DELETE' to confirm",
-        "general": "An error occurred while deleting the account"
-      },
-      "dialog": {
-        "title": "Confirm Account Deletion",
-        "description": "This action cannot be undone. All your data will be permanently deleted.",
-        "confirmation": "To confirm, please enter <strong>DELETE</strong> in the field below.",
-        "confirmationLabel": "Confirmation",
-        "confirmationPlaceholder": "Enter DELETE to confirm",
-        "cancel": "Cancel",
-        "confirm": "Delete Account",
-        "deleting": "Deleting..."
-      }
-    }
-  },
-  "ProfileHeader": {
-    "title": "Personal Information",
-    "email": "Email",
-    "username": "Username",
-    "joinDate": "Join Date",
-    "member": "Member"
-  },
-  "ProfileForm": {
-    "title": "Edit Information",
-    "edit": "Edit",
-    "save": "Save",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "username": "Username",
-    "email": "Email",
-    "emailNote": "Email cannot be changed. Please contact support if you need to change it.",
-    "success": "Information updated successfully!",
-    "error": "An error occurred while updating information"
-  },
-  "ProfileStats": {
-    "learningStats": {
-      "title": "Learning Statistics"
+    "products": {
+      "title": "Products Management",
+      "description": "Manage your store products",
+      "addProduct": "Add Product",
+      "editProduct": "Edit Product",
+      "productDetails": "Product Details",
+      "name": "Product Name",
+      "price": "Price",
+      "category": "Category",
+      "stock": "Stock",
+      "description": "Description",
+      "images": "Images",
+      "colors": "Colors",
+      "sizes": "Sizes",
+      "sku": "SKU",
+      "weight": "Weight",
+      "dimensions": "Dimensions",
+      "tags": "Tags",
+      "featured": "Featured",
+      "published": "Published",
+      "draft": "Draft",
+      "outOfStock": "Out of Stock",
+      "inStock": "In Stock",
+      "lowStock": "Low Stock"
     },
-    "progress": {
-      "title": "Learning Progress",
-      "completedLessons": "Completed Lessons",
-      "completed": "{count} lessons completed",
-      "remaining": "{count} lessons remaining"
+    "orders": {
+      "title": "Orders Management",
+      "description": "Manage customer orders",
+      "orderDetails": "Order Details",
+      "orderNumber": "Order Number",
+      "customer": "Customer",
+      "date": "Date",
+      "total": "Total",
+      "status": "Status",
+      "items": "Items",
+      "shipping": "Shipping",
+      "payment": "Payment",
+      "pending": "Pending",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
+      "refunded": "Refunded",
+      "viewOrder": "View Order",
+      "cancelOrder": "Cancel Order",
+      "updateStatus": "Update Status",
+      "printInvoice": "Print Invoice"
     },
-    "performance": {
-      "title": "Learning Performance",
-      "averageAccuracy": "Average Accuracy",
-      "excellent": "Excellent",
-      "needsImprovement": "Needs Improvement"
+    "users": {
+      "title": "Users Management",
+      "description": "Manage system users",
+      "addUser": "Add User",
+      "editUser": "Edit User",
+      "userDetails": "User Details",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "phone": "Phone",
+      "role": "Role",
+      "avatar": "Avatar",
+      "joinDate": "Join Date",
+      "lastLogin": "Last Login",
+      "verified": "Verified",
+      "blocked": "Blocked",
+      "admin": "Admin",
+      "customer": "Customer",
+      "moderator": "Moderator"
     },
-    "stats": {
-      "completedLessons": "Completed",
-      "currentStreak": "Current Streak",
-      "streakDays": "{days} days",
-      "totalXP": "Total XP",
-      "currentLevel": "Current Level",
-      "level": "Level {level}"
+    "branches": {
+      "title": "Branches Management",
+      "description": "Manage store branches",
+      "addBranch": "Add Branch",
+      "editBranch": "Edit Branch",
+      "branchName": "Branch Name",
+      "address": "Address",
+      "phone": "Phone",
+      "manager": "Manager",
+      "openingHours": "Opening Hours",
+      "coordinates": "Coordinates"
+    },
+    "colors": {
+      "title": "Colors Management",
+      "description": "Manage product colors",
+      "addColor": "Add Color",
+      "editColor": "Edit Color",
+      "colorName": "Color Name",
+      "colorCode": "Color Code",
+      "hexValue": "Hex Value"
+    },
+    "sizes": {
+      "title": "Sizes Management",
+      "description": "Manage product sizes",
+      "addSize": "Add Size",
+      "editSize": "Edit Size",
+      "sizeName": "Size Name",
+      "sizeCode": "Size Code",
+      "measurements": "Measurements"
+    },
+    "promotions": {
+      "title": "Promotions Management",
+      "description": "Manage promotions and discounts",
+      "addPromotion": "Add Promotion",
+      "editPromotion": "Edit Promotion",
+      "promotionName": "Promotion Name",
+      "discountType": "Discount Type",
+      "discountValue": "Discount Value",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "minOrder": "Minimum Order",
+      "maxUses": "Maximum Uses",
+      "percentage": "Percentage",
+      "fixedAmount": "Fixed Amount"
+    },
+    "files": {
+      "title": "Files Management",
+      "description": "Manage uploaded files",
+      "uploadFile": "Upload File",
+      "fileName": "File Name",
+      "fileSize": "File Size",
+      "fileType": "File Type",
+      "uploadDate": "Upload Date",
+      "downloadFile": "Download File"
+    },
+    "chat": {
+      "title": "Chat Management",
+      "description": "Manage customer support chats",
+      "activeChats": "Active Chats",
+      "chatHistory": "Chat History",
+      "customer": "Customer",
+      "agent": "Agent",
+      "startTime": "Start Time",
+      "duration": "Duration",
+      "resolved": "Resolved",
+      "pending": "Pending"
+    },
+    "paymentHistory": {
+      "title": "Payment History",
+      "description": "View payment transactions",
+      "transactionId": "Transaction ID",
+      "amount": "Amount",
+      "method": "Payment Method",
+      "date": "Date",
+      "status": "Status",
+      "customer": "Customer",
+      "order": "Order",
+      "successful": "Successful",
+      "failed": "Failed",
+      "refund": "Refund"
+    },
+    "common": {
+      "add": "Add",
+      "edit": "Edit",
+      "delete": "Delete",
+      "save": "Save",
+      "cancel": "Cancel",
+      "search": "Search",
+      "filter": "Filter",
+      "export": "Export",
+      "import": "Import",
+      "actions": "Actions",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "loading": "Loading...",
+      "noData": "No data available",
+      "confirm": "Confirm",
+      "close": "Close",
+      "view": "View",
+      "update": "Update",
+      "create": "Create",
+      "remove": "Remove",
+      "restore": "Restore",
+      "duplicate": "Duplicate",
+      "archive": "Archive",
+      "publish": "Publish",
+      "unpublish": "Unpublish",
+      "enable": "Enable",
+      "disable": "Disable",
+      "yes": "Yes",
+      "no": "No",
+      "success": "Success",
+      "error": "Error",
+      "warning": "Warning",
+      "info": "Info",
+      "required": "Required",
+      "optional": "Optional",
+      "selectAll": "Select All",
+      "deselectAll": "Deselect All",
+      "bulkActions": "Bulk Actions",
+      "itemsSelected": "items selected",
+      "page": "Page",
+      "of": "of",
+      "showing": "Showing",
+      "to": "to",
+      "entries": "entries",
+      "previous": "Previous",
+      "next": "Next",
+      "first": "First",
+      "last": "Last"
+    },
+    "messages": {
+      "deleteConfirm": "Are you sure you want to delete this item?",
+      "deleteSuccess": "Item deleted successfully",
+      "deleteError": "Failed to delete item",
+      "saveSuccess": "Item saved successfully",
+      "saveError": "Failed to save item",
+      "updateSuccess": "Item updated successfully",
+      "updateError": "Failed to update item",
+      "createSuccess": "Item created successfully",
+      "createError": "Failed to create item",
+      "restoreSuccess": "Item restored successfully",
+      "restoreError": "Failed to restore item",
+      "noItemsFound": "No items found",
+      "loadingData": "Loading data...",
+      "serverError": "Server error occurred",
+      "networkError": "Network error occurred",
+      "validationError": "Please check your input",
+      "permissionDenied": "Permission denied",
+      "sessionExpired": "Session expired, please login again"
     }
   }
 }

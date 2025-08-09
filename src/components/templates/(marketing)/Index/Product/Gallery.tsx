@@ -12,6 +12,7 @@ import { CategorySkeleton } from '@/components/ui/skeleton';
 import { TProduct } from '@/types';
 import useGallery from '@/hooks/(product_details)/useGallery';
 import GalleryThumbnails from './(Gallery)/GalleryThumbnails';
+import { AspectRatio } from '@radix-ui/react-aspect-ratio';
 
 export default function Gallery({ product }: { product: TProduct }) {
   const images = product.images || [];
@@ -42,24 +43,30 @@ export default function Gallery({ product }: { product: TProduct }) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <Carousel setApi={setApi} className='w-full'>
+        <Carousel setApi={setApi} className='w-full h-full'>
           <CarouselContent>
             {images.map((image, index) => (
               <CarouselItem key={index}>
-                <div className='aspect-square bg-muted-foreground rounded-lg overflow-hidden relative'>
-                  <Image
-                    src={image?.imageUrl || '/placeholder.svg'}
-                    alt={`${product.name} ${index + 1}`}
-                    width={600}
-                    height={600}
-                    className='w-full h-full object-cover transition-opacity duration-300'
-                    priority={index === 0}
-                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px'
-                    unoptimized
-                  />
+                <div className=' bg-muted-foreground rounded-lg overflow-hidden relative h-[580px]'>
+                  <AspectRatio ratio={3 / 4} className='w-full h-full'>
+                    <Image
+                      src={
+                        image?.imageUrl ||
+                        'https://images.pexels.com/photos/6069525/pexels-photo-6069525.jpeg?auto=compress&cs=tinysrgb&h=400&w=300'
+                      }
+                      alt={`${product.name} ${index + 1}`}
+                      width={300}
+                      height={400}
+                      className='w-full h-full object-cover transition-opacity duration-300'
+                      priority={index === 0}
+                      sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px'
+                      unoptimized
+                    />
+
+                    {!imagesLoaded[index] && <CategorySkeleton />}
+                  </AspectRatio>
 
                   {/* Loading overlay */}
-                  {!imagesLoaded[index] && <CategorySkeleton />}
                 </div>
               </CarouselItem>
             ))}

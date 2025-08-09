@@ -1,10 +1,11 @@
-"use client";
 
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/lib/utils";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -29,6 +30,8 @@ import {
 import type { TBranch } from "@/types";
 
 export default function BranchesAdminPage() {
+  const t = useTranslations("Admin");
+  const locale = useLocale();
   const [branches, setBranches] = useState<TBranch[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -48,7 +51,9 @@ export default function BranchesAdminPage() {
     setLoading(true);
     try {
       const result = await getAllBranchesAction();
+
       if (result.success && result.data) {
+              console.log("co du lieu")
         setBranches(result.data);
       } else {
         toast.error(result.message || "Failed to load branches");
@@ -268,8 +273,8 @@ export default function BranchesAdminPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-muted-foreground">
-                      {branch.createdAt 
-                        ? new Date(branch.createdAt).toLocaleDateString()
+                      {branch.createdAt
+                        ? formatDate(branch.createdAt, locale, { year: 'numeric', month: 'short', day: 'numeric' })
                         : "N/A"
                       }
                     </TableCell>
