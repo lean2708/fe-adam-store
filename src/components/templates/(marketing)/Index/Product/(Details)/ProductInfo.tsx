@@ -26,7 +26,14 @@ export default function ProductInfo({
         </span>
       </div>
       <div className='text-lg md:text-xl lg:text-2xl font-bold text-primary'>
-        {formatCurrency(selectVariant?.price || 0, locale)}
+        {selectVariant
+          ? formatCurrency(selectVariant.price || 0, locale)
+          : product.minPrice === product.maxPrice
+          ? formatCurrency(product.minPrice, locale)
+          : `${formatCurrency(product.minPrice, locale)} - ${formatCurrency(
+              product.maxPrice,
+              locale
+            )}`}
       </div>
     </div>
   );

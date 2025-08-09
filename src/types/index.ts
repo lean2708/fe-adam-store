@@ -59,6 +59,8 @@ export type TProduct = {
   mainImage: string;
   images?: ImageBasic[];
   id: number;
+  minPrice: number;
+  maxPrice: number;
   isAvailable?: boolean;
   name?: string;
   description?: string;
