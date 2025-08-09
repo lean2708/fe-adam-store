@@ -70,10 +70,8 @@ export const useCartStore = create<State & Actions>()((set) => ({
     set({ status: 'loading' });
     try {
       const response = await fetchCartItemsAction(userId, 0, 10, ['id,desc']);
-      // Align with ActionResponse pattern: success + data
       const items: TCartItem[] =
-        (response && (response as any).success ? (response as any).data : []) ??
-        [];
+        (response && response.success ? response.data : []) ?? [];
 
       // Reconcile selected ids with fresh items
       set((state) => {
@@ -82,6 +80,7 @@ export const useCartStore = create<State & Actions>()((set) => ({
           items.some((it) => Number(it.id) === sid)
         );
         const selectedTotal = sumSelected(items, validSelected);
+
         return {
           cartItems: items,
           totalPrice: formatMoney(total),

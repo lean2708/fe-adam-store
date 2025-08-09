@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 
 // Import modals from modal folder
 import UserModal from './modal/UserModal';
-import CartModal from './modal/CartModal';
+import CartModal from './modal/CartModal/CartModal';
 import MobileSidebar from './modal/MobileSidebar';
 import ThemeToggle from '@/components/modules/ThemeToggle';
 import Logo from '@/components/modules/Logo';
@@ -20,7 +20,6 @@ export default function Navbar() {
   const { user } = useAuth();
 
   const cartItems = useCartStore((state) => state.cartItems);
-  const totalPrice = useCartStore((state) => state.totalPrice);
   // Only manage modal open/close triggers here
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -120,8 +119,6 @@ export default function Navbar() {
           <CartModal
             userId={user?.id || 0}
             open={isCartOpen}
-            cartItems={cartItems}
-            totalPrice={Number(totalPrice)}
             onClose={handleCartModalClose}
           />
         </div>

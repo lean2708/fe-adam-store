@@ -207,7 +207,6 @@ export const useCartItem = (
         );
 
         if (res.success && res.cart) {
-          // setPrice(res.cart);
           updateCartItem?.(cartItem.id, res.cart);
         } else {
           toast.error(res.message || 'Cập nhật số lượng thất bại');
@@ -230,6 +229,7 @@ export const useCartItem = (
 
   const onRemoveItem = useCallback(async () => {
     try {
+      setIsChanged(true);
       const res = await deleteCartItemAction(cartItem.id, user?.id || 0);
 
       if (res.success) {
@@ -240,6 +240,8 @@ export const useCartItem = (
       }
     } catch (error) {
       toast.error('Đã xảy ra lỗi khi xóa sản phẩm');
+    } finally {
+      setIsChanged(false);
     }
   }, [cartItem.id, removeCartItem]);
 
