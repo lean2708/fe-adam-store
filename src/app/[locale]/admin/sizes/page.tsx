@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDate } from "@/lib/utils";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
@@ -161,7 +163,6 @@ export default function SizesAdminPage() {
                           </Badge>
                         </div>
                       </TableCell>
-
                     </TableRow>
                   ))}
                 </TableBody>
