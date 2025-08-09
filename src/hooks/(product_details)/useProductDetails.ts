@@ -3,9 +3,11 @@ import { TProduct, TVariant } from '@/types';
 import { toast } from 'sonner';
 import { addToCartAction } from '@/actions/cartActions';
 import { useAuth } from '../useAuth';
+import { useRouter } from 'next/navigation';
 
 export default function useProductDetails(product: TProduct) {
-  const { user } = useAuth();
+  const { user, isLogin } = useAuth();
+  const router = useRouter();
 
   const [selectVariant, setSelectVariant] = useState<TVariant | undefined>(
     undefined
@@ -75,7 +77,11 @@ export default function useProductDetails(product: TProduct) {
   };
 
   const handleAddToCart = async () => {
-    // Kiểm tra phải có cả color và size
+    if (!user || !isLogin) {
+      router.push('/login');
+      return toast.info('Bạn chưa đăng nhập. Vui lòng đăng nhập để tiếp tục');
+    }
+
     if (!selectVariant || !selectedColor.current || !selectedSize.current) {
       return toast.warning(
         'Vui lòng chọn đầy đủ màu sắc và kích thước của sản phẩm trước khi cho vào giỏ hàng'
@@ -100,6 +106,11 @@ export default function useProductDetails(product: TProduct) {
   };
 
   const handleBuyNow = () => {
+    if (!user || !isLogin) {
+      router.push('/login');
+      return toast.info('Bạn chưa đăng nhập. Vui lòng đăng nhập để tiếp tục');
+    }
+
     if (!selectVariant || !selectedColor.current || !selectedSize.current) {
       return toast.warning(
         'Vui lòng chọn đầy đủ màu sắc và kích thước của sản phẩm trước khi đặt hàng'

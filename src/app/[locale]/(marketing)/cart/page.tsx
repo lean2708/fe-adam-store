@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { CartItemsList } from '@/components/templates/(marketing)/Index/Cart/CartItemsList';
 import { CheckOut } from '@/components/templates/(marketing)/Index/Cart/CheckOut';
 import { cn } from '@/lib/utils';

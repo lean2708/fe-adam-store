@@ -7,6 +7,13 @@
   "Languages": {
     "chatwithus": "Chat với chúng tôi"
   },
+  "Auth": {
+    "unauthenticated": {
+      "title": "Bạn chưa đăng nhập",
+      "message": "Vui lòng đăng nhập để tiếp tục.",
+      "login": "Đăng nhập"
+    }
+  },
   "Marketing": {
     "categories": {
       "noCategories": "Không có danh mục nào."
