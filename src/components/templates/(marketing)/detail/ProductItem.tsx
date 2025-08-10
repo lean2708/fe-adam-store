@@ -1,9 +1,9 @@
-import Image from "next/image";
-import { cn } from "@/lib/utils";
-import { useState, useMemo } from "react";
-import { ProductResponse } from "@/api-client";
-import { transformProductResponseToTProduct } from "@/lib/data/transform/product";
-import { TProduct } from "@/types";
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
+import { useState, useMemo } from 'react';
+import { ProductResponse } from '@/api-client';
+import { transformProductResponseToTProduct } from '@/lib/data/transform/product';
+import { TProduct } from '@/types';
 
 interface ProductCardIndexProps {
   product: ProductResponse;
@@ -11,10 +11,10 @@ interface ProductCardIndexProps {
   className?: string;
 }
 
-export default function ProductItme({
+export default function ProductItem({
   product,
-  badgeText = "Mới",
-  className = "",
+  badgeText = 'Mới',
+  className = '',
 }: ProductCardIndexProps) {
   // Transform ProductResponse to TProduct for easier rendering
   const tProduct: TProduct | null = useMemo(() => {
@@ -41,34 +41,34 @@ export default function ProductItme({
   return (
     <div className={`group cursor-pointer relative ${className}`}>
       {/* Product Image */}
-      <div className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden mb-3 relative">
+      <div className='aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden mb-3 relative'>
         <Image
           src={
             tProduct.mainImage ||
-            "https://images.pexels.com/photos/6069525/pexels-photo-6069525.jpeg?auto=compress&cs=tinysrgb&h=400&w=300"
+            'https://images.pexels.com/photos/6069525/pexels-photo-6069525.jpeg?auto=compress&cs=tinysrgb&h=400&w=300'
           }
-          alt={tProduct.title || "Product image"}
+          alt={tProduct.title || 'Product image'}
           width={300}
           height={400}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
         />
 
         {/* Badge */}
-        <div className="absolute top-3 right-3 z-10">
-          <span className="bg-black text-white text-xs font-medium px-3 py-1 rounded-full">
+        <div className='absolute top-3 right-3 z-10'>
+          <span className='bg-black text-white text-xs font-medium px-3 py-1 rounded-full'>
             {badgeText}
           </span>
         </div>
 
         {/* Hover Bottom Panel */}
-        <div className="absolute bottom-0 left-2 right-2 bg-white/95 backdrop-blur-sm p-3 sm:p-4 md:p-5 transform translate-y-full group-hover:-translate-y-2 transition-transform duration-300 ease-out rounded-lg border border-gray-200 shadow-lg">
+        <div className='absolute bottom-0 left-2 right-2 bg-white/95 backdrop-blur-sm p-3 sm:p-4 md:p-5 transform translate-y-full group-hover:-translate-y-2 transition-transform duration-300 ease-out rounded-lg border border-gray-200 shadow-lg'>
           {/* Add to Cart Button */}
-          <button className="w-full bg-black text-white py-2 sm:py-2.5 md:py-3 rounded-lg font-medium text-xs sm:text-sm mb-2 sm:mb-3 hover:bg-gray-800 transition-colors shadow-sm border border-black/10">
+          <button className='w-full bg-black text-white py-2 sm:py-2.5 md:py-3 rounded-lg font-medium text-xs sm:text-sm mb-2 sm:mb-3 hover:bg-gray-800 transition-colors shadow-sm border border-black/10'>
             Thêm vào giỏ hàng +
           </button>
 
           {/* Size Options */}
-          <div className="flex justify-center gap-1 sm:gap-2 flex-wrap">
+          <div className='flex justify-center gap-1 sm:gap-2 flex-wrap'>
             {selectedColorObj?.variants
               ?.slice()
               .sort((a, b) => {
@@ -80,10 +80,10 @@ export default function ProductItme({
                 <span
                   key={variant.id}
                   className={cn(
-                    "px-2 sm:px-3 py-1 text-xs font-medium rounded-full border border-gray-200 transition-colors shadow-sm",
+                    'px-2 sm:px-3 py-1 text-xs font-medium rounded-full border border-gray-200 transition-colors shadow-sm',
                     !variant.isAvailable
-                      ? "bg-gray-100 text-gray-400 line-through cursor-not-allowed opacity-60"
-                      : "bg-gray-100 hover:bg-gray-200 cursor-pointer hover:border-gray-300"
+                      ? 'bg-gray-100 text-gray-400 line-through cursor-not-allowed opacity-60'
+                      : 'bg-gray-100 hover:bg-gray-200 cursor-pointer hover:border-gray-300'
                   )}
                 >
                   {variant.size?.name}
@@ -94,20 +94,20 @@ export default function ProductItme({
       </div>
 
       {/* Color dots */}
-      <div className="flex items-center gap-2 mb-3">
+      <div className='flex items-center gap-2 mb-3'>
         {tProduct.colors?.map((color) => (
           <span
             key={color.id}
             className={`inline-block border border-gray-300 ${
-              selectedColor === color.id ? "ring-2 ring-black" : ""
+              selectedColor === color.id ? 'ring-2 ring-black' : ''
             }`}
             style={{
-              width: "50px",
-              height: "29px",
-              borderRadius: "100px",
+              width: '50px',
+              height: '29px',
+              borderRadius: '100px',
               opacity: 1,
               backgroundColor: color.name,
-              cursor: "pointer",
+              cursor: 'pointer',
             }}
             onClick={() => setSelectedColor(color.id)}
           />
@@ -115,13 +115,13 @@ export default function ProductItme({
       </div>
 
       {/* Product Title */}
-      <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2 uppercase tracking-wide">
+      <h3 className='text-sm font-medium text-gray-900 dark:text-gray-100 mb-2 uppercase tracking-wide'>
         {tProduct.title}
       </h3>
 
       {/* Price */}
-      <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-        {tProduct.minPrice?.toLocaleString("vi-VN")} VND
+      <p className='text-sm font-semibold text-gray-900 dark:text-gray-100'>
+        {tProduct.minPrice?.toLocaleString('vi-VN')} VND
       </p>
     </div>
   );

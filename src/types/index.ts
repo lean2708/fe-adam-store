@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import { ImageBasic } from "@/api-client";
-import { ORDER_STATUS, USER_ROLE } from "@/enums";
-=======
 import { ImageBasic } from '@/api-client';
 import { ORDER_STATUS, USER_ROLE } from '@/enums';
->>>>>>> b123cf7f83c805fe68a5ef76852a3a674b76c392
 
 export type TCategory = {
   id: string;
@@ -134,7 +129,7 @@ export type TBranch = {
   name: string;
   location: string;
   phone: string;
-  status: "ACTIVE" | "INACTIVE";
+  status: 'ACTIVE' | 'INACTIVE';
   createdAt?: string;
   updatedAt?: string;
 };
