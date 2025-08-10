@@ -34,7 +34,10 @@ export class ControllerFactory {
    * Initialize the factory with authenticated axios instance
    */
   private static async getAxiosInstance() {
+    if (!this.axiosInstance) {
       this.axiosInstance = await getAuthenticatedAxiosInstance();
+    }
+
     return this.axiosInstance;
   }
 
@@ -45,7 +48,7 @@ export class ControllerFactory {
     const axiosInstance = await this.getAxiosInstance();
     return new StatisticsControllerApi(undefined, undefined, axiosInstance);
   }
-   static async getAddressController(): Promise<AddressControllerApi> {
+  static async getAddressController(): Promise<AddressControllerApi> {
     const axiosInstance = await this.getAxiosInstance();
     return new AddressControllerApi(undefined, undefined, axiosInstance);
   }
@@ -53,7 +56,7 @@ export class ControllerFactory {
     const axiosInstance = await this.getAxiosInstance();
     return new ProvinceControllerApi(undefined, undefined, axiosInstance);
   }
-    static async getDistrictController(): Promise<DistrictControllerApi> {
+  static async getDistrictController(): Promise<DistrictControllerApi> {
     const axiosInstance = await this.getAxiosInstance();
     return new DistrictControllerApi(undefined, undefined, axiosInstance);
   }

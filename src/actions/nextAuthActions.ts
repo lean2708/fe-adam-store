@@ -373,6 +373,10 @@ export async function logoutAction(): Promise<ActionResponse> {
     // Clear the httpOnly refresh token cookie
     await deleteCookie('refresh_token');
     
+    // Reset the axios instance to clear cached auth headers
+    const { ControllerFactory } = await import('@/lib/data/factory-api-client');
+    ControllerFactory.resetAxiosInstance();
+    
     return {
       success: true,
       message: 'Logged out successfully.'
@@ -391,6 +395,10 @@ export async function logoutAction(): Promise<ActionResponse> {
       console.error('Error clearing refresh token cookie:', cookieError);
     }
 
+    // Still reset axios instance even on error
+    const { ControllerFactory } = await import('@/lib/data/factory-api-client');
+    ControllerFactory.resetAxiosInstance();
+    
     // Even if API call fails, we still consider logout successful
     // since the client-side session will be cleared by NextAuth
     return {
