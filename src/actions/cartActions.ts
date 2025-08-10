@@ -42,24 +42,16 @@ export async function addToCartAction(
 
     const item = await createCartItemApi(cartItemRequest, userId);
     return {
+      success: true,
       status: 200,
       message: 'New product added in your cart',
       cartItem: item,
     };
   } catch (error) {
-    return { status: 500, message: 'Server error', error };
+    const extracted = extractErrorMessage(error, 'Failed to add cart item.');
+    return { success: false, message: extracted.message, apiError: extracted };
   }
 }
-
-// export async function getCartItemsAction(userId: string) {
-//   try {
-//     // No userId filter in API, so just fetch all for current user
-//     const items = await fetchCartItemsApi();
-//     return { status: 200, cart: items };
-//   } catch (error) {
-//     return { status: 500, error };
-//   }
-// }
 
 export async function deleteCartItemAction(cartItemId: string, userId: number) {
   try {
@@ -72,7 +64,8 @@ export async function deleteCartItemAction(cartItemId: string, userId: number) {
       cart: items,
     };
   } catch (error) {
-    return { status: 500, success: false, error };
+    const extracted = extractErrorMessage(error, 'Failed to delete cart item.');
+    return { success: false, message: extracted.message, apiError: extracted };
   }
 }
 
