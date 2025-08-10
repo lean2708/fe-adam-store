@@ -34,10 +34,7 @@ export class ControllerFactory {
    * Initialize the factory with authenticated axios instance
    */
   private static async getAxiosInstance() {
-    if (!this.axiosInstance) {
-      this.axiosInstance = await getAuthenticatedAxiosInstance();
-    }
-
+    this.axiosInstance = await getAuthenticatedAxiosInstance();
     return this.axiosInstance;
   }
 

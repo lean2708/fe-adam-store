@@ -372,11 +372,6 @@ export async function logoutAction(): Promise<ActionResponse> {
 
     // Clear the httpOnly refresh token cookie
     await deleteCookie('refresh_token');
-    
-    // Reset the axios instance to clear cached auth headers
-    const { ControllerFactory } = await import('@/lib/data/factory-api-client');
-    ControllerFactory.resetAxiosInstance();
-    
     return {
       success: true,
       message: 'Logged out successfully.'
