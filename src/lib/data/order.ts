@@ -31,7 +31,7 @@ export async function calculateShippingFeeApi(shippingRequest: ShippingRequest) 
  */
 export async function cancelOrderApi(orderId: number) {
   const api = await getOrderController();
-  const response = await api.cancelOrder({ orderId });
+  const response = await api.cancelOrder({ orderId: orderId });
   return response.data.result;
 }
 
@@ -118,7 +118,7 @@ export async function retryPaymentApi(orderId: number) {
  */
 export async function updateOrderAddressApi(orderId: number, orderAddressRequest: OrderAddressRequest) {
   const api = await getOrderController();
-  const response = await api.updateAddress({ orderId, orderAddressRequest });
+  const response = await api.updateAddress({ orderId:orderId, orderAddressRequest: orderAddressRequest });
   return response.data.result;
 }
 

@@ -29,7 +29,7 @@ export async function fetchAllFiles(
 /**
  * Upload multiple images
  */
-export async function uploadImages(files: File[]): Promise<FileResponse[]> {
+export async function uploadImages(files: File[]){
   const controller = await ControllerFactory.getFileController();
   const response = await controller.uploadImage({
     files: files

@@ -1,7 +1,6 @@
 "use server";
 import { createAddressById, deleteAddressById, fetchAllDistrictById, fetchAllProvince, fetchAllWardByIdDistrict, getAddressById, updateAddressById } from "@/lib/data/address";
 import { fetchAllAddressUserApi } from "@/lib/data/user";
-import { TAddress } from "@/types";
 export async function getAllAddressUser() {
   try {
     const address = await fetchAllAddressUserApi();

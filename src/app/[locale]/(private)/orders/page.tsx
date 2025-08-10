@@ -2,10 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import OrderItem from '@/components/ui/order-item';
 import { getAllOrderUserAction } from '@/actions/orderActions';
 import { Skeleton } from '@/components/ui/skeleton';
 import ChooseAddress from '@/components/modules/ChooseAddress';
+import { AddressItem, TOrderItem, TOrder } from '@/types';
+import OrderItem from '@/components/ui/order-item';
 type TabStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
 interface TabItem {
   key: TabStatus;
@@ -22,9 +23,9 @@ const tabList: TabItem[] = [
 export default function OrderPage() {
   const [isVisible, setIsVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [itemOnModule, setItemOnModule] = useState<any>()
+  const [itemOnModule, setItemOnModule] = useState<TOrder>()
   const [activeStatus, setActiveStatus] = useState<TabStatus>('PENDING');
-  const [data, setData] = useState<any>({})
+  const [listOrders, setListOrders] = useState<TOrder[]>([])
 
   useEffect(() => { getData() }, [activeStatus])
   const getData = async () => {
@@ -33,7 +34,7 @@ export default function OrderPage() {
       const res = await getAllOrderUserAction(activeStatus)
       console.log(res)
       if (res.status === 200 && res.orders) {
-        setData(res.orders)
+        setListOrders(res.orders as TOrder[])
       }
     } catch (error) {
       console.error("Failed to fetch orders:", error);
@@ -55,8 +56,10 @@ export default function OrderPage() {
                 && 'border-b-3 border-black dark:border-white'
               )}
               onClick={() => {
-                setActiveStatus(tab.key);
-                // setData([])
+                if (activeStatus !== tab.key) {
+                  setListOrders([])
+                  setActiveStatus(tab.key);
+                }
               }}
             >
               {tab.label}
@@ -65,7 +68,7 @@ export default function OrderPage() {
         </div>
         <div className="px-8 py-6">
           <div className='rounded-xl px-5 bg-gray-100'>
-            <h3 className='border-b-2 h-11 flex items-center justify-end border-gray-300 font-semibold uppercase'>
+            <h3 className='border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase'>
               {tabList.find(tab => tab.key === activeStatus)?.label}
             </h3>
             <div>
@@ -73,20 +76,29 @@ export default function OrderPage() {
                 <div className="py-3 border-b-2 flex w-full justify-between h-24 items-center">
                   <Skeleton className='h-16 w-full' />
                 </div>}
-              {!isLoading && data?.orderItems?.length > 0 && data.orderItems.map((item: any, index: number) => {
-                const isLast = index === data.orderItems.length - 1;
+              {!isLoading && listOrders.length > 0 && listOrders.map((item: TOrder, index: number) => {
+                const isLast = index === listOrders.length - 1;
                 return (
                   <div key={item.id} className={clsx(
-                    'py-2',
-                    !isLast && 'border-b-2'
+                    '',
+                    !isLast && 'border-b-1 border-dashed'
                   )}>
-                    <OrderItem item={item} activeStatus={activeStatus} openModule={() => { setIsVisible(true); setItemOnModule(item) }} />
+                    <OrderItem onDeleted={(id: number) => {
+                      if (id) {
+                        const updatedOrders = [...listOrders];
+                        const foundIndex = updatedOrders.findIndex(item => item.id === id);
+                        if (foundIndex !== -1) {
+                          updatedOrders.splice(foundIndex, 1);
+                          setListOrders(updatedOrders);
+                        }
+                      }
+                    }
+                    } id={item.id} items={item.orderItems as TOrderItem[]} totalPrice={item.totalPrice} activeStatus={activeStatus} openModule={() => { setIsVisible(true); setItemOnModule(item) }} />
                   </div>
                 )
               }
               )}
-
-              {!isLoading && (!data?.orderItems || data.orderItems.length === 0) && (
+              {!isLoading && (!listOrders || listOrders.length === 0) && (
                 <p className="py-3 border-b-1 flex w-full h-16 items-center justify-center">Bạn chưa có đơn hàng nào cả</p>
               )}
             </div>
@@ -94,7 +106,21 @@ export default function OrderPage() {
           </div>
         </div>
       </div>
-      <ChooseAddress visible={isVisible} orderItem={itemOnModule} onClose={() => setIsVisible(false)} />
+      <ChooseAddress visible={isVisible} orderItem={itemOnModule} onClose={() => setIsVisible(false)}
+        onSuccess={(address: AddressItem) => {
+          if (listOrders.length && address && itemOnModule) {
+            const foundIndex = listOrders.findIndex(item => item.id === itemOnModule.id);
+            if (foundIndex !== -1) {
+              const updatedOrders = [...listOrders];
+              updatedOrders[foundIndex] = {
+                ...updatedOrders[foundIndex],
+                address: address,
+              };
+              setListOrders(updatedOrders);
+              setIsLoading(false);
+            }
+          }
+        }} />
     </main>
   );
 }

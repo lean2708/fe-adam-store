@@ -3,37 +3,20 @@ import { Card, CardTitle } from "../ui/card";
 import { CircleX } from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
 import { cn } from "@/lib/utils";
-import { TAddress, TOrderItem } from "@/types";
+import { AddressItem, TOrder } from "@/types";
 import { updateAddressForOrderByID } from "@/actions/orderActions";
 import { getAllAddressUser } from "@/actions/addressActions";
-export default function ChooseAddress(props: { visible: boolean; orderItem: TOrderItem, onClose: () => void }) {
-  const { visible, onClose, orderItem } = props;
+import Link from "next/link";
+import ConfirmDialogModule from "./ConfirmDialogModule";
+import { toast } from "sonner";
+
+export default function ChooseAddress(props: { visible: boolean; onSuccess: (address: AddressItem) => void, orderItem?: TOrder, onClose: () => void }) {
+  const { visible, onClose, orderItem, onSuccess } = props;
   const [loading, setLoading] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState<number>(0); // chọn địa chỉ
-  const [listAddress, setListAddress] = useState<TAddress[]>([
-    {
-      isDefault: true,
-      streetDetail: "139E Nguyễn Trãi",
-      ward: { name: "Phường Bến Thành" },
-      district: { name: "Quận 1" },
-      province: { name: "TP.HCM" },
-    },
-    {
-      isDefault: false,
-      streetDetail: "52 Lê Lai",
-      ward: { name: "Phường Phạm Ngũ Lão" },
-      district: { name: "Quận 1" },
-      province: { name: "TP.HCM" },
-    },
-    {
-      isDefault: false,
-      streetDetail: "12 Nguyễn Huệ",
-      ward: { name: "Phường Bến Nghé" },
-      district: { name: "Quận 1" },
-      province: { name: "TP.HCM" },
-    }
-  ]);
+  const [confirm, setConfirm] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const [listAddress, setListAddress] = useState<AddressItem[]>([]);
 
   useEffect(() => {
     const defaultIndex = listAddress.findIndex(addr => addr.isDefault);
@@ -49,9 +32,10 @@ export default function ChooseAddress(props: { visible: boolean; orderItem: TOrd
     async function getAddress() {
       try {
         setLoading(true)
-        const res: any = await getAllAddressUser()
-        if (res.status === 200 && res.orders) {
-          setListAddress(res.orders)
+        const res = await getAllAddressUser()
+        console.log(res)
+        if (res.status === 200 && res.address?.items) {
+          setListAddress(res.address.items as AddressItem[])
         }
       } catch (error) {
         console.error("Failed to fetch address:", error);
@@ -61,17 +45,30 @@ export default function ChooseAddress(props: { visible: boolean; orderItem: TOrd
     }
     getAddress()
   }, [visible])
-
-  const handleUpdateAddress = async (val: any) => {
+  useEffect(() => {
+    if (listAddress.length && orderItem?.address?.id) {
+      const foundIndex = listAddress.findIndex(item => item.id === orderItem?.address.id);
+      if (foundIndex !== -1) {
+        setSelectedIndex(foundIndex);
+      }
+    }
+  }, [listAddress, orderItem]);
+  const handleUpdateAddress = async () => {
     try {
-      setIsSubmit(true)
-      const res = await updateAddressForOrderByID(orderItem.id, val)
-      if (res.status === 200) {
-        onClose()
+      if (orderItem) {
+        setIsSubmit(true)
+        const res = await updateAddressForOrderByID(orderItem.id, listAddress[selectedIndex].id)
+        console.log(res)
+        if (res.status === 200) {
+          onSuccess(listAddress[selectedIndex])
+          onClose()
+          toast.success('Cập nhật địa chỉ thành công')
+        }
       }
     } catch (error) {
       onClose()
     } finally {
+      setConfirm(false)
       setIsSubmit(false)
     }
   }
@@ -82,8 +79,8 @@ export default function ChooseAddress(props: { visible: boolean; orderItem: TOrd
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
-      onClick={onClose}
+      className={cn("fixed inset-0 z-50 flex items-center justify-center bg-black/40", isSubmit && "cursor-wait")}
+      onClick={isSubmit ? undefined : () => onClose()}
     >
       <Card
         className="relative w-full max-w-xl bg-white dark:bg-neutral-950 rounded-xl shadow-lg"
@@ -106,9 +103,9 @@ export default function ChooseAddress(props: { visible: boolean; orderItem: TOrd
         {/* Body */}
         <ul className="pb-6 px-6">
           {loading && <Skeleton className="h-18 w-full" />}
-          {(!loading && listAddress.length !== 0) && listAddress.map((item: TAddress, index) => (
+          {(!loading && listAddress.length !== 0) && listAddress.map((item: AddressItem, index) => (
             <li key={index}>
-              <label onChange={() => handleUpdateAddress(item)}
+              <label onClick={() => setConfirm(true)}
                 className={cn(
                   "flex items-center justify-start gap-3 h-18 w-full px-5 py-3 mt-2 rounded-lg border cursor-pointer relative transition-all",
                   selectedIndex === index ? "border-black" : "border-gray-300"
@@ -136,11 +133,13 @@ export default function ChooseAddress(props: { visible: boolean; orderItem: TOrd
             </li>
           )
           )}
-          <li className="h-14 w-full mt-3 flex justify-center items-center border-gray-600 border rounded-lg font-medium cursor-pointer">
+          <Link href={'/address'} className="h-14 w-full mt-3 flex justify-center items-center border-gray-600 border rounded-lg font-medium cursor-pointer">
             Thêm địa chỉ mới
-          </li>
+          </Link>
         </ul>
       </Card>
+      <ConfirmDialogModule loading={isSubmit} onClose={() => setConfirm(false)} title="Bạn có chắc muốn thay đổi địa chỉ ?" onSubmit={() => { handleUpdateAddress() }} confirm={confirm} />
     </div>
   );
 }
+// props: { loading: boolean, onClose: () => void, title: string, confirm: boolean, onSubmit: () => void
