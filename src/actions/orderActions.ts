@@ -10,7 +10,6 @@ import {
   deleteOrder,
   cancelOrder,
 } from "@/lib/data/order";
-import { TAddress } from "@/types";
 import type { ActionResponse } from "@/lib/types/actions";
 import type {
   OrderResponse,
@@ -45,9 +44,11 @@ export async function getAllOrderUserAction(status: string) {
     };
   }
 }
-export async function updateAddressForOrderByID(orderId: number, addressId: any) {
+export async function updateAddressForOrderByID(orderId: number, addressId: number) {
   try {
-    const orders = await updateOrderAddressApi(orderId, addressId);
+    const orders = await updateOrderAddressApi(orderId, {
+      addressId: addressId
+    });
     return {
       status: 200,
       orders,

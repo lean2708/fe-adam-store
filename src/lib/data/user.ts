@@ -2,7 +2,6 @@ import { ControllerFactory } from "./factory-api-client";
 import type {
   UserResponse,
   UserCreationRequest,
-  UserUpdateRequest,
   PageResponseUserResponse,
   PageResponseRoleResponse
 } from "@/api-client/models";

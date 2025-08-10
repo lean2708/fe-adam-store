@@ -7,41 +7,7 @@ export type TCategory = {
   image: string;
 };
 
-export type TOrder = {
-  OrderItems: TOrderItem[];
-} & {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  status: ORDER_STATUS | string;
-  address: string;
-  totalPrice: string;
-  userId: string;
-};
 
-export type TOrderItem = {
-  id: number;
-  orderId: string;
-  quantity: number;
-  color: string;
-  size: number;
-  productId: string;
-  Product: {
-    id: string;
-    title: string;
-    price: string;
-    description: string;
-    colors: string[];
-    sizes: number[];
-    quantity: number;
-    mainImage: string;
-    images: string[];
-    gender: string;
-    categoryId: string;
-    createdAt: Date;
-    updatedAt: Date;
-  };
-};
 export type TCartItem = {
   id: string;
   createdAt: Date;
@@ -81,26 +47,82 @@ export type TReview = {
   updatedAt?: string;
 };
 
-export type TAddress = {
-  id?: number;
+export interface Province {
+  id: number;
+  name: string;
+}
+
+export interface District {
+  id: number;
+  name: string;
+}
+
+export interface Ward {
+  code: string;
+  name: string;
+}
+
+export interface AddressItem {
+  id: number;
   isDefault: boolean;
-  isVisible?: boolean;
-  status?: string;
-  phone?: string;
+  isVisible: boolean;
+  phone: string;
+  status: string;
   streetDetail: string;
-  ward: {
-    code?: string;
-    name: string;
-  };
-  district: {
-    id?: number;
-    name: string;
-  };
-  province: {
-    id?: number;
-    name: string;
-  };
-};
+  province: Province;
+  district: District;
+  ward: Ward;
+}
+export interface Image {
+  id: number;
+  imageUrl: string;
+}
+
+export interface Color {
+  id: number;
+  name: string;
+}
+
+export interface Size {
+  id: number;
+  name: string;
+}
+
+export interface Product {
+  id: number;
+  name: string;
+}
+
+export interface ProductVariant {
+  id: number;
+  product: Product;
+  color: Color;
+  size: Size;
+}
+
+export interface TOrderItem {
+  id: number;
+  image: Image;
+  productVariant: ProductVariant;
+  quantity: number;
+  unitPrice: number;
+}
+
+export interface TOrder {
+  id: number;
+  customerName: string;
+  discountAmount: number;
+  orderDate: string;
+  orderItems: TOrderItem[];
+  orderStatus: string;
+  totalPrice: number;
+  address: AddressItem;
+}
+
+export interface OrdersResponse {
+  status: number;
+  orders: TOrder[];
+}
 export type TEntityBasic = {
   id?: number;
   name?: string;

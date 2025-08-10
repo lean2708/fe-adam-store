@@ -39,7 +39,7 @@ export async function getAllFilesAction(
  */
 export async function uploadImagesAction(
   files: File[]
-): Promise<ActionResponse<FileResponse[]>> {
+) {
   try {
     const data = await uploadImages(files);
     return {

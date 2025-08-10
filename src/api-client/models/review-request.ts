@@ -43,6 +43,6 @@ export interface ReviewRequest {
      * @type {number}
      * @memberof ReviewRequest
      */
-    'productId': number;
+    'orderItemId': number;
 }
 

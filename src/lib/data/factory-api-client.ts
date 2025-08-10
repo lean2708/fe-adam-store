@@ -18,7 +18,8 @@ import {
   ProvinceControllerApi,
   DistrictControllerApi,
   AddressControllerApi,
-  AuthControllerApi
+  AuthControllerApi,
+  ReviewControllerApi
 } from "@/api-client";
 import { getAuthenticatedAxiosInstance } from "@/lib/auth/axios-config";
 import { AxiosInstance } from "axios";
@@ -84,7 +85,10 @@ export class ControllerFactory {
     const axiosInstance = await this.getAxiosInstance();
     return new OrderControllerApi(undefined, undefined, axiosInstance);
   }
-
+  static async getReviewController(): Promise<ReviewControllerApi> {
+    const axiosInstance = await this.getAxiosInstance();
+    return new ReviewControllerApi(undefined, undefined, axiosInstance);
+  }
   /**
    * Get File Controller
    */

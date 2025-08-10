@@ -1,34 +1,80 @@
 "use server";
-import { fetchProductReviewssApi } from '@/lib/data/product';
 
-/**
- * Fetch all reviews items for a product.
- * ?fetchProductReviewssApi func thuộc về productControllerApi, reviewControllerApi không có hàm này.
- * ?Nên không khởi tạo data/reivew.ts.
- */
-export async function getProductReviewsAction(
-  id: string,
-  page?: number,
-  size?: number,
-  sort?: string[]
+import { createProductReviewsApi, updateProductReviewsApi } from "@/lib/data/review";
+
+
+
+
+export async function createProductReviewsAction(
+    rating: number,
+    comment: string,
+    imageUrls: string[],
+    productId: number,
 ) {
   try {
-    const reviews = await fetchProductReviewssApi(Number(id), page, size, sort);
+    const reviews = await createProductReviewsApi(rating, comment, imageUrls, productId)
+    return {
+      status: true,
+      reviews,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      error,
+    };
+  }
+}
+
+
+
+
+export async function updateProductReviewsAction(id: number,req:{
+    rating: number,
+    comment: string,
+    imageUrls: string[],
+    productId: number,
+}
+) {
+  try {
+    const reviews = await updateProductReviewsApi(id, req);
 
     if (!reviews) {
       return {
-        status: 404,
+        status: true,
         message: 'Reviews not found',
       };
     }
 
     return {
-      status: 200,
+      status: true,
       reviews,
     };
   } catch (error) {
     return {
-      status: 500,
+      status: false,
+      error,
+    };
+  }
+}
+
+export async function getProductReviewsAction(id: number) {
+  try {
+    // const reviews = await fetchProductReviewsApi(id);
+
+    // if (!reviews) {
+    //   return {
+    //     status: true,
+    //     message: 'Reviews not found',
+    //   };
+    // }
+
+    // return {
+    //   status: true,
+    //   reviews,
+    // };
+  } catch (error) {
+    return {
+      status: false,
       error,
     };
   }
