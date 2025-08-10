@@ -1,5 +1,5 @@
-import type { ProductResponse } from "@/api-client/models";
-import { TProduct, TColor, TVariant } from "@/types";
+import type { ProductResponse } from '@/api-client/models';
+import { TProduct, TColor, TVariant } from '@/types';
 
 export function transformProductResponseToTProduct(
   apiProduct: ProductResponse
@@ -44,6 +44,13 @@ export function transformProductResponseToTProduct(
       ? apiProduct.images[0]?.imageUrl ?? ''
       : '';
 
+  let minPrice = 0,
+    maxPrice = 0;
+  if (variants.length > 0) {
+    minPrice = Math.min(...variants.map((v) => v.price ?? 0));
+    maxPrice = Math.max(...variants.map((v) => v.price ?? 0));
+  }
+
   return {
     title: apiProduct.name ?? '',
     mainImage: mainImage,
@@ -53,6 +60,8 @@ export function transformProductResponseToTProduct(
         id: img.id ?? 0,
       })) ?? [],
     id: apiProduct.id ?? 0,
+    minPrice,
+    maxPrice,
     isAvailable: apiProduct.isAvailable ?? false,
     name: apiProduct.name ?? '',
     description: apiProduct.description ?? '',

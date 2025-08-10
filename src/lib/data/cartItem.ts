@@ -1,17 +1,14 @@
-
-import { TCartItem } from "@/types";
-import { ControllerFactory } from "./factory-api-client";
-import { transformCartItemResponseToTCartItemWithProduct } from "./transform/cart";
-import { CartItemRequest, CartItemUpdateRequest } from "@/api-client";
+import { TCartItem } from '@/types';
+import { ControllerFactory } from './factory-api-client';
+import { transformCartItemResponseToTCartItemWithProduct } from './transform/cart';
+import { CartItemRequest, CartItemUpdateRequest } from '@/api-client';
 
 /**
  * Helper to get an instance of CartItemControllerApi with NextAuth using factory.
  */
 async function getCartItemController() {
-    return await ControllerFactory.getCartItemController();
+  return await ControllerFactory.getCartItemController();
 }
-
-
 
 /**
  * Fetch a cart item by its ID.
@@ -30,30 +27,45 @@ async function getCartItemController() {
 /**
  * Add a new cart item.
  */
-export async function createCartItemApi(cartItemRequest: CartItemRequest): Promise<TCartItem | null> {
-    const api = await getCartItemController();
-    const response = await api.create2({ cartItemRequest });
-    const item = response.data.result;
-    if (!item) return null;
-    return transformCartItemResponseToTCartItemWithProduct(item);
+export async function createCartItemApi(
+  cartItemRequest: CartItemRequest,
+  userId: number
+): Promise<TCartItem | null> {
+  const api = await getCartItemController();
+  const response = await api.create2({ cartItemRequest });
+  const item = response.data.result;
+
+  if (!item) return null;
+
+  const tCartItem = await transformCartItemResponseToTCartItemWithProduct(item);
+  tCartItem.userId = userId + '';
+
+  return tCartItem;
 }
 
 /**
  * Update a cart item by its ID.
  */
-export async function updateCartItemApi(id: number, cartItemUpdateRequest: CartItemUpdateRequest): Promise<TCartItem | null> {
-    const api = await getCartItemController();
-    const response = await api.update2({ id, cartItemUpdateRequest });
-    const item = response.data.result;
-    if (!item) return null;
-    return transformCartItemResponseToTCartItemWithProduct(item);
+export async function updateCartItemApi(
+  userId: number,
+  id: number,
+  cartItemUpdateRequest: CartItemUpdateRequest
+): Promise<TCartItem | null> {
+  const api = await getCartItemController();
+  const response = await api.update2({ id, cartItemUpdateRequest });
+  const item = response.data.result;
+  if (!item) return null;
+  const tCartItem = await transformCartItemResponseToTCartItemWithProduct(item);
+  tCartItem.userId = userId + '';
+
+  return tCartItem;
 }
 
 /**
  * Delete a cart item by its ID.
  */
 export async function deleteCartItemApi(id: number): Promise<boolean> {
-    const api = await getCartItemController();
-    const response = await api.delete1({ id });
-    return response.data.code === 0;
+  const api = await getCartItemController();
+  const response = await api.delete1({ id });
+  return response.data.code === 0;
 }

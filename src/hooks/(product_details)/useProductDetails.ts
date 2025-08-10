@@ -1,43 +1,69 @@
 import { useState, useRef } from 'react';
 import { TProduct, TVariant } from '@/types';
 import { toast } from 'sonner';
+import { addToCartAction } from '@/actions/cartActions';
+import { useAuth } from '../useAuth';
+import { useRouter } from 'next/navigation';
 
 export default function useProductDetails(product: TProduct) {
+  const { user, isLogin } = useAuth();
+  const router = useRouter();
+
   const [selectVariant, setSelectVariant] = useState<TVariant | undefined>(
-    product.colors?.[0]?.variants?.[0]
+    undefined
   );
   const [quantity, setQuantity] = useState(1);
 
-  const selectedColor = useRef(product.colors?.[0]?.id);
-  const selectedSize = useRef(product.colors?.[0]?.variants?.[0]?.size?.id);
+  // Không chọn mặc định color và size
+  const selectedColor = useRef<number | undefined>(undefined);
+  const selectedSize = useRef<number | undefined>(undefined);
 
-  // TODO: Implement quantity change logic
+  // Khi chọn màu
   const onChangeColor = (color: number | undefined) => {
     selectedColor.current = color;
-    const colorObj = product.colors?.find((c) => c.id === color);
-    let variant = colorObj?.variants?.find(
-      (v) => v.size?.id === selectedSize.current
-    );
 
-    if (!variant && colorObj?.variants?.length) {
-      variant = colorObj.variants[0];
-      selectedSize.current = variant.size?.id;
+    if (!color) {
+      setSelectVariant(undefined);
+      return;
+    }
+
+    const colorObj = product.colors?.find((c) => c.id === color);
+
+    // Nếu đã chọn size, tìm variant phù hợp
+    let variant: TVariant | undefined = undefined;
+    if (selectedSize.current) {
+      variant = colorObj?.variants?.find(
+        (v) => v.size?.id === selectedSize.current
+      );
     }
 
     setSelectVariant(variant);
   };
 
-  // TODO: Implement size change logic
+  // Khi chọn size
   const onChangeSize = (size: number | undefined) => {
     selectedSize.current = size;
-    setSelectVariant(
-      product.colors
-        ?.find((c) => c.id === selectedColor.current)
-        ?.variants?.find((v) => v.size?.id === size)
+
+    if (!size) {
+      setSelectVariant(undefined);
+      return;
+    }
+
+    const colorObj = product.colors?.find(
+      (c) => c.id === selectedColor.current
     );
+
+    const variant = colorObj?.variants?.find((v) => v.size?.id === size);
+
+    setSelectVariant(variant);
   };
 
   const increaseQuantity = () => {
+    if (!selectVariant || !selectedColor.current || !selectedSize.current) {
+      return toast.warning(
+        'Vui lòng chọn đầy đủ màu sắc và kích thước của sản phẩm trước muốn thêm sản phẩm'
+      );
+    }
     if (quantity >= (selectVariant?.quantity ?? 0)) {
       toast.error('Số lượng vượt quá số hàng có sẵn');
       return;
@@ -50,6 +76,48 @@ export default function useProductDetails(product: TProduct) {
     setQuantity((prev) => prev - 1);
   };
 
+  const handleAddToCart = async () => {
+    if (!user || !isLogin) {
+      router.push('/login');
+      return toast.info('Bạn chưa đăng nhập. Vui lòng đăng nhập để tiếp tục');
+    }
+
+    if (!selectVariant || !selectedColor.current || !selectedSize.current) {
+      return toast.warning(
+        'Vui lòng chọn đầy đủ màu sắc và kích thước của sản phẩm trước khi cho vào giỏ hàng'
+      );
+    }
+
+    const res = await addToCartAction(
+      {
+        productVariantId: selectVariant?.id ?? 0,
+        quantity: quantity,
+      },
+      user?.id || 0
+    );
+
+    console.log('Add to cart response:', res);
+
+    if (res.status === 200) {
+      return toast.success(`${res.message}`);
+    }
+
+    return toast.error(`${res.message}`);
+  };
+
+  const handleBuyNow = () => {
+    if (!user || !isLogin) {
+      router.push('/login');
+      return toast.info('Bạn chưa đăng nhập. Vui lòng đăng nhập để tiếp tục');
+    }
+
+    if (!selectVariant || !selectedColor.current || !selectedSize.current) {
+      return toast.warning(
+        'Vui lòng chọn đầy đủ màu sắc và kích thước của sản phẩm trước khi đặt hàng'
+      );
+    }
+  };
+
   return {
     selectVariant,
     quantity,
@@ -57,6 +125,11 @@ export default function useProductDetails(product: TProduct) {
     onChangeSize,
     increaseQuantity,
     decreaseQuantity,
+    handleAddToCart,
+    handleBuyNow,
+    // Trả về các giá trị đã chọn
+    selectedVariant: selectVariant,
+    selectedQuantity: quantity,
     selectedColor: selectedColor.current,
     selectedSize: selectedSize.current,
   };

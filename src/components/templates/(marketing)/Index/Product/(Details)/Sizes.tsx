@@ -21,12 +21,8 @@ const SIZE_LIST = [
 export default function Sizes({ tColor, onChangeSize }: SizesProps) {
   const t = useTranslations('Marketing.product_details');
 
-  // Tìm variant đầu tiên có size hợp lệ để set mặc định
-  const firstAvailable = tColor.variants?.find((v) =>
-    SIZE_LIST.some((s) => s.name === v.size?.name)
-  );
   const [selectedSize, setSelectedSize] = useState<number | undefined>(
-    firstAvailable?.size?.id ?? undefined
+    undefined
   );
 
   const onSelectSize = (sizeId: number | undefined, disabled: boolean) => {

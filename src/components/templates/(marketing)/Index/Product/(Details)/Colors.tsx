@@ -13,7 +13,9 @@ type ColorsProps = {
 export default function Colors({ tColors, onChangeColor }: ColorsProps) {
   const t = useTranslations('Marketing.product_details');
 
-  const [selectedColor, setSelectedColor] = useState(tColors[0]?.id);
+  const [selectedColor, setSelectedColor] = useState<number | undefined>(
+    undefined
+  );
 
   const onSelectColor = (color: number) => {
     setSelectedColor(color);

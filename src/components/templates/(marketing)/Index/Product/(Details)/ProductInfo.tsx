@@ -20,13 +20,20 @@ export default function ProductInfo({
       </h1>
       <div className='flex gap-2 text-xl'>
         <Star className='size-6 fill-amber-300 text-amber-200' />
-        <span> {product.averageRating}.0</span>
+        <span> {product.averageRating?.toFixed(1)}</span>
         <span className='text-gray-400 ml-4'>
           {t('product_infor.solded')}: {product.soldQuantity || 0}
         </span>
       </div>
       <div className='text-lg md:text-xl lg:text-2xl font-bold text-primary'>
-        {formatCurrency(selectVariant?.price || 0, locale)}
+        {selectVariant
+          ? formatCurrency(selectVariant.price || 0, locale)
+          : product.minPrice === product.maxPrice
+          ? formatCurrency(product.minPrice, locale)
+          : `${formatCurrency(product.minPrice, locale)} - ${formatCurrency(
+              product.maxPrice,
+              locale
+            )}`}
       </div>
     </div>
   );

@@ -17,20 +17,9 @@ export default function Details({ product }: { product: TProduct }) {
     onChangeSize,
     increaseQuantity,
     decreaseQuantity,
+    handleAddToCart,
+    handleBuyNow,
   } = useProductDetails(product);
-
-  const handleAddToCart = () => {
-    console.log('Thêm vào giỏ hàng:', {
-      productId: product.id,
-      variantId: selectVariant,
-      quantity,
-    });
-    // Logic thêm vào giỏ hàng
-  };
-
-  const handleBuyNow = () => {
-    // Logic mua ngay
-  };
 
   return (
     <div className='space-y-6 w-full'>
