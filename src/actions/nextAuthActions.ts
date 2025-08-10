@@ -372,7 +372,7 @@ export async function logoutAction(): Promise<ActionResponse> {
 
     // Clear the httpOnly refresh token cookie
     await deleteCookie('refresh_token');
-
+    
     return {
       success: true,
       message: 'Logged out successfully.'
