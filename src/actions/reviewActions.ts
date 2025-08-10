@@ -1,6 +1,6 @@
 "use server";
 
-import { createProductReviewsApi, updateProductReviewsApi } from "@/lib/data/review";
+import { checkProductReviewsApi, createProductReviewsApi, fetchProductReviewsApi, updateProductReviewsApi } from "@/lib/data/review";
 
 
 
@@ -28,15 +28,13 @@ export async function createProductReviewsAction(
 
 
 
-export async function updateProductReviewsAction(id: number,req:{
-    rating: number,
+export async function updateProductReviewsAction(    rating: number,
     comment: string,
     imageUrls: string[],
     productId: number,
-}
 ) {
   try {
-    const reviews = await updateProductReviewsApi(id, req);
+    const reviews = await updateProductReviewsApi(rating, comment, imageUrls, productId)
 
     if (!reviews) {
       return {
@@ -59,19 +57,33 @@ export async function updateProductReviewsAction(id: number,req:{
 
 export async function getProductReviewsAction(id: number) {
   try {
-    // const reviews = await fetchProductReviewsApi(id);
+    const reviews = await fetchProductReviewsApi(id);
 
-    // if (!reviews) {
-    //   return {
-    //     status: true,
-    //     message: 'Reviews not found',
-    //   };
-    // }
+    if (!reviews) {
+      return {
+        status: true,
+        message: 'Reviews not found',
+      };
+    }
 
-    // return {
-    //   status: true,
-    //   reviews,
-    // };
+    return {
+      status: true,
+      reviews,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      error,
+    };
+  }
+}
+export async function checkReviewAction(id: number) {
+  try {
+    const review = await checkProductReviewsApi(id);
+    return {
+      status: true,
+      review,
+    };
   } catch (error) {
     return {
       status: false,

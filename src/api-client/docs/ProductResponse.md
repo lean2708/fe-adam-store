@@ -12,6 +12,8 @@ Name | Type | Description | Notes
 **averageRating** | **number** |  | [optional] [default to undefined]
 **soldQuantity** | **number** |  | [optional] [default to undefined]
 **totalReviews** | **number** |  | [optional] [default to undefined]
+**minPrice** | **number** |  | [optional] [default to undefined]
+**maxPrice** | **number** |  | [optional] [default to undefined]
 **status** | **string** |  | [optional] [default to undefined]
 **createdAt** | **string** |  | [optional] [default to undefined]
 **images** | [**Array&lt;ImageBasic&gt;**](ImageBasic.md) |  | [optional] [default to undefined]
@@ -30,6 +32,8 @@ const instance: ProductResponse = {
     averageRating,
     soldQuantity,
     totalReviews,
+    minPrice,
+    maxPrice,
     status,
     createdAt,
     images,

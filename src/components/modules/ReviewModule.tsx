@@ -4,37 +4,42 @@ import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { uploadImagesAction } from "@/actions/fileActions";
-import { createProductReviewsAction } from "@/actions/reviewActions";
+import { createProductReviewsAction, getProductReviewsAction, updateProductReviewsAction } from "@/actions/reviewActions";
 import { toast } from 'sonner'
 
 export default function ReviewModule(props: { visible: boolean, orderItem: TOrderItem, onClose: () => void }) {
   const { onClose, orderItem, visible } = props;
   const [rating, setRating] = useState<number>(0);
-  const [listImg, setListImg] = useState<(string)[]>([]);
+  const [listImg, setListImg] = useState<any[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUpdate, setIsUpdate] = useState(false)
   const [comment, setComment] = useState('');
+  const [reviewId, setReviewId]= useState<number>()
   useEffect(() => {
     const getReviewById = async () => {
-      // try {
-      //   if (orderItem?.id) {
-      //     const res = await getProductReviewsAction(orderItem.id);
-      //     if (res.status === 200 && res.review) {
-      //       setComment(res.review.comment);
-      //       setRating(res.review.rating);
-      //       setListImg(res.review.imageUrl);
-      //     }
-      //   }
-      // } catch (error) {
-      //   console.log("Error");
-      // }
+      try {
+        if (orderItem?.id) {
+          const res = await getProductReviewsAction(orderItem.id);
+          if (res.status && res.reviews) {
+            setComment(res.reviews.comment || '');
+            setReviewId(res.reviews.id)
+            setRating(res.reviews.rating || 0);
+            setIsUpdate(true)
+            setListImg(res.reviews.imageUrls || []);
+          }
+        }
+      } catch (error) {
+        console.log("Error");
+      }
     };
-    getReviewById();
-  }, [orderItem?.id]);
+    if (visible) getReviewById();
+  }, [orderItem?.id, visible]);
 
   const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
   if (!visible) return null;
   const CloseMoule = () => {
     setRating(0)
+    setReviewId(undefined)
     setComment('')
     setListImg([])
     onClose()
@@ -53,24 +58,40 @@ export default function ReviewModule(props: { visible: boolean, orderItem: TOrde
           }
         }
         setListImg((prevList) => [...prevList, ...imgRes]);
+        toast.success("Tải hình ảnh thành công");
       }
     } catch (error) {
-
+      toast.error("Có lỗi xảy ra khi tải hình ảnh");
     }
 
   };
 
   const handleSubmit = async () => {
-    try {
-      const res = await createProductReviewsAction(rating, comment, listImg, orderItem.id)
-      console.log(res)
-      if (res.status) {
-        CloseMoule()
-        toast.success("Đánh giá sản phẩm thành công")
+    if (isUpdate && reviewId) {
+      try {
+        console.log(orderItem.id)
+        const res = await updateProductReviewsAction(rating, comment, listImg, reviewId)
+        console.log(res)
+        if (res.status) {
+          CloseMoule()
+          toast.success("Chỉnh sửa đánh giá sản phẩm thành công")
+        }
+      } catch (error: any) {
+        console.log(error)
       }
-    } catch (error: any) {
-      console.log(error)
+    } else {
+      try {
+        const res = await createProductReviewsAction(rating, comment, listImg, orderItem.id)
+        console.log(res)
+        if (res.status) {
+          CloseMoule()
+          toast.success("Đánh giá sản phẩm thành công")
+        }
+      } catch (error: any) {
+        console.log(error)
+      }
     }
+
   };
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={CloseMoule}>
@@ -90,15 +111,15 @@ export default function ReviewModule(props: { visible: boolean, orderItem: TOrde
           <div className="flex mt-5 h-6">
             <p className="h-full items-center">Chất lượng sản phẩm</p>
             <div className="rating ml-3 flex h-full">
-              <input type="radio" onChange={() => setRating(5)} id="star5" name="rating" value="5" />
+              <input type="radio" checked={rating === 5} onChange={() => setRating(5)} id="star5" name="rating" value="5" />
               <label className="ml-3 -mt-3.5" htmlFor="star5"></label>
-              <input type="radio" onChange={() => setRating(4)} id="star4" name="rating" value="4" />
+              <input type="radio" checked={rating === 4} onChange={() => setRating(4)} id="star4" name="rating" value="4" />
               <label className="ml-3 -mt-3.5" htmlFor="star4"></label>
-              <input type="radio" onChange={() => setRating(3)} id="star3" name="rating" value="3" />
+              <input type="radio" checked={rating === 3} onChange={() => setRating(3)} id="star3" name="rating" value="3" />
               <label className="ml-3 -mt-3.5" htmlFor="star3"></label>
-              <input type="radio" onChange={() => setRating(2)} id="star2" name="rating" value="2" />
+              <input type="radio" checked={rating === 2} onChange={() => setRating(2)} id="star2" name="rating" value="2" />
               <label className="ml-3 -mt-3.5" htmlFor="star2"></label>
-              <input type="radio" onChange={() => setRating(1)} id="star1" name="rating" value="1" />
+              <input type="radio" checked={rating === 1} onChange={() => setRating(1)} id="star1" name="rating" value="1" />
               <label className="ml-3 -mt-3.5" htmlFor="star1"></label>
             </div>
           </div>
@@ -145,7 +166,7 @@ export default function ReviewModule(props: { visible: boolean, orderItem: TOrde
         {/* Footer */}
         <CardFooter className="!p-0 w-full flex justify-end !pt-4">
           <button onClick={CloseMoule} className="px-4 py-1.5 border border-black dark:border-white rounded-lg">Hủy bỏ</button>
-          <button onClick={handleSubmit} disabled={!rating || !comment} className={cn("px-4 py-1.5 border border-black bg-black text-white ml-3 rounded-lg", (!rating || !comment) && "cursor-not-allowed")}>Hoàn thành</button>
+          <button onClick={handleSubmit} disabled={!rating || !comment} className={cn("px-4 py-1.5 border border-black bg-black text-white ml-3 rounded-lg", (!rating || !comment) && "cursor-not-allowed")}>{isUpdate ? 'Chỉnh sửa' : 'Hoàn thành'}</button>
         </CardFooter>
       </Card>
     </div>
