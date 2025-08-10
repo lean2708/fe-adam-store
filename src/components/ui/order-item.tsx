@@ -1,14 +1,15 @@
 import { cn, formatCurrency } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ConfirmDialogModule from "../modules/ConfirmDialogModule";
 import { cancelOrderAction } from "@/actions/orderActions";
 import { TOrderItem } from "@/types";
 import { toast } from 'sonner';
 import ReviewModule from "../modules/ReviewModule";
+import { checkReviewAction } from "@/actions/reviewActions";
 type TabStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
 
-export default function OrderItem(props: { onDeleted: (id: number)=>void, id:number, activeStatus: TabStatus, totalPrice?: number, items?: TOrderItem[], openModule: () => void }) {
+export default function OrderItem(props: { onDeleted: (id: number) => void, id: number, activeStatus: TabStatus, totalPrice?: number, items?: TOrderItem[], openModule: () => void }) {
   const btnByStatus: Record<TabStatus, React.ReactNode> = {
     PENDING: <>
       <button className="w-40 px-4 py-2 mr-4 rounded-md border border-[#C5C4C2] text-sm text-[#C5C4C2] bg-[#E5E4E1]">Chờ</button>
@@ -41,7 +42,7 @@ export default function OrderItem(props: { onDeleted: (id: number)=>void, id:num
       if (items[selectedIndex].id) {
         const res = await cancelOrderAction(String(id))
         console.log(res)
-        if(res.status === 200){
+        if (res.status === 200) {
           setIsDeleted(false)
           onDeleted(id)
           toast.success('Hủy đơn hàng thành công')
@@ -54,6 +55,7 @@ export default function OrderItem(props: { onDeleted: (id: number)=>void, id:num
       setLoading(false)
     }
   }
+  console.log(items)
   return (
     <>
 
@@ -76,7 +78,20 @@ export default function OrderItem(props: { onDeleted: (id: number)=>void, id:num
 }
 function ItemProductOrder(props: { item: TOrderItem, active: TabStatus }) {
   const { item, active } = props
-  const [isReview, setIsReview]= useState(false)
+  const [isReview, setIsReview] = useState(false)
+  const [reviewed, setReviewed] = useState(false)
+  useEffect(() => {
+    if (item.id) checkReview()
+  }, [])
+  const checkReview = async () => {
+    try {
+      const res = await checkReviewAction(item.id)
+      if (res.status && res.review)
+        setReviewed(true)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <div className="border-b-1 border-dashed py-2 w-full flex justify-between min-h-25 items-center">
       <div className="flex ">
@@ -91,10 +106,10 @@ function ItemProductOrder(props: { item: TOrderItem, active: TabStatus }) {
       <p className={cn(active === 'DELIVERED' && 'h-25 flex flex-col justify-between items-end')}>
         <span className="font-bold">{formatCurrency(Number(item.unitPrice))}</span>
         {
-          active === 'DELIVERED' && <button onClick={()=>setIsReview(true)} className="px-4 py-2 bg-black rounded-md text-white">Đánh giá</button>
+          active === 'DELIVERED' && <button onClick={() => setIsReview(true)} className="px-4 py-2 bg-black rounded-md text-white">{reviewed ? 'Xem đánh giá' : 'Đánh giá'}</button>
         }
       </p>
-      <ReviewModule visible={isReview} orderItem={item} onClose={()=>setIsReview(false)} />
+      <ReviewModule visible={isReview} orderItem={item} onClose={() => setIsReview(false)} />
     </div>
   )
 }

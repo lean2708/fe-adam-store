@@ -46,6 +46,12 @@ export interface CartItemResponse {
     'quantity'?: number;
     /**
      * 
+     * @type {string}
+     * @memberof CartItemResponse
+     */
+    'createdAt'?: string;
+    /**
+     * 
      * @type {ImageBasic}
      * @memberof CartItemResponse
      */

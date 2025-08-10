@@ -1,6 +1,7 @@
 export * from './address-request';
 export * from './address-response';
 export * from './api-response-address-response';
+export * from './api-response-boolean';
 export * from './api-response-branch-response';
 export * from './api-response-cart-item-response';
 export * from './api-response-category-response';

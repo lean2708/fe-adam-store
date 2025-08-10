@@ -51,7 +51,7 @@ export default function OrderPage() {
             <button
               key={tab.key}
               className={clsx(
-                'whitespace-nowrap mx-4 h-full dark:text-white text-black py-2 text-sm font-medium transition-colors',
+                'outline-none whitespace-nowrap mx-4 h-full dark:text-white text-black py-2 text-sm font-medium transition-colors',
                 activeStatus === tab.key
                 && 'border-b-3 border-black dark:border-white'
               )}

@@ -70,6 +70,18 @@ export interface ProductResponse {
     'totalReviews'?: number;
     /**
      * 
+     * @type {number}
+     * @memberof ProductResponse
+     */
+    'minPrice'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductResponse
+     */
+    'maxPrice'?: number;
+    /**
+     * 
      * @type {string}
      * @memberof ProductResponse
      */
