@@ -82,7 +82,7 @@ function ItemProductOrder(props: { item: TOrderItem, active: TabStatus }) {
   const [reviewed, setReviewed] = useState(false)
   useEffect(() => {
     if (item.id) checkReview()
-  }, [])
+  }, [reviewed])
   const checkReview = async () => {
     try {
       const res = await checkReviewAction(item.id)
@@ -109,7 +109,7 @@ function ItemProductOrder(props: { item: TOrderItem, active: TabStatus }) {
           active === 'DELIVERED' && <button onClick={() => setIsReview(true)} className="px-4 py-2 bg-black rounded-md text-white">{reviewed ? 'Xem đánh giá' : 'Đánh giá'}</button>
         }
       </p>
-      <ReviewModule visible={isReview} orderItem={item} onClose={() => setIsReview(false)} />
+      <ReviewModule returnRivew={()=>{setReviewed(true)}} visible={isReview} orderItem={item} onClose={() => setIsReview(false)} />
     </div>
   )
 }

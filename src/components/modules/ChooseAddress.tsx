@@ -112,7 +112,7 @@ export default function ChooseAddress(props: { visible: boolean; orderItem?: TOr
                   name="address"
                   checked={selectedIndex === index}
                   onChange={() => setSelectedIndex(index)}
-                  className="peer h-4 w-4 scale-100"
+                  className="peer h-4 w-4 scale-100 peer inset-0 cursor-pointer appearance-none rounded-full bg-[length:24px_24px] bg-center"
                 />
 
                 <div className="text-left ml-2">
@@ -138,3 +138,4 @@ export default function ChooseAddress(props: { visible: boolean; orderItem?: TOr
     </div>
   );
 }
+

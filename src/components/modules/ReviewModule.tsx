@@ -6,15 +6,16 @@ import { cn } from "@/lib/utils";
 import { uploadImagesAction } from "@/actions/fileActions";
 import { createProductReviewsAction, getProductReviewsAction, updateProductReviewsAction } from "@/actions/reviewActions";
 import { toast } from 'sonner'
+import { boolean } from "zod";
 
-export default function ReviewModule(props: { visible: boolean, orderItem: TOrderItem, onClose: () => void }) {
-  const { onClose, orderItem, visible } = props;
+export default function ReviewModule(props: { visible: boolean, returnRivew: () => void, orderItem: TOrderItem, onClose: () => void }) {
+  const { onClose, orderItem, visible, returnRivew } = props;
   const [rating, setRating] = useState<number>(0);
   const [listImg, setListImg] = useState<any[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUpdate, setIsUpdate] = useState(false)
   const [comment, setComment] = useState('');
-  const [reviewId, setReviewId]= useState<number>()
+  const [reviewId, setReviewId] = useState<number>()
   useEffect(() => {
     const getReviewById = async () => {
       try {
@@ -50,6 +51,7 @@ export default function ReviewModule(props: { visible: boolean, orderItem: TOrde
     const fileArray = Array.from(files);
     try {
       const res = await uploadImagesAction(fileArray);
+      console.log(res)
       if (res.success && res.data) {
         const imgRes: string[] = [];
         for (const img of res.data) {
@@ -84,6 +86,7 @@ export default function ReviewModule(props: { visible: boolean, orderItem: TOrde
         const res = await createProductReviewsAction(rating, comment, listImg, orderItem.id)
         console.log(res)
         if (res.status) {
+          returnRivew()
           CloseMoule()
           toast.success("Đánh giá sản phẩm thành công")
         }

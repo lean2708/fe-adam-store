@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import '@/app/globals.css'
 import clsx from 'clsx';
 import { getAllOrderUserAction } from '@/actions/orderActions';
 import { Skeleton } from '@/components/ui/skeleton';
