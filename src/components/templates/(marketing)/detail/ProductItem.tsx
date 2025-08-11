@@ -1,12 +1,12 @@
 import Image from "next/image";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import { useState, useMemo } from "react";
 import { ProductResponse } from "@/api-client";
 import { transformProductResponseToTProduct } from "@/lib/data/transform/product";
 import { TProduct } from "@/types";
 
 interface ProductCardIndexProps {
-  product: ProductResponse;
+  product: TProduct;
   badgeText?: string;
   className?: string;
 }
@@ -16,25 +16,15 @@ export default function ProductItme({
   badgeText = "Mới",
   className = "",
 }: ProductCardIndexProps) {
-  // Transform ProductResponse to TProduct for easier rendering
-  const tProduct: TProduct | null = useMemo(() => {
-    if (!product) return null;
-    try {
-      return transformProductResponseToTProduct(product);
-    } catch {
-      return null;
-    }
-  }, [product]);
-
   // Default selected color is the first color's id, or 0
   const [selectedColor, setSelectedColor] = useState(
-    tProduct?.colors?.[0]?.id ?? 0
+    product?.colors?.[0]?.id ?? 0
   );
 
-  if (!tProduct) return null;
+  if (!product) return null;
 
   // Find the selected color object
-  const selectedColorObj = tProduct.colors?.find(
+  const selectedColorObj = product.colors?.find(
     (color) => color.id === selectedColor
   );
 
@@ -44,10 +34,10 @@ export default function ProductItme({
       <div className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden mb-3 relative">
         <Image
           src={
-            tProduct.mainImage ||
+            product.mainImage ||
             "https://images.pexels.com/photos/6069525/pexels-photo-6069525.jpeg?auto=compress&cs=tinysrgb&h=400&w=300"
           }
-          alt={tProduct.title || "Product image"}
+          alt={product.title || "Product image"}
           width={300}
           height={400}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -95,7 +85,7 @@ export default function ProductItme({
 
       {/* Color dots */}
       <div className="flex items-center gap-2 mb-3">
-        {tProduct.colors?.map((color) => (
+        {product.colors?.map((color) => (
           <span
             key={color.id}
             className={`inline-block border border-gray-300 ${
@@ -116,12 +106,12 @@ export default function ProductItme({
 
       {/* Product Title */}
       <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2 uppercase tracking-wide">
-        {tProduct.title}
+        {product.title}
       </h3>
 
       {/* Price */}
       <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-        {tProduct.minPrice?.toLocaleString("vi-VN")} VND
+        {formatCurrency(product.minPrice)} VND
       </p>
     </div>
   );

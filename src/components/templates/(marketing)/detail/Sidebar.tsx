@@ -1,20 +1,34 @@
 "use client";
 
-import { getAllCategoriesAction } from "@/actions/categoryActions";
 import { TCategory } from "@/types";
-import { useQuery } from "@tanstack/react-query";
+import { UseQueryResult } from "@tanstack/react-query";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 
-export default function Sidebar() {
+export default function Sidebar({
+  query,
+}: {
+  query: UseQueryResult<
+    | {
+        status: number;
+        categories: TCategory[];
+        message?: undefined;
+        error?: undefined;
+      }
+    | {
+        status: number;
+        message: string;
+        error: unknown;
+        categories?: undefined;
+      },
+    unknown
+  >;
+}) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
   // Fetch categories
-  const { data, isLoading: categoriesLoading } = useQuery({
-    queryKey: ["categories"],
-    queryFn: () => getAllCategoriesAction(),
-  });
+  const { data, isLoading: categoriesLoading } = query;
 
   // Lấy danh sách id hợp lệ từ categories
   const validCategoryIds = useMemo(() => {

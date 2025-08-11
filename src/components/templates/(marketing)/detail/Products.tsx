@@ -1,23 +1,20 @@
 "use client";
 
-import { getProductByCategoryAction } from "@/actions/categoryActions";
-import { useQuery } from "@tanstack/react-query";
+import { UseQueryResult } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import ProductItme from "./ProductItem";
 import ProductCardSkeleton from "@/components/modules/ProductCardSkeleton";
+import { ApiResponsePageResponseProductResponse } from "@/api-client";
+import { transformProductResponseToTProduct } from "@/lib/data/transform/product";
 
-export default function Products() {
+export default function Products({
+  query,
+}: {
+  query: UseQueryResult<ApiResponsePageResponseProductResponse, unknown>;
+}) {
+  const { data, isLoading, error } = query;
   const searchParams = useSearchParams();
-  const page = Number(searchParams.get("page")) || 1;
-  const size = Number(searchParams.get("size")) || 10;
   const categoryId = searchParams.get("category") || "1";
-  const sort = [`minPrice,${searchParams.get("sort")}`];
-
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["product", { page, size, sort, categoryId }],
-    queryFn: () =>
-      getProductByCategoryAction({ categoryId, page: page - 1, size, sort }),
-  });
 
   if (!categoryId) {
     return <div>Vui lòng chọn danh mục sản phẩm.</div>;
@@ -47,7 +44,10 @@ export default function Products() {
     data.result.items && (
       <div className="grid  md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
         {data.result?.items.map((product) => (
-          <ProductItme product={product} key={product.id} />
+          <ProductItme
+            product={transformProductResponseToTProduct(product)}
+            key={product.id}
+          />
         ))}
       </div>
     )

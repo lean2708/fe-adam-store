@@ -33,7 +33,9 @@ export async function fetchAllCategoriesApi(
 /**
  * Create a new category (admin).
  */
-export async function createCategoryApi(data: any): Promise<TCategory> {
+export async function createCategoryApi(
+  data: CategoryRequest
+): Promise<TCategory> {
   const api = await getCategoryController();
   const response = await api.create8({ categoryRequest: data });
   if (response.data.code !== 200) {
