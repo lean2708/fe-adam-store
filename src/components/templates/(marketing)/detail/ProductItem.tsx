@@ -1,8 +1,6 @@
 import Image from "next/image";
 import { cn, formatCurrency } from "@/lib/utils";
 import { useState, useMemo } from "react";
-import { ProductResponse } from "@/api-client";
-import { transformProductResponseToTProduct } from "@/lib/data/transform/product";
 import { TProduct } from "@/types";
 
 interface ProductCardIndexProps {
@@ -11,7 +9,7 @@ interface ProductCardIndexProps {
   className?: string;
 }
 
-export default function ProductItme({
+export default function ProductItem({
   product,
   badgeText = "Mới",
   className = "",
