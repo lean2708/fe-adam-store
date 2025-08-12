@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getProductReviewsAction } from '@/actions/reviewActions';
 import { TReview } from '@/types';
+import { getProductReviewsAction } from '@/actions/productActions';
 
 /**
  * Custom hook to manage product reviews, pagination, and image modal state.
