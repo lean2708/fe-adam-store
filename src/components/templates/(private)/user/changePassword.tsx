@@ -1,6 +1,8 @@
 import { changePasswordAction } from "@/actions/userActions"
+import { useAuth } from "@/hooks/useAuth"
 import { Eye, EyeOff } from "lucide-react"
-import { useState } from "react"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 import { toast } from 'sonner'
 
 export default function ChangePassword() {
@@ -18,6 +20,13 @@ export default function ChangePassword() {
       confirmPassword: false
     }
   )
+     const { isAuthenticated, isLoading, user } = useAuth();
+    const router = useRouter();
+    useEffect(() => {
+      if (!isLoading && !isAuthenticated && !user) {
+        router.push('/login');
+      }
+    }, [isAuthenticated, user, isLoading, router]);
   const submitChangePassword = async () => {
     if (newPass.newPassword !== newPass.confirmPassword) { toast.warning("Mật khẩu mới và xác nhận mật khẩu không khớp!"); return }
     if (newPass.oldPassword === newPass.newPassword) { toast.warning("Mật khẩu mới và mật khẩu cũ bị trùng!"); return }
