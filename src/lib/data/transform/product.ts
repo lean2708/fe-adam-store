@@ -43,13 +43,6 @@ export function transformProductResponseToTProduct(
     maxPrice = Math.max(...variants.map((v) => v.price ?? 0));
   }
 
-  let minPrice = 0,
-    maxPrice = 0;
-  if (variants.length > 0) {
-    minPrice = Math.min(...variants.map((v) => v.price ?? 0));
-    maxPrice = Math.max(...variants.map((v) => v.price ?? 0));
-  }
-
   return {
     title: apiProduct.name ?? "",
     mainImage,

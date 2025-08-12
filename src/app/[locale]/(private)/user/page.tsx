@@ -1,3 +1,4 @@
+"use client"
 import Address from "@/components/templates/(private)/user/address";
 import ChangePassword from "@/components/templates/(private)/user/changePassword";
 import Infomation from "@/components/templates/(private)/user/infomation";

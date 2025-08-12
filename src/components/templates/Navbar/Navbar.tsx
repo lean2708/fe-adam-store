@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 'use client';
 
 import { useState, useCallback, useMemo } from 'react';
@@ -16,23 +15,6 @@ import NavigationLocaleSwitcherPublic from './components/NavigationLocaleSwitche
 import { useTranslations } from 'next-intl';
 import { useCartStore } from '@/stores/cartStore';
 import { useAuth } from '@/hooks/useAuth';
-=======
-"use client";
-
-import { useState, useCallback, useMemo } from "react";
-import { ShoppingBag, User, Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
-
-// Import modals from modal folder
-import UserModal from "./modal/UserModal";
-import CartModal from "./modal/CartModal";
-import MobileSidebar from "./modal/MobileSidebar";
-import ThemeToggle from "@/components/modules/ThemeToggle";
-import Logo from "@/components/modules/Logo";
-import SearchComponent from "./components/SearchComponent";
-import NavigationLocaleSwitcherPublic from "./components/NavigationLocaleSwitcherPublic";
-import { useTranslations } from "next-intl";
->>>>>>> 738b8eae5e4ab340046eb3dcbf99dc02cecf8805
 
 export default function Navbar() {
   const { user } = useAuth();
@@ -44,34 +26,6 @@ export default function Navbar() {
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
-<<<<<<< HEAD
-=======
-  // Memoized cart data and calculations
-  const cartItems = useMemo(
-    () => [
-      {
-        id: 1,
-        name: "Áo in cotton Care & Share",
-        color: "trắng kem",
-        size: "3XL",
-        price: 700000,
-        quantity: 1,
-        image: "/placeholder.svg?height=80&width=80",
-      },
-      {
-        id: 2,
-        name: "Áo in cotton Care & Share",
-        color: "trắng kem",
-        size: "3XL",
-        price: 700000,
-        quantity: 1,
-        image: "/placeholder.svg?height=80&width=80",
-      },
-    ],
-    []
-  );
-
->>>>>>> 738b8eae5e4ab340046eb3dcbf99dc02cecf8805
   const cartItemCount = useMemo(
     () => cartItems.reduce((total, item) => total + item.quantity, 0),
     [cartItems]
@@ -95,11 +49,7 @@ export default function Navbar() {
     setIsSearchExpanded(expanded);
   }, []);
   return (
-<<<<<<< HEAD
     <header className='border-b adam-store-border adam-store-bg relative h-16 flex items-center'>
-=======
-    <header className="border-b adam-store-border adam-store-bg relative h-16 flex items-center">
->>>>>>> 738b8eae5e4ab340046eb3dcbf99dc02cecf8805
       {/* Hide other content when search is expanded */}
       <>
         {/* Mobile Menu Button */}
@@ -121,7 +71,6 @@ export default function Navbar() {
         {/* Right Side Icons */}
         {/* Search Component */}
         <SearchComponent onSearchExpand={handleSearchExpand} />
-<<<<<<< HEAD
         <div className='absolute right-5 top-0 h-16 flex items-center z-20'>
           <div className='flex items-center space-x-4'>
             {/* User and Cart Icons */}
@@ -140,26 +89,6 @@ export default function Navbar() {
                 className='relative'
               >
                 <ShoppingBag className='h-5 w-5' />
-=======
-        <div className="absolute right-5 top-0 h-16 flex items-center z-20">
-          <div className="flex items-center space-x-4">
-            {/* User and Cart Icons */}
-            <div className="flex items-center space-x-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsUserModalOpen((v) => !v)}
-              >
-                <User className="h-5 w-5" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsCartOpen(!isCartOpen)}
-                className="relative"
-              >
-                <ShoppingBag className="h-5 w-5" />
->>>>>>> 738b8eae5e4ab340046eb3dcbf99dc02cecf8805
                 {cartItemCount > 0 && (
                   <span className='absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center'>
                     {cartItemCount}
@@ -171,15 +100,9 @@ export default function Navbar() {
           </div>
         </div>
       </>
-<<<<<<< HEAD
       <div className='z-1 flex w-full items-center justify-between gap-2 px-2 sm:px-8'>
         <div className='flex flex-1 items-center justify-start'>
           <div className='sm:hidden'>{/* <LinkNav /> */}</div>
-=======
-      <div className="z-1 flex w-full items-center justify-between gap-2 px-2 sm:px-8">
-        <div className="flex flex-1 items-center justify-start">
-          <div className="sm:hidden">{/* <LinkNav /> */}</div>
->>>>>>> 738b8eae5e4ab340046eb3dcbf99dc02cecf8805
           <NavigationLocaleSwitcherPublic />
         </div>
       </div>
