@@ -101,6 +101,7 @@ export interface TOrderItem {
   productVariant: ProductVariant;
   quantity: number;
   unitPrice: number;
+  isReview?: boolean
 }
 
 export interface TOrder {
