@@ -8,7 +8,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from 'sonner'
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
-import { useRouter } from "next/router";
+
+import { useRouter } from "next/navigation";
 
 export default function Infomation() {
   const [infoUser, setInfoUser] = useState<UserResponse>();
@@ -140,7 +141,7 @@ export default function Infomation() {
               type="radio"
               name="gender"
               checked={infoUser.gender === 'MALE'}
-
+              onChange={() => setInfoUser({ ...infoUser, gender: GenderEnum.Male })}
             />
             <label>Nam</label>
           </p>
@@ -149,6 +150,7 @@ export default function Infomation() {
             <input className="mr-1"
               type="radio"
               name="gender"
+        onChange={() => setInfoUser({ ...infoUser, gender: GenderEnum.Female })}
               checked={infoUser.gender === 'FEMALE'}
             />
             <label>Nữ</label>
@@ -157,6 +159,7 @@ export default function Infomation() {
             <input className="mr-1"
               type="radio"
               name="gender"
+              onChange={() => setInfoUser({ ...infoUser, gender: GenderEnum.Other })}
               checked={infoUser.gender === 'OTHER' || infoUser.gender == null}
             />
             <label>Khác</label>

@@ -7,12 +7,12 @@ import {
   fetchWardByDistrictId,
   updateAddressByIdAction,
 } from "@/actions/addressActions";
-import { DistrictResponse, ProvinceResponse, WardResponse } from "@/api-client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import { TDistrict, TProvince, TWard } from "@/types";
 type Props = {
   params: { id: string };
 };
@@ -26,9 +26,9 @@ export default function AddressForm({ params }: Props) {
       router.push("/login");
     }
   }, [isAuthenticated, user, isLoading, router]);
-  const [listWard, setListWard] = useState<WardResponse[]>([]);
-  const [listDistrict, setListDistrict] = useState<DistrictResponse[]>([]);
-  const [listProvince, setListProvince] = useState<ProvinceResponse[]>([]);
+  const [listWard, setListWard] = useState<TWard[]>([]);
+  const [listDistrict, setListDistrict] = useState<TDistrict[]>([]);
+  const [listProvince, setListProvince] = useState<TProvince[]>([]);
   const [selectedProvinceId, setSelectedProvinceId] = useState<number>();
   const [selectedDistrictId, setSelectedDistrictId] = useState<number>();
   const [addressSet, setAddress] = useState({

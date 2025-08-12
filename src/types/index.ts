@@ -50,18 +50,18 @@ export type TReview = {
 };
 
 export interface TProvince {
-  id: number;
-  name: string;
+  id?: number;
+  name?: string;
 }
 
 export interface TDistrict {
-  id: number;
-  name: string;
+  id?: number;
+  name?: string;
 }
 
 export interface TWard {
-  code: string;
-  name: string;
+  code?: string;
+  name?: string;
 }
 
 export interface TAddressItem {
