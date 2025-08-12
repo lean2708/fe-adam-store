@@ -1,4 +1,3 @@
-'use client';
 import '@/app/globals.css'
 import { getAllOrderUserAction } from '@/actions/orderActions';
 import { Skeleton } from '@/components/ui/skeleton';
