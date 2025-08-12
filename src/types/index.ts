@@ -49,62 +49,55 @@ export type TReview = {
   updatedAt?: string;
 };
 
-export interface Province {
+export interface TProvince {
   id: number;
   name: string;
 }
 
-export interface District {
+export interface TDistrict {
   id: number;
   name: string;
 }
 
-export interface Ward {
+export interface TWard {
   code: string;
   name: string;
 }
 
-export interface AddressItem {
+export interface TAddressItem {
   id: number;
   isDefault: boolean;
   isVisible: boolean;
   phone: string;
   status: string;
   streetDetail: string;
-  province: Province;
-  district: District;
-  ward: Ward;
+  province: TProvince;
+  district: TDistrict;
+  ward: TWard;
 }
-export interface Image {
+export interface TImage {
   id: number;
   imageUrl: string;
 }
 
-export interface Color {
+
+
+export interface TSize {
   id: number;
   name: string;
 }
 
-export interface Size {
-  id: number;
-  name: string;
-}
-
-export interface Product {
-  id: number;
-  name: string;
-}
 
 export interface ProductVariant {
   id: number;
-  product: Product;
-  color: Color;
-  size: Size;
+  product: TProduct;
+  color: TColor;
+  size: TSize;
 }
 
 export interface TOrderItem {
   id: number;
-  image: Image;
+  image: TImage;
   productVariant: ProductVariant;
   quantity: number;
   unitPrice: number;
@@ -118,13 +111,9 @@ export interface TOrder {
   orderItems: TOrderItem[];
   orderStatus: string;
   totalPrice: number;
-  address: AddressItem;
+  address: TAddressItem;
 }
 
-export interface OrdersResponse {
-  status: number;
-  orders: TOrder[];
-}
 export type TEntityBasic = {
   id?: number;
   name?: string;

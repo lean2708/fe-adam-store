@@ -1,4 +1,3 @@
-'use client'
 import Address from "@/components/templates/(private)/user/address";
 import ChangePassword from "@/components/templates/(private)/user/changePassword";
 import Infomation from "@/components/templates/(private)/user/infomation";
@@ -25,11 +24,9 @@ export default function UserPage() {
           <h3 className="w-full text-center font-bold text-3xl"> {tabList.find(tab => tab.key === activeStatus)?.label}</h3>
           {
             activeStatus === 'Info' && <Infomation />
-          }
-          {
+          }{
             activeStatus === 'Change' && <ChangePassword />
-          }
-          {
+          }{
             activeStatus === 'Address' && <Address />
           }
         </div>

@@ -5,17 +5,17 @@ import { Skeleton } from "../ui/skeleton";
 import { cn } from "@/lib/utils";
 import { updateAddressForOrderByID } from "@/actions/orderActions";
 import { getAllAddressUser } from "@/actions/addressActions";
-import { AddressItem, TOrder } from "@/types";
+import { TAddressItem, TOrder } from "@/types";
 import ConfirmDialogModule from "./ConfirmDialogModule";
 import { toast } from 'sonner'
 
-export default function ChooseAddress(props: { visible: boolean; orderItem?: TOrder, onSuccess: (id: AddressItem) => void, onClose: () => void }) {
+export default function ChooseAddress(props: { visible: boolean; orderItem?: TOrder, onSuccess: (id: TAddressItem) => void, onClose: () => void }) {
   const { visible, onSuccess, onClose, orderItem } = props;
   const [loading, setLoading] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  const [listAddress, setListAddress] = useState<AddressItem[]>([]);
+  const [listAddress, setListAddress] = useState<TAddressItem[]>([]);
 
   useEffect(() => {
     async function getAddress() {
@@ -23,7 +23,7 @@ export default function ChooseAddress(props: { visible: boolean; orderItem?: TOr
         setLoading(true)
         const res = await getAllAddressUser()
         if (res.status === 200 && res.address?.items) {
-          setListAddress(res.address.items as AddressItem[])
+          setListAddress(res.address.items as TAddressItem[])
         }
       } catch (error) {
         console.error("Failed to fetch address:", error);
@@ -95,11 +95,9 @@ export default function ChooseAddress(props: { visible: boolean; orderItem?: TOr
             <CircleX size={30} />
           </button>
         </div>
-
-        {/* Body */}
         <ul className="pb-6 px-6">
           {loading && <Skeleton className="h-18 w-full" />}
-          {(!loading && listAddress.length !== 0) && listAddress.map((item: AddressItem, index) => (
+          {(!loading && listAddress.length !== 0) && listAddress.map((item: TAddressItem, index) => (
             <li key={index}>
               <label onClick={() => setConfirm(true)}
                 className={cn(

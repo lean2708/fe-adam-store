@@ -1,5 +1,3 @@
-'use client';
-
 import AddressForm from "@/components/templates/(private)/address/AddressForm";
 
 type Props = {

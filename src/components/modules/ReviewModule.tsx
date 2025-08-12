@@ -6,27 +6,37 @@ import { cn } from "@/lib/utils";
 import { uploadImagesAction } from "@/actions/fileActions";
 import { createProductReviewsAction, getProductReviewsAction, updateProductReviewsAction } from "@/actions/reviewActions";
 import { toast } from 'sonner'
-import { boolean } from "zod";
 
 export default function ReviewModule(props: { visible: boolean, returnRivew: () => void, orderItem: TOrderItem, onClose: () => void }) {
   const { onClose, orderItem, visible, returnRivew } = props;
-  const [rating, setRating] = useState<number>(0);
-  const [listImg, setListImg] = useState<any[]>([]);
+  const [state, setState] = useState<{
+    rating: number,
+    listImg: string[],
+    isUpdate: boolean,
+    comment: string,
+    reviewId: number | undefined
+  }>({
+    rating: 0,
+    listImg: [],
+    isUpdate: false,
+    comment: '',
+    reviewId: undefined
+  })
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isUpdate, setIsUpdate] = useState(false)
-  const [comment, setComment] = useState('');
-  const [reviewId, setReviewId] = useState<number>()
   useEffect(() => {
     const getReviewById = async () => {
       try {
         if (orderItem?.id) {
           const res = await getProductReviewsAction(orderItem.id);
           if (res.status && res.reviews) {
-            setComment(res.reviews.comment || '');
-            setReviewId(res.reviews.id)
-            setRating(res.reviews.rating || 0);
-            setIsUpdate(true)
-            setListImg(res.reviews.imageUrls || []);
+            setState(ps=>({
+              ...ps,
+              comment: res.reviews.comment || '',
+              reviewId: res.reviews.id || 0,
+              rating: res.reviews.rating || 0,
+              isUpdate: true,
+              listImg: res.reviews.imageUrls || []
+            }))
           }
         }
       } catch (error) {
@@ -39,10 +49,14 @@ export default function ReviewModule(props: { visible: boolean, returnRivew: () 
   const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
   if (!visible) return null;
   const CloseMoule = () => {
-    setRating(0)
-    setReviewId(undefined)
-    setComment('')
-    setListImg([])
+    setState(ps=>({
+      ...ps,
+      rating: 0,
+      reviewId: undefined,
+      comment: '',
+      listImg: []
+    }))
+
     onClose()
   }
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +73,7 @@ export default function ReviewModule(props: { visible: boolean, returnRivew: () 
             imgRes.push(img.imageUrl);
           }
         }
-        setListImg((prevList) => [...prevList, ...imgRes]);
+        setState(ps=>({...ps, listImg: [...state.listImg, ...imgRes]}))
         toast.success("Tải hình ảnh thành công");
       }
     } catch (error) {
@@ -69,11 +83,9 @@ export default function ReviewModule(props: { visible: boolean, returnRivew: () 
   };
 
   const handleSubmit = async () => {
-    if (isUpdate && reviewId) {
+    if (state.isUpdate && state.reviewId) {
       try {
-        console.log(orderItem.id)
-        const res = await updateProductReviewsAction(rating, comment, listImg, reviewId)
-        console.log(res)
+        const res = await updateProductReviewsAction(state.rating, state.comment, state.listImg, state.reviewId)
         if (res.status) {
           CloseMoule()
           toast.success("Chỉnh sửa đánh giá sản phẩm thành công")
@@ -83,8 +95,7 @@ export default function ReviewModule(props: { visible: boolean, returnRivew: () 
       }
     } else {
       try {
-        const res = await createProductReviewsAction(rating, comment, listImg, orderItem.id)
-        console.log(res)
+        const res = await createProductReviewsAction(state.rating, state.comment, state.listImg, orderItem.id)
         if (res.status) {
           returnRivew()
           CloseMoule()
@@ -114,15 +125,15 @@ export default function ReviewModule(props: { visible: boolean, returnRivew: () 
           <div className="flex mt-5 h-6">
             <p className="h-full items-center">Chất lượng sản phẩm</p>
             <div className="rating ml-3 flex h-full">
-              <input type="radio" checked={rating === 5} onChange={() => setRating(5)} id="star5" name="rating" value="5" />
+              <input type="radio" checked={state.rating === 5} onChange={() => setState(ps=>({...ps, rating: 5}))} id="star5" name="rating" value="5" />
               <label className="ml-3 -mt-3.5" htmlFor="star5"></label>
-              <input type="radio" checked={rating === 4} onChange={() => setRating(4)} id="star4" name="rating" value="4" />
+              <input type="radio" checked={state.rating === 4} onChange={() => setState(ps=>({...ps, rating: 4}))} id="star4" name="rating" value="4" />
               <label className="ml-3 -mt-3.5" htmlFor="star4"></label>
-              <input type="radio" checked={rating === 3} onChange={() => setRating(3)} id="star3" name="rating" value="3" />
+              <input type="radio" checked={state.rating === 3} onChange={() => setState(ps=>({...ps, rating: 3}))} id="star3" name="rating" value="3" />
               <label className="ml-3 -mt-3.5" htmlFor="star3"></label>
-              <input type="radio" checked={rating === 2} onChange={() => setRating(2)} id="star2" name="rating" value="2" />
+              <input type="radio" checked={state.rating === 2} onChange={() => setState(ps=>({...ps, rating: 2}))} id="star2" name="rating" value="2" />
               <label className="ml-3 -mt-3.5" htmlFor="star2"></label>
-              <input type="radio" checked={rating === 1} onChange={() => setRating(1)} id="star1" name="rating" value="1" />
+              <input type="radio" checked={state.rating === 1} onChange={() => setState(ps=>({...ps, rating: 1}))} id="star1" name="rating" value="1" />
               <label className="ml-3 -mt-3.5" htmlFor="star1"></label>
             </div>
           </div>
@@ -150,11 +161,11 @@ export default function ReviewModule(props: { visible: boolean, returnRivew: () 
           </div>
 
           {/* Textarea */}
-          <textarea value={comment} onChange={(e) => setComment(e.target.value)} className="p-2 border border-gray-300 mt-3 rounded-lg w-full" style={{ minHeight: '130px' }} placeholder="Hãy chia sẻ trải nghiệm của bạn với những người mua khác nhé." />
+          <textarea value={state.comment} onChange={(e) => setState(ps=>({...ps, comment:(e.target.value)}))} className="p-2 border border-gray-300 mt-3 rounded-lg w-full" style={{ minHeight: '130px' }} placeholder="Hãy chia sẻ trải nghiệm của bạn với những người mua khác nhé." />
 
           {/* Image previews */}
           <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3\5 md:grid-cols-6 lg:grid-cols-7">
-            {listImg.map((img, index) => (
+            {state.listImg.map((img, index) => (
               <div key={index} className="w-full aspect-square overflow-hidden rounded-lg shadow">
                 <img
                   src={img}
@@ -169,7 +180,7 @@ export default function ReviewModule(props: { visible: boolean, returnRivew: () 
         {/* Footer */}
         <CardFooter className="!p-0 w-full flex justify-end !pt-4">
           <button onClick={CloseMoule} className="px-4 py-1.5 border border-black dark:border-white rounded-lg">Hủy bỏ</button>
-          <button onClick={handleSubmit} disabled={!rating || !comment} className={cn("px-4 py-1.5 border border-black bg-black text-white ml-3 rounded-lg", (!rating || !comment) && "cursor-not-allowed")}>{isUpdate ? 'Chỉnh sửa' : 'Hoàn thành'}</button>
+          <button onClick={handleSubmit} disabled={!state.rating || !state.comment} className={cn("px-4 py-1.5 border border-black bg-black text-white ml-3 rounded-lg", (!state.rating || !state.comment) && "cursor-not-allowed")}>{state.isUpdate ? 'Chỉnh sửa' : 'Hoàn thành'}</button>
         </CardFooter>
       </Card>
     </div>
