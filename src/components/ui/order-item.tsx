@@ -33,13 +33,12 @@ export default function OrderItem(props: { onDeleted: (id: number) => void, id: 
   const { onDeleted, id, items, activeStatus, openModule, totalPrice } = props
   const [dropList, setDropList] = useState(false)
   const [isDeleted, setIsDeleted] = useState(false)
-  const [selectedIndex, setSelectedIndex] = useState(0)
   const [loading, setLoading] = useState(false)
   if (!items) return null;
   const CloseOrder = async () => {
     try {
       setLoading(true)
-      if (items[selectedIndex].id) {
+      if (id) {
         const res = await cancelOrderAction(String(id))
         console.log(res)
         if (res.status === 200) {
@@ -48,19 +47,14 @@ export default function OrderItem(props: { onDeleted: (id: number) => void, id: 
           toast.success('Hủy đơn hàng thành công')
         }
       }
-
-    } catch (error) {
-
     } finally {
       setLoading(false)
     }
   }
-  console.log(items)
   return (
     <>
-
-      {!dropList && <ItemProductOrder item={items[0]} active={activeStatus} />}
-      {dropList && items.map((item: TOrderItem) => <ItemProductOrder item={item} active={activeStatus} />)}
+     <ItemProductOrder item={items[0]} active={activeStatus} />
+      {dropList && items.slice(1).map((item: TOrderItem) => <ItemProductOrder key={item.id} item={item} active={activeStatus} />)}
       {
         !dropList && items.length > 1 && <button onClick={() => setDropList(true)} className="outline-none w-full flex justify-center py-2 border-b-1 border-dashed">
           <p>Xem thêm</p>
@@ -76,13 +70,16 @@ export default function OrderItem(props: { onDeleted: (id: number) => void, id: 
 
   )
 }
+
+
+
 function ItemProductOrder(props: { item: TOrderItem, active: TabStatus }) {
   const { item, active } = props
   const [isReview, setIsReview] = useState(false)
   const [reviewed, setReviewed] = useState(false)
   useEffect(() => {
     if (item.id) checkReview()
-  }, [])
+  }, [reviewed])
   const checkReview = async () => {
     try {
       const res = await checkReviewAction(item.id)
@@ -109,7 +106,7 @@ function ItemProductOrder(props: { item: TOrderItem, active: TabStatus }) {
           active === 'DELIVERED' && <button onClick={() => setIsReview(true)} className="px-4 py-2 bg-black rounded-md text-white">{reviewed ? 'Xem đánh giá' : 'Đánh giá'}</button>
         }
       </p>
-      <ReviewModule visible={isReview} orderItem={item} onClose={() => setIsReview(false)} />
+      <ReviewModule returnRivew={() => { setReviewed(true) }} visible={isReview} orderItem={item} onClose={() => setIsReview(false)} />
     </div>
   )
 }

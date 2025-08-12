@@ -273,9 +273,17 @@ export default function AddressForm({ params }: Props) {
         <div className="w-full flex mt-5 h-10 items-center">
           <span className="!w-50">Đặt làm mặc định:</span>
 
-          <label className="switch text-start">
-            <input checked={addressSet.isDefault} type="checkbox" onChange={(e) => setAddress({ ...addressSet, isDefault: e.target.checked })} />
-            <span className="slider"></span>
+          <label className="relative inline-block w-[50px] h-[28px]">
+            <input
+              type="checkbox"
+              checked={addressSet.isDefault}
+              onChange={(e) =>
+                setAddress({ ...addressSet, isDefault: e.target.checked })
+              }
+              className="peer sr-only"
+            />
+            <span className="absolute inset-0 bg-gray-300 rounded-full transition-colors peer-checked:bg-green-500"></span>
+            <span className="absolute left-[4px] bottom-[4px] h-[20px] w-[20px] bg-white rounded-full transition-transform peer-checked:translate-x-[22px]"></span>
           </label>
         </div>
         <div className="w-full text-center pt-4">
