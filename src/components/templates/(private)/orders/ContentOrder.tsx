@@ -78,29 +78,20 @@ export function ContentOrder() {
     }
   };
   const checkAllProductReview = async () => {
-  try {
-    const updatedOrders = await Promise.all(
-      state.listOrders.map(async (order) => {
-        const updatedItems = await Promise.all(
-          order.orderItems.map(async (item) => {
-            const isReview = await checkReview(item.id);
-            return { ...item, isReview };
-          })
-        );
-        return { ...order, orderItems: updatedItems };
-      })
-    );
-
-    setState((prev) => ({
-      ...prev,
-      listOrders: updatedOrders,
-      isLoading: false,
+    const arrayMap: TOrder[] = state.listOrders;
+    console.log(arrayMap);
+    for (let i = 0; i < arrayMap.length; i++) {
+      for (let y = 0; y < arrayMap[i].orderItems.length; y++) {
+        const res = await checkReview(arrayMap[i].orderItems[y].id);
+        arrayMap[i].orderItems[y].isReview = res;
+      }
+    }
+    setState((prevState) => ({
+      ...prevState,
+      listOrders: arrayMap,
+      isLoading: false
     }));
-  } catch (error) {
-    console.error("Failed to check product reviews:", error);
-    setState((prev) => ({ ...prev, isLoading: false }));
-  }
-};
+  };
   const checkReview = async (id: number) => {
     try {
       const res = await checkReviewAction(id);
