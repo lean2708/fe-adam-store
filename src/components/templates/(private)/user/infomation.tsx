@@ -7,11 +7,20 @@ import { UserUpdateRequestGenderEnum as GenderEnum } from '@/api-client'
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from 'sonner'
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/router";
 
 export default function Infomation() {
   const [infoUser, setInfoUser] = useState<UserResponse>();
   const [loading, setLoading] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+     const { isAuthenticated, isLoading, user } = useAuth();
+    const router = useRouter();
+    useEffect(() => {
+      if (!isLoading && !isAuthenticated && !user) {
+        router.push('/login');
+      }
+    }, [isAuthenticated, user, isLoading, router]);
   useEffect(() => {
     getUser();
   }, []);
