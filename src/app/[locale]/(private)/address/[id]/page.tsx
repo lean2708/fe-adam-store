@@ -6,10 +6,10 @@ type Props = {
 };
 
 export default function AddressUpdatePage({ params }: Props) {
-  
+  console.log(params)
   return (
     <main className="max-w-3xl mx-auto p-4 pt-5">
-      <AddressForm params={params} />
+      <AddressForm />
     </main>
   );
 }

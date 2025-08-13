@@ -1,7 +1,7 @@
 import { changePasswordAction } from "@/actions/userActions"
 import { useAuth } from "@/hooks/useAuth"
 import { Eye, EyeOff } from "lucide-react"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react"
 import { toast } from 'sonner'
 

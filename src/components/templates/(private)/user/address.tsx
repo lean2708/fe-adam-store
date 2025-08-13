@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/useAuth";
 import { SquarePen, Trash } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 export default function Address() {
@@ -119,7 +119,7 @@ export default function Address() {
                 <p className="pt-2">Số điện thoại: {address.phone}</p>
               </div>
               <div className="flex">
-                <Link className="mr-2 p-2" href={`/address/${address.id}`}>
+                <Link className="mr-2 p-2" href={`/address?idAddress=${address.id}`}>
                   <SquarePen />
                 </Link>
                 <button
