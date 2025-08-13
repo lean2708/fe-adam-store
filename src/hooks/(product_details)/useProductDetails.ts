@@ -96,7 +96,7 @@ export default function useProductDetails(product: TProduct) {
       user?.id || 0
     );
 
-    console.log('Add to cart response:', res);
+    // console.log('Add to cart response:', res);
 
     if (res.status === 200) {
       return toast.success(`${res.message}`);
@@ -105,7 +105,7 @@ export default function useProductDetails(product: TProduct) {
     return toast.error(`${res.message}`);
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
     if (!user || !isLogin) {
       router.push('/login');
       return toast.info('Bạn chưa đăng nhập. Vui lòng đăng nhập để tiếp tục');

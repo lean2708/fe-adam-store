@@ -1,89 +1,43 @@
 'use client';
 
+import { useCartStore } from '@/stores/cartStore';
 import { ProductItem } from './ProductItem';
-
-const products = [
-  {
-    name: 'Áo in cotton Care & Share',
-    color: 'Trắng',
-    size: 'M',
-    quantity: 2,
-    price: '1,400,000 VND',
-    image: '/imgs/demo-img.jpg',
-  },
-  {
-    name: 'Áo khoác gió chống nước UrbanShield',
-    color: 'Xanh',
-    size: 'M',
-    quantity: 2,
-    price: '1,400,000 VND',
-    image: '/imgs/demo-img.jpg',
-  },
-  {
-    name: 'Áo polo thể thao CoolTech',
-    color: 'Xám',
-    size: 'M',
-    quantity: 2,
-    price: '1,400,000 VND',
-    image: '/imgs/demo-img.jpg',
-  },
-  {
-    name: 'Quần bo Slim Fit Classic',
-    color: 'Trắng',
-    size: 'M',
-    quantity: 2,
-    price: '1,400,000 VND',
-    image: '/imgs/demo-img.jpg',
-  },
-  {
-    name: 'Quần bo Slim Fit Classic',
-    color: 'Trắng',
-    size: 'M',
-    quantity: 2,
-    price: '1,400,000 VND',
-    image: '/imgs/demo-img.jpg',
-  },
-  {
-    name: 'Quần bo Slim Fit Classic',
-    color: 'Trắng',
-    size: 'M',
-    quantity: 2,
-    price: '1,400,000 VND',
-    image: '/imgs/demo-img.jpg',
-  },
-  {
-    name: 'Quần bo Slim Fit Classic',
-    color: 'Trắng',
-    size: 'M',
-    quantity: 2,
-    price: '1,400,000 VND',
-    image: '/imgs/demo-img.jpg',
-  },
-  {
-    name: 'Quần bo Slim Fit Classic',
-    color: 'Trắng',
-    size: 'M',
-    quantity: 2,
-    price: '1,400,000 VND',
-    image: '/imgs/demo-img.jpg',
-  },
-  {
-    name: 'Quần bo Slim Fit Classic',
-    color: 'Trắng',
-    size: 'M',
-    quantity: 2,
-    price: '1,400,000 VND',
-    image: '/imgs/demo-img.jpg',
-  },
-];
+import { useCartItem } from '@/hooks/(cart)/useCartItem';
+import { useEffect } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
 
 export function ProductList() {
+  const { isAuthenticated, isLoading, user } = useAuth();
+  const router = useRouter();
+
+  const fetchCart = useCartStore((s) => s.fetchCart);
+  const status = useCartStore((s) => s.status);
+
+  const cartItems = useCartStore((s) => s.cartItems);
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated && !user) {
+      router.push('/login');
+    }
+  }, [isAuthenticated, user, isLoading, router]);
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      if (status === 'idle' && user?.id) {
+        await fetchCart(Number(user?.id));
+      }
+    };
+
+    fetchCartItems();
+  }, [user?.id, status, fetchCart]);
+
   return (
     <div>
       <h3 className='text-2xl font-bold text-primary mb-6'>Sản phẩm</h3>
       <div className='space-y-6 overflow-y-auto h-screen'>
-        {products.map((product, index) => (
-          <ProductItem key={index} {...product} />
+        {cartItems.map((product, index) => (
+          <ProductItem key={index} product={product} />
         ))}
       </div>
     </div>

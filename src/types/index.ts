@@ -7,7 +7,6 @@ export type TCategory = {
   image: string;
 };
 
-
 export type TCartItem = {
   id: string;
   createdAt: Date | string;
@@ -50,30 +49,30 @@ export type TReview = {
 };
 
 export interface Province {
-  id: number;
-  name: string;
+  id?: number;
+  name?: string;
 }
 
 export interface District {
-  id: number;
-  name: string;
+  id?: number;
+  name?: string;
 }
 
 export interface Ward {
-  code: string;
-  name: string;
+  code?: string;
+  name?: string;
 }
 
 export interface AddressItem {
-  id: number;
-  isDefault: boolean;
-  isVisible: boolean;
-  phone: string;
-  status: string;
-  streetDetail: string;
-  province: Province;
-  district: District;
-  ward: Ward;
+  id?: number;
+  isDefault?: boolean;
+  isVisible?: boolean;
+  phone?: string;
+  status?: string;
+  streetDetail?: string;
+  province?: Province;
+  district?: District;
+  ward?: Ward;
 }
 export interface Image {
   id: number;

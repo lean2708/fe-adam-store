@@ -1,14 +1,13 @@
+import { getAllAddressUser } from '@/actions/addressActions';
 import { DeliveryInfo } from '@/components/templates/(marketing)/Index/Order/DeliveryInfo';
 import { PaymentBar } from '@/components/templates/(marketing)/Index/Order/PaymentBar';
 import { PaymentSection } from '@/components/templates/(marketing)/Index/Order/PaymentSection';
 import { PaymentSummary } from '@/components/templates/(marketing)/Index/Order/PaymentSummary';
 import { ProductList } from '@/components/templates/(marketing)/Index/Order/ProductList';
 import { Separator } from '@/components/ui/separator';
-import React from 'react';
+import { AddressItem } from '@/types';
 
-type Props = {};
-
-function OrderPage({}: Props) {
+function OrderPage() {
   return (
     <div className='adam-store-bg'>
       {/* Main Content */}

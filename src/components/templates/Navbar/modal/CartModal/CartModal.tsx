@@ -7,7 +7,6 @@ import { manrope } from '@/config/fonts';
 import { useCartStore } from '@/stores/cartStore';
 import { useEffect, useState } from 'react';
 import CartItemModal from './CartItemModal';
-import { CartItemModalSkeleton } from '@/components/ui/skeleton';
 import EmptyCart from '@/components/templates/(marketing)/Index/Cart/EmptyCart';
 import { useAuth } from '@/hooks/useAuth';
 import CartModalUnauthenticated from './CartModalUnauthenticated';
@@ -117,7 +116,10 @@ export default function CartModal({
               <Button
                 variant={'default'}
                 className='w-full py-3 rounded-md font-medium'
-                onClick={onClose}
+                onClick={() => {
+                  router.push('/order');
+                  onClose();
+                }}
               >
                 {t('cart.buyNow')}
               </Button>

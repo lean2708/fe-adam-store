@@ -47,7 +47,7 @@ export function CartItemsList() {
     fetchCartItems();
   }, [user?.id, status, fetchCart]);
 
-  // console.log('Cart items:', cartItems);
+  console.log('Cart items:', cartItems);
 
   if (status === 'loading' || status === 'idle') {
     return (
