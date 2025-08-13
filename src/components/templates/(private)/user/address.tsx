@@ -119,7 +119,7 @@ export default function Address() {
                 <p className="pt-2">Số điện thoại: {address.phone}</p>
               </div>
               <div className="flex">
-                <Link className="mr-2 p-2" href={`/address/${address.id}`}>
+                <Link className="mr-2 p-2" href={`/address?idAddress=${address.id}`}>
                   <SquarePen />
                 </Link>
                 <button

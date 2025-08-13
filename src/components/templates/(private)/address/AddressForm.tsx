@@ -1,4 +1,5 @@
 "use client";
+
 import {
   createAddressByIdAction,
   fetchAddressById,
@@ -9,18 +10,17 @@ import {
 } from "@/actions/addressActions";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { TDistrict, TProvince, TWard } from "@/types";
-type Props = {
-  params: { id: string };
-};
 
-export default function AddressForm({ params }: Props) {
-  const { id } = params;
-  const { isAuthenticated, isLoading, user } = useAuth();
+
+export default function AddressForm() {
   const router = useRouter();
+ const searchParams = useSearchParams();
+   const id = searchParams.get('idAddress');
+  const { isAuthenticated, isLoading, user } = useAuth();
   useEffect(() => {
     if (!isLoading && !isAuthenticated && !user) {
       router.push("/login");
@@ -41,6 +41,7 @@ export default function AddressForm({ params }: Props) {
   });
   useEffect(() => {
     getListProvince();
+    console.log(id);
     if (id) {
       getAddress();
     }
@@ -95,6 +96,7 @@ export default function AddressForm({ params }: Props) {
     const res = await fetchAddressById(Number(id));
     if (res.status === 200 && res.address) {
       const address = res.address;
+      console.log(address);
       setAddress({
         isDefault: address.isDefault || false,
         phone: address.phone || "",
@@ -131,13 +133,13 @@ export default function AddressForm({ params }: Props) {
         const res = await updateAddressByIdAction(Number(id), addressSet);
         if (res.status === 200 && res.newAddress) {
           toast.success("Sửa địa chỉ thành công");
-          router.push("/user");
+          router.push("/user?tab=Address");
         } else toast.error("Lỗi khi sửa địa chỉ !");
       } else {
         const res = await createAddressByIdAction(addressSet);
         if (res.status === 200 && res.newAddress) {
           toast.success("Thêm địa chỉ thành công");
-          router.push("/user");
+          router.push("/user?tab=Address");
         } else toast.error("Lỗi khi thêm địa chỉ !");
       }
     } catch (error) {

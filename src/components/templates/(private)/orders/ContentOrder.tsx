@@ -89,7 +89,7 @@ export function ContentOrder() {
     setState((prevState) => ({
       ...prevState,
       listOrders: arrayMap,
-      isLoading: false
+      isLoading: false,
     }));
   };
   const checkReview = async (id: number) => {
@@ -103,7 +103,7 @@ export function ContentOrder() {
       console.log(error);
     }
   };
-  
+
   const setNewListOrderAfterReview = (idProduct: number, idOrder: number) => {
     const arrayMap: TOrder[] = state.listOrders;
     arrayMap[idOrder].orderItems[idProduct].isReview = true;
@@ -139,25 +139,38 @@ export function ContentOrder() {
           ))}
         </div>
         <div className="px-8 py-6">
-          <div className="rounded-xl px-5 bg-gray-100">
-            <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase">
+          <div className="rounded-xl px-5">
+            {/* <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase">
               {tabList.find((tab) => tab.key === state.activeStatus)?.label}
-            </h3>
+            </h3> */}
             <div>
               {state.isLoading && (
-                <div className="py-3 border-b-2 flex w-full justify-between h-24 items-center">
-                  <Skeleton className="h-16 w-full" />
+                <div>
+                  <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase">
+                    {
+                      tabList.find((tab) => tab.key === state.activeStatus)
+                        ?.label
+                    }
+                  </h3>
+                  <div className="py-3 border-b-2 flex w-full justify-between h-24 items-center">
+                    <Skeleton className="h-16 w-full" />
+                  </div>
                 </div>
               )}
               {!state.isLoading &&
                 state.listOrders.length > 0 &&
                 state.listOrders.map((item: TOrder, index: number) => {
-                  const isLast = index === state.listOrders.length - 1;
                   return (
                     <div
                       key={item.id}
-                      className={cn("", !isLast && "border-b-1 border-dashed")}
+                      className={cn("rounded-md mb-2 bg-gray-100 px-5")}
                     >
+                      <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-600 border-dashed font-semibold uppercase">
+                        {
+                          tabList.find((tab) => tab.key === state.activeStatus)
+                            ?.label
+                        }
+                      </h3>
                       <OrderItem
                         reviewed={(idProduct: number, idOrder: number) =>
                           setNewListOrderAfterReview(idProduct, idOrder)

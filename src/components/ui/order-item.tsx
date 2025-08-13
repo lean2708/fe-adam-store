@@ -124,7 +124,7 @@ export default function OrderItem(props: {
       {!dropList && items.length > 1 && (
         <button
           onClick={() => setDropList(true)}
-          className="outline-none w-full flex justify-center py-2 border-b-1 border-dashed"
+          className="outline-none w-full flex justify-center py-2 border-b-1 border-dashed border-gray-400"
         >
           <p>Xem thêm</p>
           <ChevronDown className="ml-3" />
@@ -154,7 +154,7 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus, reviewed
   const { item, reviewed, active } = props;
   const [isReview, setIsReview] = useState(false);
   return (
-    <div className="border-b-1 border-dashed py-2 w-full flex justify-between min-h-25 items-center">
+    <div className="border-b-1 border-dashed border-gray-400 py-2 w-full flex justify-between min-h-25 items-center">
       <div className="flex ">
         <img
           className="h-25 rounded-sm"
