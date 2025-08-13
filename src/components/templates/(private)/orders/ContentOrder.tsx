@@ -143,7 +143,7 @@ export function ContentOrder() {
             {/* <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase">
               {tabList.find((tab) => tab.key === state.activeStatus)?.label}
             </h3> */}
-            <div>
+            <div className="rounded-md mb-2 bg-gray-100 px-5">
               {state.isLoading && (
                 <div>
                   <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase">
@@ -156,6 +156,19 @@ export function ContentOrder() {
                     <Skeleton className="h-16 w-full" />
                   </div>
                 </div>
+              )}
+              {!state.isLoading && state.listOrders.length === 0 && (
+                <>
+                  <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase">
+                    {
+                      tabList.find((tab) => tab.key === state.activeStatus)
+                        ?.label
+                    }
+                  </h3>{" "}
+                  <p className="py-3 flex w-full h-16 items-center justify-center">
+                    Bạn chưa có đơn hàng nào cả
+                  </p>
+                </>
               )}
               {!state.isLoading &&
                 state.listOrders.length > 0 &&
@@ -171,6 +184,7 @@ export function ContentOrder() {
                             ?.label
                         }
                       </h3>
+
                       <OrderItem
                         reviewed={(idProduct: number, idOrder: number) =>
                           setNewListOrderAfterReview(idProduct, idOrder)
@@ -205,11 +219,6 @@ export function ContentOrder() {
                     </div>
                   );
                 })}
-              {!state.isLoading && state.listOrders.length === 0 && (
-                <p className="py-3 border-b-1 flex w-full h-16 items-center justify-center">
-                  Bạn chưa có đơn hàng nào cả
-                </p>
-              )}
             </div>
           </div>
         </div>
