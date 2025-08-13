@@ -6,7 +6,7 @@ import {
   deleteProductApi,
   fetchAllProductsApi,
   searchProductApi,
-  fetchProductReviewssApi,
+  fetchProductReviewsApi,
   fetchProductDetailByIdApi,
   fetchAllProductsForAdmin,
   createProduct,
@@ -26,6 +26,7 @@ import type {
   ProductUpdateRequest,
   PageResponseProductResponse,
 } from '@/api-client/models';
+// import { fetchProductReviewsApi } from '@/lib/data/review';
 
 export async function getAllProductsAction(
   page?: number,
@@ -60,6 +61,34 @@ export async function getProductDetailsAction(id: string) {
     return {
       status: 200,
       product,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      error,
+    };
+  }
+}
+
+export async function getProductReviewsAction(
+  id: string,
+  page?: number,
+  size?: number,
+  sort?: string[]
+) {
+  try {
+    const reviews = await fetchProductReviewsApi(Number(id), page, size, sort);
+
+    if (!reviews) {
+      return {
+        status: 404,
+        message: 'Product not found',
+      };
+    }
+
+    return {
+      status: 200,
+      reviews,
     };
   } catch (error) {
     return {

@@ -1,4 +1,6 @@
+
 import { ContentUser } from "@/components/templates/(private)/user/ContentUser";
+
 
 export default function UserPage() {
   return (
@@ -7,7 +9,5 @@ export default function UserPage() {
         <ContentUser />
       </div>
     </main>
-
   )
-
 }

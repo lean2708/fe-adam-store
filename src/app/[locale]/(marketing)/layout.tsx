@@ -4,19 +4,19 @@ import { Suspense } from "react";
 import Loading from "./loading";
 
 export default async function authLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    return (
-        <div className="min-h-screen adam-store-bg">
-            <Navbar />
+  return (
+    <div className="min-h-screen adam-store-bg">
+      <Navbar />
 
-            <div>
-                <Suspense fallback={<Loading />}>{children}</Suspense>
-            </div>
+      <div>
+        <Suspense fallback={<Loading />}>{children}</Suspense>
+      </div>
 
-            <Footer />
-        </div>
-    );
+      <Footer />
+    </div>
+  );
 }
