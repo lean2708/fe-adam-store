@@ -118,12 +118,12 @@ export async function fetchAllProductByCategoryApi(
     const api = await getCategoryController();
     const res = await api.fetchProductByCategory({
       categoryId: Number(categoryId),
-      page:page,
+      page: page,
       size: size,
-      sort: sort.length > 0 ? sort : undefined
+      sort: sort.length > 0 ? sort : undefined,
     });
-    console.log(res.data)
-    return res.data
+    console.log(res.data);
+    return res.data;
   } catch (error: any) {
     throw new Error(error?.message || "Unknown error");
   }
