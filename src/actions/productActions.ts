@@ -14,6 +14,7 @@ import {
   deleteProduct,
   restoreProduct,
   fetchProductById,
+  fetchAllProductsTotalApi,
 } from '@/lib/data/product';
 import {
   productCreateSchema,
@@ -42,6 +43,24 @@ export async function getAllProductsAction(
   } catch (error) {
     return {
       status: 500,
+      error,
+    };
+  }
+}
+export async function getAllProductsTotalAction(
+  page?: number,
+  size?: number,
+  sort?: string[]
+) {
+  try {
+    const products = await fetchAllProductsTotalApi(page, size, sort);
+    return {
+      status: true,
+      data: products,
+    };
+  } catch (error) {
+    return {
+      status: false,
       error,
     };
   }
