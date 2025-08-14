@@ -140,9 +140,6 @@ export function ContentOrder() {
         </div>
         <div className="px-8 py-6">
           <div className="rounded-xl px-5">
-            {/* <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase">
-              {tabList.find((tab) => tab.key === state.activeStatus)?.label}
-            </h3> */}
             <div>
               {state.isLoading && (
                 <div>
@@ -152,8 +149,23 @@ export function ContentOrder() {
                         ?.label
                     }
                   </h3>
-                  <div className="py-3 border-b-2 flex w-full justify-between h-24 items-center">
+                  <div className="py-3 flex w-full justify-between h-24 items-center">
                     <Skeleton className="h-16 w-full" />
+                  </div>
+                </div>
+              )}
+              {!state.isLoading && state.listOrders.length === 0 && (
+                <div>
+                  <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase">
+                    {
+                      tabList.find((tab) => tab.key === state.activeStatus)
+                        ?.label
+                    }
+                  </h3>
+                  <div className="py-3 flex w-full justify-between h-24 items-center">
+                    <p className="bg-gray-100 rounded-md py-3 flex w-full h-16 items-center justify-center">
+                      Bạn chưa có đơn hàng nào cả
+                    </p>
                   </div>
                 </div>
               )}
@@ -205,11 +217,6 @@ export function ContentOrder() {
                     </div>
                   );
                 })}
-              {!state.isLoading && state.listOrders.length === 0 && (
-                <p className="py-3 border-b-1 flex w-full h-16 items-center justify-center">
-                  Bạn chưa có đơn hàng nào cả
-                </p>
-              )}
             </div>
           </div>
         </div>
