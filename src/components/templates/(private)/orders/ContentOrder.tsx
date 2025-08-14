@@ -45,7 +45,7 @@ export function ContentOrder() {
     listOrders: TOrder[];
   }>({
     isVisible: false,
-    isLoading: false,
+    isLoading: true,
     itemOnModule: undefined,
     activeStatus: "PENDING",
     listOrders: [],
@@ -55,7 +55,7 @@ export function ContentOrder() {
   }, [state.activeStatus]);
 
   useEffect(() => {
-    if (state.activeStatus === "DELIVERED" && state.listOrders.length > 0) {
+    if (state.activeStatus === "DELIVERED") {
       checkAllProductReview();
     }
   }, [state.activeStatus, state.listOrders]);
@@ -73,13 +73,15 @@ export function ContentOrder() {
     } catch (error) {
       console.error("Failed to fetch orders:", error);
     } finally {
-      if (state.activeStatus !== "DELIVERED")
-        setState((prev) => ({ ...prev, isLoading: false }));
+      setState((prev) => ({ ...prev, isLoading: false }));
     }
   };
   const checkAllProductReview = async () => {
+    if (state.listOrders.length === 0) {
+      return;
+    }
+    setState((prev) => ({ ...prev, isLoading: true }));
     const arrayMap: TOrder[] = state.listOrders;
-    console.log(arrayMap);
     for (let i = 0; i < arrayMap.length; i++) {
       for (let y = 0; y < arrayMap[i].orderItems.length; y++) {
         const res = await checkReview(arrayMap[i].orderItems[y].id);
@@ -141,7 +143,6 @@ export function ContentOrder() {
         <div className="px-8 py-6">
           <div className="rounded-xl px-5">
             <div>
-
               {state.isLoading && (
                 <div>
                   <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase">
@@ -157,7 +158,6 @@ export function ContentOrder() {
               )}
               {!state.isLoading && state.listOrders.length === 0 && (
                 <div>
-
                   <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase">
                     {
                       tabList.find((tab) => tab.key === state.activeStatus)
@@ -170,7 +170,6 @@ export function ContentOrder() {
                     </p>
                   </div>
                 </div>
-
               )}
               {!state.isLoading &&
                 state.listOrders.length > 0 &&
