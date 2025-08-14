@@ -15,47 +15,47 @@ const ACCEPTED_IMAGE_TYPES = ["image/png", "image/webp"];
 
 const schema = categorySchema;
 
-export async function addCategoryAction(formData: FormData) {
-  const title = formData.get("title") as string;
-  const image = formData.get("image") as File;
+// export async function addCategoryAction(formData: FormData) {
+//   const title = formData.get("title") as string;
+//   const image = formData.get("image") as File;
 
-  const validatedFields = schema.safeParse({
-    title,
-    image,
-  });
+//   const validatedFields = schema.safeParse({
+//     title,
+//     image,
+//   });
 
-  if (!validatedFields.success) {
-    return {
-      status: 403,
-      message: "data invalid",
-      errors: validatedFields.error.flatten().fieldErrors,
-    };
-  }
+//   if (!validatedFields.success) {
+//     return {
+//       status: 403,
+//       message: "data invalid",
+//       errors: validatedFields.error.flatten().fieldErrors,
+//     };
+//   }
 
-  // NOTE: You must implement or import an image upload API for image.
-  // Here we just pass the image file name as a placeholder.
-  // Replace this with your actual upload logic.
-  const imagePath =
-    typeof image === "object" && "name" in image ? image.name : "";
+//   // NOTE: You must implement or import an image upload API for image.
+//   // Here we just pass the image file name as a placeholder.
+//   // Replace this with your actual upload logic.
+//   const imagePath =
+//     typeof image === "object" && "name" in image ? image.name : "";
 
-  try {
-    const created = await createCategoryApi({
-      title,
-      image: imagePath,
-    });
-    return {
-      status: 201,
-      message: "New category created",
-      category: created,
-    };
-  } catch (error) {
-    return {
-      status: 500,
-      message: "create category failed",
-      error,
-    };
-  }
-}
+//   try {
+//     const created = await createCategoryApi({
+//       title,
+//       image: imagePath,
+//     });
+//     return {
+//       status: 201,
+//       message: "New category created",
+//       category: created,
+//     };
+//   } catch (error) {
+//     return {
+//       status: 500,
+//       message: "create category failed",
+//       error,
+//     };
+//   }
+// }
 
 export async function deleteCategoryAction(categoryId: string) {
   try {
@@ -94,17 +94,12 @@ export async function getAllCategoriesAction(
   }
 }
 
-export const getProductByCategoryAction = async ({
-  categoryId,
-  page,
-  size,
-  sort,
-}: {
-  categoryId: string;
-  page?: number;
-  size?: number;
-  sort: string[];
-}): Promise<ApiResponsePageResponseProductResponse> => {
+export const getProductByCategoryAction = async (
+  categoryId: string,
+  page: number,
+  size: number,
+  sort: string[]
+) => {
   try {
     const data = await fetchAllProductByCategoryApi(
       categoryId,
@@ -112,7 +107,13 @@ export const getProductByCategoryAction = async ({
       size,
       sort
     );
-    return data;
+    if (data.code === 200) {
+      return {
+        status: true,
+        data: data.result,
+      };
+    }
+    return { status: false, message: "Not found product" };
   } catch (error) {
     console.log(error);
     throw new Error(error as string);

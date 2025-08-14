@@ -9,15 +9,17 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function CategoryItem({
-    title,
+    id,
     imageSrc,
+    title
 }: {
-    title: string;
+    id: string;
     imageSrc: string;
+    title: string
 }) {
     const [isImageError, setImageError] = useState(false);
     return (
-        <Link href={`./category?category=${title}`}>
+        <Link href={`./detail?category=${id}`}>
             <Card
                 className={cn()}>
                 <CardContent className={cn("p-0 pb-6")}>
@@ -27,7 +29,7 @@ export default function CategoryItem({
                             <Image
                                 className={cn("w-full h-full object-cover rounded-lg")}
                                 src={ imageSrc}
-                                alt={title}
+                                alt={id}
                                 width={300}
                                 height={400}
                                 onError={() => setImageError(true)}

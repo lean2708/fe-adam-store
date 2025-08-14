@@ -141,6 +141,7 @@ export function ContentOrder() {
         <div className="px-8 py-6">
           <div className="rounded-xl px-5">
             <div>
+
               {state.isLoading && (
                 <div>
                   <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase">
@@ -156,6 +157,7 @@ export function ContentOrder() {
               )}
               {!state.isLoading && state.listOrders.length === 0 && (
                 <div>
+
                   <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase">
                     {
                       tabList.find((tab) => tab.key === state.activeStatus)
@@ -168,6 +170,7 @@ export function ContentOrder() {
                     </p>
                   </div>
                 </div>
+
               )}
               {!state.isLoading &&
                 state.listOrders.length > 0 &&
@@ -183,6 +186,7 @@ export function ContentOrder() {
                             ?.label
                         }
                       </h3>
+
                       <OrderItem
                         reviewed={(idProduct: number, idOrder: number) =>
                           setNewListOrderAfterReview(idProduct, idOrder)

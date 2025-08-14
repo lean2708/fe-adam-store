@@ -33,7 +33,7 @@ export type TProduct = {
   averageRating?: number;
   soldQuantity?: number;
   totalReviews?: number;
-  status?: string; // You can replace with enum if you have ProductResponseStatusEnum
+  status?: string;
   createdAt?: string;
   colors?: TColor[];
 };

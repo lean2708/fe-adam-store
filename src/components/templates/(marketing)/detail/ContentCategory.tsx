@@ -1,22 +1,29 @@
 "use client";
+import { getProductByCategoryAction } from "@/actions/categoryActions";
 import ProductCardIndex from "@/components/modules/ProductCardIndex";
-import { Carousel, CarouselItem } from "@/components/ui/carousel";
+import {
+  Carousel,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import { transformProductResponseToTProduct } from "@/lib/data/transform/product";
 import { TProduct } from "@/types";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Pagination from "../detail/Pagination";
-import { getAllProductsTotalAction } from "@/actions/productActions";
+import Pagination from "./Pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function ContentBestSeller() {
+export function ContentCategory() {
+  const searchParams = useSearchParams();
+  const paramCate = searchParams.get("category");
   const t = useTranslations("Marketing");
   const [state, setState] = useState<{
     loading: boolean;
     value: string;
     page: number;
     maxPage: number;
-    totalProducts: number;
+    totalProducts: number,
     listProducts: TProduct[];
   }>({
     loading: true,
@@ -26,39 +33,41 @@ export function ContentBestSeller() {
     totalProducts: 0,
     listProducts: [],
   });
+  useEffect(()=>{setState(ps=>({...ps, page: 0}))},[paramCate])
   useEffect(() => {
-    const getProductByIdCategory = async () => {
+    const getProductByIdCategory = async (id: string) => {
       try {
-        setState((ps) => ({ ...ps, loading: true }));
-        const res = await getAllProductsTotalAction(state.page, 12, [
-          "soldQuantity,desc",
-          "minPrice," + state.value,
+        setState(ps=>({...ps, loading: true}))
+        const res = await getProductByCategoryAction(id, state.page, 12, [
+          "minPrice,"+
+          state.value,
         ]);
         if (res.status) {
+          const items = res.data?.items || [];
+          const newArrayProduct: TProduct[] = items.map((item) =>
+            transformProductResponseToTProduct(item)
+          );
           setState((ps) => ({
             ...ps,
-            totalProducts: res.data?.totalItem || 0,
-            listProducts: res.data?.products || [],
+            totalProducts: res.data?.totalItems || 0,
+            listProducts: newArrayProduct,
             loading: false,
-            maxPage: res.data?.totalItem
-              ? Math.ceil(res.data.totalItem / 12)
-              : 1,
+            maxPage: res.data?.totalPages || 1,
           }));
         }
       } catch (error) {
         setState((ps) => ({ ...ps, loading: false }));
       }
     };
-    getProductByIdCategory();
-  }, [state.value, state.page]);
+    if (paramCate) getProductByIdCategory(paramCate);
+  }, [paramCate, state.value, state.page]);
   console.log(state);
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setState((ps) => ({ ...ps, value: event.target.value, page: 0 }));
   };
   return (
     <>
-      <div className="w-full h-20 flex items-center justify-between">
-        <p className="text-[#888888]">{state.totalProducts} Sản phẩm</p>
+      <div className="w-full h-20 flex items-center justify-end">
         <p>
           <span className="text-[#888888]">Sắp xếp theo</span>
           <select
@@ -76,7 +85,7 @@ export function ContentBestSeller() {
       <div>
         <Carousel className="w-full">
           <div className="flex flex-wrap">
-            {state.loading &&
+              {state.loading &&
               [1, 2, 3, 4].map((product) => (
                 <CarouselItem
                   key={product}
@@ -100,30 +109,23 @@ export function ContentBestSeller() {
                   <Skeleton className="h-6 w-[45%]"></Skeleton>
                 </CarouselItem>
               ))}
-            {!state.loading &&
-              state.listProducts.map((product) => (
-                <CarouselItem
-                  key={product.id}
-                  className="basis-1/2 md:basis-1/3 lg:basis-1/4 mb-2"
-                >
-                  <Link href={`product/${product.id}`}>
-                    <ProductCardIndex
-                      product={product}
-                      badgeText={t("bestSellers.badgeText")}
-                    />
-                  </Link>
-                </CarouselItem>
-              ))}
+            {!state.loading && state.listProducts.map((product) => (
+              <CarouselItem
+                key={product.id}
+                className="basis-1/2 md:basis-1/3 lg:basis-1/4 mb-2"
+              >
+                <Link href={`product/${product.id}`}>
+                  <ProductCardIndex
+                    product={product}
+                    badgeText={t("bestSellers.badgeText")}
+                  />
+                </Link>
+              </CarouselItem>
+            ))}
           </div>
         </Carousel>
       </div>
-
-      <Pagination
-        totalPage={state.maxPage}
-        page={state.page}
-        totalProduct={state.totalProducts}
-        onChangePage={(val) => setState((ps) => ({ ...ps, page: val - 1 }))}
-      />
+      <Pagination totalPage={state.maxPage} page={state.page} totalProduct={state.totalProducts} onChangePage={(val)=>setState(ps=>({...ps, page: val-1,}))} />
     </>
   );
 }

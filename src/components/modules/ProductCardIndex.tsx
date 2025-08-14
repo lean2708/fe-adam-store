@@ -98,7 +98,6 @@ export default function ProductCardIndex({
 
       {/* Price */}
       <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-        {/* {product.colors?.[0]?.variants?.[0]?.price?.toLocaleString("vi-VN")} VND */}
         {product.minPrice.toLocaleString("vi-VN")} VNĐ
       </p>
     </div>

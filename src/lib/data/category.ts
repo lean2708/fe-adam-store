@@ -110,19 +110,20 @@ export async function fetchAllCategoriesForAdminApi(
  */
 export async function fetchAllProductByCategoryApi(
   categoryId: string,
-  page?: number,
-  size?: number,
-  sort?: string[]
+  page: number,
+  size: number,
+  sort: string[]
 ): Promise<ApiResponsePageResponseProductResponse> {
   try {
     const api = await getCategoryController();
-    const { data } = await api.fetchProductByCategory({
+    const res = await api.fetchProductByCategory({
       categoryId: Number(categoryId),
-      page,
-      size,
-      sort,
+      page: page,
+      size: size,
+      sort: sort.length > 0 ? sort : undefined,
     });
-    return data;
+    console.log(res.data);
+    return res.data;
   } catch (error: any) {
     throw new Error(error?.message || "Unknown error");
   }

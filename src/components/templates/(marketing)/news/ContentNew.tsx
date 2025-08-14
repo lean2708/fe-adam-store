@@ -9,7 +9,7 @@ import Pagination from "../detail/Pagination";
 import { getAllProductsTotalAction } from "@/actions/productActions";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function ContentBestSeller() {
+export function ContentNews() {
   const t = useTranslations("Marketing");
   const [state, setState] = useState<{
     loading: boolean;
@@ -31,7 +31,7 @@ export function ContentBestSeller() {
       try {
         setState((ps) => ({ ...ps, loading: true }));
         const res = await getAllProductsTotalAction(state.page, 12, [
-          "soldQuantity,desc",
+          "createdAt,desc",
           "minPrice," + state.value,
         ]);
         if (res.status) {
@@ -100,24 +100,22 @@ export function ContentBestSeller() {
                   <Skeleton className="h-6 w-[45%]"></Skeleton>
                 </CarouselItem>
               ))}
-            {!state.loading &&
-              state.listProducts.map((product) => (
-                <CarouselItem
-                  key={product.id}
-                  className="basis-1/2 md:basis-1/3 lg:basis-1/4 mb-2"
-                >
-                  <Link href={`product/${product.id}`}>
-                    <ProductCardIndex
-                      product={product}
-                      badgeText={t("bestSellers.badgeText")}
-                    />
-                  </Link>
-                </CarouselItem>
-              ))}
+            {state.listProducts.map((product) => (
+              <CarouselItem
+                key={product.id}
+                className="basis-1/2 md:basis-1/3 lg:basis-1/4 mb-2"
+              >
+                <Link href={`product/${product.id}`}>
+                  <ProductCardIndex
+                    product={product}
+                    badgeText={t("newestProducts.badgeText")}
+                  />
+                </Link>
+              </CarouselItem>
+            ))}
           </div>
         </Carousel>
       </div>
-
       <Pagination
         totalPage={state.maxPage}
         page={state.page}
