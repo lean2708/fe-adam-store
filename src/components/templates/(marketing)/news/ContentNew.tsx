@@ -108,7 +108,7 @@ export function ContentNews() {
                 <Link href={`product/${product.id}`}>
                   <ProductCardIndex
                     product={product}
-                    badgeText={t("bestSellers.badgeText")}
+                    badgeText={t("newestProducts.badgeText")}
                   />
                 </Link>
               </CarouselItem>
