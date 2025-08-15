@@ -2,11 +2,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 export default function HeroBanner() {
     const t = useTranslations("Marketing");
+    const route = useRouter()
 
     return (
         <div className="relative rounded-lg overflow-hidden mb-12">
@@ -24,7 +25,7 @@ export default function HeroBanner() {
                         <p className="text-lg md:text-xl mb-6 opacity-90">
                             {t("heroBanner.description")}
                         </p>
-                        <Button className="bg-white text-black hover:bg-gray-100 px-8 py-3 text-lg font-medium cursor-pointer">
+                        <Button onClick={()=>route.push('/news')} className="bg-white text-black hover:bg-gray-100 px-8 py-3 text-lg font-medium cursor-pointer">
                             {t("heroBanner.buyNow")}
                         </Button>
                     </div>

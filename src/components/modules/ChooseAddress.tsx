@@ -7,9 +7,14 @@ import { updateAddressForOrderByID } from "@/actions/orderActions";
 import { getAllAddressUser } from "@/actions/addressActions";
 import { TAddressItem, TOrder } from "@/types";
 import ConfirmDialogModule from "./ConfirmDialogModule";
-import { toast } from 'sonner'
+import { toast } from "sonner";
 
-export default function ChooseAddress(props: { visible: boolean; orderItem?: TOrder, onSuccess: (id: TAddressItem) => void, onClose: () => void }) {
+export default function ChooseAddress(props: {
+  visible: boolean;
+  orderItem?: TOrder;
+  onSuccess: (id: TAddressItem) => void;
+  onClose: () => void;
+}) {
   const { visible, onSuccess, onClose, orderItem } = props;
   const [loading, setLoading] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -20,29 +25,31 @@ export default function ChooseAddress(props: { visible: boolean; orderItem?: TOr
   useEffect(() => {
     async function getAddress() {
       try {
-        setLoading(true)
-        const res = await getAllAddressUser()
+        setLoading(true);
+        const res = await getAllAddressUser();
         if (res.status === 200 && res.address?.items) {
-          setListAddress(res.address.items as TAddressItem[])
+          setListAddress(res.address.items as TAddressItem[]);
         }
       } catch (error) {
         console.error("Failed to fetch address:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
     if (visible) {
-      getAddress()
+      getAddress();
       if (listAddress.length > 0) {
-        const defaultIndex = listAddress.findIndex(addr => addr.id);
+        const defaultIndex = listAddress.findIndex((addr) => addr.id);
         setSelectedIndex(defaultIndex >= 0 ? defaultIndex : 0);
       }
     }
-  }, [visible])
+  }, [visible]);
   useEffect(() => {
     if (listAddress.length && orderItem?.id) {
-      const foundIndex = listAddress.findIndex(item => item.id === orderItem.address.id);
-      console.log(orderItem.address.id, "Index" + foundIndex)
+      const foundIndex = listAddress.findIndex(
+        (item) => item.id === orderItem.address.id
+      );
+      console.log(orderItem.address.id, "Index" + foundIndex);
       if (foundIndex !== -1) {
         setSelectedIndex(foundIndex);
       }
@@ -52,22 +59,25 @@ export default function ChooseAddress(props: { visible: boolean; orderItem?: TOr
   const handleUpdateAddress = async () => {
     try {
       if (orderItem) {
-        setIsSubmit(true)
-        const res = await updateAddressForOrderByID(orderItem.id, listAddress[selectedIndex].id)
-        console.log(res)
+        setIsSubmit(true);
+        const res = await updateAddressForOrderByID(
+          orderItem.id,
+          listAddress[selectedIndex].id
+        );
+        console.log(res);
         if (res.status === 200) {
-          onSuccess(listAddress[selectedIndex])
-          onClose()
-          toast.success('Cập nhật địa chỉ thành công')
+          onSuccess(listAddress[selectedIndex]);
+          onClose();
+          toast.success("Cập nhật địa chỉ thành công");
         }
       }
     } catch (error) {
-      onClose()
+      onClose();
     } finally {
-      setConfirm(false)
-      setIsSubmit(false)
+      setConfirm(false);
+      setIsSubmit(false);
     }
-  }
+  };
 
   if (!visible) return null;
 
@@ -97,43 +107,70 @@ export default function ChooseAddress(props: { visible: boolean; orderItem?: TOr
         </div>
         <ul className="pb-6 px-6">
           {loading && <Skeleton className="h-18 w-full" />}
-          {(!loading && listAddress.length !== 0) && listAddress.map((item: TAddressItem, index) => (
-            <li key={index}>
-              <label onClick={() => setConfirm(true)}
-                className={cn(
-                  "flex items-center justify-start gap-3 h-18 w-full px-5 py-3 mt-2 rounded-lg border cursor-pointer relative transition-all",
-                  selectedIndex === index ? "border-black" : "border-gray-300"
-                )}
-              >
-                <input
-                  type="radio"
-                  name="address"
-                  checked={selectedIndex === index}
-                  onChange={() => setSelectedIndex(index)}
-                  className="peer h-4 w-4 scale-100 peer inset-0 cursor-pointer appearance-none rounded-full bg-[length:24px_24px] bg-center"
-                />
-
-                <div className="text-left ml-2">
-                  <p className={cn("font-medium", !item.isDefault && 'text-gray-400')}>
-                    {item.streetDetail}, {item.ward.name}, {item.district.name}, {item.province.name}
-                  </p>
-                  {item.isDefault && (
-                    <span className="rounded-md absolute -top-3 left-5 px-2 py-0.5 bg-white">
-                      Mặc định
-                    </span>
+          
+          {!loading &&
+            listAddress.length !== 0 &&
+            listAddress.map((item: TAddressItem, index) => (
+              <li key={index}>
+                <label
+                  onClick={() => setConfirm(true)}
+                  className={cn(
+                    "flex items-center justify-start gap-3 h-18 w-full px-5 py-3 mt-2 rounded-lg border cursor-pointer relative transition-all",
+                    selectedIndex === index ? "border-black" : "border-gray-300"
                   )}
-                </div>
-              </label>
-            </li>
-          )
-          )}
+                >
+                  <input
+                    type="radio"
+                    name="address"
+                    checked={selectedIndex === index}
+                    onChange={() => setSelectedIndex(index)}
+                    className="peer h-4 w-4 scale-100 peer inset-0 cursor-pointer appearance-none rounded-full bg-[length:24px_24px] bg-center"
+                  />
+
+                  <div className="text-left ml-2">
+                    <p
+                      className={cn(
+                        selectedIndex !== index && "text-gray-400"
+                      )}
+                    >
+                      {(() => {
+                        const phoneNumber = item.phone.startsWith("0")
+                          ? item.phone.slice(1)
+                          : item.phone;
+
+                        return `(+84) ${phoneNumber.slice(
+                          0,
+                          3
+                        )} ${phoneNumber.slice(3, 6)} ${phoneNumber.slice(6)}`;
+                      })()}
+                    </p>
+                    <p
+                      className={cn(
+                        "font-medium",
+                        selectedIndex !== index && "text-gray-400"
+                      )}
+                    >
+                      {item.streetDetail}, {item.ward.name},{" "}
+                      {item.district.name}, {item.province.name}
+                    </p>
+                  </div>
+                </label>
+              </li>
+            ))}
           <li className="h-14 w-full mt-3 flex justify-center items-center border-gray-600 border rounded-lg font-medium cursor-pointer">
             Thêm địa chỉ mới
           </li>
         </ul>
       </Card>
-      <ConfirmDialogModule loading={isSubmit} onClose={() => setConfirm(false)} title="Bạn có chắc muốn thay đổi địa chỉ ?" onSubmit={() => { handleUpdateAddress() }} confirm={confirm} />
+      <ConfirmDialogModule
+        loading={isSubmit}
+        onClose={() => setConfirm(false)}
+        title="Bạn có chắc muốn thay đổi địa chỉ ?"
+        onSubmit={() => {
+          handleUpdateAddress();
+        }}
+        confirm={confirm}
+      />
     </div>
   );
 }
-

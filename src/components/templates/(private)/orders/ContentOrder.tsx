@@ -45,7 +45,7 @@ export function ContentOrder() {
     listOrders: TOrder[];
   }>({
     isVisible: false,
-    isLoading: false,
+    isLoading: true,
     itemOnModule: undefined,
     activeStatus: "PENDING",
     listOrders: [],
@@ -55,7 +55,7 @@ export function ContentOrder() {
   }, [state.activeStatus]);
 
   useEffect(() => {
-    if (state.activeStatus === "DELIVERED" && state.listOrders.length > 0) {
+    if (state.activeStatus === "DELIVERED") {
       checkAllProductReview();
     }
   }, [state.activeStatus, state.listOrders]);
@@ -73,13 +73,15 @@ export function ContentOrder() {
     } catch (error) {
       console.error("Failed to fetch orders:", error);
     } finally {
-      if (state.activeStatus !== "DELIVERED")
-        setState((prev) => ({ ...prev, isLoading: false }));
+      setState((prev) => ({ ...prev, isLoading: false }));
     }
   };
   const checkAllProductReview = async () => {
+    if (state.listOrders.length === 0) {
+      return;
+    }
+    setState((prev) => ({ ...prev, isLoading: true }));
     const arrayMap: TOrder[] = state.listOrders;
-    console.log(arrayMap);
     for (let i = 0; i < arrayMap.length; i++) {
       for (let y = 0; y < arrayMap[i].orderItems.length; y++) {
         const res = await checkReview(arrayMap[i].orderItems[y].id);
@@ -140,10 +142,7 @@ export function ContentOrder() {
         </div>
         <div className="px-8 py-6">
           <div className="rounded-xl px-5">
-            {/* <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase">
-              {tabList.find((tab) => tab.key === state.activeStatus)?.label}
-            </h3> */}
-            <div className="rounded-md mb-2 bg-gray-100 px-5">
+            <div>
               {state.isLoading && (
                 <div>
                   <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase">
@@ -152,23 +151,25 @@ export function ContentOrder() {
                         ?.label
                     }
                   </h3>
-                  <div className="py-3 border-b-2 flex w-full justify-between h-24 items-center">
+                  <div className="py-3 flex w-full justify-between h-24 items-center">
                     <Skeleton className="h-16 w-full" />
                   </div>
                 </div>
               )}
               {!state.isLoading && state.listOrders.length === 0 && (
-                <>
+                <div>
                   <h3 className="border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase">
                     {
                       tabList.find((tab) => tab.key === state.activeStatus)
                         ?.label
                     }
-                  </h3>{" "}
-                  <p className="py-3 flex w-full h-16 items-center justify-center">
-                    Bạn chưa có đơn hàng nào cả
-                  </p>
-                </>
+                  </h3>
+                  <div className="py-3 flex w-full justify-between h-24 items-center">
+                    <p className="bg-gray-100 rounded-md py-3 flex w-full h-16 items-center justify-center">
+                      Bạn chưa có đơn hàng nào cả
+                    </p>
+                  </div>
+                </div>
               )}
               {!state.isLoading &&
                 state.listOrders.length > 0 &&
