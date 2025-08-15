@@ -1,24 +1,31 @@
 import { useState, useEffect } from 'react';
-import { Card, CardTitle } from '../ui/card';
 import { CircleX } from 'lucide-react';
-import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { AddressItem } from '@/types';
 import Link from 'next/link';
-import ConfirmDialogModule from './ConfirmDialogModule';
 import { toast } from 'sonner';
-import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
-import { Label } from '../ui/label';
+import ConfirmDialogModule from '@/components/modules/ConfirmDialogModule';
+import { Card, CardTitle } from '@/components/ui/card';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 
-export default function AddressSectionModule(props: {
+export default function AddressSectionModal(props: {
   visible: boolean;
   addressList: AddressItem[];
   currentAddressId?: number;
   onClose: () => void;
   onSelectAddress: (address: AddressItem) => void;
+  onAddNewAddress: () => void;
 }) {
-  const { visible, onClose, addressList, currentAddressId, onSelectAddress } =
-    props;
+  const {
+    visible,
+    onClose,
+    addressList,
+    currentAddressId,
+    onSelectAddress,
+    onAddNewAddress,
+  } = props;
 
   const [selectedAddressId, setSelectedAddressId] = useState<
     number | undefined
@@ -152,13 +159,18 @@ export default function AddressSectionModule(props: {
               ))
             )}
           </RadioGroup>
-          <Link
-            href={'/account/address/add'}
-            className='h-14 w-full mt-3 flex justify-center items-center border-gray-600 border rounded-lg font-medium cursor-pointer'
+          <Button
+            variant={'outline'}
+            onClick={() => {
+              onClose();
+              onAddNewAddress();
+            }}
+            className='h-14 w-full mt-3 flex justify-center items-center rounded-lg font-medium cursor-pointer'
           >
             Thêm địa chỉ mới
-          </Link>
+          </Button>
         </div>
+
         <ConfirmDialogModule
           loading={isSubmit}
           onClose={() => {

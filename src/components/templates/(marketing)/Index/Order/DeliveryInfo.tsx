@@ -1,23 +1,31 @@
 'use client';
 
-import AddressSectionModule from '@/components/modules/AddressSectionModule';
-import ChooseAddress from '@/components/modules/ChooseAddress';
 import { Button } from '@/components/ui/button';
-import useDeliveryInfor from '@/hooks/(order)/useDeliveryInfo';
+import useAddress from '@/hooks/(order)/useAddress';
 import { useAuth } from '@/hooks/useAuth';
-import { AddressItem, TOrder } from '@/types';
+import { AddressItem } from '@/types';
 import Link from 'next/link';
 import { useState } from 'react';
+import AddressSectionModal from './Address/AddressSectionModal';
+import { AddNewAddressModal } from './Address/AddNewAddressModal';
 
 // DeliveryInfo.tsx
 export function DeliveryInfo() {
   const { user } = useAuth();
   const { currentAddress, loading, listAddress, setCurrentAddress } =
-    useDeliveryInfor();
+    useAddress();
 
   const [isVisible, setIsVisible] = useState(false);
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
 
   const deliveryAddress = currentAddress;
+
+  const handleAddressAdded = () => {
+    setIsVisible(false);
+    if (listAddress.length === 0) {
+      setIsVisible(true);
+    }
+  };
 
   // Xử lý loading state
   if (loading) {
@@ -74,7 +82,7 @@ export function DeliveryInfo() {
         </div>
       </div>
 
-      <AddressSectionModule
+      <AddressSectionModal
         visible={isVisible}
         addressList={listAddress}
         currentAddressId={currentAddress.id}
@@ -82,6 +90,13 @@ export function DeliveryInfo() {
         onSelectAddress={(address: AddressItem) => {
           setCurrentAddress(address);
         }}
+        onAddNewAddress={() => setIsAddModalVisible(true)}
+      />
+
+      <AddNewAddressModal
+        open={isAddModalVisible}
+        onclose={() => setIsAddModalVisible(false)}
+        onSaveSuccess={handleAddressAdded}
       />
     </div>
   );
