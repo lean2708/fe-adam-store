@@ -5,6 +5,8 @@ import {
   fetchWardByDistrictId,
   getAllAddressUser,
 } from '@/actions/addressActions';
+import { QUERY_KEY_ADDRESS } from '@/lib/constants';
+import { addressKeys } from '@/lib/query_key';
 import { AddressItem, District, Province, Ward } from '@/types';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -18,15 +20,11 @@ export default function useAddress() {
     null
   );
 
-  // const [provinces, setProvinces] = useState<Province[]>([]);
-  // const [districts, setDistricts] = useState<District[]>([]);
-  // const [wards, setWards] = useState<Ward[]>([]);
-
   // Lấy danh sách địa chỉ của user
   const { data: listAddress = [], isLoading: loading } = useQuery<
     AddressItem[]
   >({
-    queryKey: ['user-address-list'],
+    queryKey: [QUERY_KEY_ADDRESS.ADDRESS],
     queryFn: async () => {
       const response = await getAllAddressUser();
       if (response.status === 200) {
@@ -45,7 +43,7 @@ export default function useAddress() {
   const { data: provinces = [], isLoading: loadingProvinces } = useQuery<
     Province[]
   >({
-    queryKey: ['provinces'],
+    queryKey: [QUERY_KEY_ADDRESS.PROVINCES],
     queryFn: async () => {
       const response = await fetchProvince();
       if (response.status === 200) {
@@ -64,7 +62,7 @@ export default function useAddress() {
   const { data: districts = [], isLoading: loadingDistricts } = useQuery<
     District[]
   >({
-    queryKey: ['districts', provinceId],
+    queryKey: [addressKeys.districts(provinceId)],
     queryFn: async () => {
       if (!provinceId) return [];
       const response = await fetchDistrictByProvinceId(provinceId);
@@ -83,7 +81,7 @@ export default function useAddress() {
   // Query cho danh sách phường/xã (kích hoạt khi có districtId)
   const [districtId, setDistrictId] = useState<number | null>(null);
   const { data: wards = [], isLoading: loadingWards } = useQuery<Ward[]>({
-    queryKey: ['wards', districtId],
+    queryKey: [addressKeys.wards(districtId)],
     queryFn: async () => {
       if (!districtId) return [];
       const response = await fetchWardByDistrictId(districtId);
@@ -118,7 +116,9 @@ export default function useAddress() {
             setCurrentAddress(response.newAddress);
           }
           // Làm mới lại danh sách với object form
-          queryClient.invalidateQueries({ queryKey: ['user-address-list'] });
+          queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY_ADDRESS.ADDRESS],
+          });
         }
       },
     });
