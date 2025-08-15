@@ -3,7 +3,6 @@
 import SockJS from 'sockjs-client';
 import { Client, StompSubscription } from '@stomp/stompjs';
 import type { ChatMessageResponse, ConversationResponse } from '@/api-client/models';
-import { useAuth } from '@/hooks/useAuth';
 
 export interface WebSocketConfig {
   baseUrl: string;
