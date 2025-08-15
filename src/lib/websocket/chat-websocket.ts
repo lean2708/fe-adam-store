@@ -86,7 +86,7 @@ export class ChatWebSocketService {
         connectHeaders: {
           Authorization: `Bearer ${config.accessToken}`,
         },
-        debug: process.env.NODE_ENV === 'development' ? (str) => console.log(`[STOMP] ${str}`) : () => { },
+        debug: (str) => console.log(`[STOMP] ${str}`),
         reconnectDelay: 3000, // Reduced from 5000
         heartbeatIncoming: 10000, // Increased for better performance
         heartbeatOutgoing: 10000,
