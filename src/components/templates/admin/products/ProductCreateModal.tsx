@@ -370,10 +370,25 @@ export function ProductCreateModal({ open, onClose }: ProductCreateModalProps) {
                   id="image-upload"
                 />
                 <label htmlFor="image-upload" className="cursor-pointer">
-                  <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                  <p className="text-sm text-gray-500">
-                    {selectedImage ? selectedImage.name : "Tải hình ảnh lên"}
-                  </p>
+                  {selectedImage ? (
+                    <div className="relative">
+                      <img 
+                        src={URL.createObjectURL(selectedImage)} 
+                        alt="Preview" 
+                        className="w-full h-32 object-cover rounded-lg"
+                      />
+                      <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg opacity-0 hover:opacity-100 transition-opacity">
+                        <p className="text-white text-sm">Thay đổi hình ảnh</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
+                      <p className="text-sm text-gray-500">
+                        Tải hình ảnh lên
+                      </p>
+                    </>
+                  )}
                 </label>
               </div>
             </div>

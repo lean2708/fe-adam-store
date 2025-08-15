@@ -6,7 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,7 +43,11 @@ interface ProductUpdateModalProps {
   product: TProduct | null;
 }
 
-export function ProductUpdateModal({ open, onClose, product }: ProductUpdateModalProps) {
+export function ProductUpdateModal({
+  open,
+  onClose,
+  product,
+}: ProductUpdateModalProps) {
   const t = useTranslations("Admin.products");
   const queryClient = useQueryClient();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -65,7 +75,7 @@ export function ProductUpdateModal({ open, onClose, product }: ProductUpdateModa
 
   // Fetch categories
   const { data: categoriesData } = useQuery({
-    queryKey: ['categories'],
+    queryKey: ["categories"],
     queryFn: async () => {
       const result = await fetchAllCategoriesForAdminAction();
       return result.success ? result.data : [];
@@ -101,7 +111,10 @@ export function ProductUpdateModal({ open, onClose, product }: ProductUpdateModa
         ...(imageIds.length > 0 && { imageIds }),
       };
 
-      const result = await updateProductAdminAction(product.id, productUpdateRequest);
+      const result = await updateProductAdminAction(
+        product.id,
+        productUpdateRequest
+      );
       if (!result.success) {
         throw new Error(result.message || "Failed to update product");
       }
@@ -109,7 +122,7 @@ export function ProductUpdateModal({ open, onClose, product }: ProductUpdateModa
     },
     onSuccess: () => {
       toast.success(t("productUpdated") || "Product updated successfully");
-      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
       handleClose();
     },
     onError: (error: Error) => {
@@ -182,7 +195,9 @@ export function ProductUpdateModal({ open, onClose, product }: ProductUpdateModa
                 }`}
               />
               {form.formState.errors.name && (
-                <p className="text-xs text-red-500">{form.formState.errors.name.message}</p>
+                <p className="text-xs text-red-500">
+                  {form.formState.errors.name.message}
+                </p>
               )}
             </div>
 
@@ -190,24 +205,33 @@ export function ProductUpdateModal({ open, onClose, product }: ProductUpdateModa
               <Label className="text-sm text-gray-700">Danh mục</Label>
               <Select
                 value={form.watch("categoryId")?.toString() || ""}
-                onValueChange={(value) => form.setValue("categoryId", parseInt(value))}
+                onValueChange={(value) =>
+                  form.setValue("categoryId", parseInt(value))
+                }
                 onOpenChange={setIsDropdownOpen}
               >
-                <SelectTrigger className={`bg-[#F0F0F0] rounded-xl h-12 ${
-                  form.formState.errors.categoryId ? "border-red-500" : ""
-                }`}>
+                <SelectTrigger
+                  className={`bg-[#F0F0F0] rounded-xl h-12 ${
+                    form.formState.errors.categoryId ? "border-red-500" : ""
+                  }`}
+                >
                   <SelectValue placeholder="Chọn danh mục" />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((category: TCategory) => (
-                    <SelectItem key={category.id} value={category.id.toString()}>
+                    <SelectItem
+                      key={category.id}
+                      value={category.id.toString()}
+                    >
                       {category.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
               {form.formState.errors.categoryId && (
-                <p className="text-xs text-red-500">{form.formState.errors.categoryId.message}</p>
+                <p className="text-xs text-red-500">
+                  {form.formState.errors.categoryId.message}
+                </p>
               )}
             </div>
           </div>
@@ -226,7 +250,9 @@ export function ProductUpdateModal({ open, onClose, product }: ProductUpdateModa
               }`}
             />
             {form.formState.errors.description && (
-              <p className="text-xs text-red-500">{form.formState.errors.description.message}</p>
+              <p className="text-xs text-red-500">
+                {form.formState.errors.description.message}
+              </p>
             )}
           </div>
 
@@ -242,17 +268,30 @@ export function ProductUpdateModal({ open, onClose, product }: ProductUpdateModa
                 id="image-upload"
               />
               <label htmlFor="image-upload" className="cursor-pointer">
-                <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                <p className="text-sm text-gray-500">
-                  {selectedImage ? selectedImage.name : "Tải hình ảnh lên (tùy chọn)"}
-                </p>
+                {selectedImage ? (
+                  <div className="relative">
+                    <img
+                      src={URL.createObjectURL(selectedImage)}
+                      alt="Preview"
+                      className="w-full h-32 object-cover rounded-lg"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg opacity-0 hover:opacity-100 transition-opacity">
+                      <p className="text-white text-sm">Thay đổi hình ảnh</p>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
+                    <p className="text-sm text-gray-500">Tải hình ảnh lên</p>
+                  </>
+                )}
               </label>
             </div>
           </div>
 
           {/* Buttons */}
           <div className="flex justify-end gap-3 pt-6">
-            <Button 
+            <Button
               type="button"
               onClick={handleClose}
               variant="outline"
@@ -260,7 +299,7 @@ export function ProductUpdateModal({ open, onClose, product }: ProductUpdateModa
             >
               Hủy bỏ
             </Button>
-            <Button 
+            <Button
               type="submit"
               disabled={updateMutation.isPending}
               className="px-8 py-3 bg-black hover:bg-gray-800 text-white rounded-lg"
