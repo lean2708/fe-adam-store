@@ -24,7 +24,7 @@ export default function useAddress() {
   const { data: listAddress = [], isLoading: loading } = useQuery<
     AddressItem[]
   >({
-    queryKey: [QUERY_KEY_ADDRESS.ADDRESS],
+    queryKey: [QUERY_KEY_ADDRESS.LIST],
     queryFn: async () => {
       const response = await getAllAddressUser();
       if (response.status === 200) {
@@ -117,7 +117,7 @@ export default function useAddress() {
           }
           // Làm mới lại danh sách với object form
           queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY_ADDRESS.ADDRESS],
+            queryKey: [QUERY_KEY_ADDRESS.LIST],
           });
         }
       },

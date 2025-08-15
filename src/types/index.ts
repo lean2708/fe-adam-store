@@ -154,3 +154,15 @@ export type TBranch = {
   createdAt?: string;
   updatedAt?: string;
 };
+
+export type TPromotion = {
+  id?: number;
+  code?: string;
+  description?: string;
+  discountPercent?: number;
+  startDate?: Date | string;
+  endDate?: Date | string;
+  status?: 'ACTIVE' | 'INACTIVE';
+  createdBy?: string;
+  createdAt?: Date | string;
+};

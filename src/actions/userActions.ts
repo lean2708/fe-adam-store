@@ -1,13 +1,14 @@
-"use server";
+'use server';
 
-import type { ActionResponse } from "@/lib/types/actions";
+import type { ActionResponse } from '@/lib/types/actions';
 import type {
   UserResponse,
   UserCreationRequest,
   UserUpdateRequest,
   PageResponseUserResponse,
-  PageResponseRoleResponse
-} from "@/api-client/models";
+  PageResponseRoleResponse,
+  PageResponsePromotionResponse,
+} from '@/api-client/models';
 import {
   fetchAllUsersForAdmin,
   createUser,
@@ -16,9 +17,9 @@ import {
   restoreUser,
   fetchUserById,
   fetchAllRoles,
-} from "@/lib/data/user";
-import { changePassword1, getMyInfoApi } from "@/lib/data/auth";
-
+  fetchPromotionsbyUser,
+} from '@/lib/data/user';
+import { changePassword1, getMyInfoApi } from '@/lib/data/auth';
 
 /**
  * Fetch all users for admin
@@ -26,7 +27,7 @@ import { changePassword1, getMyInfoApi } from "@/lib/data/auth";
 export async function fetchAllUsersAction(
   page: number = 0,
   size: number = 10,
-  sort: string[] = ["id,desc"]
+  sort: string[] = ['id,desc']
 ): Promise<ActionResponse<PageResponseUserResponse>> {
   try {
     const data = await fetchAllUsersForAdmin(page, size, sort);
@@ -37,7 +38,7 @@ export async function fetchAllUsersAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch users",
+      message: error instanceof Error ? error.message : 'Failed to fetch users',
     };
   }
 }
@@ -57,7 +58,7 @@ export async function createUserAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to create user",
+      message: error instanceof Error ? error.message : 'Failed to create user',
     };
   }
 }
@@ -81,10 +82,10 @@ export async function updateUserAction(
       data,
     };
   } catch (error) {
-    console.error("Error occurred during user update:", error);
+    console.error('Error occurred during user update:', error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to update user",
+      message: error instanceof Error ? error.message : 'Failed to update user',
     };
   }
 }
@@ -104,7 +105,7 @@ export async function deleteUserAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to delete user",
+      message: error instanceof Error ? error.message : 'Failed to delete user',
     };
   }
 }
@@ -124,7 +125,8 @@ export async function restoreUserAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to restore user",
+      message:
+        error instanceof Error ? error.message : 'Failed to restore user',
     };
   }
 }
@@ -145,7 +147,28 @@ export async function fetchAllRolesAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch roles",
+      message: error instanceof Error ? error.message : 'Failed to fetch roles',
+    };
+  }
+}
+
+/**
+ * Fetch all roles
+ */
+export async function fetchPromotionsbyUserAction(
+  page: number = 0,
+  size: number = 10
+): Promise<ActionResponse<PageResponsePromotionResponse>> {
+  try {
+    const data = await fetchPromotionsbyUser(page, size);
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Failed to fetch roles',
     };
   }
 }
@@ -165,10 +188,11 @@ export async function fetchUserByIdAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch user",
+      message: error instanceof Error ? error.message : 'Failed to fetch user',
     };
   }
 }
+
 export async function getInfoUser() {
   try {
     const data = await getMyInfoApi();
@@ -179,14 +203,15 @@ export async function getInfoUser() {
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch user",
+      message: error instanceof Error ? error.message : 'Failed to fetch user',
     };
   }
 }
+
 export async function changePasswordAction(newPass: {
-  oldPassword: string,
-  newPassword: string,
-  confirmPassword: string
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 }) {
   try {
     const data = await changePassword1(newPass);
@@ -197,7 +222,7 @@ export async function changePasswordAction(newPass: {
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch user",
+      message: error instanceof Error ? error.message : 'Failed to fetch user',
     };
   }
 }
