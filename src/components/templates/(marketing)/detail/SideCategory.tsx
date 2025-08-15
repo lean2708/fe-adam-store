@@ -12,6 +12,7 @@ export default function SideCategory() {
   const paramCate = searchParams.get("category");
   const [categories, setCategories] = useState<TCategory[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(true);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -32,17 +33,25 @@ export default function SideCategory() {
   const handleCheckboxChange = (categoryId: string) => {
     router.push(`?category=${categoryId}`);
   };
+  const toggleDropdown = () => {
+    setIsOpen((prev) => !prev); // Chuyển đổi trạng thái hiển thị
+  };
   return (
     <aside>
       <h2 className="h-20 w-full text-4xl font-bold flex pl-8 items-center">
         {categories.find((item) => item.id === paramCate)?.title}
-        {!paramCate && 'Sản phẩm'}
+        {!paramCate && "Sản phẩm"}
       </h2>
-      <p className="w-full flex px-8 justify-between font-medium h-14 items-center border-b-1 border-[#DDDDDD]">
-        <span className="uppercase">Nhóm sản phẩm </span>
-        <ChevronRight />
+      <p
+        className="w-full flex px-8 justify-between font-medium h-14 items-center border-b-1 border-[#DDDDDD] cursor-pointer"
+        onClick={toggleDropdown} // Thêm sự kiện click để mở/đóng danh sách
+      >
+        <span className="uppercase">Nhóm sản phẩm</span>
+        <ChevronRight
+          className={`transition-transform ${isOpen ? "rotate-90" : ""}`}
+        />
       </p>
-      <nav>
+      <nav className={`overflow-hidden transition-max-height duration-500 ${isOpen ? "max-h-screen" : "max-h-0"}`}>
         <ul className="bg-[#cccccc4b]">
           {!loading &&
             categories.length > 0 &&

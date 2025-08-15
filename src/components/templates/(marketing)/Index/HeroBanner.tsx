@@ -25,7 +25,7 @@ export default function HeroBanner() {
                         <p className="text-lg md:text-xl mb-6 opacity-90">
                             {t("heroBanner.description")}
                         </p>
-                        <Button onClick={()=>route.push('/news')} className="bg-white text-black hover:bg-gray-100 px-8 py-3 text-lg font-medium">
+                        <Button onClick={()=>route.push('/news')} className="bg-white text-black hover:bg-gray-100 px-8 py-3 text-lg font-medium cursor-pointer">
                             {t("heroBanner.buyNow")}
                         </Button>
                     </div>
