@@ -24,7 +24,7 @@ export default function HeroBanner() {
                         <p className="text-lg md:text-xl mb-6 opacity-90">
                             {t("heroBanner.description")}
                         </p>
-                        <Button className="bg-white text-black hover:bg-gray-100 px-8 py-3 text-lg font-medium">
+                        <Button className="bg-white text-black hover:bg-gray-100 px-8 py-3 text-lg font-medium cursor-pointer">
                             {t("heroBanner.buyNow")}
                         </Button>
                     </div>

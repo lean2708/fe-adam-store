@@ -58,7 +58,7 @@ export function ContentNews() {
   return (
     <>
       <div className="w-full h-20 flex items-center justify-between">
-        <p className="text-[#888888]">{state.totalProducts} Sản phẩm</p>
+        <p className="text-[#888888]">{Math.min(state.totalProducts, 5*12)} Sản phẩm</p>
         <p>
           <span className="text-[#888888]">Sắp xếp theo</span>
           <select
@@ -119,6 +119,7 @@ export function ContentNews() {
       <Pagination
         totalPage={state.maxPage}
         page={state.page}
+        type="news"
         totalProduct={state.totalProducts}
         onChangePage={(val) => setState((ps) => ({ ...ps, page: val - 1 }))}
       />
