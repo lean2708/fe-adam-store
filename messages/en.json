@@ -184,6 +184,8 @@
       "paymentHistory": "Payment History"
     },
     "products": {
+      "updateProductTitle": "Update Product",
+      "updateProduct": "Update Product",
       "title": "Products Management",
       "variantsTitle": "Product Management",
       "variantsDescription": "Manage products including variants, colors, sizes, prices, and inventory",

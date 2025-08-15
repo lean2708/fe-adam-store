@@ -184,6 +184,8 @@
       "paymentHistory": "Lịch sử thanh toán"
     },
     "products": {
+      "updateProductTitle": "Cập nhật sản phẩm",
+      "updateProduct": "Cập nhật sản phẩm",
       "title": "Quản lý sản phẩm",
       "variantsTitle": "Quản lý sản phẩm",
       "variantsDescription": "Quản lý sản phẩm bao gồm biến thể, màu sắc, kích cỡ, giá cả và tồn kho",

@@ -41,6 +41,7 @@ export function ProductUpdateModal({ open, onClose, product }: ProductUpdateModa
   const t = useTranslations("Admin.products");
   const queryClient = useQueryClient();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const form = useForm<ProductUpdateFormData>({
     resolver: zodResolver(productUpdateSchema),
@@ -142,7 +143,7 @@ export function ProductUpdateModal({ open, onClose, product }: ProductUpdateModa
       variant="centered"
       size="xl"
       showOverlay={true}
-      closeOnClickOutside={true}
+      closeOnClickOutside={!isDropdownOpen}
     >
       <ModalHeader>
         <div className="flex items-center justify-between">
@@ -190,6 +191,7 @@ export function ProductUpdateModal({ open, onClose, product }: ProductUpdateModa
               <Select
                 value={form.watch("categoryId")?.toString() || ""}
                 onValueChange={(value) => form.setValue("categoryId", parseInt(value))}
+                onOpenChange={setIsDropdownOpen}
               >
                 <SelectTrigger className={`bg-[#F0F0F0] rounded-xl h-12 ${
                   form.formState.errors.categoryId ? "border-red-500" : ""

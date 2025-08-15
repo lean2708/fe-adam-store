@@ -1,6 +1,5 @@
 import React, { ReactNode, useEffect } from "react"
 import { cn } from "@/lib/utils"
-import { useClickOutside } from "@/hooks/useClickOutside"
 
 export interface ModalProps {
   open: boolean
@@ -53,11 +52,41 @@ export function Modal({
   closeOnClickOutside = true,
   ...props
 }: ModalProps) {
-  // Use the hook to detect clicks outside the modal content
-  const modalContentRef = useClickOutside(
-    closeOnClickOutside ? onClose : () => {},
-    open
-  )
+  // Custom click outside handler that ignores dropdown portals
+  const modalContentRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    if (!closeOnClickOutside || !open) return
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element
+
+      // Don't close if clicking inside the modal
+      if (modalContentRef.current?.contains(target)) {
+        return
+      }
+
+      // Don't close if clicking on dropdown content (usually portaled to body)
+      if (target.closest('[data-radix-popper-content-wrapper]') ||
+          target.closest('[data-radix-select-content]') ||
+          target.closest('[data-radix-dropdown-menu-content]') ||
+          target.closest('[data-radix-portal]') ||
+          target.closest('.select-content') ||
+          target.closest('[role="listbox"]') ||
+          target.closest('[role="option"]') ||
+          target.closest('[data-state="open"]') ||
+          // Check if the target is inside any Radix portal
+          target.closest('div[data-radix-select-content]') ||
+          target.closest('div[data-radix-dropdown-menu-content]')) {
+        return
+      }
+
+      onClose()
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [closeOnClickOutside, open, onClose])
 
   // Handle ESC key press
   useEffect(() => {
