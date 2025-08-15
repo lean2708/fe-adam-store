@@ -8,8 +8,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import AddressSectionModal from './Address/AddressSectionModal';
 import { AddNewAddressModal } from './Address/AddNewAddressModal';
+import { Skeleton } from '@/components/ui/skeleton';
 
-// DeliveryInfo.tsx
 export function DeliveryInfo() {
   const { user } = useAuth();
   const { currentAddress, loading, listAddress, setCurrentAddress } =
@@ -27,12 +27,29 @@ export function DeliveryInfo() {
     }
   };
 
-  // Xử lý loading state
   if (loading) {
-    return <p>Đang tải địa chỉ...</p>;
+    return (
+      <div>
+        <div className='flex flex-row items-center justify-between mb-3'>
+          <h2 className='text-2xl font-bold text-primary'>Giao hàng</h2>
+          <Skeleton className='w-32 h-10 rounded-full' />
+        </div>
+        <div className='flex flex-row gap-12'>
+          <div className='flex flex-col justify-between text-muted-foreground gap-2'>
+            <span>Họ và tên:</span>
+            <span>Địa chỉ nhận hàng:</span>
+            <span>Số điện thoại:</span>
+          </div>
+          <div className='flex flex-col justify-between text-muted-foreground gap-2'>
+            <Skeleton className='w-sm h-6 rounded-full' />
+            <Skeleton className='w-sm h-6 rounded-full' />
+            <Skeleton className='w-sm h-6 rounded-full' />
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  // Xử lý khi không có địa chỉ
   if (!deliveryAddress) {
     return (
       <div>
@@ -43,7 +60,7 @@ export function DeliveryInfo() {
             className='px-6 py-5 font-medium text-primary rounded-full'
             asChild
           >
-            <Link href='/account/address/add'>Thêm địa chỉ</Link>
+            <Link href='/address'>Thêm địa chỉ</Link>
           </Button>
         </div>
         <p className='text-muted-foreground'>
@@ -53,7 +70,6 @@ export function DeliveryInfo() {
     );
   }
 
-  // Hiển thị thông tin địa chỉ
   return (
     <div>
       <div className='flex flex-row items-center justify-between mb-3'>
@@ -82,6 +98,7 @@ export function DeliveryInfo() {
         </div>
       </div>
 
+      {/* Address Picker Modal */}
       <AddressSectionModal
         visible={isVisible}
         addressList={listAddress}
@@ -93,6 +110,7 @@ export function DeliveryInfo() {
         onAddNewAddress={() => setIsAddModalVisible(true)}
       />
 
+      {/* Add New Address Modal */}
       <AddNewAddressModal
         open={isAddModalVisible}
         onclose={() => setIsAddModalVisible(false)}
