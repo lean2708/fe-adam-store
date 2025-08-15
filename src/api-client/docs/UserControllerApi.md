@@ -11,6 +11,7 @@ All URIs are relative to *https://microservices.appf4.io.vn/adamstore*
 |[**getAddressesByUser**](#getaddressesbyuser) | **GET** /v1/private/users/addresses | Fetch All Addresses For User|
 |[**getPromotionsByUser**](#getpromotionsbyuser) | **GET** /v1/private/users/promotions/available | Fetch Promotions By User|
 |[**restore**](#restore) | **PATCH** /v1/admin/users/{id}/restore | Restore User|
+|[**searchUser**](#searchuser) | **GET** /v1/admin/users/search | |
 |[**update**](#update) | **PUT** /v1/private/users/{id} | Update User (No update Password)|
 |[**updateAvatar**](#updateavatar) | **PUT** /v1/private/users/avatar | Upload Avatar|
 
@@ -368,6 +369,66 @@ const { status, data } = await apiInstance.restore(
 ### Return type
 
 **ApiResponseUserResponse**
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: */*
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+|**200** | OK |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **searchUser**
+> ApiResponsePageResponseUserResponse searchUser()
+
+Api này dùng để search Users, giá trị của search: field~value hoặc field>value hoặc field<value
+
+### Example
+
+```typescript
+import {
+    UserControllerApi,
+    Configuration
+} from './api';
+
+const configuration = new Configuration();
+const apiInstance = new UserControllerApi(configuration);
+
+let page: number; //Zero-based page index (0..N) (optional) (default to 0)
+let size: number; //The size of the page to be returned (optional) (default to 10)
+let sort: Array<string>; //Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. (optional) (default to undefined)
+let search: Array<string>; // (optional) (default to undefined)
+
+const { status, data } = await apiInstance.searchUser(
+    page,
+    size,
+    sort,
+    search
+);
+```
+
+### Parameters
+
+|Name | Type | Description  | Notes|
+|------------- | ------------- | ------------- | -------------|
+| **page** | [**number**] | Zero-based page index (0..N) | (optional) defaults to 0|
+| **size** | [**number**] | The size of the page to be returned | (optional) defaults to 10|
+| **sort** | **Array&lt;string&gt;** | Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported. | (optional) defaults to undefined|
+| **search** | **Array&lt;string&gt;** |  | (optional) defaults to undefined|
+
+
+### Return type
+
+**ApiResponsePageResponseUserResponse**
 
 ### Authorization
 
