@@ -32,7 +32,7 @@ export default function Colors({ tColors, onChangeColor }: ColorsProps) {
           <button
             key={tColor.id}
             className={cn(
-              'w-14 h-8 rounded-full border border-accent-foreground [&.active]:outline [&.active]:outline-offset-2 [&.active]:outline-accent-foreground',
+              'w-14 h-8 rounded-full border border-accent-foreground [&.active]:outline [&.active]:outline-offset-4 [&.active]:outline-accent-foreground',
               tColor?.id === selectedColor && 'active'
             )}
             style={{ backgroundColor: tColor.name }}
