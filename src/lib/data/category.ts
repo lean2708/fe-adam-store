@@ -1,9 +1,8 @@
 import type { TCategory } from "@/types";
-import type { CategoryRequest } from "@/api-client/models";
+import type { ApiResponsePageResponseProductResponse, CategoryRequest } from "@/api-client/models";
 import { ControllerFactory } from "./factory-api-client";
-import { transformCategoryResponseToTCategory } from "./transform/category";
-import { transformProductResponseToTProduct } from "./transform/product";
-import { ApiResponsePageResponseProductResponse } from "@/api-client";
+import { transformCategoryResponseToTCategory, transformApiResponsePageResponseCategoryToActionResponse } from "./transform/category";
+import { ActionResponse } from "../types/actions";
 
 /**
  * Helper to get an instance of CategoryControllerApi with NextAuth using factory.
@@ -15,27 +14,25 @@ async function getCategoryController() {
 /**
  * Fetch all categories for user (public).
  */
-export async function fetchAllCategoriesApi(
-  page?: number,
-  size?: number,
-  sort?: string[]
-): Promise<TCategory[]> {
-  const api = await getCategoryController();
-  const response = await api.fetchAll3({ page, size, sort });
-  if (response.data.code !== 200) {
-    throw response.data;
+export async function fetchAllCategoriesApi(page?: number, size?: number, sort?: string[]): Promise<ActionResponse<TCategory[]>> {
+  try {
+    const api = await getCategoryController();
+    const response = await api.fetchAll3({ page, size, sort });
+
+    return transformApiResponsePageResponseCategoryToActionResponse(response.data);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to fetch categories",
+    };
   }
-  return (response.data.result?.items ?? []).map(
-    transformCategoryResponseToTCategory
-  );
 }
 
 /**
  * Create a new category (admin).
  */
-export async function createCategoryApi(
-  data: CategoryRequest
-): Promise<TCategory> {
+export async function createCategoryApi(data: CategoryRequest): Promise<TCategory> {
   const api = await getCategoryController();
   const response = await api.create8({ categoryRequest: data });
   if (response.data.code !== 200) {
@@ -48,10 +45,7 @@ export async function createCategoryApi(
 /**
  * Update a category (admin).
  */
-export async function updateCategoryApi(
-  id: number,
-  data: any
-): Promise<TCategory> {
+export async function updateCategoryApi(id: number, data: CategoryRequest): Promise<TCategory> {
   const api = await getCategoryController();
   const response = await api.update7({ id, categoryRequest: data });
   if (response.data.code !== 200) {
@@ -90,24 +84,20 @@ export async function restoreCategoryApi(id: number): Promise<TCategory> {
 /**
  * Fetch all categories for admin (admin).
  */
-export async function fetchAllCategoriesForAdminApi(
-  page?: number,
-  size?: number,
-  sort?: string[]
-): Promise<TCategory[]> {
-  const api = await getCategoryController();
-  const response = await api.fetchAllCategoriesForAdmin({ page, size, sort });
-  if (response.data.code !== 200) {
-    throw response.data;
-  }
-  return (response.data.result?.items ?? []).map(
-    transformCategoryResponseToTCategory
-  );
-}
+export async function fetchAllCategoriesForAdminApi(page?: number, size?: number, sort?: string[]): Promise<ActionResponse<TCategory[]>> {
+  try {
+    const api = await getCategoryController();
+    const response = await api.fetchAllCategoriesForAdmin({ page, size, sort });
 
-/**
- * Fetch all product by category.
- */
+    return transformApiResponsePageResponseCategoryToActionResponse(response.data);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to fetch categories",
+    };
+  }
+}
 export async function fetchAllProductByCategoryApi(
   categoryId: string,
   page: number,

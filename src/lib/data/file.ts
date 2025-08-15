@@ -3,6 +3,9 @@ import type {
   FileResponse,
   PageResponseFileResponse
 } from "@/api-client/models";
+import { ActionResponse } from "../types/actions";
+import { extractErrorMessage } from "../utils";
+import { transformApiResponsePageResponseFileToActionResponse } from "./transform/file";
 
 /**
  * Get all files
@@ -11,35 +14,49 @@ export async function fetchAllFiles(
   page: number = 0,
   size: number = 20,
   sort: string[] = ["id,desc"]
-): Promise<PageResponseFileResponse> {
-  const controller = await ControllerFactory.getFileController();
-  const response = await controller.getAllFiles({
-    page,
-    size,
-    sort
-  });
+): Promise<ActionResponse<FileResponse[]>> {
+  try {
+    const controller = await ControllerFactory.getFileController();
+    const response = await controller.getAllFiles({
+      page,
+      size,
+      sort
+    });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to fetch files");
+    return transformApiResponsePageResponseFileToActionResponse(response.data);
+  } catch (error) {
+    console.error("Error fetching files:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to fetch files",
+    };
   }
-
-  return response.data.result!;
 }
 
 /**
  * Upload multiple images
  */
-export async function uploadImages(files: File[]){
-  const controller = await ControllerFactory.getFileController();
-  const response = await controller.uploadImage({
-    files: files
-  });
+export async function uploadImages(files: File[]): Promise<ActionResponse<FileResponse[]>> {
+  try {
+    const controller = await ControllerFactory.getFileController();
+    const response = await controller.uploadImage({
+      files
+    });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to upload images");
+    return {
+      success: response.data.code === 200,
+      message: response.data.message,
+      data: response.data.result || [],
+      code: response.data.code,
+    };
+  } catch (error) {
+    const extractedError = extractErrorMessage(error, "Tải lên hình ảnh thất bại");
+    return {
+      success: false,
+      message: extractedError.message,
+      code: 500,
+    };
   }
-
-  return response.data.result || [];
 }
 
 /**

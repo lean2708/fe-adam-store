@@ -7,6 +7,7 @@ import {
   fetchBranchByIdApi,
   updateBranchApi,
   fetchActiveBranchesApi,
+  restoreBranchesApi,
 } from "@/lib/data/branch";
 import { branchSchema, updateBranchSchema } from "./schema/branchSchema";
 import type { ActionResponse } from "@/lib/types/actions";
@@ -21,11 +22,7 @@ export async function addBranchAction(formData: FormData): Promise<ActionRespons
   const location = formData.get("location") as string;
   const phone = formData.get("phone") as string;
 
-  const validatedFields = branchSchema.safeParse({
-    name,
-    location,
-    phone,
-  });
+  const validatedFields = branchSchema.safeParse({ name, location, phone, });
 
   if (!validatedFields.success) {
     return {
@@ -35,33 +32,8 @@ export async function addBranchAction(formData: FormData): Promise<ActionRespons
     };
   }
 
-  try {
-    const created = await createBranchApi({
-      name,
-      location,
-      phone,
-    });
-
-    if (!created) {
-      return {
-        success: false,
-        message: "Không thể tạo chi nhánh",
-      };
-    }
-
-    return {
-      success: true,
-      message: "Tạo chi nhánh thành công",
-      data: created,
-    };
-  } catch (error) {
-    const extractedError = extractErrorMessage(error, "Tạo chi nhánh thất bại");
-    return {
-      success: false,
-      message: extractedError.message,
-      apiError: extractedError,
-    };
-  }
+  const created = await createBranchApi({ name, location, phone, });
+  return created
 }
 
 /**
@@ -86,30 +58,8 @@ export async function updateBranchAction(branchId: string, formData: FormData): 
       errors: validatedFields.error.flatten().fieldErrors,
     };
   }
-
-  try {
-    const updated = await updateBranchApi(branchId, updateData);
-
-    if (!updated) {
-      return {
-        success: false,
-        message: "Không thể cập nhật chi nhánh",
-      };
-    }
-
-    return {
-      success: true,
-      message: "Cập nhật chi nhánh thành công",
-      data: updated,
-    };
-  } catch (error) {
-    const extractedError = extractErrorMessage(error, "Cập nhật chi nhánh thất bại");
-    return {
-      success: false,
-      message: extractedError.message,
-      apiError: extractedError,
-    };
-  }
+  const updated = await updateBranchApi(branchId, updateData);
+  return updated;
 }
 
 /**
@@ -118,17 +68,9 @@ export async function updateBranchAction(branchId: string, formData: FormData): 
 export async function deleteBranchAction(branchId: string): Promise<ActionResponse> {
   try {
     const deleted = await deleteBranchApi(Number(branchId));
-
-    if (!deleted) {
-      return {
-        success: false,
-        message: "Không thể xóa chi nhánh",
-      };
-    }
-
     return {
-      success: true,
-      message: "Xóa chi nhánh thành công",
+      success: deleted.code === 204,
+      message: deleted.message,
     };
   } catch (error) {
     const extractedError = extractErrorMessage(error, "Xóa chi nhánh thất bại");
@@ -146,10 +88,7 @@ export async function deleteBranchAction(branchId: string): Promise<ActionRespon
 export async function getAllBranchesAction(page?: number, size?: number, sort?: string[]): Promise<ActionResponse<TBranch[]>> {
   try {
     const branches = await fetchAllBranchesApi(page, size, sort);
-    return {
-      success: true,
-      data: branches,
-    };
+    return branches;
   } catch (error) {
     const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
@@ -204,6 +143,21 @@ export async function getActiveBranchesAction(): Promise<ActionResponse<TBranch[
       success: false,
       message: extractedError.message,
       apiError: extractedError,
+    };
+  }
+}
+
+export async function restoreBranchesAction(branchId: string): Promise<ActionResponse<TBranch>> {
+  try {
+    const data = await restoreBranchesApi(Number(branchId));
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to restore promotion",
     };
   }
 }

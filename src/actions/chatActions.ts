@@ -1,7 +1,7 @@
 "use server";
 
 import type { ActionResponse } from "@/lib/types/actions";
-import type { 
+import type {
   ChatMessageResponse,
   ConversationResponse,
   ConversationRequest
@@ -23,9 +23,12 @@ export async function fetchMessagesAction(
 ): Promise<ActionResponse<ChatMessageResponse[]>> {
   try {
     const data = await fetchMessages(conversationId);
+    const sortedData = (data || []).sort(
+      (a, b) => new Date(a.createdDate || '').getTime() - new Date(b.createdDate || '').getTime()
+    );
     return {
       success: true,
-      data,
+      data: sortedData,
     };
   } catch (error) {
     return {

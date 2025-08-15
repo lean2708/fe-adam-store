@@ -1,7 +1,6 @@
 import { ControllerFactory } from "./factory-api-client";
-import type { 
-  PaymentHistoryResponse, 
-  PageResponsePaymentHistoryResponse 
+import type {
+  PageResponsePaymentHistoryResponse
 } from "@/api-client/models";
 
 /**
@@ -22,7 +21,7 @@ export async function searchPaymentHistories(
     page,
     size,
     sort,
-    paymentStatus
+    paymentStatus: paymentStatus as any
   });
 
   if (response.data.code !== 200) {

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react"
+import React, { ReactNode, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { useClickOutside } from "@/hooks/useClickOutside"
 
@@ -53,10 +53,31 @@ export function Modal({
   closeOnClickOutside = true,
   ...props
 }: ModalProps) {
-  const modalRef = useClickOutside(
-    (closeOnClickOutside && variant !== "centered") ? onClose : () => {},
+  // Use the hook to detect clicks outside the modal content
+  const modalContentRef = useClickOutside(
+    closeOnClickOutside ? onClose : () => {},
     open
   )
+
+  // Handle ESC key press
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && open) {
+        onClose()
+      }
+    }
+
+    if (open) {
+      document.addEventListener('keydown', handleEscapeKey)
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = 'hidden'
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey)
+      document.body.style.overflow = 'unset'
+    }
+  }, [open, onClose])
 
   if (!open) return null
 
@@ -65,19 +86,11 @@ export function Modal({
     return (
       <>
         {showOverlay && (
-          <div className="fixed inset-0 bg-black/30 z-40 transition-opacity duration-300" />
+          <div className="fixed inset-0 bg-black/30 z-40 transition-opacity duration-300 w-screen h-screen" />
         )}
-        <div
-          className={variantStyles.centered}
-          onClick={closeOnClickOutside ? (e) => {
-            // Only close if clicking on the backdrop (not the modal content)
-            if (e.target === e.currentTarget) {
-              // onClose()
-            }
-          } : undefined}
-        >
+        <div className={variantStyles.centered}>
           <div
-            ref={modalRef}
+            ref={modalContentRef}
             className={cn(
               "relative bg-white rounded-lg shadow-xl mx-4 my-8 z-50 flex flex-col overflow-hidden",
               sizeStyles[size],
@@ -101,10 +114,10 @@ export function Modal({
     return (
       <>
         {showOverlay && (
-          <div className="fixed inset-0 bg-black/30 z-40 transition-opacity duration-300" />
+          <div className="fixed inset-0 bg-black/30 z-40 transition-opacity duration-300 w-screen h-screen" />
         )}
         <div
-          ref={modalRef}
+          ref={modalContentRef}
           className={cn(
             variantStyles.sidebar,
             sizeStyles[size],
@@ -127,10 +140,10 @@ export function Modal({
   return (
     <>
       {showOverlay && (
-        <div className="fixed inset-0 bg-black/30 z-40 transition-opacity duration-300" />
+        <div className="fixed inset-0 bg-black/30 z-40 transition-opacity duration-300 w-screen h-screen" />
       )}
       <div
-        ref={modalRef}
+        ref={modalContentRef}
         className={cn(
           variant !== "custom" ? variantStyles[variant] : "",
           variant !== "custom" ? sizeStyles[size] : "",

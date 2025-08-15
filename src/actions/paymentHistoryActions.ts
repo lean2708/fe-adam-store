@@ -1,14 +1,12 @@
 "use server";
 
 import type { ActionResponse } from "@/lib/types/actions";
-import type {
-  PaymentHistoryResponse,
-  PageResponsePaymentHistoryResponse
-} from "@/api-client/models";
+import type { TPaymentHistory } from "@/types";
 import {
   searchPaymentHistories,
   deletePaymentHistory
 } from "@/lib/data/paymentHistory";
+import { transformPaymentHistoryResponses } from "@/lib/data/transfer";
 
 /**
  * Search payment histories for admin
@@ -20,7 +18,7 @@ export async function searchPaymentHistoriesAction(
   size: number = 10,
   sort: string[] = ["paymentTime,desc"],
   paymentStatus?: 'PAID' | 'PENDING' | 'REFUNDED' | 'CANCELED' | 'FAILED'
-): Promise<ActionResponse<PageResponsePaymentHistoryResponse>> {
+): Promise<ActionResponse<{ items: TPaymentHistory[]; totalItems: number; totalPages: number }>> {
   try {
     const data = await searchPaymentHistories(
       startDate,
@@ -32,7 +30,11 @@ export async function searchPaymentHistoriesAction(
     );
     return {
       success: true,
-      data,
+      data: {
+        items: transformPaymentHistoryResponses(data.items || []),
+        totalItems: data.totalItems || 0,
+        totalPages: data.totalPages || 0
+      },
     };
   } catch (error) {
     return {

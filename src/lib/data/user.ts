@@ -3,8 +3,12 @@ import type {
   UserResponse,
   UserCreationRequest,
   PageResponseUserResponse,
-  PageResponseRoleResponse
+  PageResponseRoleResponse,
+  UserUpdateRequest
 } from "@/api-client/models";
+import { ActionResponse } from "../types/actions";
+import { extractErrorMessage } from "../utils";
+import { transformUserResponseToTUser, transformApiResponsePageResponseUserToActionResponse } from "./transform/user";
 
 // Legacy function - keeping for backward compatibility
 export async function fetchAllAddressUserApi() {
@@ -20,35 +24,49 @@ export async function fetchAllUsersForAdmin(
   page: number = 0,
   size: number = 10,
   sort: string[] = ["id,desc"]
-): Promise<PageResponseUserResponse> {
-  const controller = await ControllerFactory.getUserController();
-  const response = await controller.fetchAllForAdmin({
-    page,
-    size,
-    sort
-  });
+): Promise<ActionResponse<UserResponse[]>> {
+  try {
+    const controller = await ControllerFactory.getUserController();
+    const response = await controller.fetchAllForAdmin({
+      page,
+      size,
+      sort
+    });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to fetch users");
+    return transformApiResponsePageResponseUserToActionResponse(response.data);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to fetch users",
+    };
   }
-
-  return response.data.result!;
 }
 
 /**
  * Create a new user
  */
-export async function createUser(userData: UserCreationRequest): Promise<UserResponse> {
-  const controller = await ControllerFactory.getUserController();
-  const response = await controller.create4({
-    userCreationRequest: userData
-  });
+export async function createUser(userData: UserCreationRequest): Promise<ActionResponse<UserResponse>> {
+  try {
+    const controller = await ControllerFactory.getUserController();
+    const response = await controller.create4({
+      userCreationRequest: userData
+    });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to create user");
+    return {
+      success: response.data.code === 200,
+      message: response.data.message,
+      data: transformUserResponseToTUser(response.data?.result || {}),
+      code: response.data.code,
+    };
+  } catch (error) {
+    const extractedError = extractErrorMessage(error, "Tạo người dùng thất bại");
+    return {
+      success: false,
+      message: extractedError.message,
+      code: 500,
+    };
   }
-
-  return response.data.result!;
 }
 
 /**
@@ -56,16 +74,29 @@ export async function createUser(userData: UserCreationRequest): Promise<UserRes
  */
 export async function updateUser(
   id: number,
-  userData: {
-    name: string;
-    dob?: string;
-    gender: string;
-    roleIds: number[];
+  userData: UserUpdateRequest
+): Promise<ActionResponse<UserResponse>> {
+  try {
+    const controller = await ControllerFactory.getUserController();
+    const response = await controller.update({
+      id,
+      userUpdateRequest: userData
+    });
+
+    return {
+      success: response.data.code === 200,
+      message: response.data.message,
+      data: transformUserResponseToTUser(response.data?.result || {}),
+      code: response.data.code,
+    };
+  } catch (error) {
+    const extractedError = extractErrorMessage(error, "Cập nhật người dùng thất bại");
+    return {
+      success: false,
+      message: extractedError.message,
+      code: 500,
+    };
   }
-): Promise<UserResponse> {
-  const api = await ControllerFactory.getUserController();
-  const response = await api.update({ id: id, userUpdateRequest: userData })
-  return response.data.result!;
 }
 
 
@@ -94,15 +125,25 @@ export async function deleteUser(id: number): Promise<void> {
 /**
  * Restore a user
  */
-export async function restoreUser(id: number): Promise<UserResponse> {
-  const controller = await ControllerFactory.getUserController();
-  const response = await controller.restore({ id });
+export async function restoreUser(id: number): Promise<ActionResponse<UserResponse>> {
+  try {
+    const controller = await ControllerFactory.getUserController();
+    const response = await controller.restore({ id });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to restore user");
+    return {
+      success: response.data.code === 200,
+      message: response.data.message,
+      data: transformUserResponseToTUser(response.data?.result || {}),
+      code: response.data.code,
+    };
+  } catch (error) {
+    const extractedError = extractErrorMessage(error, "Khôi phục người dùng thất bại");
+    return {
+      success: false,
+      message: extractedError.message,
+      code: 500,
+    };
   }
-
-  return response.data.result!;
 }
 
 /**

@@ -4,31 +4,49 @@ import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { searchOrdersForAdminAction } from "@/actions/orderActions";
-import type { OrderResponse } from "@/api-client/models";
+import type { TOrder } from "@/types";
 import Link from "next/link";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
-export function RecentOrders() {
-  const [orders, setOrders] = useState<OrderResponse[]>([]);
+interface RecentOrdersProps {
+  dateRange?: {
+    from: string;
+    to: string;
+  };
+}
+
+export function RecentOrders({ dateRange }: RecentOrdersProps) {
+  const [orders, setOrders] = useState<TOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const locale = useLocale();
+  const t = useTranslations("Admin.orders");
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        // Get recent orders from the last 30 days
-        const now = new Date();
-        const thirtyDaysAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
+        // Use dateRange if provided, otherwise default to last 30 days
+        let startDate: string;
+        let endDate: string;
 
-        const startDate = thirtyDaysAgo.toISOString().split('T')[0];
-        const endDate = now.toISOString().split('T')[0];
+        if (dateRange) {
+          startDate = dateRange.from;
+          endDate = dateRange.to;
+          console.log("RecentOrders: Using date range", { startDate, endDate });
+        } else {
+          // Default to last 30 days
+          const now = new Date();
+          const thirtyDaysAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
+          startDate = thirtyDaysAgo.toISOString().split('T')[0];
+          endDate = now.toISOString().split('T')[0];
+          console.log("RecentOrders: Using default 30-day range", { startDate, endDate });
+        }
 
         const result = await searchOrdersForAdminAction(
           startDate,
           endDate,
           0, // page
-          5, // size - show only 5 recent orders
+          6, // size - show only 5 recent orders
           ["orderDate,desc"] // sort by creation date descending
         );
 
@@ -43,7 +61,7 @@ export function RecentOrders() {
     };
 
     fetchOrders();
-  }, []);
+  }, [dateRange]);
 
 
 
@@ -67,15 +85,15 @@ export function RecentOrders() {
   const getStatusText = (status: string) => {
     switch (status) {
       case 'DELIVERED':
-        return 'Delivered';
+        return t("delivered");
       case 'PROCESSING':
-        return 'Processing';
+        return t("processing");
       case 'SHIPPED':
-        return 'Shipped';
+        return t("shipped");
       case 'CANCELLED':
-        return 'Cancelled';
+        return t("cancelled");
       case 'PENDING':
-        return 'Pending';
+        return t("pending");
       default:
         return status;
     }
@@ -109,9 +127,10 @@ export function RecentOrders() {
   return (
     <div className="space-y-4">
       {orders.map((order) => {
-        const customerName = order.customerName || 'Unknown Customer';
-        const customerEmail = order.address?.phone || 'No contact info';
-        const customerAvatar = undefined; // No avatar in OrderResponse
+        const customerName = order.userName;
+        const customerPhone = 'No contact info';
+        const customerAvatar = order.OrderItems[0].imageUrl; // No avatar in OrderResponse
+        const orderTotalQuantities = (order.OrderItems?.length || 0)+" sản phẩm";
 
         return (
           <div key={order.id} className="flex items-center space-x-4">
@@ -128,25 +147,28 @@ export function RecentOrders() {
                     {customerName}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    {customerEmail}
+                    {customerPhone}
+                  </p>
+                   <p className="text-sm text-muted-foreground">
+                    {orderTotalQuantities}
                   </p>
                 </div>
                 <div className="text-right">
                   <div className="text-sm font-medium">
-                    {formatCurrency(order.totalPrice || 0, locale)}
+                    {formatCurrency(parseFloat(order.totalPrice) || 0, locale)}
                   </div>
                   <div className="flex items-center space-x-2">
                     <Badge
                       variant="secondary"
-                      className={`text-xs ${getStatusColor(order.orderStatus || 'PENDING')}`}
+                      className={`text-xs ${getStatusColor(order.status || 'PENDING')}`}
                     >
-                      {getStatusText(order.orderStatus || 'PENDING')}
+                      {getStatusText(order.status || 'PENDING')}
                     </Badge>
                   </div>
                 </div>
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                {order.orderDate ? formatDate(order.orderDate, locale, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Unknown date'}
+                {order.createdAt ? formatDate(order.createdAt.toISOString(), locale, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Unknown date'}
               </p>
             </div>
           </div>

@@ -1,17 +1,17 @@
 import { DefaultSession, DefaultUser } from "next-auth";
 import { JWT, DefaultJWT } from "next-auth/jwt";
-import type { UserResponse, EntityBasic } from "@/api-client/models";
+import type { TUser, TEntityBasic } from "@/types";
 
 declare module "next-auth" {
   interface Session {
-    user: UserResponse & {
+    user: TUser & {
       accessToken: string;
     };
     accessToken: string;
     error?: string;
   }
 
-  interface User extends UserResponse {
+  interface User extends TUser {
     accessToken: string;
     refreshToken?: string; // Optional since it's stored in httpOnly cookie
   }
@@ -22,7 +22,7 @@ declare module "next-auth/jwt" {
     accessToken: string;
     accessTokenExpires: number;
     lastUserValidation?: number;
-    user: UserResponse & {
+    user: TUser & {
       accessToken: string;
     };
     error?: string;

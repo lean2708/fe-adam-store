@@ -17,7 +17,7 @@ type TabStatus =
 export default function OrderItem(props: {
   onDeleted: (id: number) => void;
   id: number;
-  reviewed:(idProduct: number, idOrder: number)=>void,
+  reviewed: (idProduct: number, idOrder: number) => void;
   activeStatus: TabStatus;
   totalPrice?: number;
   items?: TOrderItem[];
@@ -91,7 +91,15 @@ export default function OrderItem(props: {
       </>
     ),
   };
-  const { onDeleted, reviewed, id, items, activeStatus, openModule, totalPrice } = props;
+  const {
+    onDeleted,
+    reviewed,
+    id,
+    items,
+    activeStatus,
+    openModule,
+    totalPrice,
+  } = props;
   const [dropList, setDropList] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -114,12 +122,21 @@ export default function OrderItem(props: {
   };
   return (
     <>
-      <ItemProductOrder item={items[0]} active={activeStatus} reviewed={(idProduct: number)=>reviewed(idProduct, id)} />
+      <ItemProductOrder
+        item={items[0]}
+        active={activeStatus}
+        reviewed={(idProduct: number) => reviewed(idProduct, id)}
+      />
       {dropList &&
         items
           .slice(1)
           .map((item: TOrderItem) => (
-            <ItemProductOrder key={item.id} item={item} active={activeStatus} reviewed={(idProduct: number)=>reviewed(idProduct, id)} />
+            <ItemProductOrder
+              key={item.id}
+              item={item}
+              active={activeStatus}
+              reviewed={(idProduct: number) => reviewed(idProduct, id)}
+            />
           ))}
       {!dropList && items.length > 1 && (
         <button
@@ -150,7 +167,11 @@ export default function OrderItem(props: {
   );
 }
 
-function ItemProductOrder(props: { item: TOrderItem; active: TabStatus, reviewed: (idProduct: number)=>void }) {
+function ItemProductOrder(props: {
+  item: TOrderItem;
+  active: TabStatus;
+  reviewed: (idProduct: number) => void;
+}) {
   const { item, reviewed, active } = props;
   const [isReview, setIsReview] = useState(false);
   return (
@@ -158,7 +179,7 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus, reviewed
       <div className="flex ">
         <img
           className="h-25 rounded-sm"
-          src={item.image?.imageUrl}
+          src={item.imageUrl}
           alt={"" + item.image?.id}
         />
         <div className="h-full flex flex-col justify-between ml-3">
@@ -191,9 +212,9 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus, reviewed
         )}
       </p>
       <ReviewModule
-      isReview={item.isReview || false}
+        isReview={item.isReview || false}
         returnRivew={() => {
-         reviewed(item.id)
+          reviewed(item.id);
         }}
         visible={isReview}
         orderItem={item}

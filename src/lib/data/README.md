@@ -160,6 +160,8 @@ src/
 │   │   ├── category.ts           # Category transformations ✅
 │   │   ├── order.ts              # Order transformations ✅
 │   │   └── product.ts            # Product transformations ✅
+│   ├── transfer/                 # Legacy transform functions
+│   │   └── index.ts              # Color, PaymentHistory, Promotion transforms ✅
 │   └── README.md                 # This documentation
 ├── actions/
 │   ├── userActions.ts            # User actions (includes admin)

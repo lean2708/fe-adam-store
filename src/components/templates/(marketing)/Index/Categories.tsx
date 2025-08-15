@@ -18,8 +18,8 @@ export default function Categories() {
         setLoading(true);
         const response = await getAllCategoriesAction();
 
-        if (response.status === 200 && response.categories) {
-          setCategories(response.categories);
+        if (response.success && response.data) {
+          setCategories(response.data);
         }
       } catch (error) {
         console.error("Failed to fetch categories:", error);
@@ -61,10 +61,8 @@ export default function Categories() {
         {categories.map((category) => (
           <CategoryItem
             key={category.id}
-            title={category.title}
-            id={category.id}
-            imageSrc={category.image}
-          />
+            title={category.name}
+            imageSrc={category.imageUrl} id={""}          />
         ))}
       </div>
     </section>

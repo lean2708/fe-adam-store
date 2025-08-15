@@ -2,6 +2,7 @@ import {
   StatisticsControllerApi,
   UserControllerApi,
   ProductControllerApi,
+  ProductVariantControllerApi,
   OrderControllerApi,
   FileControllerApi,
   RoleControllerApi,
@@ -74,6 +75,14 @@ export class ControllerFactory {
   static async getProductController(): Promise<ProductControllerApi> {
     const axiosInstance = await this.getAxiosInstance();
     return new ProductControllerApi(undefined, undefined, axiosInstance);
+  }
+
+  /**
+   * Get ProductVariant Controller
+   */
+  static async getProductVariantController(): Promise<ProductVariantControllerApi> {
+    const axiosInstance = await this.getAxiosInstance();
+    return new ProductVariantControllerApi(undefined, undefined, axiosInstance);
   }
 
   /**

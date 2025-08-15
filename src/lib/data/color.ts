@@ -1,11 +1,15 @@
 import { ControllerFactory } from "./factory-api-client";
 import { getPublicAxiosInstance } from "@/lib/auth/axios-config";
 import { ColorControllerApi } from "@/api-client";
-import type { 
+import type {
   ColorResponse,
   ColorRequest,
   PageResponseColorResponse
 } from "@/api-client/models";
+import { ActionResponse } from "../types/actions";
+import { extractErrorMessage } from "../utils";
+import { transformColorResponseToTColor, transformApiResponsePageResponseColorToActionResponse } from "./transform/color";
+import { TColor } from "@/types";
 
 /**
  * Helper to get an instance of ColorControllerApi with NextAuth using factory.
@@ -29,35 +33,49 @@ export async function fetchAllColors(
   page: number = 0,
   size: number = 20,
   sort: string[] = ["id,asc"]
-): Promise<PageResponseColorResponse> {
-  const controller = getPublicColorController();
-  const response = await controller.fetchAll2({
-    page,
-    size,
-    sort
-  });
+): Promise<ActionResponse<TColor[]>> {
+  try {
+    const controller = getPublicColorController();
+    const response = await controller.fetchAll2({
+      page,
+      size,
+      sort
+    });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to fetch colors");
+    return transformApiResponsePageResponseColorToActionResponse(response.data);
+  } catch (error) {
+    console.error("Error fetching colors:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to fetch colors",
+    };
   }
-
-  return response.data.result!;
 }
 
 /**
  * Create a new color (admin)
  */
-export async function createColor(colorData: ColorRequest): Promise<ColorResponse> {
-  const controller = await getColorController();
-  const response = await controller.create7({
-    colorRequest: colorData
-  });
+export async function createColor(colorData: ColorRequest): Promise<ActionResponse<TColor>> {
+  try {
+    const controller = await getColorController();
+    const response = await controller.create7({
+      colorRequest: colorData
+    });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to create color");
+    return {
+      success: response.data.code === 200,
+      message: response.data.message,
+      data: transformColorResponseToTColor(response.data?.result || {}),
+      code: response.data.code,
+    };
+  } catch (error) {
+    const extractedError = extractErrorMessage(error, "Tạo màu thất bại");
+    return {
+      success: false,
+      message: extractedError.message,
+      code: 500,
+    };
   }
-
-  return response.data.result!;
 }
 
 /**
@@ -66,18 +84,28 @@ export async function createColor(colorData: ColorRequest): Promise<ColorRespons
 export async function updateColor(
   id: number,
   colorData: ColorRequest
-): Promise<ColorResponse> {
-  const controller = await getColorController();
-  const response = await controller.update6({
-    id,
-    colorRequest: colorData
-  });
+): Promise<ActionResponse<TColor>> {
+  try {
+    const controller = await getColorController();
+    const response = await controller.update6({
+      id,
+      colorRequest: colorData
+    });
 
-  if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to update color");
+    return {
+      success: response.data.code === 200,
+      message: response.data.message,
+      data: transformColorResponseToTColor(response.data?.result || {}),
+      code: response.data.code,
+    };
+  } catch (error) {
+    const extractedError = extractErrorMessage(error, "Cập nhật màu thất bại");
+    return {
+      success: false,
+      message: extractedError.message,
+      code: 500,
+    };
   }
-
-  return response.data.result!;
 }
 
 /**

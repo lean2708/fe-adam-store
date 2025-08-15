@@ -1,29 +1,15 @@
-import { OrderControllerApi, OrderControllerApiCalculateShippingFeeRequest, OrderControllerApiCreate1Request, OrderControllerApiPayCallbackHandlerRequest, OrderControllerApiUpdateAddressRequest } from "@/api-client"; // Adjust path as needed
-import { getAuthenticatedAxiosInstance } from "@/lib/auth/axios-config";
 import type {
     OrderResponse,
     OrderItemResponse,
     ProductVariantBasic,
-    // Import all necessary request and response types from your API client
-    ApiResponseShippingFeeResponse,
-    ApiResponseOrderResponse,
-    // Assuming these are also generated or available
-    // RawAxiosRequestConfig // You might need this if using axios directly
-} from "@/api-client/models"; // Adjust path as needed for models
-import { fetchProductDetailByIdApi } from "../product";
+    PageResponseOrderResponse,
+} from "@/api-client/models";
+
 import { ORDER_STATUS } from "@/enums";
 import { TOrderItem, TOrder } from "@/types";
-import type { ApiResponseVNPayResponse } from "@/api-client/models"; // Add this import if not already present
+import { ActionResponse } from "@/lib/types/actions";
 
 // Assuming you have a product fetching function
-
-/**
- * Helper to get an instance of OrderControllerApi with NextAuth.
- */
-async function getOrderController() {
-    const axiosInstance = await getAuthenticatedAxiosInstance();
-    return new OrderControllerApi(undefined, undefined, axiosInstance);
-}
 
 
 
@@ -35,27 +21,9 @@ async function getOrderController() {
  * This function likely needs to fetch full product details.
  */
 async function transformProductVariantBasicToProduct(variant: ProductVariantBasic): Promise<TOrderItem['Product']> {
-    const productId = variant?.product?.id ?? 0;
-    const productDetail = await fetchProductDetailByIdApi(productId); // Fetches a more detailed product
-
-    // return {
-    //     id: productDetail?.id?.toString() ?? "",
-    //     title: productDetail?.title ?? "Unknown Product",
-    //     price: productDetail?.price?.toString() ?? "0",
-    //     description: productDetail?.description ?? "",
-    //     colors: productDetail?.colors ?? [],
-    //     sizes: productDetail?.sizes ?? [],
-    //     quantity: productDetail?.quantity ?? 0,
-    //     mainImage: productDetail?.mainImage ?? "",
-    //     images: productDetail?.images ?? [],
-    //     gender: productDetail?.gender ?? "",
-    //     categoryId: productDetail?.categoryId?.toString?.() ?? "",
-    //     createdAt: productDetail?.createdAt ? new Date(productDetail.createdAt) : new Date(0),
-    //     updatedAt: productDetail?.updatedAt ? new Date(productDetail.updatedAt) : new Date(0),
-    // };
     return {
-        id: "",
-        title: "Unknown Product",
+        id: variant?.product?.id?.toString() ?? "",
+        title: variant?.product?.name ?? "Unknown Product",
         price: "0",
         description: "",
         colors: [],
@@ -78,13 +46,14 @@ export async function transformOrderItemResponseToTOrderItem(apiOrderItem: Order
     const productData = productVariant ? await transformProductVariantBasicToProduct(productVariant) : null;
 
     return {
-        id: apiOrderItem.id?.toString() ?? "",
+        id: apiOrderItem.id ?? 0,
         orderId: "", // This will be set when transforming the full order
         quantity: apiOrderItem.quantity ?? 0,
         // unitPrice: apiOrderItem.unitPrice ?? 0,
         color: productVariant?.color?.name ?? "N/A",
         size: productVariant?.size?.id ?? 0,
         productId: productData?.id ?? "",
+        imageUrl: apiOrderItem.image?.imageUrl ?? "",
         Product: productData || {
             id: "",
             title: "N/A",
@@ -123,6 +92,7 @@ export async function transformOrderResponseToTOrder(apiOrder: OrderResponse): P
         createdAt: apiOrder.orderDate ? new Date(apiOrder.orderDate) : new Date(),
         updatedAt: apiOrder.orderDate ? new Date(apiOrder.orderDate) : new Date(),
         status: apiOrder.orderStatus ? (apiOrder.orderStatus as unknown as ORDER_STATUS) : ORDER_STATUS.PROGRESS, // Cast to your enum, provide default
+        userName: apiOrder.customerName ?? "Guest",
         // customerName: apiOrder.customerName ?? "Guest",
         address: [
             address?.streetDetail,
@@ -133,4 +103,37 @@ export async function transformOrderResponseToTOrder(apiOrder: OrderResponse): P
         totalPrice: (apiOrder.totalPrice?.toString() ?? "0"),
         userId: "", // Populate from auth context or API if available
     };
+}
+
+/**
+ * Transform array of OrderResponse to TOrder array
+ */
+export async function transformOrderArrayToTOrderArray(apiOrders: OrderResponse[]): Promise<TOrder[]> {
+    const transformPromises = apiOrders.map(transformOrderResponseToTOrder);
+    return Promise.all(transformPromises);
+}
+
+/**
+ * Transform API page response to ActionResponse for orders
+ */
+export async function transformPageResponseOrderToActionResponse(
+    apiResponse: PageResponseOrderResponse
+): Promise<ActionResponse<{ items: TOrder[], totalItems: number, totalPages: number }>> {
+    try {
+        const transformedOrders = await transformOrderArrayToTOrderArray(apiResponse.items ?? []);
+
+        return {
+            success: true,
+            data: {
+                items: transformedOrders,
+                totalItems: apiResponse.totalItems ?? 0,
+                totalPages: apiResponse.totalPages ?? 0
+            }
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error instanceof Error ? error.message : "Failed to transform orders",
+        };
+    }
 }

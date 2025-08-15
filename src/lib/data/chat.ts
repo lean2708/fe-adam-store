@@ -1,5 +1,5 @@
 import { ControllerFactory } from "./factory-api-client";
-import type { 
+import type {
   ChatMessageResponse,
   ConversationResponse,
   ConversationRequest
@@ -11,6 +11,7 @@ import type {
 export async function fetchMessages(conversationId: string): Promise<ChatMessageResponse[]> {
   const controller = await ControllerFactory.getChatMessageController();
   const response = await controller.getMessages({ conversationId });
+
 
   if (response.data.code !== 200) {
     throw new Error(response.data.message || "Failed to fetch messages");

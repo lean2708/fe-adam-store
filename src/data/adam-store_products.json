@@ -1,0 +1,217 @@
+[
+  {
+    "id": 2,
+    "name": "ÁO NỈ PHỐI KẺ SỌC KHÁC MÀU",
+    "description": "Áo nỉ thiết kế phối kẻ sọc khác màu độc đáo, chất vải mềm mại giữ ấm tốt, phù hợp cho những ngày se lạnh."
+  },
+  {
+    "id": 3,
+    "name": "ÁO DENIM KIỂU SƠ MI THÊU HỌA TIẾT",
+    "description": "Áo denim thiết kế kiểu sơ mi kết hợp hoạ tiết thêu tinh tế, mang phong cách cá tính, dễ phối đồ, phù hợp cả đi chơi và dạo phố."
+  },
+  {
+    "id": 5,
+    "name": "ÁO POLO DỆT KIM COTTON - LEN",
+    "description": "Áo polo dệt kim chất liệu cotton pha len, mềm mại, co giãn tốt, thích hợp mặc đi làm, đi chơi hoặc dạo phố."
+  },
+  {
+    "id": 27,
+    "name": "QUẦN SHORT BERMUDA VẢI PHA LINEN",
+    "description": "Quần short Bermuda vải pha linen, thoáng mát, lịch sự, thích hợp dạo phố, đi làm hay đi chơi."
+  },
+  {
+    "id": 28,
+    "name": "QUẦN SHORT BERMUDA VẢI DỆT JACQUARD",
+    "description": "Quần short Bermuda vải dệt Jacquard, họa tiết sang trọng, thoáng mát, phù hợp đi chơi và dạo phố."
+  },
+  {
+    "id": 29,
+    "name": "ÁO PHÔNG CỔ ĐÍNH KHUY",
+    "description": "Áo phông cổ đính khuy, chất liệu thoải mái, phù hợp mặc đi làm, đi chơi, dễ phối đồ."
+  },
+  {
+    "id": 31,
+    "name": "JEANS BARREL FIT LIMITED EDITION",
+    "description": "Quần jeans dáng barrel fit phiên bản giới hạn, chất denim cao cấp, form rộng thoải mái, phong cách thời thượng."
+  },
+  {
+    "id": 6,
+    "name": "ÁO POLO DỆT SỢI DỌC",
+    "description": "Áo polo dệt sợi dọc mang lại cảm giác mát mẻ, co giãn tốt và sang trọng, thích hợp mặc hằng ngày hoặc đi chơi."
+  },
+  {
+    "id": 7,
+    "name": "ÁO KHOÁC VẢI KỸ THUẬT WATER REPELLENT",
+    "description": "Áo khoác vải kỹ thuật chống thấm nước, chống gió, thích hợp cho các hoạt động ngoài trời và thời tiết lạnh."
+  },
+  {
+    "id": 8,
+    "name": "ÁO KHOÁC BOMBER RELAXED FIT",
+    "description": "Áo khoác bomber phom relaxed, thiết kế thời trang, phù hợp đi chơi, đi làm hoặc mặc thường ngày."
+  },
+  {
+    "id": 9,
+    "name": "QUẦN SHORT BERMUDA DENIM RELAXED FIT XẾP LI",
+    "description": "Quần short Bermuda chất denim, phom relaxed fit, thiết kế xếp li hiện đại, thoải mái cho các hoạt động hằng ngày."
+  },
+  {
+    "id": 11,
+    "name": "JEANS SLIM FIT TIMELESS",
+    "description": "Quần jeans slim fit thiết kế tối giản, phù hợp mặc hằng ngày, giữ form và bền màu theo thời gian."
+  },
+  {
+    "id": 12,
+    "name": "QUẦN CHINO VẢI COTTON - SỢI GAI",
+    "description": "Quần chino vải cotton sợi gai, thoáng mát, đứng form, dễ phối đồ, phù hợp mặc đi làm hoặc dạo phố."
+  },
+  {
+    "id": 13,
+    "name": "ÁO PHÔNG IN CHỮ KHÁC MÀU",
+    "description": "Áo phông in chữ phong cách, chất vải cotton thoáng mát, phù hợp đi chơi, đi học, dễ phối đồ."
+  },
+  {
+    "id": 16,
+    "name": "ÁO SƠ MI VẢI LINEN - COTTON",
+    "description": "Áo sơ mi vải Linen pha Cotton, thoáng mát, thấm hút tốt, thích hợp đi làm, đi chơi, dễ phối đồ."
+  },
+  {
+    "id": 18,
+    "name": "QUẦN JEANS SLIM STRAIGHT FIT",
+    "description": "Quần jeans kiểu slim straight fit, thiết kế hiện đại, dễ phối đồ, phù hợp sử dụng hàng ngày hoặc đi chơi."
+  },
+  {
+    "id": 20,
+    "name": "ÁO KHOÁC VẢI BẠC MÀU CÓ MŨ",
+    "description": "Áo khoác vải bạc màu có mũ, chống nắng, chống nước nhẹ, thời trang và tiện lợi, phù hợp đi chơi và hoạt động ngoài trời."
+  },
+  {
+    "id": 22,
+    "name": "ÁO SƠ MI VẢI RŨ THÊU CHỮ",
+    "description": "Áo sơ mi vải rũ mềm mại, thêu chữ tinh tế, thích hợp mặc đi làm, đi chơi hoặc dự tiệc."
+  },
+  {
+    "id": 23,
+    "name": "ÁO SƠ MI VẢI DỆT JACQUARD THỦNG LỖ",
+    "description": "Áo sơ mi vải dệt Jacquard thủng lỗ, thoáng mát, thời trang, thích hợp cho cả đi làm và đi chơi."
+  },
+  {
+    "id": 24,
+    "name": "ÁO SƠ MI VẢI LINEN - VISCOSE HỌA TIẾT XƯƠNG RỒNG",
+    "description": "Áo sơ mi chất liệu linen - viscose với họa tiết xương rồng độc đáo, thoáng mát, phù hợp cho mùa hè và các dịp đi chơi."
+  },
+  {
+    "id": 26,
+    "name": "ÁO POLO VẢI BẠC MÀU IN CHỮ",
+    "description": "Áo polo chất liệu bạc màu, thiết kế in chữ thời trang, phù hợp mặc hàng ngày hoặc đi chơi."
+  },
+  {
+    "id": 33,
+    "name": "ÁO PHÔNG VẢI BẠC MÀU HỌA TIẾT HÌNH VẼ",
+    "description": "Áo phông vải bạc màu, in họa tiết hình vẽ độc đáo, thoáng mát, phù hợp đi chơi, dạo phố."
+  },
+  {
+    "id": 34,
+    "name": "ÁO TANK TOP VẢI BẠC MÀU IN HỌA TIẾT",
+    "description": "Áo tank top vải bạc màu in họa tiết, thoáng mát, phong cách, dễ phối đồ, phù hợp đi chơi hoặc tập luyện."
+  },
+  {
+    "id": 35,
+    "name": "ÁO PHÔNG IN HỌA TIẾT KHÁC MÀU",
+    "description": "Áo phông in họa tiết phối màu độc đáo, chất liệu thoáng mát, dễ phối đồ, phù hợp đi chơi và dạo phố."
+  },
+  {
+    "id": 36,
+    "name": "ÁO PHÔNG VARSITY VẢI DỆT THỦNG LỖ",
+    "description": "Áo phông Varsity vải dệt thủng lỗ thoáng mát, phong cách trẻ trung, dễ phối đồ, phù hợp đi chơi và dạo phố."
+  },
+  {
+    "id": 37,
+    "name": "ÁO PHÔNG HỌA TIẾT HÌNH VẼ MÔ TÔ",
+    "description": "Áo phông họa tiết hình vẽ mô tô phong cách cá tính, chất liệu thoáng mát, dễ phối đồ, phù hợp đi chơi và dạo phố."
+  },
+  {
+    "id": 40,
+    "name": "ÁO TANK TOP IN VÀ THÊU HỌA TIẾT © OTIS KWAME KYE QUAICOE",
+    "description": "Áo tank top in và thêu họa tiết độc đáo, phong cách thời trang trẻ trung, chất liệu thoáng mát, dễ phối đồ."
+  },
+  {
+    "id": 41,
+    "name": "ÁO SƠ MI DÁNG REGULAR FIT",
+    "description": "Áo sơ mi dáng regular fit, chất liệu thoáng mát, dễ phối đồ, phù hợp đi làm hoặc đi chơi."
+  },
+  {
+    "id": 42,
+    "name": "ÁO SƠ MI THÊU HỌA TIẾT KHÁC MÀU",
+    "description": "Áo sơ mi thêu họa tiết khác màu, thiết kế tinh tế, dễ phối đồ, phù hợp đi làm, đi chơi."
+  },
+  {
+    "id": 1,
+    "name": "ÁO PHÔNG HEAVYWEIGHT MAY VIỀN",
+    "description": "Áo phông chất liệu heavyweight, may viền tỉ mỉ, form rộng thoải mái, phù hợp đi chơi hoặc mặc hằng ngày."
+  },
+  {
+    "id": 4,
+    "name": "ÁO SƠ MI VẢI DỆT OXFORD",
+    "description": "Áo sơ mi chất liệu vải dệt Oxford mềm mại, bền màu, thích hợp cho môi trường công sở và cả phong cách thường ngày."
+  },
+  {
+    "id": 30,
+    "name": "QUẦN JEANS RÁCH DÁNG SKINNY FIT",
+    "description": "Quần jeans rách dáng skinny fit, co giãn nhẹ, phong cách trẻ trung, dễ phối đồ."
+  },
+  {
+    "id": 10,
+    "name": "QUẦN SHORT BERMUDA VẢI SẦN HỌA TIẾT KẺ SỌC",
+    "description": "Quần short Bermuda vải sần, họa tiết kẻ sọc hiện đại, trẻ trung, dễ phối đồ cho phong cách năng động."
+  },
+  {
+    "id": 14,
+    "name": "ÁO PHÔNG HỌA TIẾT CÂY CỌ",
+    "description": "Áo phông họa tiết cây cọ độc đáo, chất liệu cotton thoáng mát, thích hợp mặc mùa hè."
+  },
+  {
+    "id": 15,
+    "name": "ÁO PHÔNG VẢI DỆT KHÔNG ĐỀU HỌA TIẾT KẺ",
+    "description": "Áo phông vải dệt không đều tạo hiệu ứng họa tiết kẻ độc đáo, thoải mái và dễ phối đồ."
+  },
+  {
+    "id": 17,
+    "name": "QUẦN CARGO VẢI DENIM CÓ TÚI",
+    "description": "Quần cargo chất liệu denim có túi, thiết kế mạnh mẽ, phong cách đường phố, phù hợp mặc hàng ngày hoặc dạo phố."
+  },
+  {
+    "id": 19,
+    "name": "ÁO KHOÁC CỔ PHỐI LEN MÓC",
+    "description": "Áo khoác cổ phối len móc, mang phong cách retro hiện đại, chất liệu cao cấp, phù hợp thời tiết thu đông."
+  },
+  {
+    "id": 21,
+    "name": "ÁO SƠ MI VẢI COTTON - VISCOSE HỌA TIẾT KẺ",
+    "description": "Áo sơ mi vải cotton - viscose với họa tiết kẻ, chất liệu mềm mại, thoải mái, dễ phối đồ và thích hợp cho nhiều dịp."
+  },
+  {
+    "id": 25,
+    "name": "ÁO POLO BOXY FIT THÊU HỌA TIẾT",
+    "description": "Áo polo kiểu dáng boxy fit, thêu họa tiết nổi bật, thoải mái và thời trang."
+  },
+  {
+    "id": 32,
+    "name": "QUẦN JEANS FLARE FIT",
+    "description": "Quần jeans ống loe, chất denim cao cấp, tôn dáng, dễ phối đồ, phù hợp nhiều phong cách."
+  },
+  {
+    "id": 38,
+    "name": "ÁO THUN BA LỖ HỌA TIẾT VARSITY",
+    "description": "Áo thun ba lỗ họa tiết Varsity, chất liệu thoáng mát, dễ phối đồ, phù hợp đi chơi, tập thể thao."
+  },
+  {
+    "id": 39,
+    "name": "ÁO TANK TOP HỌA TIẾT BẠC MÀU",
+    "description": "Áo tank top họa tiết bạc màu, chất liệu thoáng mát, dễ phối đồ, phù hợp cho mùa hè."
+  },
+  {
+    "id": 43,
+    "name": "QUẦN JEANS VẢI SẦN KẺ SỌC",
+    "description": "Quần jeans vải sần kẻ sọc, phong cách thời trang, bền đẹp, dễ phối đồ, phù hợp đi chơi và dạo phố."
+  }
+]

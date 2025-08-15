@@ -5,6 +5,7 @@ import { getAllCategoriesAction } from "@/actions/categoryActions";
 import { TCategory } from "@/types";
 import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { log } from "console";
 
 export default function MobileSidebar({
   open,
@@ -21,9 +22,8 @@ export default function MobileSidebar({
       try {
         setLoading(true);
         const response = await getAllCategoriesAction();
-
-        if (response.status === 200 && response.categories) {
-          setCategories(response.categories);
+        if (response.success && response.data) {
+          setCategories(response.data);
         }
       } catch (error) {
         console.error("Failed to fetch categories:", error);
@@ -82,12 +82,12 @@ export default function MobileSidebar({
               </Link>
               {categories.map((category) => (
                 <Link
-                  key={category.id || category.title}
-                  href={`/detail?category=${category.id}`}
+                  key={category.id || category.name}
+                  href={`/detail?categoryId=${category.id}`}
                   className="block py-4 px-2 text-gray-900 font-medium border-b border-gray-100 hover:bg-gray-50"
                   onClick={onClose}
                 >
-                  {category.title}
+                  {category.name}
                 </Link>
               ))}
             </>

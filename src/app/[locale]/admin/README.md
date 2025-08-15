@@ -40,12 +40,18 @@ This is the admin interface for the Adam Store e-commerce platform. It provides 
 
 ```
 /admin
-├── /                    # Dashboard
+├── /                    # Dashboard (includes revenue analytics and statistics)
 ├── /users              # User Management
-├── /products           # Product Management
+├── /products           # Product Management (includes product statistics)
 ├── /orders             # Order Management
 ├── /files              # File Management
-└── /statistics         # Additional Statistics
+├── /payment-history    # Payment History Management
+├── /chat               # Chat Management
+├── /sizes              # Size Management
+├── /colors             # Color Management
+├── /branches           # Branch Management
+├── /categories         # Category Management
+└── /promotions         # Promotion Management
 ```
 
 ## Authentication & Authorization
@@ -104,25 +110,47 @@ The admin interface uses a consistent design system with:
 ```
 src/app/admin/
 ├── layout.tsx                    # Admin layout wrapper
-├── page.tsx                      # Dashboard page
+├── page.tsx                      # Dashboard page (includes statistics)
 ├── users/page.tsx               # User management
-├── products/page.tsx            # Product management
+├── products/page.tsx            # Product management (includes product statistics)
 ├── orders/page.tsx              # Order management
-└── files/page.tsx               # File management
+├── files/page.tsx               # File management
+├── payment-history/page.tsx     # Payment history management
+├── chat/page.tsx                # Chat management
+├── sizes/page.tsx               # Size management
+├── colors/page.tsx              # Color management
+├── branches/page.tsx            # Branch management
+├── categories/page.tsx          # Category management
+└── promotions/page.tsx          # Promotion management
 
 src/components/templates/admin/
 ├── AdminSidebar.tsx             # Navigation sidebar
 ├── AdminHeader.tsx              # Top header
-├── dashboard/                   # Dashboard components
+├── dashboard/                   # Dashboard components (includes statistics)
 ├── users/                       # User management components
-└── ...
+├── products/                    # Product management components
+├── orders/                      # Order management components
+├── files/                       # File management components
+├── payment-history/             # Payment history components
+├── chat/                        # Chat components
+├── sizes/                       # Size management components
+├── colors/                      # Color management components
+├── branches/                    # Branch management components
+├── categories/                  # Category management components
+└── promotions/                  # Promotion management components
 
 src/actions/
 ├── userActions.ts               # User management actions
 ├── productActions.ts            # Product management actions
 ├── orderActions.ts              # Order management actions
 ├── fileActions.ts               # File management actions
-└── statisticsActions.ts         # Statistics actions
+├── paymentHistoryActions.ts     # Payment history actions
+├── sizeActions.ts               # Size management actions
+├── colorActions.ts              # Color management actions
+├── branchActions.ts             # Branch management actions
+├── categoryActions.ts           # Category management actions
+├── promotionActions.ts          # Promotion management actions
+└── statisticsActions.ts         # Statistics actions (used by dashboard and products)
 ```
 
 ### Key Features

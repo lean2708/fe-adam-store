@@ -1,207 +1,187 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getTopSellingProductsAction } from "@/actions/statisticsActions";
-import type { TopSellingDTO } from "@/api-client/models";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bar, BarChart, XAxis, YAxis } from "recharts";
 import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from "@/components/ui/chart";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { RefreshCw, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { formatCurrency } from "@/lib/utils";
 import { useLocale } from "next-intl";
+import { useTopProducts } from "@/hooks/admin/useTopProducts";
 
-const chartConfig = {
-  soldQuantity: {
-    label: "Sold Quantity",
-    color: "#8B5CF6", // Purple color to match the design
-  },
-} satisfies ChartConfig;
+interface TopProductsProps {
+  dateRange?: {
+    from: string;
+    to: string;
+  };
+}
 
-export function TopProducts() {
-  const [products, setProducts] = useState<TopSellingDTO[]>([]);
-  const [loading, setLoading] = useState(true);
+export function TopProducts({ dateRange }: TopProductsProps) {
   const locale = useLocale();
 
-  useEffect(() => {
-    const fetchTopProducts = async () => {
-      try {
-        // Get top products for the current month
-        const now = new Date();
-        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-        
-        const startDate = startOfMonth.toISOString().split('T')[0];
-        const endDate = endOfMonth.toISOString().split('T')[0];
-
-        const result = await getTopSellingProductsAction(startDate, endDate);
-        
-        if (result.success && result.data) {
-          setProducts(result.data.slice(0, 10)); // Show top 10
-        }
-      } catch (error) {
-        console.error("Failed to fetch top products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTopProducts();
-  }, []);
+  // Use React Query hook for data fetching
+  const {
+    products,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    isFetching,
+    hasProducts
+  } = useTopProducts({
+    dateRange,
+    limit: 10
+  });
 
 
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'ACTIVE':
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-      case 'INACTIVE':
-        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-      default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
-    }
-  };
-
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'ACTIVE':
-        return 'Active';
-      case 'INACTIVE':
-        return 'Inactive';
-      default:
-        return status;
-    }
-  };
-
-  if (loading) {
+  // Loading state
+  if (isLoading) {
     return (
       <div className="space-y-4">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="flex items-center space-x-4">
-            <div className="w-8 h-8 bg-muted rounded animate-pulse" />
-            <div className="space-y-2 flex-1">
-              <div className="h-4 bg-muted rounded animate-pulse" />
-              <div className="h-3 bg-muted rounded animate-pulse w-32" />
-            </div>
-            <div className="h-4 bg-muted rounded animate-pulse w-20" />
-          </div>
-        ))}
+        {/* Header skeleton */}
+        <div className="flex items-center justify-between">
+          <div className="h-6 bg-muted rounded animate-pulse w-48" />
+          <div className="h-4 bg-muted rounded animate-pulse w-32" />
+        </div>
+
+        {/* Table skeleton */}
+        <div className="border rounded-lg">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-muted/50">
+                <TableHead className="font-medium">Tên sản phẩm</TableHead>
+                <TableHead className="font-medium text-center">Đã bán</TableHead>
+                <TableHead className="font-medium text-right">Giá</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <TableRow key={i}>
+                  <TableCell>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-12 h-12 bg-muted rounded animate-pulse" />
+                      <div className="h-4 bg-muted rounded animate-pulse w-32" />
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="h-4 bg-muted rounded animate-pulse w-16" />
+                  </TableCell>
+                  <TableCell>
+                    <div className="h-4 bg-muted rounded animate-pulse w-20" />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     );
   }
 
-  if (products.length === 0) {
+  // Error state
+  if (isError) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
-        No top selling products data available
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold">Các sản phẩm bán chạy</h3>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => refetch()}
+            disabled={isFetching}
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? 'animate-spin' : ''}`} />
+            Thử lại
+          </Button>
+        </div>
+
+        <div className="border rounded-lg p-8">
+          <div className="text-center space-y-3">
+            <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto" />
+            <div>
+              <p className="text-sm font-medium">Không thể tải dữ liệu</p>
+              <p className="text-xs text-muted-foreground">
+                {error?.message || "Đã xảy ra lỗi khi tải danh sách sản phẩm bán chạy"}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
-  // Calculate max sold quantity for progress bars
-  const maxSoldQuantity = Math.max(...products.map(p => p.soldQuantity || 0));
-
-  // Prepare chart data
-  const chartData = products.slice(0, 5).map((product, index) => ({
-    name: product.productName?.substring(0, 10) + '...' || `Product ${index + 1}`,
-    soldQuantity: product.soldQuantity || 0,
-  }));
+  // Empty state
+  if (!hasProducts) {
+    return (
+      <div className="border rounded-lg p-8">
+        <div className="text-center py-8 text-muted-foreground">
+          <p>Không có dữ liệu sản phẩm bán chạy</p>
+          <p className="text-xs mt-1">Thử thay đổi khoảng thời gian để xem dữ liệu</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-6">
-      {/* Mini Chart */}
-      {products.length > 0 && (
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base">Top 5 Products Chart</CardTitle>
-            <CardDescription>Visual representation of top selling products</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={chartConfig} className="h-[200px]">
-              <BarChart data={chartData}>
-                <XAxis
-                  dataKey="name"
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                  fontSize={10}
-                />
-                <YAxis
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                  fontSize={10}
-                />
-                <ChartTooltip
-                  content={
-                    <ChartTooltipContent
-                      formatter={(value: number) => [
-                        `${value} units`,
-                        "Sold"
-                      ]}
-                    />
-                  }
-                />
-                <Bar
-                  dataKey="soldQuantity"
-                  fill="var(--color-soldQuantity)"
-                  radius={[2, 2, 0, 0]}
-                />
-              </BarChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Product List */}
-      <div className="grid gap-4">
-        {products.map((product, index) => (
-          <div key={product.productId} className="flex items-center space-x-4 p-4 border rounded-lg">
-            <div className="flex items-center justify-center w-8 h-8 bg-primary text-primary-foreground rounded-full text-sm font-medium">
-              {index + 1}
-            </div>
-            
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between mb-2">
-                <h4 className="text-sm font-medium truncate">
-                  {product.productName || `Product #${product.productId}`}
-                </h4>
-                <Badge 
-                  variant="secondary" 
-                  className={`text-xs ${getStatusColor(product.status || 'ACTIVE')}`}
-                >
-                  {getStatusText(product.status || 'ACTIVE')}
-                </Badge>
-              </div>
-              
-              <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
-                <span>Sold: {product.soldQuantity || 0} units</span>
-                <span className="font-medium text-foreground">
-                  {formatCurrency(product.totalRevenue || 0, locale)}
-                </span>
-              </div>
-              
-              <Progress 
-                value={maxSoldQuantity > 0 ? ((product.soldQuantity || 0) / maxSoldQuantity) * 100 : 0}
-                className="h-2"
-              />
-            </div>
-          </div>
-        ))}
+    <div className="space-y-4">
+      {/* Products Table */}
+      <div className="border rounded-lg">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-muted/50">
+              <TableHead className="font-medium">Tên sản phẩm</TableHead>
+              <TableHead className="font-medium text-center">Đã bán</TableHead>
+              <TableHead className="font-medium text-right">Giá</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {products.map((product) => (
+              <TableRow key={product.productId} className="hover:bg-muted/50">
+                <TableCell>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center">
+                      <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center shadow-sm">
+                        <span className="text-xs font-medium text-blue-600">
+                          {product.productName?.charAt(0)?.toUpperCase() || 'P'}
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="font-medium text-sm">
+                        {product.productName || `Product #${product.productId}`}
+                      </div>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell className="text-center">
+                  <div className="font-medium">
+                    {(product.soldQuantity || 0).toLocaleString('vi-VN')}
+                  </div>
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="font-medium">
+                    {formatCurrency(product.totalRevenue || 0, locale)}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
-      
-      <div className="pt-4 border-t">
-        <Link 
-          href="/admin/products" 
+
+      <div className="pt-2">
+        <Link
+          href="/admin/products"
           className="text-sm text-primary hover:underline"
         >
-          View all products →
+          Xem tất cả sản phẩm →
         </Link>
       </div>
     </div>

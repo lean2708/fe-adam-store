@@ -15,7 +15,8 @@ import type {
   OrderResponse,
   PageResponseOrderResponse
 } from "@/api-client/models";
-import { SearchOrdersForAdminOrderStatusEnum } from "@/api-client/apis/order-controller-api";
+import { SearchOrdersForAdminOrderStatusEnum, TOrder } from "@/types";
+import { transformPageResponseOrderToActionResponse } from "@/lib/data/transform/order";
 
 /**
  * Cancel an order by ID using API.
@@ -88,13 +89,10 @@ export async function searchOrdersForAdminAction(
   size: number = 10,
   sort: string[] = ["id,desc"],
   orderStatus?: SearchOrdersForAdminOrderStatusEnum
-): Promise<ActionResponse<PageResponseOrderResponse>> {
+): Promise<ActionResponse<{ items: TOrder[], totalItems: number, totalPages: number }>> {
   try {
     const data = await searchOrdersForAdmin(startDate, endDate, page, size, sort, orderStatus);
-    return {
-      success: true,
-      data,
-    };
+    return await transformPageResponseOrderToActionResponse(data);
   } catch (error) {
     return {
       success: false,

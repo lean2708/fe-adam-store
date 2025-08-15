@@ -221,8 +221,9 @@ export async function createProduct(
   const response = await controller.create6({
     productRequest: productData,
   });
-
-  if (response.data.code !== 200) {
+  console.log(response);
+  
+  if (response.data.code !== 201) {
     throw new Error(response.data.message || "Failed to create product");
   }
 

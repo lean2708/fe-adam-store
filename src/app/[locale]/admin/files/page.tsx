@@ -26,16 +26,16 @@ import {
   uploadImagesAction,
   deleteFileAction
 } from "@/actions/fileActions";
-import type { FileResponse } from "@/api-client/models";
+import type { TFile } from "@/types";
 import { toast } from "sonner";
 import Image from "next/image";
-import { useTranslations, useLocale } from "next-intl";
+import { useLocale } from "next-intl";
 import { formatDate } from "@/lib/utils";
+import { AdminPagination } from "@/components/ui/pagination";
 
 export default function FilesPage() {
-  const t = useTranslations("Admin");
   const locale = useLocale();
-  const [files, setFiles] = useState<FileResponse[]>([]);
+  const [files, setFiles] = useState<TFile[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -53,7 +53,7 @@ export default function FilesPage() {
       const result = await getAllFilesAction(page, pageSize);
 
       if (result.success && result.data) {
-        let filteredFiles = result.data.items || [];
+        let filteredFiles = result.data || [];
 
         // Apply client-side filtering if needed
         if (searchTerm) {
@@ -63,8 +63,8 @@ export default function FilesPage() {
         }
 
         setFiles(filteredFiles);
-        setTotalItems(result.data.totalItems || 0);
-        setTotalPages(result.data.totalPages || 0);
+        setTotalItems(result.actionSizeResponse?.totalItems || 0);
+        setTotalPages(result.actionSizeResponse?.totalPages || 0);
         setCurrentPage(page);
       } else {
         toast.error(result.message || "Failed to fetch files");
@@ -156,7 +156,7 @@ export default function FilesPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="admin-page-container mt-4">
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -174,7 +174,7 @@ export default function FilesPage() {
             onChange={handleFileUpload}
             className="hidden"
           />
-          <Button 
+          <Button
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
           >
@@ -188,9 +188,7 @@ export default function FilesPage() {
       <Card>
         <CardHeader>
           <CardTitle>File Management</CardTitle>
-          <CardDescription>
-            View and manage all uploaded files
-          </CardDescription>
+          <CardDescription>View and manage all uploaded files</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center space-x-4 mb-6">
@@ -234,13 +232,18 @@ export default function FilesPage() {
           ) : filteredFiles.length === 0 ? (
             <div className="text-center py-12">
               <div className="text-muted-foreground">
-                {searchTerm ? "No files found matching your search" : "No files uploaded yet"}
+                {searchTerm
+                  ? "No files found matching your search"
+                  : "No files uploaded yet"}
               </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {filteredFiles.map((file) => (
-                <Card key={file.id} className="overflow-hidden group hover:shadow-md transition-shadow">
+                <Card
+                  key={file.id}
+                  className="overflow-hidden group hover:shadow-md transition-shadow"
+                >
                   <div className="aspect-square relative bg-muted">
                     {file.imageUrl ? (
                       <Image
@@ -257,26 +260,41 @@ export default function FilesPage() {
                     <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="secondary" size="icon" className="h-8 w-8">
+                          <Button
+                            variant="secondary"
+                            size="icon"
+                            className="h-8 w-8"
+                          >
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem onClick={() => window.open(file.imageUrl, '_blank')}>
+                          <DropdownMenuItem
+                            onClick={() => window.open(file.imageUrl, "_blank")}
+                          >
                             <Eye className="mr-2 h-4 w-4" />
                             View Full Size
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleCopyUrl(file.imageUrl || '')}>
+                          <DropdownMenuItem
+                            onClick={() => handleCopyUrl(file.imageUrl || "")}
+                          >
                             <Copy className="mr-2 h-4 w-4" />
                             Copy URL
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleDownload(file.imageUrl || '', file.fileName || 'file')}>
+                          <DropdownMenuItem
+                            onClick={() =>
+                              handleDownload(
+                                file.imageUrl || "",
+                                file.fileName || "file"
+                              )
+                            }
+                          >
                             <Download className="mr-2 h-4 w-4" />
                             Download
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem 
+                          <DropdownMenuItem
                             onClick={() => handleDeleteFile(file.id!)}
                             className="text-destructive"
                           >
@@ -293,16 +311,26 @@ export default function FilesPage() {
                         <h4 className="text-sm font-medium truncate flex-1">
                           {file.fileName}
                         </h4>
-                        <Badge 
-                          variant="secondary" 
-                          className={`text-xs ${getFileTypeColor(file.fileName || '')}`}
+                        <Badge
+                          variant="secondary"
+                          className={`text-xs ${getFileTypeColor(
+                            file.fileName || ""
+                          )}`}
                         >
-                          {file.fileName?.split('.').pop()?.toUpperCase()}
+                          {file.fileName?.split(".").pop()?.toUpperCase()}
                         </Badge>
                       </div>
                       <div className="text-xs text-muted-foreground">
                         <div>By: {file.createdBy}</div>
-                        <div>{file.createdAt ? formatDate(file.createdAt, locale, { year: 'numeric', month: 'short', day: 'numeric' }) : '-'}</div>
+                        <div>
+                          {file.createdAt
+                            ? formatDate(file.createdAt, locale, {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                              })
+                            : "-"}
+                        </div>
                       </div>
                     </div>
                   </CardContent>
@@ -313,28 +341,15 @@ export default function FilesPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between mt-6">
-              <div className="text-sm text-muted-foreground">
-                Showing {currentPage * pageSize + 1} to {Math.min((currentPage + 1) * pageSize, totalItems)} of {totalItems} files
-              </div>
-              <div className="flex items-center space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => fetchFiles(currentPage - 1)}
-                  disabled={currentPage === 0}
-                >
-                  Previous
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => fetchFiles(currentPage + 1)}
-                  disabled={currentPage >= totalPages - 1}
-                >
-                  Next
-                </Button>
-              </div>
+            <div className="pt-4 mt-4 flex justify-end">
+              <AdminPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={(newPage) => fetchFiles(newPage)}
+                totalItems={totalItems}
+                itemsPerPage={pageSize}
+                itemName="files"
+              />
             </div>
           )}
         </CardContent>

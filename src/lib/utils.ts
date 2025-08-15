@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import axios from "axios";
 import { ApiErrorResponse } from "@/api-client/models/api-error-response";
 import { TProduct } from "@/types";
+import { enAU, es, Locale, vi } from "react-day-picker/locale";
 
 
 export function cn(...inputs: ClassValue[]) {
@@ -131,5 +132,15 @@ export function formatDate(dateString: string | undefined, locale: string = 'vi'
     return new Date(dateString).toLocaleDateString('vi-VN', formatOptions);
   } else {
     return new Date(dateString).toLocaleDateString('en-US', formatOptions);
+  }
+}
+
+export function getReactDayPickerLocale(locale: string = 'vi'): Locale {
+  console.log(locale);
+  
+  if (locale === 'vi') {
+    return vi;
+  } else {
+    return enAU;
   }
 }

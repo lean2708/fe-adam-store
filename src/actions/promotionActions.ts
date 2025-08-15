@@ -1,12 +1,11 @@
 "use server";
 
 import type { ActionResponse } from "@/lib/types/actions";
-import type { 
-  PromotionResponse,
+import type {
   PromotionRequest,
-  PromotionUpdateRequest,
-  PageResponsePromotionResponse
+  PromotionUpdateRequest
 } from "@/api-client/models";
+import type { TPromotion } from "@/types";
 import {
   fetchAllPromotionsForAdmin,
   fetchPromotionById,
@@ -15,25 +14,25 @@ import {
   deletePromotion,
   restorePromotion
 } from "@/lib/data/promotion";
+import { extractErrorMessage } from "@/lib/utils";
 
 /**
  * Fetch all promotions for admin
  */
 export async function fetchAllPromotionsForAdminAction(
-  page: number = 0,
-  size: number = 20,
-  sort: string[] = ["id,desc"]
-): Promise<ActionResponse<PageResponsePromotionResponse>> {
+  page?: number,
+  size?: number,
+  sort?: string[]
+): Promise<ActionResponse<TPromotion[]>> {
   try {
-    const data = await fetchAllPromotionsForAdmin(page, size, sort);
-    return {
-      success: true,
-      data,
-    };
+    const promotions = await fetchAllPromotionsForAdmin(page, size, sort);
+    return promotions;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch promotions",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -41,12 +40,12 @@ export async function fetchAllPromotionsForAdminAction(
 /**
  * Fetch promotion by ID
  */
-export async function fetchPromotionByIdAction(id: number): Promise<ActionResponse<PromotionResponse>> {
+export async function fetchPromotionByIdAction(id: number): Promise<ActionResponse<TPromotion>> {
   try {
     const data = await fetchPromotionById(id);
     return {
       success: true,
-      data,
+      data: transformPromotionResponse(data),
     };
   } catch (error) {
     return {
@@ -61,17 +60,16 @@ export async function fetchPromotionByIdAction(id: number): Promise<ActionRespon
  */
 export async function createPromotionAction(
   promotionData: PromotionRequest
-): Promise<ActionResponse<PromotionResponse>> {
+): Promise<ActionResponse<TPromotion>> {
   try {
-    const data = await createPromotion(promotionData);
-    return {
-      success: true,
-      data,
-    };
+    const result = await createPromotion(promotionData);
+    return result;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to create promotion",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -82,17 +80,16 @@ export async function createPromotionAction(
 export async function updatePromotionAction(
   id: number,
   promotionData: PromotionUpdateRequest
-): Promise<ActionResponse<PromotionResponse>> {
+): Promise<ActionResponse<TPromotion>> {
   try {
-    const data = await updatePromotion(id, promotionData);
-    return {
-      success: true,
-      data,
-    };
+    const result = await updatePromotion(id, promotionData);
+    return result;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to update promotion",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -100,17 +97,16 @@ export async function updatePromotionAction(
 /**
  * Delete a promotion
  */
-export async function deletePromotionAction(id: number): Promise<ActionResponse<PromotionResponse>> {
+export async function deletePromotionAction(id: number): Promise<ActionResponse<TPromotion>> {
   try {
-    const data = await deletePromotion(id);
-    return {
-      success: true,
-      data,
-    };
+    const result = await deletePromotion(id);
+    return result;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to delete promotion",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -118,17 +114,16 @@ export async function deletePromotionAction(id: number): Promise<ActionResponse<
 /**
  * Restore a promotion
  */
-export async function restorePromotionAction(id: number): Promise<ActionResponse<PromotionResponse>> {
+export async function restorePromotionAction(id: number): Promise<ActionResponse<TPromotion>> {
   try {
-    const data = await restorePromotion(id);
-    return {
-      success: true,
-      data,
-    };
+    const result = await restorePromotion(id);
+    return result;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to restore promotion",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }

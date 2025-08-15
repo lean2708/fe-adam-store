@@ -1,12 +1,13 @@
 "use server";
 
 import type { ActionResponse } from "@/lib/types/actions";
-import type { 
+import type {
   PageResponseSizeResponse
 } from "@/api-client/models";
 import {
   fetchAllSizes
 } from "@/lib/data/size";
+import { TSize } from "@/types";
 
 /**
  * Fetch all sizes
@@ -15,13 +16,10 @@ export async function fetchAllSizesAction(
   page: number = 0,
   size: number = 20,
   sort: string[] = ["id,asc"]
-): Promise<ActionResponse<PageResponseSizeResponse>> {
+): Promise<ActionResponse<TSize[]>> {
   try {
     const data = await fetchAllSizes(page, size, sort);
-    return {
-      success: true,
-      data,
-    };
+    return data;
   } catch (error) {
     return {
       success: false,

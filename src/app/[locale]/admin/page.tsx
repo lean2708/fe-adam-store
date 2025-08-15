@@ -1,66 +1,52 @@
 "use client";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Overview } from "@/components/templates/admin/dashboard/Overview";
 import { RecentOrders } from "@/components/templates/admin/dashboard/RecentOrders";
-import { TopProducts } from "@/components/templates/admin/dashboard/TopProducts";
-import { DashboardStats } from "@/components/templates/admin/dashboard/DashboardStats";
+import { DashboardOverview } from "@/components/templates/admin/dashboard/DashboardOverview";
+import { DashboardTopProducts } from "@/components/templates/admin/dashboard/DashboardTopProducts";
 import { useTranslations } from "next-intl";
+import { useDateRange } from "@/hooks/useDateRange";
 
 export default function AdminDashboard() {
   const t = useTranslations("Admin");
+  const { dateRange } = useDateRange();
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 mt-4">
       {/* Page Header */}
       <div>
         <h1 className="text-3xl font-bold tracking-tight">{t("dashboard.title")}</h1>
-        <p className="text-muted-foreground">
+        {/* <p className="text-muted-foreground">
           {t("dashboard.welcome")}
-        </p>
+        </p> */}
       </div>
 
-      {/* Stats Cards */}
-      <DashboardStats />
+      {/* Main Dashboard Grid */}
+      <div className="grid gap-6 lg:grid-cols-10 lg:items-start">
+        {/* Left Column - Stats and Chart */}
+        <DashboardOverview className="space-y-6 col-span-7 h-full" />
 
-      {/* Charts and Tables */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
-          <CardHeader>
-            <CardTitle>{t("dashboard.overview.title")}</CardTitle>
-            <CardDescription>
-              {t("dashboard.overview.description")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="pl-2">
-            <Overview />
-          </CardContent>
-        </Card>
+        {/* Right Column - Recent Orders and Calendar */}
+        <div className="space-y-6 col-span-3 h-full">
+          {/* Calendar Date Picker */}
 
-        <Card className="col-span-3">
-          <CardHeader>
-            <CardTitle>{t("dashboard.recentOrders.title")}</CardTitle>
-            <CardDescription>
-              {t("dashboard.recentOrders.description")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <RecentOrders />
-          </CardContent>
-        </Card>
+          {/* Recent Orders */}
+          <Card className="bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm h-full flex flex-col">
+            <CardHeader>
+              <CardTitle>{t("dashboard.recentOrders.title")}</CardTitle>
+              <CardDescription>
+                {t("dashboard.recentOrders.description")}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex-1">
+              <RecentOrders dateRange={dateRange} />
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* Top Products */}
-      <Card>
-        <CardHeader>
-          <CardTitle>{t("dashboard.topProducts.title")}</CardTitle>
-          <CardDescription>
-            {t("dashboard.topProducts.description")}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <TopProducts />
-        </CardContent>
-      </Card>
+      <DashboardTopProducts />
     </div>
   );
 }

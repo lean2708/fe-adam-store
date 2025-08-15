@@ -2,34 +2,34 @@
 
 import type { ActionResponse } from "@/lib/types/actions";
 import type {
-  FileResponse,
   PageResponseFileResponse
 } from "@/api-client/models";
+import type { TFile } from "@/types";
 import {
   fetchAllFiles,
   uploadImages,
   deleteFile
 } from "@/lib/data/file";
+import { extractErrorMessage } from "@/lib/utils";
 import { changeAvatar } from "@/lib/data/user";
 
 /**
  * Get all files
  */
 export async function getAllFilesAction(
-  page: number = 0,
-  size: number = 20,
-  sort: string[] = ["id,desc"]
-): Promise<ActionResponse<PageResponseFileResponse>> {
+  page?: number,
+  size?: number,
+  sort?: string[]
+): Promise<ActionResponse<TFile[]>> {
   try {
-    const data = await fetchAllFiles(page, size, sort);
-    return {
-      success: true,
-      data,
-    };
+    const files = await fetchAllFiles(page, size, sort);
+    return files;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch files",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -39,17 +39,16 @@ export async function getAllFilesAction(
  */
 export async function uploadImagesAction(
   files: File[]
-) {
+): Promise<ActionResponse<TFile[]>> {
   try {
-    const data = await uploadImages(files);
-    return {
-      success: true,
-      data,
-    };
+    const result = await uploadImages(files);
+    return result;
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to upload images",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }

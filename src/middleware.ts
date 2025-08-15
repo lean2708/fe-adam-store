@@ -1,9 +1,7 @@
 // middleware.ts
-import { withAuth } from "next-auth/middleware";
 import { NextResponse, NextRequest } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
-import createRouteMatcher from "next-intl/middleware";
 
 const intlMiddleware = createMiddleware(routing); // returns a middleware handler function
 
