@@ -119,7 +119,7 @@ export function RecentOrders({ dateRange }: RecentOrdersProps) {
   if (orders.length === 0) {
     return (
       <div className="text-center py-8 text-muted-foreground">
-        No recent orders found
+        {t("noRecentOrders")}
       </div>
     );
   }

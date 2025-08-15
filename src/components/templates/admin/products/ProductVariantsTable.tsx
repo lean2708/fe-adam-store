@@ -28,6 +28,7 @@ interface ProductVariantsTableProps {
   variants: TProduct[];
   loading: boolean;
   onEdit: (product: TProduct) => void;
+  onUpdate?: (product: TProduct) => void;
   onDelete: (productId: number) => void;
   onRestore?: (productId: number) => void;
   onViewDetails?: (product: TProduct) => void;
@@ -44,6 +45,7 @@ export function ProductVariantsTable({
   variants,
   loading,
   onEdit,
+  onUpdate,
   onDelete,
   onRestore,
   onViewDetails,
@@ -246,6 +248,7 @@ export function ProductVariantsTable({
               </div>
               <ActionDropdown
                 onEdit={() => onEdit(product)}
+                onUpdate={onUpdate ? () => onUpdate(product) : undefined}
                 onDelete={() => onDelete(product.id)}
                 onRestore={
                   product.status === "INACTIVE" && onRestore
@@ -258,6 +261,7 @@ export function ProductVariantsTable({
                 }
                 translationNamespace="Admin.products"
                 customEditLabel={t("editProduct") || "Edit Product"}
+                customUpdateLabel={t("updateProduct") || "Cập nhật sản phẩm"}
               />
             </div>
 
@@ -367,12 +371,8 @@ export function ProductVariantsTable({
                   {/* Điểm đánh giá */}
                   <TableCell className="hidden lg:table-cell">
                     <div className="flex items-center space-x-1">
-                      <span className="text-sm">⭐</span>
                       <span className="text-sm">
                         {product.averageRating?.toFixed(1) || "0.0"}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        ({product.totalReviews || 0})
                       </span>
                     </div>
                   </TableCell>
@@ -428,6 +428,7 @@ export function ProductVariantsTable({
                   <TableCell className="text-right">
                     <ActionDropdown
                       onEdit={undefined}
+                      onUpdate={onUpdate ? () => onUpdate(product) : undefined}
                       onDelete={() => onDelete(product.id)}
                       onRestore={
                         product.status === "INACTIVE" && onRestore
@@ -440,6 +441,7 @@ export function ProductVariantsTable({
                       }
                       translationNamespace="Admin.products"
                       customEditLabel={t("editProduct") || "Edit Product"}
+                      customUpdateLabel={t("updateProduct") || "Cập nhật sản phẩm"}
                     />
                   </TableCell>
                 </TableRow>

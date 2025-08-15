@@ -44,6 +44,39 @@ export async function fetchAllPromotionsForAdmin(
 }
 
 /**
+ * Search promotions for admin with pagination
+ * Search criteria format: field~value or field>value or field<value
+ * Examples:
+ * - name~sale (contains "sale")
+ * - description~discount (contains "discount")
+ * - status~ACTIVE (exact match)
+ */
+export async function searchPromotionsForAdmin(
+  page: number = 0,
+  size: number = 20,
+  sort: string[] = ["id,desc"],
+  search: string[] = []
+): Promise<ActionResponse<TPromotion[]>> {
+  try {
+    const controller = await getPromotionController();
+    const response = await controller.searchPromotion({
+      page,
+      size,
+      sort,
+      search
+    });
+
+    return transformApiResponsePageResponsePromotionToActionResponse(response.data);
+  } catch (error) {
+    console.error("Error searching promotions:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to search promotions",
+    };
+  }
+}
+
+/**
  * Fetch promotion by ID
  */
 export async function fetchPromotionById(id: number): Promise<PromotionResponse> {

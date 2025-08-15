@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **name** | **string** |  | [default to undefined]
 **email** | **string** |  | [default to undefined]
 **password** | **string** |  | [default to undefined]
-**roleIds** | **Set&lt;number&gt;** |  | [optional] [default to undefined]
+**roleIds** | **Set&lt;number&gt;** |  | [default to undefined]
 
 ## Example
 

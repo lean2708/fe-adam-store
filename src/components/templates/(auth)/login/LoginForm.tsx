@@ -59,7 +59,7 @@ function LoginFormContent() {
 
       if (success) {
         toast.success('Đăng nhập thành công!');
-        router.push('/');
+        router.push('/admin');
       } else {
         toast.error('Email hoặc mật khẩu không đúng');
         setError('email', {

@@ -161,6 +161,39 @@ export async function fetchUserById(id: number): Promise<UserResponse> {
 }
 
 /**
+ * Search users for admin with pagination
+ * Search criteria format: field~value or field>value or field<value
+ * Examples:
+ * - name~john (contains "john")
+ * - email~gmail.com (contains "gmail.com")
+ * - status~ACTIVE (exact match)
+ */
+export async function searchUsersForAdmin(
+  page: number = 0,
+  size: number = 10,
+  sort: string[] = ["id,desc"],
+  search: string[] = []
+): Promise<ActionResponse<UserResponse[]>> {
+  try {
+    const controller = await ControllerFactory.getUserController();
+    const response = await controller.searchUser({
+      page,
+      size,
+      sort,
+      search
+    });
+
+    return transformApiResponsePageResponseUserToActionResponse(response.data);
+  } catch (error) {
+    console.error("Error searching users:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to search users",
+    };
+  }
+}
+
+/**
  * Fetch all roles
  */
 export async function fetchAllRoles(

@@ -5,14 +5,16 @@ import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import {
   fetchAllPromotionsForAdminAction,
+  searchPromotionsAction,
   deletePromotionAction,
   restorePromotionAction
 } from "@/actions/promotionActions";
 
 export function usePromotions(
-  page: number = 0, 
+  page: number = 0,
   size: number = 20,
-  statusFilter: 'ACTIVE' | 'INACTIVE' | "ALL" = "ALL"
+  statusFilter: 'ACTIVE' | 'INACTIVE' | "ALL" = "ALL",
+  searchTerm?: string
 ) {
   const t = useTranslations("Admin.promotions");
   const queryClient = useQueryClient();
@@ -23,9 +25,20 @@ export function usePromotions(
     isLoading: loading,
     refetch
   } = useQuery({
-    queryKey: ['promotions', page, size, statusFilter],
+    queryKey: ['promotions', page, size, statusFilter, searchTerm],
     queryFn: async () => {
-      const result = await fetchAllPromotionsForAdminAction(page, size, ["id,desc"]);
+      let result;
+
+      if (searchTerm && searchTerm.trim()) {
+        // Use search API when there's a search term
+        const searchCriteria = [
+          `description~${searchTerm.trim()}`,
+        ];
+        result = await searchPromotionsAction(page, size, ["id,desc"], searchCriteria);
+      } else {
+        // Use regular fetch when no search term
+        result = await fetchAllPromotionsForAdminAction(page, size, ["id,desc"]);
+      }
 
       if (!result.success) {
         throw new Error(result.message || "Failed to load promotions");

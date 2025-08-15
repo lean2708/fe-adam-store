@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Modal, ModalHeader, ModalBody } from "@/components/ui/modal";
+import { Modal, ModalBody } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Upload, X } from "lucide-react";
+import { Upload } from "lucide-react";
 import { z } from "zod";
 import { uploadImagesAction } from "@/actions/fileActions";
 import { createCategoryAction, updateCategoryAction } from "@/actions/categoryActions";
@@ -174,38 +174,26 @@ export function CategoryModal({ open, onClose, editingCategory }: CategoryModalP
       size="md"
       showOverlay={true}
       closeOnClickOutside={false}
-      className="bg-white rounded-lg shadow-xl"
+      className="bg-white rounded-2xl shadow-xl max-w-md mx-auto"
     >
-      <ModalHeader className="flex items-center justify-between p-6 border-b">
-        <div>
-          <h2 className="text-xl font-semibold text-gray-900">
-            {editingCategory
-              ? (t("editCategory") || "Chỉnh sửa danh mục")
-              : (t("addCategory") || "Thêm danh mục")
-            }
-          </h2>
-        </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleClose}
-          className="h-8 w-8 p-0"
-        >
-          <X className="h-4 w-4" />
-        </Button>
-      </ModalHeader>
-
       <ModalBody className="p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">
+          {editingCategory ? "Chỉnh sửa danh mục" : "Thêm danh mục"}
+        </h2>
 
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           {/* Category Name */}
           <div className="space-y-2">
-            <Label htmlFor="name">{t("categoryName") || "Tên danh mục"}</Label>
+            <Label htmlFor="name" className="text-sm text-gray-700">
+              Tên danh mục:
+            </Label>
             <Input
               id="name"
-              placeholder={t("enterCategoryName") || "Nhập tên danh mục"}
+              placeholder="Nhập tên danh mục"
               {...form.register("name")}
-              className={form.formState.errors.name ? "border-red-500" : ""}
+              className={`bg-[#F0F0F0] rounded-xl h-12 ${
+                form.formState.errors.name ? "border-red-500" : ""
+              }`}
             />
             {form.formState.errors.name && (
               <p className="text-xs text-red-500">{form.formState.errors.name.message}</p>
@@ -231,8 +219,8 @@ export function CategoryModal({ open, onClose, editingCategory }: CategoryModalP
 
           {/* Image Upload */}
           <div className="space-y-2">
-            <Label>{t("image") || "Hình ảnh"}</Label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+            <Label className="text-sm text-gray-700">Hình ảnh</Label>
+            <div className="bg-[#F0F0F0] rounded-xl p-8 text-center">
               <input
                 type="file"
                 accept="image/*"
@@ -241,13 +229,13 @@ export function CategoryModal({ open, onClose, editingCategory }: CategoryModalP
                 id="image-upload"
               />
               <label htmlFor="image-upload" className="cursor-pointer">
-                <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                <p className="text-sm text-gray-600">
+                <Upload className="h-12 w-12 mx-auto text-gray-400 mb-2" />
+                <p className="text-sm text-gray-500">
                   {selectedImage 
                     ? selectedImage.name 
                     : editingCategory?.imageUrl 
-                      ? (t("changeImage") || "Thay đổi hình ảnh")
-                      : (t("uploadImage") || "Tải lên hình ảnh")
+                      ? "Thay đổi hình ảnh"
+                      : "Tải hình ảnh lên"
                   }
                 </p>
               </label>
@@ -255,24 +243,26 @@ export function CategoryModal({ open, onClose, editingCategory }: CategoryModalP
           </div>
 
           {/* Buttons */}
-          <div className="flex justify-end gap-3 pt-4 border-t">
+          <div className="flex gap-3 pt-6">
             <Button
               type="button"
               onClick={handleClose}
               variant="outline"
               disabled={isLoading}
+              className="flex-1 h-12 bg-gray-200 border-0 text-gray-700 hover:bg-gray-300 rounded-lg"
             >
-              {t("cancel") || "Hủy"}
+              Hủy bỏ
             </Button>
             <Button
               type="submit"
               disabled={isLoading}
+              className="flex-1 h-12 bg-black hover:bg-gray-800 text-white rounded-lg"
             >
               {isLoading
-                ? (t("saving") || "Đang lưu...")
+                ? "Đang lưu..."
                 : editingCategory
-                  ? (t("update") || "Cập nhật")
-                  : (t("create") || "Tạo")
+                  ? "Cập nhật"
+                  : "Thêm danh mục"
               }
             </Button>
           </div>

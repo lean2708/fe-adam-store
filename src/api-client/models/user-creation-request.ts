@@ -43,6 +43,6 @@ export interface UserCreationRequest {
      * @type {Set<number>}
      * @memberof UserCreationRequest
      */
-    'roleIds'?: Set<number>;
+    'roleIds': Set<number>;
 }
 

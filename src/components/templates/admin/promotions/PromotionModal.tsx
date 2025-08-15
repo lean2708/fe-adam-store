@@ -84,6 +84,7 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
         throw new Error(result.message || "Failed to update promotion");
       }
       return result.data;
+
     },
     onSuccess: () => {
       toast.success(t("promotionUpdatedSuccess"));
@@ -137,7 +138,7 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
       open={open}
       onClose={onClose}
       variant="centered"
-      size="md"
+      size="xl"
       showOverlay={true}
       closeOnClickOutside={false}
       className="bg-white rounded-lg shadow-xl"
@@ -162,81 +163,100 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
       </ModalHeader>
 
       <ModalBody className="p-6">
-
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="code">{t("code")} *</Label>
-            <Input
-              id="code"
-              value={formData.code}
-              onChange={(e) => setFormData(prev => ({ ...prev, code: e.target.value }))}
-              placeholder={t("codePlaceholder")}
-              required
-            />
+          {/* Code and Discount Percent Row */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="code">Mã giảm giá *</Label>
+              <Input
+                id="code"
+                value={formData.code}
+                onChange={(e) => setFormData(prev => ({ ...prev, code: e.target.value }))}
+                placeholder="Nhập mã giảm giá"
+                className="bg-gray-100 border-0 rounded-lg"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="discountPercent">Phần trăm giảm *</Label>
+              <Input
+                id="discountPercent"
+                type="number"
+                min="0"
+                max="100"
+                value={formData.discountPercent}
+                onChange={(e) => setFormData(prev => ({ ...prev, discountPercent: parseFloat(e.target.value) || 0 }))}
+                placeholder="Nhập phần trăm giảm"
+                className="bg-gray-100 border-0 rounded-lg"
+                required
+              />
+            </div>
           </div>
 
+          {/* Description */}
           <div className="space-y-2">
-            <Label htmlFor="description">{t("description")}</Label>
+            <Label htmlFor="description">Mô tả</Label>
             <Textarea
               id="description"
               value={formData.description}
               onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-              placeholder={t("descriptionPlaceholder")}
+              placeholder="Nhập mô tả"
               rows={3}
+              className="bg-gray-100 border-0 rounded-lg"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="discountPercent">{t("discountPercent")} *</Label>
-            <Input
-              id="discountPercent"
-              type="number"
-              min="0"
-              max="100"
-              value={formData.discountPercent}
-              onChange={(e) => setFormData(prev => ({ ...prev, discountPercent: parseFloat(e.target.value) || 0 }))}
-              placeholder="0"
-              required
-            />
-          </div>
-
+          {/* Start Date and End Date Row */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="startDate">{t("startDate")}</Label>
+              <Label htmlFor="startDate">Ngày bắt đầu</Label>
               <Input
                 id="startDate"
                 type="date"
                 value={formData.startDate}
                 onChange={(e) => setFormData(prev => ({ ...prev, startDate: e.target.value }))}
+                className="bg-gray-100 border-0 rounded-lg"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="endDate">{t("endDate")}</Label>
+              <Label htmlFor="endDate">Ngày kết thúc</Label>
               <Input
                 id="endDate"
                 type="date"
                 value={formData.endDate}
                 onChange={(e) => setFormData(prev => ({ ...prev, endDate: e.target.value }))}
+                className="bg-gray-100 border-0 rounded-lg"
               />
             </div>
           </div>
 
-          <div className="flex items-center space-x-2">
+          {/* <div className="flex items-center space-x-2">
             <Switch
               id="status"
               checked={formData.status === "ACTIVE"}
               onCheckedChange={(checked) => setFormData(prev => ({ ...prev, status: checked ? "ACTIVE" : "INACTIVE" }))}
             />
             <Label htmlFor="status">{t("activeStatus")}</Label>
-          </div>
+          </div> */}
 
-          <div className="flex justify-end gap-3 pt-4 border-t">
-            <Button type="button" variant="outline" onClick={onClose} disabled={isLoading}>
-              {t("cancel")}
+          <div className="flex justify-end gap-3 pt-4">
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={onClose} 
+              disabled={isLoading}
+              className="px-8 py-3 bg-gray-200 border-0 text-gray-700 hover:bg-gray-300 rounded-lg"
+            >
+              Hủy bỏ
             </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? t("saving") : (editingPromotion ? t("updatePromotion") : t("createPromotion"))}
+            <Button 
+              type="submit" 
+              disabled={isLoading}
+              className="px-8 py-3 bg-black hover:bg-gray-800 text-white rounded-lg"
+            >
+              {isLoading ? "Đang lưu..." : (editingPromotion ? "Cập nhật" : "Xác nhận")}
             </Button>
           </div>
         </form>

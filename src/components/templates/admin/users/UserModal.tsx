@@ -23,24 +23,36 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { createUserAction, updateUserAction, fetchAllRolesAction } from "@/actions/userActions";
-import { UserUpdateRequestGenderEnum, UserUpdateRequest } from "@/api-client/models";
+import {
+  createUserAction,
+  updateUserAction,
+  fetchAllRolesAction,
+} from "@/actions/userActions";
+import {
+  UserUpdateRequestGenderEnum,
+  UserUpdateRequest,
+} from "@/api-client/models";
 import type { TUser, TRole, TEntityBasic } from "@/types";
 import { toast } from "sonner";
 
-const userSchema = z.object({
-  name: z.string().min(1, "Tên người dùng là bắt buộc"),
-  email: z.string().email("Địa chỉ email không hợp lệ"),
-  password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự").optional(),
-  confirmPassword: z.string().optional(),
-  roleIds: z.array(z.number()).min(1, "Ít nhất một vai trò là bắt buộc"),
-}).refine((data) => {
-  if (!data.password && !data.confirmPassword) return true;
-  return data.password === data.confirmPassword;
-}, {
-  message: "Mật khẩu không khớp",
-  path: ["confirmPassword"],
-});
+const userSchema = z
+  .object({
+    name: z.string().min(1, "Tên người dùng là bắt buộc"),
+    email: z.string().email({ message: "Địa chỉ email không hợp lệ" }),
+    password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự").optional(),
+    confirmPassword: z.string().optional(),
+    roleIds: z.array(z.number()).min(1, "Ít nhất một vai trò là bắt buộc"),
+  })
+  .refine(
+    (data) => {
+      if (!data.password && !data.confirmPassword) return true;
+      return data.password === data.confirmPassword;
+    },
+    {
+      message: "Mật khẩu không khớp",
+      path: ["confirmPassword"],
+    }
+  );
 
 type UserFormData = z.infer<typeof userSchema>;
 
@@ -53,7 +65,6 @@ interface UserModalProps {
 export function UserModal({ open, onClose, user }: UserModalProps) {
   const [loading, setLoading] = useState(false);
   const [roles, setRoles] = useState<TRole[]>([]);
-  const [rolesLoading, setRolesLoading] = useState(false);
 
   const isEditing = !!user;
 
@@ -83,7 +94,9 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
         email: user.email || "",
         password: "", // Don't populate password for editing
         confirmPassword: "",
-        roleIds: user.roles ? Array.from(user.roles).map((role: TEntityBasic) => role.id) : [],
+        roleIds: user.roles
+          ? Array.from(user.roles).map((role: TEntityBasic) => role.id)
+          : [],
       });
     } else {
       form.reset({
@@ -97,7 +110,6 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
   }, [user, form]);
 
   const fetchRoles = async () => {
-    setRolesLoading(true);
     try {
       const result = await fetchAllRolesAction();
       if (result.success && result.data) {
@@ -105,8 +117,6 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
       }
     } catch (error) {
       toast.error("Failed to fetch roles");
-    } finally {
-      setRolesLoading(false);
     }
   };
 
@@ -120,7 +130,7 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
           name: data.name,
           roleIds: new Set(data.roleIds),
           dob: "2025-08-04",
-          gender: UserUpdateRequestGenderEnum.Female
+          gender: UserUpdateRequestGenderEnum.Female,
         };
 
         const result = await updateUserAction(user.id!, updateData);
@@ -150,7 +160,9 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
         }
       }
     } catch (error) {
-      toast.error(isEditing ? "Không thể cập nhật người dùng" : "Không thể tạo người dùng");
+      toast.error(
+        isEditing ? "Không thể cập nhật người dùng" : "Không thể tạo người dùng"
+      );
     } finally {
       setLoading(false);
     }
@@ -161,7 +173,7 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
       open={open}
       onClose={onClose}
       variant="centered"
-      size="md"
+      size="xl"
       showOverlay={true}
       closeOnClickOutside={false}
       className="bg-white rounded-lg shadow-xl"
@@ -174,8 +186,7 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
           <p className="text-sm text-gray-600 mt-1">
             {isEditing
               ? "Cập nhật thông tin người dùng và vai trò."
-              : "Tạo tài khoản người dùng mới với vai trò."
-            }
+              : "Tạo tài khoản người dùng mới với vai trò."}
           </p>
         </div>
         <Button
@@ -189,43 +200,48 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
       </ModalHeader>
 
       <ModalBody className="p-6">
-
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tên người dùng</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Nhập tên người dùng" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* First row: Name, Email, Role */}
+            <div className="grid grid-cols-3 gap-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tên người dùng</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-[#F0F0F0] rounded-xl"
+                        placeholder="Nhập tên người dùng"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="Nhập email"
-                      disabled={isEditing}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        className="bg-[#F0F0F0] rounded-xl"
+                        placeholder="Nhập email"
+                        disabled={isEditing}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="roleIds"
@@ -233,11 +249,13 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
                   <FormItem>
                     <FormLabel>Vai trò</FormLabel>
                     <Select
-                      onValueChange={(value) => field.onChange([parseInt(value)])}
+                      onValueChange={(value) =>
+                        field.onChange([parseInt(value)])
+                      }
                       defaultValue={field.value?.[0]?.toString()}
                     >
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-[#F0F0F0] rounded-xl">
                           <SelectValue placeholder="Quản lý" />
                         </SelectTrigger>
                       </FormControl>
@@ -255,7 +273,7 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
               />
             </div>
 
-            {/* {!isEditing && ( */}
+            {/* Password field - full width */}
             <FormField
               control={form.control}
               name="password"
@@ -264,6 +282,7 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
                   <FormLabel>Mật khẩu</FormLabel>
                   <FormControl>
                     <Input
+                      className="bg-[#F0F0F0] rounded-xl"
                       type="password"
                       placeholder="Nhập mật khẩu"
                       {...field}
@@ -273,9 +292,8 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
                 </FormItem>
               )}
             />
-            {/* )} */}
 
-            {/* {!isEditing && ( */}
+            {/* Confirm Password field - full width */}
             <FormField
               control={form.control}
               name="confirmPassword"
@@ -284,6 +302,7 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
                   <FormLabel>Nhập lại mật khẩu</FormLabel>
                   <FormControl>
                     <Input
+                      className="bg-[#F0F0F0] rounded-xl"
                       type="password"
                       placeholder="Nhập lại mật khẩu"
                       {...field}
@@ -293,13 +312,21 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
                 </FormItem>
               )}
             />
-            {/* )} */}
 
-            <div className="flex justify-end gap-3 pt-4 border-t">
-              <Button type="button" variant="outline" onClick={() => onClose()}>
+            <div className="flex justify-end gap-3 pt-6 border-t mt-6">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onClose()}
+                className="px-6 py-2"
+              >
                 Hủy bỏ
               </Button>
-              <Button type="submit" disabled={loading}>
+              <Button
+                type="submit"
+                disabled={loading}
+                className="px-6 py-2 bg-black text-white hover:bg-gray-800"
+              >
                 {loading ? "Đang lưu..." : isEditing ? "Cập nhật" : "Xác nhận"}
               </Button>
             </div>

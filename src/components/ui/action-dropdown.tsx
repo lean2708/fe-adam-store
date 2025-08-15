@@ -13,6 +13,7 @@ import { useTranslations } from "next-intl";
 
 interface ActionDropdownProps {
   onEdit?: () => void;
+  onUpdate?: () => void;
   onDelete?: () => void;
   onRestore?: () => void;
   onViewDetails?: () => void;
@@ -21,10 +22,12 @@ interface ActionDropdownProps {
   translationNamespace?: string;
   customEditIcon?: React.ComponentType<{ className?: string }>;
   customEditLabel?: string;
+  customUpdateLabel?: string;
 }
 
 export function ActionDropdown({
   onEdit,
+  onUpdate,
   onDelete,
   onRestore,
   onViewDetails,
@@ -32,7 +35,8 @@ export function ActionDropdown({
   disabled = false,
   translationNamespace = "Admin.branches",
   customEditIcon,
-  customEditLabel
+  customEditLabel,
+  customUpdateLabel
 }: ActionDropdownProps) {
   const t = useTranslations(translationNamespace);
 
@@ -59,6 +63,18 @@ export function ActionDropdown({
             <Eye className="h-4 w-4" />
             <span>
               {translationNamespace.includes("products") ? t("viewDetails") || "Chi tiết" : t("viewDetails")}
+            </span>
+          </DropdownMenuItem>
+        )}
+
+        {onUpdate && (
+          <DropdownMenuItem
+            onClick={onUpdate}
+            className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-blue-50 hover:text-blue-700 cursor-pointer"
+          >
+            <EditIcon className="h-4 w-4" />
+            <span>
+              {customUpdateLabel || t("updateProduct") || "Cập nhật sản phẩm"}
             </span>
           </DropdownMenuItem>
         )}

@@ -23,7 +23,7 @@ export default function PromotionsAdminPage() {
     handleDelete,
     handleRestore,
     handleRefresh
-  } = usePromotions(currentPage, 20, statusFilter);
+  } = usePromotions(currentPage, 20, statusFilter, searchTerm);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 0 && newPage < totalPages) {
@@ -33,7 +33,7 @@ export default function PromotionsAdminPage() {
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
-    // TODO: Implement search functionality when API supports it
+    setCurrentPage(0); // Reset to first page when searching
   };
 
   const handleStatusFilterChange = (value: 'ACTIVE' | 'INACTIVE' | "ALL") => {

@@ -10,6 +10,7 @@ import type {
 import type { TUser } from "@/types";
 import {
   fetchAllUsersForAdmin,
+  searchUsersForAdmin,
   createUser,
   updateUser,
   deleteUser,
@@ -34,6 +35,28 @@ export async function fetchAllUsersAction(
     return users;
   } catch (error) {
     const extractedError = extractErrorMessage(error, "Lỗi server");
+    return {
+      success: false,
+      message: extractedError.message,
+      apiError: extractedError,
+    };
+  }
+}
+
+/**
+ * Search users for admin
+ */
+export async function searchUsersAction(
+  page?: number,
+  size?: number,
+  sort?: string[],
+  search?: string[]
+): Promise<ActionResponse<TUser[]>> {
+  try {
+    const users = await searchUsersForAdmin(page, size, sort, search);
+    return users;
+  } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi tìm kiếm");
     return {
       success: false,
       message: extractedError.message,

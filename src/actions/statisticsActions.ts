@@ -2,10 +2,10 @@
 
 import type { ActionResponse } from "@/lib/types/actions";
 import type {
-  RevenueByMonthDTO,
   OrderStatsDTO,
   TopSellingDTO
 } from "@/api-client/models";
+import type { TRevenueByMonth } from "@/types";
 import {
   fetchMonthlyRevenue,
   fetchOrderRevenueSummary,
@@ -19,7 +19,7 @@ import {
 export async function getMonthlyRevenueAction(
   startDate: string,
   endDate: string
-): Promise<ActionResponse<RevenueByMonthDTO[]>> {
+): Promise<ActionResponse<TRevenueByMonth[]>> {
   try {
     const data = await fetchMonthlyRevenue(startDate, endDate);
     return {

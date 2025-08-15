@@ -8,6 +8,7 @@ import type {
 import type { TPromotion } from "@/types";
 import {
   fetchAllPromotionsForAdmin,
+  searchPromotionsForAdmin,
   fetchPromotionById,
   createPromotion,
   updatePromotion,
@@ -29,6 +30,28 @@ export async function fetchAllPromotionsForAdminAction(
     return promotions;
   } catch (error) {
     const extractedError = extractErrorMessage(error, "Lỗi server");
+    return {
+      success: false,
+      message: extractedError.message,
+      apiError: extractedError,
+    };
+  }
+}
+
+/**
+ * Search promotions for admin
+ */
+export async function searchPromotionsAction(
+  page?: number,
+  size?: number,
+  sort?: string[],
+  search?: string[]
+): Promise<ActionResponse<TPromotion[]>> {
+  try {
+    const promotions = await searchPromotionsForAdmin(page, size, sort, search);
+    return promotions;
+  } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi tìm kiếm");
     return {
       success: false,
       message: extractedError.message,

@@ -239,6 +239,59 @@ export const PromotionControllerApiAxiosParamCreator = function (configuration?:
             };
         },
         /**
+         * Api này dùng để search Promotions, giá trị của search: field~value hoặc field>value hoặc field<value
+         * @param {number} [page] Zero-based page index (0..N)
+         * @param {number} [size] The size of the page to be returned
+         * @param {Array<string>} [sort] Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         * @param {Array<string>} [search] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchPromotion: async (page?: number, size?: number, sort?: Array<string>, search?: Array<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/public/promotions/search`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
+
+            if (sort) {
+                localVarQueryParameter['sort'] = sort;
+            }
+
+            if (search) {
+                localVarQueryParameter['search'] = search;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @param {number} id 
          * @param {PromotionUpdateRequest} promotionUpdateRequest 
@@ -357,6 +410,21 @@ export const PromotionControllerApiFp = function(configuration?: Configuration) 
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Api này dùng để search Promotions, giá trị của search: field~value hoặc field>value hoặc field<value
+         * @param {number} [page] Zero-based page index (0..N)
+         * @param {number} [size] The size of the page to be returned
+         * @param {Array<string>} [sort] Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         * @param {Array<string>} [search] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async searchPromotion(page?: number, size?: number, sort?: Array<string>, search?: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponsePageResponsePromotionResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.searchPromotion(page, size, sort, search, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PromotionControllerApi.searchPromotion']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 
          * @param {number} id 
          * @param {PromotionUpdateRequest} promotionUpdateRequest 
@@ -426,6 +494,15 @@ export const PromotionControllerApiFactory = function (configuration?: Configura
          */
         restore1(requestParameters: PromotionControllerApiRestore1Request, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponsePromotionResponse> {
             return localVarFp.restore1(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Api này dùng để search Promotions, giá trị của search: field~value hoặc field>value hoặc field<value
+         * @param {PromotionControllerApiSearchPromotionRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchPromotion(requestParameters: PromotionControllerApiSearchPromotionRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponsePageResponsePromotionResponse> {
+            return localVarFp.searchPromotion(requestParameters.page, requestParameters.size, requestParameters.sort, requestParameters.search, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -524,6 +601,41 @@ export interface PromotionControllerApiRestore1Request {
 }
 
 /**
+ * Request parameters for searchPromotion operation in PromotionControllerApi.
+ * @export
+ * @interface PromotionControllerApiSearchPromotionRequest
+ */
+export interface PromotionControllerApiSearchPromotionRequest {
+    /**
+     * Zero-based page index (0..N)
+     * @type {number}
+     * @memberof PromotionControllerApiSearchPromotion
+     */
+    readonly page?: number
+
+    /**
+     * The size of the page to be returned
+     * @type {number}
+     * @memberof PromotionControllerApiSearchPromotion
+     */
+    readonly size?: number
+
+    /**
+     * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     * @type {Array<string>}
+     * @memberof PromotionControllerApiSearchPromotion
+     */
+    readonly sort?: Array<string>
+
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof PromotionControllerApiSearchPromotion
+     */
+    readonly search?: Array<string>
+}
+
+/**
  * Request parameters for update4 operation in PromotionControllerApi.
  * @export
  * @interface PromotionControllerApiUpdate4Request
@@ -607,6 +719,17 @@ export class PromotionControllerApi extends BaseAPI {
      */
     public restore1(requestParameters: PromotionControllerApiRestore1Request, options?: RawAxiosRequestConfig) {
         return PromotionControllerApiFp(this.configuration).restore1(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Api này dùng để search Promotions, giá trị của search: field~value hoặc field>value hoặc field<value
+     * @param {PromotionControllerApiSearchPromotionRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PromotionControllerApi
+     */
+    public searchPromotion(requestParameters: PromotionControllerApiSearchPromotionRequest = {}, options?: RawAxiosRequestConfig) {
+        return PromotionControllerApiFp(this.configuration).searchPromotion(requestParameters.page, requestParameters.size, requestParameters.sort, requestParameters.search, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

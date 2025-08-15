@@ -11,7 +11,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import { formatCurrency } from "@/lib/utils";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 interface ChartData {
   name: string;
@@ -27,13 +27,14 @@ interface OverviewProps {
 
 const chartConfig = {
   total: {
-    label: "Revenue",
+    label: "Revenue", // This will be translated in the tooltip
     color: "#8B5CF6", // Purple color to match the design
   },
 } satisfies ChartConfig;
 
 export function Overview({ dateRange }: OverviewProps) {
   const locale = useLocale();
+  const t = useTranslations("Admin.dashboard");
   const [data, setData] = useState<ChartData[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -63,27 +64,17 @@ export function Overview({ dateRange }: OverviewProps) {
         if (result.success && result.data) {
           // Transform the data for the chart
           const chartData = result.data.map((item: TRevenueByMonth) => {
-            // Handle the month object - it might be a date string or object
-            let monthName = "Unknown";
-            if (item.month) {
-              if (typeof item.month === 'string') {
-                const date = new Date(item.month);
-                monthName = date.toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-US', { month: 'short' });
-              } else if (typeof item.month === 'object') {
-                // If it's an object, try to extract month information
-                const monthObj = item.month as any;
-                if (monthObj.month) {
-                  const monthIndex = monthObj.month - 1; // Assuming 1-based month
-                  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                  monthName = monthNames[monthIndex] || "Unknown";
-                }
-              }
+            // Handle the month number - convert to month name
+            let monthName = t("unknown");
+            if (item.month && item.month >= 1 && item.month <= 12) {
+              const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+              monthName = monthNames[item.month - 1]; // Convert 1-based month to 0-based index
             }
 
             return {
               name: monthName,
-              total: (item.totalAmount || 0) / 100000,
+              total: (item.totalRevenue || 0) / 100000,
             };
           });
 
@@ -110,7 +101,7 @@ export function Overview({ dateRange }: OverviewProps) {
   if (data.length === 0) {
     return (
       <div className="h-[350px] flex items-center justify-center text-muted-foreground">
-        No revenue data available
+        {t("noRevenueData")}
       </div>
     );
   }
@@ -153,7 +144,7 @@ export function Overview({ dateRange }: OverviewProps) {
               <ChartTooltipContent
                 formatter={(value: number) => [
                   formatCurrency(value, locale),
-                  "Revenue"
+                  t("revenue")
                 ]}
               />
             }

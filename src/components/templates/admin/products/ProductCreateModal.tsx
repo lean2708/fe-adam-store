@@ -160,7 +160,7 @@ export function ProductCreateModal({ open, onClose }: ProductCreateModalProps) {
       open={open}
       onClose={handleClose}
       variant="centered"
-      size="lg"
+      size="xl"
       showOverlay={true}
       closeOnClickOutside={true}
     >
@@ -180,71 +180,89 @@ export function ProductCreateModal({ open, onClose }: ProductCreateModalProps) {
         </div>
       </ModalHeader>
 
-      <ModalBody>
+      <ModalBody className="p-8">
+        <h2 className="text-xl font-semibold text-gray-900 mb-8">
+          Thêm sản phẩm
+        </h2>
 
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-          {/* Product Name */}
-          <div className="space-y-2">
-            <Label htmlFor="name" className="text-sm font-medium">{t("productName") || "Tên sản phẩm"}</Label>
-            <Input
-              id="name"
-              placeholder={t("enterProductName") || "Nhập tên sản phẩm"}
-              {...form.register("name")}
-              className={`h-10 ${form.formState.errors.name ? "border-red-500" : "border-gray-300"}`}
-            />
-            {form.formState.errors.name && (
-              <p className="text-xs text-red-500">{form.formState.errors.name.message}</p>
-            )}
+          {/* Product Name and Category Row */}
+          <div className="grid grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-sm text-gray-700">
+                Tên sản phẩm
+              </Label>
+              <Input
+                id="name"
+                placeholder="Nhập tên sản phẩm"
+                {...form.register("name")}
+                className={`bg-[#F0F0F0] rounded-xl h-12 ${
+                  form.formState.errors.name ? "border-red-500" : ""
+                }`}
+              />
+              {form.formState.errors.name && (
+                <p className="text-xs text-red-500">{form.formState.errors.name.message}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-sm text-gray-700">Danh mục</Label>
+              <Select
+                value={form.watch("categoryId")?.toString() || ""}
+                onValueChange={(value) => form.setValue("categoryId", parseInt(value))}
+              >
+                <SelectTrigger className={`bg-[#F0F0F0] rounded-xl h-12 ${
+                  form.formState.errors.categoryId ? "border-red-500" : ""
+                }`}>
+                  <SelectValue placeholder="Nhập tên danh mục" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((category: TCategory) => (
+                    <SelectItem key={category.id} value={category.id.toString()}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {form.formState.errors.categoryId && (
+                <p className="text-xs text-red-500">{form.formState.errors.categoryId.message}</p>
+              )}
+            </div>
           </div>
 
           {/* Description */}
           <div className="space-y-2">
-            <Label htmlFor="description" className="text-sm font-medium">{t("description") || "Mô tả"}</Label>
+            <Label htmlFor="description" className="text-sm text-gray-700">
+              Mô tả
+            </Label>
             <Textarea
               id="description"
-              placeholder={t("enterDescription") || "Nhập mô tả sản phẩm"}
+              placeholder="Nhập tên danh mục"
               {...form.register("description")}
-              className={`min-h-[80px] ${form.formState.errors.description ? "border-red-500" : "border-gray-300"}`}
+              className={`bg-[#F0F0F0] rounded-xl min-h-[80px] ${
+                form.formState.errors.description ? "border-red-500" : ""
+              }`}
             />
             {form.formState.errors.description && (
               <p className="text-xs text-red-500">{form.formState.errors.description.message}</p>
             )}
           </div>
 
-          {/* Category */}
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">{t("category") || "Danh mục"}</Label>
-            <Select
-              value={form.watch("categoryId")?.toString() || ""}
-              onValueChange={(value) => form.setValue("categoryId", parseInt(value))}
-            >
-              <SelectTrigger className={`h-10 ${form.formState.errors.categoryId ? "border-red-500" : "border-gray-300"}`}>
-                <SelectValue placeholder={t("selectCategory") || "Chọn danh mục"} />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((category: TCategory) => (
-                  <SelectItem key={category.id} value={category.id.toString()}>
-                    {category.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {form.formState.errors.categoryId && (
-              <p className="text-xs text-red-500">{form.formState.errors.categoryId.message}</p>
-            )}
-          </div>
-
           {/* Price and Quantity Row */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="price" className="text-sm font-medium">{t("price") || "Giá"}</Label>
+              <Label htmlFor="price" className="text-sm text-gray-700">
+                Giá
+              </Label>
               <Input
                 id="price"
                 type="number"
                 step="0.01"
-                placeholder="0"
+                placeholder="Nhập giá"
                 {...form.register("price", { valueAsNumber: true })}
-                className={`h-10 ${form.formState.errors.price ? "border-red-500" : "border-gray-300"}`}
+                className={`bg-[#F0F0F0] rounded-xl h-12 ${
+                  form.formState.errors.price ? "border-red-500" : ""
+                }`}
               />
               {form.formState.errors.price && (
                 <p className="text-xs text-red-500">{form.formState.errors.price.message}</p>
@@ -252,13 +270,17 @@ export function ProductCreateModal({ open, onClose }: ProductCreateModalProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="quantity" className="text-sm font-medium">{t("quantity") || "Số lượng"}</Label>
+              <Label htmlFor="quantity" className="text-sm text-gray-700">
+                Số lượng
+              </Label>
               <Input
                 id="quantity"
                 type="number"
-                placeholder="0"
+                placeholder="Nhập số lượng"
                 {...form.register("quantity", { valueAsNumber: true })}
-                className={`h-10 ${form.formState.errors.quantity ? "border-red-500" : "border-gray-300"}`}
+                className={`bg-[#F0F0F0] rounded-xl h-12 ${
+                  form.formState.errors.quantity ? "border-red-500" : ""
+                }`}
               />
               {form.formState.errors.quantity && (
                 <p className="text-xs text-red-500">{form.formState.errors.quantity.message}</p>
@@ -266,89 +288,109 @@ export function ProductCreateModal({ open, onClose }: ProductCreateModalProps) {
             </div>
           </div>
 
-          {/* Size and Color Row */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label className="text-sm font-medium">{t("size") || "Size"}</Label>
-              <Select
-                value={form.watch("sizeId")?.toString() || ""}
-                onValueChange={(value) => form.setValue("sizeId", parseInt(value))}
-              >
-                <SelectTrigger className={`h-10 ${form.formState.errors.sizeId ? "border-red-500" : "border-gray-300"}`}>
-                  <SelectValue placeholder="ALL" />
-                </SelectTrigger>
-                <SelectContent>
-                  {sizes.map((size: TSize) => (
-                    <SelectItem key={size.id} value={size.id.toString()}>
-                      {size.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {form.formState.errors.sizeId && (
-                <p className="text-xs text-red-500">{form.formState.errors.sizeId.message}</p>
-              )}
+          {/* Size, Color and Image Section */}
+          <div className="grid grid-cols-2 gap-6">
+            {/* Left Column: Size and Color + Status */}
+            <div className="space-y-6">
+              {/* Size and Color Row */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-sm text-gray-700">Size</Label>
+                  <Select
+                    value={form.watch("sizeId")?.toString() || ""}
+                    onValueChange={(value) => form.setValue("sizeId", parseInt(value))}
+                  >
+                    <SelectTrigger className={`bg-[#F0F0F0] rounded-xl h-12 ${
+                      form.formState.errors.sizeId ? "border-red-500" : ""
+                    }`}>
+                      <SelectValue placeholder="ALL" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {sizes.map((size: TSize) => (
+                        <SelectItem key={size.id} value={size.id.toString()}>
+                          {size.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {form.formState.errors.sizeId && (
+                    <p className="text-xs text-red-500">{form.formState.errors.sizeId.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-sm text-gray-700">Màu sắc</Label>
+                  <Select
+                    value={form.watch("colorId")?.toString() || ""}
+                    onValueChange={(value) => form.setValue("colorId", parseInt(value))}
+                  >
+                    <SelectTrigger className={`bg-[#F0F0F0] rounded-xl h-12 ${
+                      form.formState.errors.colorId ? "border-red-500" : ""
+                    }`}>
+                      <SelectValue placeholder="ALL" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {colors.map((color: TColor) => (
+                        <SelectItem key={color.id} value={color.id.toString()}>
+                          {color.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {form.formState.errors.colorId && (
+                    <p className="text-xs text-red-500">{form.formState.errors.colorId.message}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Status Field */}
+              <div className="space-y-2">
+                <Label className="text-sm text-gray-700">Trạng thái</Label>
+                <Input
+                  placeholder="Nhập trạng thái"
+                  className="bg-[#F0F0F0] rounded-xl h-12"
+                  defaultValue="Active"
+                />
+              </div>
             </div>
 
+            {/* Right Column: Image */}
             <div className="space-y-2">
-              <Label className="text-sm font-medium">{t("color") || "Màu sắc"}</Label>
-              <Select
-                value={form.watch("colorId")?.toString() || ""}
-                onValueChange={(value) => form.setValue("colorId", parseInt(value))}
-              >
-                <SelectTrigger className={`h-10 ${form.formState.errors.colorId ? "border-red-500" : "border-gray-300"}`}>
-                  <SelectValue placeholder="ALL" />
-                </SelectTrigger>
-                <SelectContent>
-                  {colors.map((color: TColor) => (
-                    <SelectItem key={color.id} value={color.id.toString()}>
-                      {color.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {form.formState.errors.colorId && (
-                <p className="text-xs text-red-500">{form.formState.errors.colorId.message}</p>
-              )}
-            </div>
-          </div>
-
-          {/* Image Upload */}
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">{t("image") || "Hình ảnh"}</Label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="hidden"
-                id="image-upload"
-              />
-              <label htmlFor="image-upload" className="cursor-pointer">
-                <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                <p className="text-sm text-gray-600">
-                  {selectedImage ? selectedImage.name : (t("uploadImage") || "Tải lên hình ảnh")}
-                </p>
-              </label>
+              <Label className="text-sm text-gray-700">Hình ảnh</Label>
+              <div className="bg-gray-100 border-0 rounded-lg p-8 text-center h-38 flex flex-col justify-center">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                  id="image-upload"
+                />
+                <label htmlFor="image-upload" className="cursor-pointer">
+                  <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
+                  <p className="text-sm text-gray-500">
+                    {selectedImage ? selectedImage.name : "Tải hình ảnh lên"}
+                  </p>
+                </label>
+              </div>
             </div>
           </div>
 
           {/* Buttons */}
-          <div className="flex justify-end gap-3 pt-4">
+          <div className="flex justify-end gap-3 pt-6">
             <Button 
               type="button"
               onClick={handleClose}
               variant="outline"
-              className="px-6 py-2 border-gray-300 text-gray-700 hover:bg-gray-50"
+              className="px-8 py-3 bg-gray-200 border-0 text-gray-700 hover:bg-gray-300 rounded-lg"
             >
-              {t("cancel") || "Hủy bỏ"}
+              Hủy bỏ
             </Button>
             <Button 
               type="submit"
               disabled={createMutation.isPending}
-              className="px-6 py-2 bg-black hover:bg-gray-800 text-white"
+              className="px-8 py-3 bg-black hover:bg-gray-800 text-white rounded-lg"
             >
-              {createMutation.isPending ? (t("saving") || "Đang lưu...") : (t("confirm") || "Xác nhận")}
+              {createMutation.isPending ? "Đang lưu..." : "Xác nhận"}
             </Button>
           </div>
         </form>

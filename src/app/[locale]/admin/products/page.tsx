@@ -7,6 +7,7 @@ import { ProductVariantsTable } from "@/components/templates/admin/products/Prod
 import { ProductVariantModal } from "@/components/templates/admin/products/ProductVariantModal";
 import { ProductVariantsModal } from "@/components/templates/admin/products/ProductVariantsModal";
 import { ProductCreateModal } from "@/components/templates/admin/products/ProductCreateModal";
+import { ProductUpdateModal } from "@/components/templates/admin/products/ProductUpdateModal";
 import { useProducts } from "@/hooks/admin/useProductVariants";
 
 import type { TProduct } from "@/types";
@@ -15,8 +16,10 @@ export default function ProductsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isVariantsModalOpen, setIsVariantsModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<TProduct | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<TProduct | null>(null);
+  const [updatingProduct, setUpdatingProduct] = useState<TProduct | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(20);
   const [searchTerm, setSearchTerm] = useState("");
@@ -31,7 +34,15 @@ export default function ProductsPage() {
     setIsCreateModalOpen(false);
   };
 
+  const handleUpdateProduct = (product: TProduct) => {
+    setUpdatingProduct(product);
+    setIsUpdateModalOpen(true);
+  };
 
+  const handleCloseUpdateModal = () => {
+    setIsUpdateModalOpen(false);
+    setUpdatingProduct(null);
+  };
 
   const handleEditProduct = (product: TProduct) => {
     setEditingProduct(product);
@@ -95,6 +106,7 @@ export default function ProductsPage() {
             variants={products}
             loading={loading}
             onEdit={handleEditProduct}
+            onUpdate={handleUpdateProduct}
             onDelete={handleDelete}
             onRestore={handleRestore}
             onViewDetails={handleViewDetails}
@@ -122,6 +134,12 @@ export default function ProductsPage() {
         <ProductCreateModal
           open={isCreateModalOpen}
           onClose={handleCloseCreateModal}
+        />
+
+        <ProductUpdateModal
+          open={isUpdateModalOpen}
+          onClose={handleCloseUpdateModal}
+          product={updatingProduct}
         />
       </div>
     </div>

@@ -1,9 +1,11 @@
 import { ControllerFactory } from "./factory-api-client";
-import type { 
-  RevenueByMonthDTO, 
-  OrderStatsDTO, 
-  TopSellingDTO 
+import type {
+  RevenueByMonthDTO,
+  OrderStatsDTO,
+  TopSellingDTO
 } from "@/api-client/models";
+import type { TRevenueByMonth } from "@/types";
+import { transformRevenueByMonthArrayToTRevenueByMonthArray } from "./transform/statistics";
 
 /**
  * Get monthly revenue data
@@ -11,7 +13,7 @@ import type {
 export async function fetchMonthlyRevenue(
   startDate: string,
   endDate: string
-): Promise<RevenueByMonthDTO[]> {
+): Promise<TRevenueByMonth[]> {
   const controller = await ControllerFactory.getStatisticsController();
   const response = await controller.getMonthlyRevenue({
     startDate,
@@ -22,7 +24,8 @@ export async function fetchMonthlyRevenue(
     throw new Error(response.data.message || "Failed to fetch monthly revenue");
   }
 
-  return response.data.result || [];
+  const apiData = response.data.result || [];
+  return transformRevenueByMonthArrayToTRevenueByMonthArray(apiData);
 }
 
 /**

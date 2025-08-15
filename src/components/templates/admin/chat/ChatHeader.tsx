@@ -57,7 +57,7 @@ export function ChatHeader({
           {onCreateConversation && (
             <Button
               onClick={onCreateConversation}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-black hover:bg-gray-800 text-white"
             >
               <Plus className="h-4 w-4 mr-2" />
               {t("createConversation") || "Tạo cuộc trò chuyện"}
