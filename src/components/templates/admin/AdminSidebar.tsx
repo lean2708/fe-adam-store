@@ -35,14 +35,34 @@ const getSidebarItems = () => [
     icon: Users,
   },
   {
+    titleKey: "navigation.branches",
+    href: "/admin/branches",
+    icon: Building,
+  },
+  {
+    titleKey: "navigation.categories",
+    href: "/admin/categories",
+    icon: FolderTree,
+  },
+  {
     titleKey: "navigation.products",
     href: "/admin/products",
     icon: Package,
   },
   {
-    titleKey: "navigation.search",
-    href: "/admin/search",
-    icon: Search,
+    titleKey: "navigation.colors",
+    href: "/admin/colors",
+    icon: Palette,
+  },
+  {
+    titleKey: "navigation.sizes",
+    href: "/admin/sizes",
+    icon: Ruler,
+  },
+  {
+    titleKey: "navigation.promotions",
+    href: "/admin/promotions",
+    icon: Tag,
   },
   {
     titleKey: "navigation.orders",
@@ -55,39 +75,19 @@ const getSidebarItems = () => [
     icon: CreditCard,
   },
   {
-    titleKey: "navigation.files",
-    href: "/admin/files",
-    icon: FileImage,
-  },
-  {
     titleKey: "navigation.chat",
     href: "/admin/chat",
     icon: MessageCircle,
   },
   {
-    titleKey: "navigation.sizes",
-    href: "/admin/sizes",
-    icon: Ruler,
+    titleKey: "navigation.files",
+    href: "/admin/files",
+    icon: FileImage,
   },
   {
-    titleKey: "navigation.colors",
-    href: "/admin/colors",
-    icon: Palette,
-  },
-  {
-    titleKey: "navigation.branches",
-    href: "/admin/branches",
-    icon: Building,
-  },
-  {
-    titleKey: "navigation.categories",
-    href: "/admin/categories",
-    icon: FolderTree,
-  },
-  {
-    titleKey: "navigation.promotions",
-    href: "/admin/promotions",
-    icon: Tag,
+    titleKey: "navigation.search",
+    href: "/admin/search",
+    icon: Search,
   },
 ];
 

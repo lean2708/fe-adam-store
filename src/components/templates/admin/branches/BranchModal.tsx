@@ -143,77 +143,37 @@ export function BranchModal({ open, onClose, editingBranch }: BranchModalProps) 
       open={open}
       onClose={handleClose}
       variant="centered"
-      size="md"
+      size="lg"
       showOverlay={true}
       closeOnClickOutside={false}
       className="bg-white rounded-lg shadow-xl"
     >
-      <ModalHeader className="flex items-center justify-between p-6 border-b">
-        <div>
+      <ModalBody className="p-8">
+        <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900">
             {editingBranch ? t("editBranch") : t("createNewBranch")}
           </h2>
-          <p className="text-sm text-gray-600 mt-1">
-            {editingBranch
-              ? t("updateBranchInfo")
-              : t("addNewBranch")
-            }
-          </p>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleClose}
-          className="h-8 w-8 p-0"
-        >
-          <X className="h-4 w-4" />
-        </Button>
-      </ModalHeader>
 
-      <ModalBody className="p-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="bg-white">
-            <div className="grid gap-4 py-6 px-6">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+            <div className="grid grid-cols-2 gap-6">
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-gray-700 font-medium">
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-gray-700">
                       {t("name")}
                     </FormLabel>
-                    <div className="col-span-3">
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className="bg-gray-50 border-gray-200 focus:bg-white"
-                          placeholder={t("branchName")}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-gray-700 font-medium">
-                      {t("location")}
-                    </FormLabel>
-                    <div className="col-span-3">
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className="bg-gray-50 border-gray-200 focus:bg-white"
-                          placeholder={t("address")}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </div>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="bg-[#F0F0F0] rounded-xl"
+                        placeholder={t("branchName")}
+                      />
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -222,32 +182,56 @@ export function BranchModal({ open, onClose, editingBranch }: BranchModalProps) 
                 control={form.control}
                 name="phone"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-gray-700 font-medium">
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-gray-700">
                       {t("phone")}
                     </FormLabel>
-                    <div className="col-span-3">
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className="bg-gray-50 border-gray-200 focus:bg-white"
-                          placeholder={t("phoneNumber")}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </div>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="bg-[#F0F0F0] rounded-xl"
+                        placeholder={t("phoneNumber")}
+                      />
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <div className="flex justify-end gap-3 pt-4 border-t">
-              <Button type="button" variant="outline" onClick={handleClose} className="bg-white">
+
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-medium text-gray-700">
+                    {t("location")}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="bg-[#F0F0F0] rounded-xl"
+                      placeholder={t("address")}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="flex justify-end gap-3 pt-4">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={handleClose}
+                className="px-6 py-2"
+              >
                 {t("cancel")}
               </Button>
               <Button
                 type="submit"
                 disabled={createMutation.isPending || updateMutation.isPending || form.formState.isSubmitting}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="px-6 py-2 bg-black hover:bg-gray-800 text-white"
               >
                 {editingBranch ? t("update") : t("create")}
               </Button>

@@ -225,7 +225,7 @@ export function ProductVariantEditModal({
                 value={form.watch("sizeId")?.toString() || ""}
                 onValueChange={(value) => form.setValue("sizeId", parseInt(value))}
               >
-                <SelectTrigger className={`h-10 ${form.formState.errors.sizeId ? "border-red-500" : "border-gray-300"}`}>
+                <SelectTrigger className={`bg-[#F0F0F0] rounded-xl h-10 ${form.formState.errors.sizeId ? "border-red-500" : ""}`}>
                   <SelectValue placeholder="ALL" />
                 </SelectTrigger>
                 <SelectContent>
@@ -248,7 +248,7 @@ export function ProductVariantEditModal({
                 value={form.watch("colorId")?.toString() || ""}
                 onValueChange={(value) => form.setValue("colorId", parseInt(value))}
               >
-                <SelectTrigger className={`h-10 ${form.formState.errors.colorId ? "border-red-500" : "border-gray-300"}`}>
+                <SelectTrigger className={`bg-[#F0F0F0] rounded-xl h-10 ${form.formState.errors.colorId ? "border-red-500" : ""}`}>
                   <SelectValue placeholder="Màu sắc" />
                 </SelectTrigger>
                 <SelectContent>
@@ -277,7 +277,7 @@ export function ProductVariantEditModal({
                   step="0.01"
                   placeholder="Nhập giá"
                   {...form.register("price", { valueAsNumber: true })}
-                  className={`h-10 ${form.formState.errors.price ? "border-red-500" : "border-gray-300"}`}
+                  className={`bg-[#F0F0F0] rounded-xl h-10 ${form.formState.errors.price ? "border-red-500" : ""}`}
                 />
               </div>
               {form.formState.errors.price && (
@@ -293,7 +293,7 @@ export function ProductVariantEditModal({
                 type="number"
                 placeholder="Số lượng"
                 {...form.register("quantity", { valueAsNumber: true })}
-                className={`h-10 ${form.formState.errors.quantity ? "border-red-500" : "border-gray-300"}`}
+                className={`bg-[#F0F0F0] rounded-xl h-10 ${form.formState.errors.quantity ? "border-red-500" : ""}`}
               />
               {form.formState.errors.quantity && (
                 <p className="text-xs text-red-500">{form.formState.errors.quantity.message}</p>

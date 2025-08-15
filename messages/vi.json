@@ -65,6 +65,51 @@
       "product_not_found": "Không tìm thấy sản phẩm."
     }
   },
+  "Footer": {
+    "brand": {
+      "title": "Adam Store lắng nghe bạn!",
+      "description": "Chúng tôi luôn trân trọng và mong đợi nhận được mọi ý kiến đóng góp từ khách hàng để có thể nâng cấp trải nghiệm dịch vụ và sản phẩm tốt hơn nữa.",
+      "feedbackButton": "Đóng góp ý kiến"
+    },
+    "contact": {
+      "hotline": "Hotline: 19001004 446",
+      "hours": {
+        "weekdays": "Thứ 2 - Thứ 6: 8h - 20h",
+        "weekends": "Thứ 7 - Chủ nhật: 8h - 13h"
+      }
+    },
+    "social": {
+      "title": "THEO DÕI CHÚNG TÔI",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "community": "Cộng đồng"
+    },
+    "policies": {
+      "title": "CHÍNH SÁCH",
+      "return": "Chính sách đổi trả",
+      "shipping": "Chính sách vận chuyển",
+      "privacy": "Chính sách bảo mật",
+      "delivery": "Chính sách giao hàng"
+    },
+    "customerCare": {
+      "title": "CHĂM SÓC KHÁCH HÀNG",
+      "sizeGuide": "Hướng dẫn chọn size",
+      "careInstructions": "Hướng dẫn bảo quản",
+      "faq": "Câu hỏi thường gặp",
+      "contact": "Liên hệ"
+    },
+    "about": {
+      "title": "VỀ ADAM STORE",
+      "story": "Câu chuyện của chúng tôi",
+      "careers": "Tuyển dụng",
+      "news": "Tin tức",
+      "sustainability": "Phát triển bền vững"
+    },
+    "branches": {
+      "title": "ĐỊA CHỈ CHI NHÁNH",
+      "phone": "Tel"
+    }
+  },
   "Header": {
     "search": {
       "placeholder": "Tìm kiếm sản phẩm...",
@@ -105,370 +150,9 @@
       "logout": "Đăng xuất"
     }
   },
-  "Footer": {
-    "brand": {
-      "title": "Adam Store lắng nghe bạn!",
-      "description": "Chúng tôi luôn trân trọng và mong đợi nhận được mọi ý kiến đóng góp từ khách hàng để có thể nâng cấp trải nghiệm dịch vụ và sản phẩm tốt hơn nữa.",
-      "feedbackButton": "Đóng góp ý kiến"
-    },
-    "contact": {
-      "hotline": "Hotline: 19001004 446",
-      "hours": {
-        "weekdays": "Thứ 2 - Thứ 6: 8h - 20h",
-        "weekends": "Thứ 7 - Chủ nhật: 8h - 13h"
-      }
-    },
-    "social": {
-      "title": "THEO DÕI CHÚNG TÔI",
-      "facebook": "Facebook",
-      "instagram": "Instagram",
-      "community": "Cộng đồng"
-    },
-    "policies": {
-      "title": "CHÍNH SÁCH",
-      "return": "Chính sách đổi trả",
-      "shipping": "Chính sách vận chuyển",
-      "privacy": "Chính sách bảo mật",
-      "delivery": "Chính sách giao hàng"
-    },
-    "customerCare": {
-      "title": "CHĂM SÓC KHÁCH HÀNG",
-      "sizeGuide": "Hướng dẫn chọn size",
-      "careInstructions": "Hướng dẫn bảo quản",
-      "faq": "Câu hỏi thường gặp",
-      "contact": "Liên hệ"
-    },
-    "about": {
-      "title": "VỀ ADAM STORE",
-      "story": "Câu chuyện của chúng tôi",
-      "careers": "Tuyển dụng",
-      "news": "Tin tức",
-      "sustainability": "Phát triển bền vững"
-    },
-    "branches": {
-      "title": "ĐỊA CHỈ CHI NHÁNH",
-      "phone": "Tel"
-    }
-  },
   "Admin": {
     "dashboard": {
-      "title": "Bảng điều khiển",
-      "welcome": "Chào mừng đến với bảng điều khiển quản trị. Đây là những gì đang diễn ra với cửa hàng của bạn hôm nay.",
-      "overview": {
-        "title": "Tổng quan",
-        "description": "Doanh thu hàng tháng trong năm hiện tại"
-      },
-      "recentOrders": {
-        "title": "Đơn hàng gần đây",
-        "description": "Những đơn hàng mới nhất từ khách hàng của bạn"
-      },
-      "topProducts": {
-        "title": "Sản phẩm bán chạy nhất",
-        "description": "Những sản phẩm hoạt động tốt nhất của bạn trong tháng này"
-      }
-    },
-    "navigation": {
-      "dashboard": "Bảng điều khiển",
-      "products": "Sản phẩm",
-      "orders": "Đơn hàng",
-      "users": "Người dùng",
-      "branches": "Chi nhánh",
-      "colors": "Màu sắc",
-      "sizes": "Kích cỡ",
-      "promotions": "Khuyến mãi",
-      "files": "Tệp tin",
-      "chat": "Trò chuyện",
-      "paymentHistory": "Lịch sử thanh toán"
-    },
-    "products": {
-      "title": "Quản lý sản phẩm",
-      "description": "Quản lý sản phẩm cửa hàng",
-      "addProduct": "Thêm sản phẩm",
-      "editProduct": "Sửa sản phẩm",
-      "productDetails": "Chi tiết sản phẩm",
-      "name": "Tên sản phẩm",
-      "price": "Giá",
-      "category": "Danh mục",
-      "stock": "Tồn kho",
-      "description": "Mô tả",
-      "images": "Hình ảnh",
-      "colors": "Màu sắc",
-      "sizes": "Kích cỡ",
-      "sku": "Mã SKU",
-      "weight": "Trọng lượng",
-      "dimensions": "Kích thước",
-      "tags": "Thẻ",
-      "featured": "Nổi bật",
-      "published": "Đã xuất bản",
-      "draft": "Bản nháp",
-      "outOfStock": "Hết hàng",
-      "inStock": "Còn hàng",
-      "lowStock": "Sắp hết hàng"
-    },
-    "orders": {
-      "title": "Quản lý đơn hàng",
-      "description": "Quản lý đơn hàng khách hàng",
-      "orderDetails": "Chi tiết đơn hàng",
-      "orderNumber": "Số đơn hàng",
-      "customer": "Khách hàng",
-      "date": "Ngày",
-      "total": "Tổng cộng",
-      "status": "Trạng thái",
-      "items": "Sản phẩm",
-      "shipping": "Vận chuyển",
-      "payment": "Thanh toán",
-      "pending": "Chờ xử lý",
-      "processing": "Đang xử lý",
-      "shipped": "Đã gửi",
-      "delivered": "Đã giao",
-      "cancelled": "Đã hủy",
-      "refunded": "Đã hoàn tiền",
-      "viewOrder": "Xem đơn hàng",
-      "cancelOrder": "Hủy đơn hàng",
-      "updateStatus": "Cập nhật trạng thái",
-      "printInvoice": "In hóa đơn"
-    },
-    "users": {
-      "title": "Quản lý người dùng",
-      "description": "Quản lý người dùng hệ thống",
-      "addUser": "Thêm người dùng",
-      "editUser": "Sửa người dùng",
-      "userDetails": "Chi tiết người dùng",
-      "firstName": "Tên",
-      "lastName": "Họ",
-      "email": "Email",
-      "phone": "Số điện thoại",
-      "role": "Vai trò",
-      "avatar": "Ảnh đại diện",
-      "joinDate": "Ngày tham gia",
-      "lastLogin": "Lần đăng nhập cuối",
-      "verified": "Đã xác thực",
-      "blocked": "Đã khóa",
-      "admin": "Quản trị viên",
-      "customer": "Khách hàng",
-      "moderator": "Điều hành viên"
-    },
-    "branches": {
-      "title": "Quản lý chi nhánh",
-      "description": "Quản lý chi nhánh cửa hàng",
-      "addBranch": "Thêm chi nhánh",
-      "editBranch": "Sửa chi nhánh",
-      "branchName": "Tên chi nhánh",
-      "address": "Địa chỉ",
-      "phone": "Số điện thoại",
-      "manager": "Quản lý",
-      "openingHours": "Giờ mở cửa",
-      "coordinates": "Tọa độ"
-    },
-    "colors": {
-      "title": "Quản lý màu sắc",
-      "description": "Quản lý màu sắc sản phẩm",
-      "addColor": "Thêm màu",
-      "editColor": "Sửa màu",
-      "colorName": "Tên màu",
-      "colorCode": "Mã màu",
-      "hexValue": "Giá trị Hex"
-    },
-    "sizes": {
-      "title": "Quản lý kích cỡ",
-      "description": "Quản lý kích cỡ sản phẩm",
-      "addSize": "Thêm kích cỡ",
-      "editSize": "Sửa kích cỡ",
-      "sizeName": "Tên kích cỡ",
-      "sizeCode": "Mã kích cỡ",
-      "measurements": "Số đo"
-    },
-    "promotions": {
-      "title": "Quản lý khuyến mãi",
-      "description": "Quản lý khuyến mãi và giảm giá",
-      "addPromotion": "Thêm khuyến mãi",
-      "editPromotion": "Sửa khuyến mãi",
-      "promotionName": "Tên khuyến mãi",
-      "discountType": "Loại giảm giá",
-      "discountValue": "Giá trị giảm giá",
-      "startDate": "Ngày bắt đầu",
-      "endDate": "Ngày kết thúc",
-      "minOrder": "Đơn hàng tối thiểu",
-      "maxUses": "Số lần sử dụng tối đa",
-      "percentage": "Phần trăm",
-      "fixedAmount": "Số tiền cố định"
-    },
-    "files": {
-      "title": "Quản lý tệp tin",
-      "description": "Quản lý tệp tin đã tải lên",
-      "uploadFile": "Tải lên tệp tin",
-      "fileName": "Tên tệp tin",
-      "fileSize": "Kích thước tệp tin",
-      "fileType": "Loại tệp tin",
-      "uploadDate": "Ngày tải lên",
-      "downloadFile": "Tải xuống tệp tin"
-    },
-    "chat": {
-      "title": "Quản lý trò chuyện",
-      "description": "Quản lý trò chuyện hỗ trợ khách hàng",
-      "activeChats": "Cuộc trò chuyện đang hoạt động",
-      "chatHistory": "Lịch sử trò chuyện",
-      "customer": "Khách hàng",
-      "agent": "Nhân viên",
-      "startTime": "Thời gian bắt đầu",
-      "duration": "Thời lượng",
-      "resolved": "Đã giải quyết",
-      "pending": "Chờ xử lý"
-    },
-    "paymentHistory": {
-      "title": "Lịch sử thanh toán",
-      "description": "Xem giao dịch thanh toán",
-      "transactionId": "Mã giao dịch",
-      "amount": "Số tiền",
-      "method": "Phương thức thanh toán",
-      "date": "Ngày",
-      "status": "Trạng thái",
-      "customer": "Khách hàng",
-      "order": "Đơn hàng",
-      "successful": "Thành công",
-      "failed": "Thất bại",
-      "refund": "Hoàn tiền"
-    },
-    "common": {
-      "add": "Thêm",
-      "edit": "Sửa",
-      "delete": "Xóa",
-      "save": "Lưu",
-      "cancel": "Hủy",
-      "search": "Tìm kiếm",
-      "filter": "Lọc",
-      "export": "Xuất",
-      "import": "Nhập",
-      "actions": "Hành động",
-      "status": "Trạng thái",
-      "active": "Hoạt động",
-      "inactive": "Không hoạt động",
-      "loading": "Đang tải...",
-      "noData": "Không có dữ liệu",
-      "confirm": "Xác nhận",
-      "close": "Đóng",
-      "view": "Xem",
-      "update": "Cập nhật",
-      "create": "Tạo",
-      "remove": "Xóa bỏ",
-      "restore": "Khôi phục",
-      "duplicate": "Nhân bản",
-      "archive": "Lưu trữ",
-      "publish": "Xuất bản",
-      "unpublish": "Hủy xuất bản",
-      "enable": "Kích hoạt",
-      "disable": "Vô hiệu hóa",
-      "yes": "Có",
-      "no": "Không",
-      "success": "Thành công",
-      "error": "Lỗi",
-      "warning": "Cảnh báo",
-      "info": "Thông tin",
-      "required": "Bắt buộc",
-      "optional": "Tùy chọn",
-      "selectAll": "Chọn tất cả",
-      "deselectAll": "Bỏ chọn tất cả",
-      "bulkActions": "Hành động hàng loạt",
-      "itemsSelected": "mục đã chọn",
-      "page": "Trang",
-      "of": "của",
-      "showing": "Hiển thị",
-      "to": "đến",
-      "entries": "mục",
-      "previous": "Trước",
-      "next": "Tiếp",
-      "first": "Đầu",
-      "last": "Cuối"
-    },
-    "messages": {
-      "deleteConfirm": "Bạn có chắc chắn muốn xóa mục này không?",
-      "deleteSuccess": "Xóa mục thành công",
-      "deleteError": "Không thể xóa mục",
-      "saveSuccess": "Lưu mục thành công",
-      "saveError": "Không thể lưu mục",
-      "updateSuccess": "Cập nhật mục thành công",
-      "updateError": "Không thể cập nhật mục",
-      "createSuccess": "Tạo mục thành công",
-      "createError": "Không thể tạo mục",
-      "restoreSuccess": "Khôi phục mục thành công",
-      "restoreError": "Không thể khôi phục mục",
-      "noItemsFound": "Không tìm thấy mục nào",
-      "loadingData": "Đang tải dữ liệu...",
-      "serverError": "Đã xảy ra lỗi máy chủ",
-      "networkError": "Đã xảy ra lỗi mạng",
-      "validationError": "Vui lòng kiểm tra dữ liệu nhập",
-      "permissionDenied": "Không có quyền truy cập",
-      "sessionExpired": "Phiên đã hết hạn, vui lòng đăng nhập lại"
-    }
-  },
-  "Header": {
-    "search": {
-      "placeholder": "Tìm kiếm sản phẩm...",
-      "noResults": "Không tìm thấy sản phẩm nào"
-    },
-    "cart": {
-      "title": "Giỏ hàng",
-      "empty": "Giỏ hàng của bạn đang trống",
-      "viewCart": "Giỏ hàng của bạn",
-      "buyNow": "Mua ngay",
-      "subtotal": "Tạm tính",
-      "products": "sản phẩm",
-      "selected": "Đã Chọn"
-    },
-    "user": {
-      "login": "Đăng nhập",
-      "register": "Đăng ký",
-      "profile": "Hồ sơ",
-      "logout": "Đăng xuất"
-    }
-  },
-  "Footer": {
-    "brand": {
-      "title": "Adam Store lắng nghe bạn!",
-      "description": "Chúng tôi luôn trân trọng và mong đợi nhận được mọi ý kiến đóng góp từ khách hàng để có thể nâng cấp trải nghiệm dịch vụ và sản phẩm tốt hơn nữa.",
-      "feedbackButton": "Đóng góp ý kiến"
-    },
-    "contact": {
-      "hotline": "Hotline: 19001004 446",
-      "hours": {
-        "weekdays": "Thứ 2 - Thứ 6: 8h - 20h",
-        "weekends": "Thứ 7 - Chủ nhật: 8h - 13h"
-      }
-    },
-    "social": {
-      "title": "THEO DÕI CHÚNG TÔI",
-      "facebook": "Facebook",
-      "instagram": "Instagram",
-      "community": "Cộng đồng"
-    },
-    "policies": {
-      "title": "CHÍNH SÁCH",
-      "return": "Chính sách đổi trả",
-      "shipping": "Chính sách vận chuyển",
-      "privacy": "Chính sách bảo mật",
-      "delivery": "Chính sách giao hàng"
-    },
-    "customerCare": {
-      "title": "CHĂM SÓC KHÁCH HÀNG",
-      "sizeGuide": "Hướng dẫn chọn size",
-      "careInstructions": "Hướng dẫn bảo quản",
-      "faq": "Câu hỏi thường gặp",
-      "contact": "Liên hệ"
-    },
-    "about": {
-      "title": "VỀ ADAM STORE",
-      "story": "Câu chuyện của chúng tôi",
-      "careers": "Tuyển dụng",
-      "news": "Tin tức",
-      "sustainability": "Phát triển bền vững"
-    },
-    "branches": {
-      "title": "ĐỊA CHỈ CHI NHÁNH",
-      "phone": "Tel"
-    }
-  },
-  "Admin": {
-    "dashboard": {
+      "noRevenueData" : "Không có dữ liệu doanh thu",
       "title": "Tổng Quan",
       "welcome": "Chào mừng đến với bảng điều khiển quản trị. Đây là những gì đang diễn ra với cửa hàng của bạn hôm nay.",
       "overview": {
@@ -500,18 +184,17 @@
       "paymentHistory": "Lịch sử thanh toán"
     },
     "products": {
+      "updateProductTitle": "Cập nhật sản phẩm",
+      "updateProduct": "Cập nhật sản phẩm",
       "title": "Quản lý sản phẩm",
-      "description": "Quản lý sản phẩm cửa hàng với các tổ hợp màu sắc và kích cỡ",
       "variantsTitle": "Quản lý sản phẩm",
       "variantsDescription": "Quản lý sản phẩm bao gồm biến thể, màu sắc, kích cỡ, giá cả và tồn kho",
-      "addProduct": "Thêm sản phẩm",
       "editProduct": "Sửa sản phẩm",
       "addVariant": "Thêm biến thể",
       "editVariant": "Sửa biến thể",
       "productDetails": "Chi tiết sản phẩm",
       "name": "Tên sản phẩm",
       "price": "Giá",
-      "category": "Danh mục",
       "stock": "Tồn kho",
       "description": "Mô tả",
       "images": "Hình ảnh",
@@ -525,7 +208,6 @@
       "rating": "Điểm đánh giá",
       "status": "Trạng thái",
       "actions": "Hành động",
-      "image": "Hình ảnh",
       "product": "Sản phẩm",
       "selectProduct": "Chọn sản phẩm",
       "selectColor": "Chọn màu sắc",
@@ -549,10 +231,8 @@
       "availableProducts": "sản phẩm có sẵn",
       "allColorsSizes": "Tất cả màu sắc và kích cỡ",
       "acrossAllVariants": "Trên tất cả biến thể",
-      "refresh": "Làm mới",
       "cancel": "Hủy bỏ",
       "save": "Lưu",
-      "add": "Thêm",
       "saving": "Đang lưu...",
       "createVariant": "Tạo biến thể",
       "updateVariant": "Cập nhật biến thể",
@@ -631,31 +311,9 @@
       "saving": "Đang lưu...",
       "ACTIVE": "Hoạt động",
       "INACTIVE": "Không hoạt động",
-      "deletePayment":"Xóa"
+      "deletePayment": "Xóa"
     },
-    "orders": {
-      "title": "Quản lý đơn hàng",
-      "description": "Quản lý đơn hàng khách hàng",
-      "orderDetails": "Chi tiết đơn hàng",
-      "orderNumber": "Số đơn hàng",
-      "customer": "Khách hàng",
-      "date": "Ngày",
-      "total": "Tổng cộng",
-      "status": "Trạng thái",
-      "items": "Sản phẩm",
-      "shipping": "Vận chuyển",
-      "payment": "Thanh toán",
-      "pending": "Chờ xử lý",
-      "processing": "Đang xử lý",
-      "shipped": "Đã gửi",
-      "delivered": "Đã giao",
-      "cancelled": "Đã hủy",
-      "refunded": "Đã hoàn tiền",
-      "viewOrder": "Xem đơn hàng",
-      "cancelOrder": "Hủy đơn hàng",
-      "updateStatus": "Cập nhật trạng thái",
-      "printInvoice": "In hóa đơn"
-    },
+
     "users": {
       "title": "Quản lý người dùng",
       "description": "Quản lý người dùng hệ thống",
@@ -674,7 +332,11 @@
       "blocked": "Đã khóa",
       "admin": "Quản trị viên",
       "customer": "Khách hàng",
-      "moderator": "Điều hành viên"
+      "moderator": "Điều hành viên",
+      "searchPlaceholder": "Tìm kiếm theo tên hoặc email...",
+      "noUsersFound": "Không tìm thấy người dùng",
+      "noRoles": "Không có vai trò",
+      "openMenu": "Mở menu"
     },
     "branches": {
       "title": "Quản lý chi nhánh",
@@ -714,15 +376,7 @@
       "restoreBranch": "Khôi phục",
       "deleteBranchConfirm": "Bạn có chắc chắn muốn xóa chi nhánh này không?"
     },
-    "colors": {
-      "title": "Quản lý màu sắc",
-      "description": "Quản lý màu sắc sản phẩm",
-      "addColor": "Thêm màu",
-      "editColor": "Sửa màu",
-      "colorName": "Tên màu",
-      "colorCode": "Mã màu",
-      "hexValue": "Giá trị Hex"
-    },
+
     "sizes": {
       "title": "Quản lý kích cỡ",
       "description": "Quản lý kích cỡ sản phẩm",
@@ -751,7 +405,7 @@
       "editColor": "Sửa màu",
       "deleteColor": "Xóa",
       "restoreColor": "Khôi phục",
-      "colorName": "Tên màu",
+      "colorName": "Nhập tên màu",
       "totalColors": "Tổng số màu",
       "activeColors": "Màu đang hoạt động",
       "inactiveColors": "Màu không hoạt động",
@@ -762,7 +416,7 @@
       "listOfAllColors": "Danh sách tất cả màu sản phẩm có sẵn",
       "noColorsFound": "Không tìm thấy màu nào",
       "id": "ID",
-      "name": "Tên",
+      "name": "Tên màu sắc",
       "color": "Màu",
       "colorValue": "Giá trị màu",
       "status": "Trạng thái",
@@ -779,6 +433,7 @@
       "colorPreviewNote": "Xem trước màu được tạo dựa trên tên. Các tên màu phổ biến như 'đỏ', 'xanh', 'lục' sẽ hiển thị màu chuẩn của chúng."
     },
     "orders": {
+      "noRecentOrders": "Không có đơn hàng gần đây",
       "title": "Quản lý đơn hàng",
       "description": "Quản lý đơn hàng khách hàng và trạng thái đơn hàng",
       "totalOrders": "Tổng đơn hàng",
@@ -960,18 +615,13 @@
       "unknown": "Không rõ",
       "admin": "Quản trị viên",
       "customer": "Khách hàng",
-      "newConversation": "Cuộc trò chuyện mới từ",
-      "creatingConversation": "Đang tạo cuộc trò chuyện...",
       "websocketConnected": "Kết nối thời gian thực thành công!",
       "websocketDisconnected": "Mất kết nối thời gian thực",
       "websocketNotConnected": "WebSocket chưa kết nối",
       "websocketError": "Lỗi kết nối thời gian thực",
-      "messageSentWebSocket": "Tin nhắn đã gửi qua WebSocket!",
       "httpFallbackNotImplemented": "HTTP API chưa được triển khai",
       "sendMessageError": "Lỗi khi gửi tin nhắn",
-      "confirmDeleteMessage": "Bạn có chắc chắn muốn xóa tin nhắn này?",
       "messageDeleted": "Đã xóa tin nhắn!",
-      "messageDeletedWebSocket": "Đã xóa tin nhắn qua WebSocket!",
       "deleteMessageError": "Lỗi khi xóa tin nhắn",
       "switchedToWebSocket": "Chuyển sang chế độ WebSocket",
       "switchedToHttp": "Chuyển sang chế độ HTTP",
@@ -1089,6 +739,5 @@
       "permissionDenied": "Không có quyền truy cập",
       "sessionExpired": "Phiên đã hết hạn, vui lòng đăng nhập lại"
     }
-
   }
 }

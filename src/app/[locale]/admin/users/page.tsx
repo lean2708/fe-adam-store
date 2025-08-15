@@ -5,6 +5,7 @@ import { UserTable } from "@/components/templates/admin/users/UserTable";
 import { UserModal } from "@/components/templates/admin/users/UserModal";
 import {
   fetchAllUsersAction,
+  searchUsersAction,
   deleteUserAction,
   restoreUserAction,
 } from "@/actions/userActions";
@@ -23,10 +24,23 @@ export default function UsersPage() {
 
   const pageSize = 10;
 
-  const fetchUsers = async (page: number = 0) => {
+  const fetchUsers = async (page: number = 0, searchQuery?: string) => {
     setLoading(true);
     try {
-      const result = await fetchAllUsersAction(page, pageSize);
+      let result;
+
+      if (searchQuery && searchQuery.trim()) {
+        
+        // Use search API when there's a search term
+        const searchCriteria = [
+          `name~${searchQuery.trim()}`,   
+        ];
+        result = await searchUsersAction(page, pageSize, ["id,desc"], searchCriteria);
+        console.log("Searching for", result);
+      } else {
+        // Use regular fetch when no search term
+        result = await fetchAllUsersAction(page, pageSize);
+      }
 
       if (result.success && result.data) {
         setUsers(result.data || []);
@@ -45,8 +59,14 @@ export default function UsersPage() {
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 0 && newPage < totalPages) {
-      fetchUsers(newPage);
+      fetchUsers(newPage, searchTerm);
     }
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    setCurrentPage(0); // Reset to first page when searching
+    fetchUsers(0, value);
   };
 
   useEffect(() => {
@@ -107,7 +127,7 @@ export default function UsersPage() {
             users={users}
             loading={loading}
             searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
+            onSearchChange={handleSearchChange}
             onCreateUser={handleCreateUser}
             onEditUser={handleEditUser}
             onDeleteUser={handleDeleteUser}

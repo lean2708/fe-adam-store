@@ -15,31 +15,33 @@ import type { ProductResponse } from "@/api-client/models";
 // Transform ProductResponse to TProduct
 function transformProductResponseToTProduct(product: ProductResponse): TProduct {
   return {
-    id: product.id || 0,
-    title: product.name || '',
-    name: product.name,
-    description: product.description,
-    averageRating: product.averageRating,
-    soldQuantity: product.soldQuantity,
-    totalReviews: product.totalReviews,
-    status: product.status,
-    createdAt: product.createdAt,
-    isAvailable: product.isAvailable,
-    mainImage: product.images?.[0]?.imageUrl || '',
-    images: product.images,
-    colors: product.variants ? product.variants.map(variant => ({
-      id: variant.color?.id || 0,
-      name: variant.color?.name || '',
-      variants: [{
-        id: variant.id,
-        price: variant.price,
-        quantity: variant.quantity,
-        isAvailable: variant.isAvailable,
-        status: variant.status,
-        size: variant.size
-      }]
-    })) : []
-  };
+  id: product.id || 0,
+  title: product.name || '',
+  name: product.name,
+  description: product.description,
+  averageRating: product.averageRating,
+  soldQuantity: product.soldQuantity,
+  totalReviews: product.totalReviews,
+  status: product.status,
+  createdAt: product.createdAt,
+  isAvailable: product.isAvailable,
+  mainImage: product.images?.[0]?.imageUrl || '',
+  images: product.images,
+  colors: product.variants ? product.variants.map(variant => ({
+    id: variant.color?.id || 0,
+    name: variant.color?.name || '',
+    variants: [{
+      id: variant.id,
+      price: variant.price,
+      quantity: variant.quantity,
+      isAvailable: variant.isAvailable,
+      status: variant.status,
+      size: variant.size
+    }]
+  })) : [],
+  minPrice: 0,
+  maxPrice: 0
+};
 }
 
 export function useProducts(

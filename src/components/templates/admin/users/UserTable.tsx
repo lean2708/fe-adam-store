@@ -67,12 +67,8 @@ export function UserTable({
   const t = useTranslations("Admin");
   const locale = useLocale();
 
-  // Filter users based on search term
-  const filteredUsers = users.filter(
-    (user) =>
-      user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // No client-side filtering needed since we're using server-side search
+  const filteredUsers = users;
 
   return (
     <div className="space-y-4">
@@ -98,7 +94,7 @@ export function UserTable({
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
-            placeholder="Search users..."
+            placeholder={t("users.searchPlaceholder")}
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
             className="pl-10"
@@ -171,7 +167,7 @@ export function UserTable({
                     colSpan={9}
                     className="text-center py-8 text-muted-foreground"
                   >
-                    No users found
+                    {t("users.noUsersFound")}
                   </TableCell>
                 </TableRow>
               ) : (
@@ -237,7 +233,7 @@ export function UserTable({
                           ))
                         ) : (
                           <span className="text-sm text-gray-500">
-                            No roles
+                            {t("users.noRoles")}
                           </span>
                         )}
                       </div>
@@ -264,14 +260,14 @@ export function UserTable({
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
+                            <span className="sr-only">{t("users.openMenu")}</span>
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem onClick={() => onEditUser(user)}>
                             <Edit className="mr-2 h-4 w-4" />
-                            Edit
+                            {t("common.edit")}
                           </DropdownMenuItem>
                           {user.status === "ACTIVE" ? (
                             <DropdownMenuItem
@@ -279,14 +275,14 @@ export function UserTable({
                               className="text-destructive"
                             >
                               <Trash2 className="mr-2 h-4 w-4" />
-                              Delete
+                              {t("common.delete")}
                             </DropdownMenuItem>
                           ) : (
                             <DropdownMenuItem
                               onClick={() => onRestoreUser(user.id!)}
                             >
                               <RotateCcw className="mr-2 h-4 w-4" />
-                              Restore
+                              {t("common.restore")}
                             </DropdownMenuItem>
                           )}
                         </DropdownMenuContent>

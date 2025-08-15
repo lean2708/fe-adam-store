@@ -146,10 +146,7 @@ export function ColorModal({ open, onClose, editingColor }: ColorModalProps) {
             {editingColor ? t("editColor") : t("createNewColor")}
           </h2>
           <p className="text-sm text-gray-600 mt-1">
-            {editingColor
-              ? t("updateColorInfo")
-              : t("addNewColor")
-            }
+            {editingColor ? t("updateColorInfo") : t("addNewColor")}
           </p>
         </div>
         <Button
@@ -170,21 +167,19 @@ export function ColorModal({ open, onClose, editingColor }: ColorModalProps) {
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right text-gray-700 font-medium">
-                      {t("name")}
-                    </FormLabel>
+                  <FormItem className="">
+                    <FormLabel className="">{t("name")}</FormLabel>
                     <div className="col-span-3">
                       <FormControl>
                         <Input
                           {...field}
-                          className="bg-gray-50 border-gray-200 focus:bg-white"
+                          className="bg-[#F0F0F0] rounded-xl border-gray-200 focus:bg-white"
                           placeholder={t("colorName")}
                         />
                       </FormControl>
                       <FormMessage />
                       <p className="text-xs text-gray-500 mt-1">
-                        {t("colorPreviewNote")}
+                        {/* {t("colorPreviewNote")} */}
                       </p>
                     </div>
                   </FormItem>
@@ -192,13 +187,22 @@ export function ColorModal({ open, onClose, editingColor }: ColorModalProps) {
               />
             </div>
             <div className="flex justify-end gap-3 pt-4 border-t">
-              <Button type="button" variant="outline" onClick={handleClose} className="bg-white">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleClose}
+                className="bg-white"
+              >
                 {t("cancel")}
               </Button>
               <Button
                 type="submit"
-                disabled={createMutation.isPending || updateMutation.isPending || form.formState.isSubmitting}
-                className="bg-blue-600 hover:bg-blue-700"
+                disabled={
+                  createMutation.isPending ||
+                  updateMutation.isPending ||
+                  form.formState.isSubmitting
+                }
+                className="bg-black hover:bg-gray-800"
               >
                 {editingColor ? t("update") : t("create")}
               </Button>

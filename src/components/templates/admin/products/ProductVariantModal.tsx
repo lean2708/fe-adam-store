@@ -92,7 +92,7 @@ export function ProductVariantModal({ open, onClose, editingVariant }: ProductVa
 
               <Button
                 onClick={handleOpenEditModal}
-                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white"
+                className="px-6 py-2 bg-black hover:bg-gray-800 text-white"
               >
                 {t("addVariant") || "Add Variant"}
               </Button>

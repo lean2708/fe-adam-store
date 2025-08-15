@@ -342,6 +342,59 @@ export const UserControllerApiAxiosParamCreator = function (configuration?: Conf
             };
         },
         /**
+         * Api này dùng để search Users, giá trị của search: field~value hoặc field>value hoặc field<value
+         * @param {number} [page] Zero-based page index (0..N)
+         * @param {number} [size] The size of the page to be returned
+         * @param {Array<string>} [sort] Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         * @param {Array<string>} [search] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchUser: async (page?: number, size?: number, sort?: Array<string>, search?: Array<string>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/admin/users/search`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
+
+            if (sort) {
+                localVarQueryParameter['sort'] = sort;
+            }
+
+            if (search) {
+                localVarQueryParameter['search'] = search;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * API này được sử dụng để update user
          * @summary Update User (No update Password)
          * @param {number} id 
@@ -537,6 +590,21 @@ export const UserControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * Api này dùng để search Users, giá trị của search: field~value hoặc field>value hoặc field<value
+         * @param {number} [page] Zero-based page index (0..N)
+         * @param {number} [size] The size of the page to be returned
+         * @param {Array<string>} [sort] Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         * @param {Array<string>} [search] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async searchUser(page?: number, size?: number, sort?: Array<string>, search?: Array<string>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponsePageResponseUserResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.searchUser(page, size, sort, search, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserControllerApi.searchUser']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * API này được sử dụng để update user
          * @summary Update User (No update Password)
          * @param {number} id 
@@ -641,6 +709,15 @@ export const UserControllerApiFactory = function (configuration?: Configuration,
          */
         restore(requestParameters: UserControllerApiRestoreRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseUserResponse> {
             return localVarFp.restore(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Api này dùng để search Users, giá trị của search: field~value hoặc field>value hoặc field<value
+         * @param {UserControllerApiSearchUserRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchUser(requestParameters: UserControllerApiSearchUserRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponsePageResponseUserResponse> {
+            return localVarFp.searchUser(requestParameters.page, requestParameters.size, requestParameters.sort, requestParameters.search, options).then((request) => request(axios, basePath));
         },
         /**
          * API này được sử dụng để update user
@@ -806,6 +883,41 @@ export interface UserControllerApiRestoreRequest {
 }
 
 /**
+ * Request parameters for searchUser operation in UserControllerApi.
+ * @export
+ * @interface UserControllerApiSearchUserRequest
+ */
+export interface UserControllerApiSearchUserRequest {
+    /**
+     * Zero-based page index (0..N)
+     * @type {number}
+     * @memberof UserControllerApiSearchUser
+     */
+    readonly page?: number
+
+    /**
+     * The size of the page to be returned
+     * @type {number}
+     * @memberof UserControllerApiSearchUser
+     */
+    readonly size?: number
+
+    /**
+     * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+     * @type {Array<string>}
+     * @memberof UserControllerApiSearchUser
+     */
+    readonly sort?: Array<string>
+
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof UserControllerApiSearchUser
+     */
+    readonly search?: Array<string>
+}
+
+/**
  * Request parameters for update operation in UserControllerApi.
  * @export
  * @interface UserControllerApiUpdateRequest
@@ -928,6 +1040,17 @@ export class UserControllerApi extends BaseAPI {
      */
     public restore(requestParameters: UserControllerApiRestoreRequest, options?: RawAxiosRequestConfig) {
         return UserControllerApiFp(this.configuration).restore(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Api này dùng để search Users, giá trị của search: field~value hoặc field>value hoặc field<value
+     * @param {UserControllerApiSearchUserRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserControllerApi
+     */
+    public searchUser(requestParameters: UserControllerApiSearchUserRequest = {}, options?: RawAxiosRequestConfig) {
+        return UserControllerApiFp(this.configuration).searchUser(requestParameters.page, requestParameters.size, requestParameters.sort, requestParameters.search, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
