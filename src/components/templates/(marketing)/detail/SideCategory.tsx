@@ -12,7 +12,7 @@ export default function SideCategory() {
   const paramCate = searchParams.get("category");
   const [categories, setCategories] = useState<TCategory[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
