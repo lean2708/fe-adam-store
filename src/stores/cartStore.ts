@@ -205,6 +205,7 @@ export const useCartStore = create<State & Actions>()(
       name: 'cart-storage',
       // Chỉ định các key muốn lưu vào localStorage
       partialize: (state) => ({
+        orderSelectedItems: state.orderSelectedItems,
         selectedItems: state.selectedItems,
         selectedTotalPrice: state.selectedTotalPrice,
       }),

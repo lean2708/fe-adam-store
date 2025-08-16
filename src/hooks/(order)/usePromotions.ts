@@ -1,12 +1,11 @@
 import { fetchPromotionsbyUserAction } from '@/actions/userActions';
 import { QUERY_KEY_PROMOTION } from '@/lib/constants';
 import { TPromotion } from '@/types';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 
 export default function usePromotions() {
-  const queryClient = useQueryClient();
-  const [currentPromotion, setCurrentPromotion] = useState<TPromotion | null>(
+  const [selectedPromotionId, setSelectedPromotionId] = useState<string | null>(
     null
   );
 
@@ -17,20 +16,35 @@ export default function usePromotions() {
     queryKey: [QUERY_KEY_PROMOTION.LIST],
     queryFn: async () => {
       const response = await fetchPromotionsbyUserAction();
-      if (response.success) {
-        const items = response.data?.items || [];
-        // Auto chọn default address hoặc địa chỉ đầu tiên
-        setCurrentPromotion(items[0]);
-        return items;
-      }
-      setCurrentPromotion(null);
-      return [];
+      return response.success ? response.data?.items || [] : [];
     },
   });
 
+  // Đồng bộ selectedPromotion khi danh sách thay đổi
+  // useEffect(() => {
+  //   if (listPromotion.length > 0) {
+  //     // Tìm promotion tương ứng với ID đã chọn
+  //     const foundPromotion = selectedPromotionId
+  //       ? listPromotion.find((p) => p.id?.toString() === selectedPromotionId)
+  //       : null;
+
+  //     // Cập nhật ID nếu chọn mặc định
+  //     if (!foundPromotion && listPromotion[0]) {
+  //       setSelectedPromotionId(listPromotion[0].id?.toString() || null);
+  //     }
+  //   } else {
+  //     setSelectedPromotionId(null);
+  //   }
+  // }, [listPromotion, selectedPromotionId]);
+
+  // Xử lý khi người dùng chọn promotion mới
+  const handleSelectPromotion = (id: string) => {
+    setSelectedPromotionId(id);
+  };
+
   return {
-    currentPromotion,
-    setCurrentPromotion,
+    selectedPromotionId, // ID của promotion được chọn
+    handleSelectPromotion,
     loading,
     listPromotion,
   };
