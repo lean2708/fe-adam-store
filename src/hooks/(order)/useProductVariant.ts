@@ -1,8 +1,9 @@
 import { getProductVariantByColorAndSizeAction } from '@/actions/productVariantActions';
 import { getProductDetailsAction } from '@/actions/productActions';
 import { useCartStore } from '@/stores/cartStore';
-import { TProductVariant } from '@/types';
+import { TEntityBasic, TProductVariant, TVariant } from '@/types';
 import { useQuery } from '@tanstack/react-query';
+import { QUERY_KEY_ORDER_PRODUCT_VARIANT } from '@/lib/constants';
 import { orderProductVariantKeys } from '@/lib/query_key';
 
 export default function useProductVariant() {

@@ -3,7 +3,7 @@
 import { fetchCartItemsAction } from '@/actions/cartActions';
 import type { TCartItem } from '@/types';
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
 
 export type State = {
   cartItems: TCartItem[];
@@ -164,7 +164,7 @@ export const useCartStore = create<State & Actions>()(
       // Clear everything
       clearCart: () =>
         set(() => {
-          sessionStorage.removeItem('cart-storage');
+          localStorage.removeItem('cart-storage');
 
           return {
             cartItems: [],
@@ -203,7 +203,6 @@ export const useCartStore = create<State & Actions>()(
     }),
     {
       name: 'cart-storage',
-      storage: createJSONStorage(() => sessionStorage),
       // Chỉ định các key muốn lưu vào localStorage
       partialize: (state) => ({
         selectedItems: state.selectedItems,
