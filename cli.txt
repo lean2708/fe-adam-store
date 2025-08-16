@@ -3,3 +3,4 @@ npx @openapitools/openapi-generator-cli generate \
   -g typescript-axios \
   -o ./src/api-client \
   --additional-properties=useSingleRequestParameter=true,withSeparateModelsAndApi=true,supportsES6=true,modelPropertyNaming=original,apiPackage=apis,modelPackage=models
+
