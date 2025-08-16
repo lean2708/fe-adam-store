@@ -12,8 +12,8 @@ export type TCartItem = {
   createdAt: Date | string;
   updatedAt: Date | string;
   quantity: number;
-  color: string;
-  size: string;
+  color: TEntityBasic;
+  size: TEntityBasic;
   productId: string;
   Product: TProduct;
   userId: string;

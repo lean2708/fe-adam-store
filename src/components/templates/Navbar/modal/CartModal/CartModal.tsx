@@ -120,6 +120,7 @@ export default function CartModal({
                   router.push('/order');
                   onClose();
                 }}
+                disabled={selectedItems.length === 0}
               >
                 {t('cart.buyNow')}
               </Button>

@@ -107,7 +107,7 @@ export function CartItem({
             <div className='flex gap-4 mb-2 -mt-2'>
               <Colors
                 cartItemId={cartItem.id}
-                color={currentColor?.name ?? cartItem.color}
+                color={currentColor?.name ?? cartItem.color.name ?? ''}
                 productColors={product.colors ?? []}
                 onChangeColor={onChangeColor}
                 isChanging={isChanged}
