@@ -1,8 +1,6 @@
 'use client';
 
-import { useCartStore } from '@/stores/cartStore';
 import { ProductItem } from './ProductItem';
-import { useCartItem } from '@/hooks/(cart)/useCartItem';
 import { useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
