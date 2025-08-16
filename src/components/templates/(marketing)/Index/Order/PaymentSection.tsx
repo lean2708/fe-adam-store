@@ -1,3 +1,5 @@
+'use client';
+
 import Promotions from './PaymentSection/Promotions';
 import PaymentMethod from './PaymentSection/PaymentMethod';
 import usePromotions from '@/hooks/(order)/usePromotions';

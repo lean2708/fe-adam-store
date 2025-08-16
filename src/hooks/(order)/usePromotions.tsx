@@ -1,5 +1,5 @@
 import { fetchPromotionsbyUserAction } from '@/actions/userActions';
-import { QUERY_KEY_ADDRESS, QUERY_KEY_PROMOTION } from '@/lib/constants';
+import { QUERY_KEY_PROMOTION } from '@/lib/constants';
 import { TPromotion } from '@/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';

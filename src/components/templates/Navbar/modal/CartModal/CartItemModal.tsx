@@ -52,7 +52,7 @@ function CartItemModal({
             {cartItem.Product.name}
           </h4>
           <p className='text-sm font-medium text-muted-foreground'>
-            {cartItem.color}/ {cartItem.size}
+            {cartItem.color.name}/ {cartItem.size.name}
           </p>
         </div>
 

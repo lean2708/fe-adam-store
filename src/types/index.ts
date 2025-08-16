@@ -139,6 +139,18 @@ export type TVariant = {
   size?: TEntityBasic;
 };
 
+export type TProductVariant = {
+  id?: number;
+  name?: string;
+  price?: number;
+  quantity?: number;
+  isAvailable?: boolean;
+  imageUrl?: string;
+  status?: string;
+  size?: TEntityBasic;
+  color?: TEntityBasic;
+};
+
 export type TColor = {
   id: number;
   name: string;

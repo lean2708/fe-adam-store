@@ -29,6 +29,9 @@ export default function CartModal({
 
   // Lấy dữ liệu từ store
   const cartItems = useCartStore((state) => state.cartItems);
+  const setOrderSelectedItems = useCartStore(
+    (state) => state.setOrderSelectedItems
+  );
   const selectedTotalPrice = useCartStore((state) => state.selectedTotalPrice);
   const selectedItems = useCartStore((state) => state.selectedItems);
   const status = useCartStore((state) => state.status);
@@ -46,6 +49,17 @@ export default function CartModal({
       fetchCart(userId).finally(() => setIsLoading(false));
     }
   }, [open, userId, fetchCart]);
+
+  const handleBuyNow = () => {
+    const selectedItemsData = cartItems.filter((item) =>
+      selectedItems.includes(Number(item.id))
+    );
+
+    setOrderSelectedItems(selectedItemsData);
+
+    router.push('/order');
+    onClose();
+  };
 
   if (isLoading || status === 'loading') {
     return <CartModalSkeleton open={open} onClose={onClose} />;
@@ -116,10 +130,7 @@ export default function CartModal({
               <Button
                 variant={'default'}
                 className='w-full py-3 rounded-md font-medium'
-                onClick={() => {
-                  router.push('/order');
-                  onClose();
-                }}
+                onClick={handleBuyNow}
                 disabled={selectedItems.length === 0}
               >
                 {t('cart.buyNow')}

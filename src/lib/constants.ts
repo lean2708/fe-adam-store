@@ -8,3 +8,7 @@ export const QUERY_KEY_ADDRESS = {
 export const QUERY_KEY_PROMOTION = {
   LIST: 'user-promotion-list',
 };
+
+export const QUERY_KEY_ORDER_PRODUCT_VARIANT = {
+  LIST: 'product-variant-list',
+};
