@@ -1,45 +1,72 @@
-import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { cn } from '@/lib/utils';
 import { Truck } from 'lucide-react';
-import Image from 'next/image';
-import React from 'react';
+import PaymentMethodItem from './PaymentMethodItem';
+import { useCallback, useState } from 'react';
 
-type Props = {};
+export interface PaymentMethodOption {
+  id: string;
+  value: string;
+  label: string;
+  icon?: React.ComponentType<{ className?: string }>;
+  image?: string;
+}
 
-function PaymentMethod({}: Props) {
+interface Props {
+  onPaymentMethodChange?: (value: string) => void;
+  defaultValue?: string;
+  className?: string;
+}
+
+const PAYMENT_METHODS: PaymentMethodOption[] = [
+  {
+    id: 'cod',
+    value: 'cod',
+    label: 'Thanh toán khi nhận hàng',
+    icon: Truck,
+  },
+  {
+    id: 'vnpay',
+    value: 'vnpay',
+    label: 'Thanh toán qua VNPAY',
+    image: '/imgs/vn-pay-logo.png',
+  },
+];
+
+function PaymentMethod({
+  onPaymentMethodChange,
+  defaultValue = 'vnpay',
+  className,
+}: Props) {
+  const [selectedMethod, setSelectedMethod] = useState<string>(defaultValue);
+
+  const handlePaymentMethodChange = useCallback(
+    (value: string) => {
+      setSelectedMethod(value);
+      onPaymentMethodChange?.(value);
+    },
+    [onPaymentMethodChange]
+  );
+
   return (
-    <div className='mb-6'>
-      <p className='text-primary font-bold mb-3'>Phương thức thanh toán</p>
-      <RadioGroup defaultValue='vnpay' className='space-y-3'>
-        <div className='flex items-center gap-2 p-3 border border-border rounded-lg'>
-          <RadioGroupItem value='cod' id='cod' className='border-border ' />
-          <Label
-            htmlFor='cod'
-            className='h-fit py-1 flex-1 font-medium text-muted-foreground cursor-pointer flex items-center'
-          >
-            <Truck className='size-6 mx-2' />
-            Thanh toán khi nhận hàng
-          </Label>
-        </div>
-        <div className='flex items-center gap-2 p-3 border-2 border-primary rounded-2xl'>
-          <RadioGroupItem
-            value='vnpay'
-            id='vnpay'
-            className='border-primary text-primary'
+    <div className={cn('mb-6', className)}>
+      <h3 className='text-primary font-bold mb-4 text-lg'>
+        Phương thức thanh toán
+      </h3>
+
+      <RadioGroup
+        value={selectedMethod}
+        onValueChange={handlePaymentMethodChange}
+        className='space-y-3'
+      >
+        {PAYMENT_METHODS.map((method) => (
+          <PaymentMethodItem
+            key={method.id}
+            method={method}
+            isSelected={selectedMethod === method.value}
+            onSelect={handlePaymentMethodChange}
           />
-          <Label
-            htmlFor='vnpay'
-            className='h-fit  font-medium flex flex-1  items-center gap-2 text-primary cursor-pointer'
-          >
-            <Image
-              width={32}
-              height={32}
-              src='/imgs/vn-pay-logo.png'
-              alt='VNPAY'
-            />
-            Thanh toán qua VNPAY
-          </Label>
-        </div>
+        ))}
       </RadioGroup>
     </div>
   );

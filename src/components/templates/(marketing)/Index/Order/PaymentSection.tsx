@@ -17,7 +17,12 @@ export function PaymentSection() {
         onPromotionChange={handleSelectPromotion}
       />
 
-      <PaymentMethod />
+      <PaymentMethod
+        defaultValue='cod'
+        onPaymentMethodChange={(method) => {
+          console.log('Selected payment method:', method);
+        }}
+      />
     </div>
   );
 }
