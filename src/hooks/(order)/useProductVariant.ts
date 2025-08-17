@@ -1,25 +1,27 @@
 import { useCartStore } from '@/stores/cartStore';
+import useStore from '@/stores/useStore';
 import { TProductVariant } from '@/types';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 export default function useProductVariant() {
-  const cartItems = useCartStore((s) => s.cartItems);
-  const selectedItems = useCartStore((s) => s.selectedItems);
+  const cartItems = useStore(useCartStore, (s) => s.cartItems);
+  const selectedItems = useStore(useCartStore, (s) => s.selectedItems);
+  // const selectedItems = useCartStore((s) => s.selectedItems);
 
   const { productVariantList, loading } = useMemo(() => {
     // Nếu không có items được chọn, trả về empty array
-    if (!selectedItems.length) {
+    if (!selectedItems?.length) {
       return { productVariantList: [], loading: false };
     }
 
     // Lọc cartItems dựa trên selectedItems
-    const selectedItemsData = cartItems.filter((item) =>
+    const selectedItemsData = cartItems?.filter((item) =>
       selectedItems.includes(Number(item.id))
     );
 
     // Xử lý từng item để tìm variant tương ứng
-    const processedItems: TProductVariant[] = selectedItemsData
+    const processedItems: TProductVariant[] = selectedItemsData!
       .map((item) => {
         try {
           // Tìm color tương ứng trong Product.colors
