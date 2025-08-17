@@ -178,3 +178,11 @@ export type TPromotion = {
   createdBy?: string;
   createdAt?: Date | string;
 };
+
+export type TShippingFee = {
+  id?: number;
+  address?: AddressItem;
+  orderItem?: TOrderItem[];
+  createdBy?: string;
+  createdAt?: Date | string;
+};

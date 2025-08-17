@@ -207,7 +207,7 @@ export const useCartStore = create<State & Actions>()(
       partialize: (state) => ({
         orderSelectedItems: state.orderSelectedItems,
         selectedItems: state.selectedItems,
-        selectedTotalPrice: state.selectedTotalPrice,
+        // selectedTotalPrice: state.selectedTotalPrice,
       }),
     }
   )

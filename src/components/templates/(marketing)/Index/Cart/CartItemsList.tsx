@@ -37,15 +37,15 @@ export function CartItemsList() {
     }
   }, [isAuthenticated, user, isLoading, router]);
 
-  useEffect(() => {
-    const fetchCartItems = async () => {
-      if (status === 'idle' && user?.id) {
-        await fetchCart(Number(user?.id));
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCartItems = async () => {
+  //     if (status === 'idle' && user?.id) {
+  //       await fetchCart(Number(user?.id));
+  //     }
+  //   };
 
-    fetchCartItems();
-  }, [user?.id, status, fetchCart]);
+  //   fetchCartItems();
+  // }, [user?.id, status, fetchCart]);
 
   console.log('Cart items:', cartItems);
 
