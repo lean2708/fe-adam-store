@@ -7,13 +7,12 @@ import usePromotions from '@/hooks/(order)/usePromotions';
 import useShippingFee from '@/hooks/useShippingFee';
 import { formatCurrency } from '@/lib/utils';
 import { useCartStore } from '@/stores/cartStore';
-import { usePromotionStore } from '@/stores/promotionStore';
 import { useLocale } from 'next-intl';
 
 export function PaymentSummary() {
   const locale = useLocale();
   const { currentAddress } = useAddress();
-  const { productVariantList, loading: loadingProducts } = useProductVariant();
+  const { productVariantList } = useProductVariant();
   const selectedTotalPrice = useCartStore((s) => s.selectedTotalPrice);
   const { calculateDiscount } = usePromotions();
 
@@ -24,7 +23,7 @@ export function PaymentSummary() {
 
   const discount = calculateDiscount(selectedTotalPrice);
 
-  const isCalculatingTotal = loadingProducts || calculatingShipping;
+  const isCalculatingTotal = calculatingShipping;
   const total = selectedTotalPrice + (shippingFee || 0) - discount;
 
   if (error) {

@@ -1,82 +1,85 @@
-import { getProductVariantByColorAndSizeAction } from '@/actions/productVariantActions';
-import { getProductDetailsAction } from '@/actions/productActions';
 import { useCartStore } from '@/stores/cartStore';
 import { TProductVariant } from '@/types';
-import { useQuery } from '@tanstack/react-query';
-import { orderProductVariantKeys } from '@/lib/query_key';
-import { useEffect, useRef } from 'react';
+import { useMemo, useState } from 'react';
+import { toast } from 'sonner';
 
 export default function useProductVariant() {
-  const orderSelectedItems = useCartStore((s) => s.orderSelectedItems);
+  const cartItems = useCartStore((s) => s.cartItems);
+  const selectedItems = useCartStore((s) => s.selectedItems);
 
-  // Cache dữ liệu sản phẩm để tránh gọi API nhiều lần
-  const productCache = useRef<Map<number, any>>(new Map());
+  const { productVariantList, loading } = useMemo(() => {
+    // Nếu không có items được chọn, trả về empty array
+    if (!selectedItems.length) {
+      return { productVariantList: [], loading: false };
+    }
 
-  const { data: productVariantList, isLoading: loading } = useQuery({
-    queryKey: [
-      orderProductVariantKeys.all,
-      orderProductVariantKeys.productVariants(orderSelectedItems),
-    ],
-    queryFn: async () => {
-      if (!orderSelectedItems.length) return [];
+    // Lọc cartItems dựa trên selectedItems
+    const selectedItemsData = cartItems.filter((item) =>
+      selectedItems.includes(Number(item.id))
+    );
 
-      // Batch request cho các sản phẩm chưa có trong cache
-      const uncachedProducts = orderSelectedItems.filter(
-        (item) => !productCache.current.has(item.Product.id)
-      );
+    // Xử lý từng item để tìm variant tương ứng
+    const processedItems: TProductVariant[] = selectedItemsData
+      .map((item) => {
+        try {
+          // Tìm color tương ứng trong Product.colors
+          const selectedColor = item.Product.colors?.find(
+            (color) => color.id === item.color.id
+          );
 
-      await Promise.all(
-        uncachedProducts.map(async (item) => {
-          try {
-            const res = await getProductDetailsAction(
-              item.Product.id.toString()
+          if (!selectedColor) {
+            toast.warning(
+              `Color ${item.color.id} not found for product ${item.Product.id}`
             );
-            if (res?.product) {
-              productCache.current.set(item.Product.id, res.product);
-            }
-          } catch (error) {
-            console.error('Error fetching product', error);
+            return null;
           }
-        })
-      );
 
-      // Xử lý song song các items
-      return Promise.all(
-        orderSelectedItems.map(async (item) => {
-          try {
-            const productDetail = productCache.current.get(item.Product.id);
+          // Tìm variant tương ứng với size trong color.variants
+          const selectedVariant = selectedColor.variants?.find(
+            (variant) => variant.size?.id === item.size.id
+          );
 
-            const variantRes = await getProductVariantByColorAndSizeAction(
-              item.Product.id,
-              item.color.id || 0,
-              item.size.id || 0
+          if (!selectedVariant) {
+            toast.warning(
+              `Variant not found for color ${item.color.id} and size ${item.size.id}`
             );
-
-            if (variantRes?.product) {
-              return {
-                ...variantRes.product,
-                name: productDetail?.name || item.Product.name,
-                imageUrl: productDetail?.mainImage || '/placeholder.png',
-                quantity: item.quantity,
-                price: (variantRes.product.price || 0) * item.quantity,
-              };
-            }
-          } catch (error) {
-            console.error('Error processing item', error);
+            return null;
           }
+
+          // Trả về object với đầy đủ thông tin cần thiết
+          return {
+            id: selectedVariant.id,
+            productId: item.Product.id,
+            name: item.Product.name,
+            title: item.Product.title,
+            imageUrl: item.Product.mainImage,
+            price: selectedVariant.price,
+            quantity: item.quantity,
+            totalPrice: selectedVariant.price || 0 * item.quantity,
+            color: {
+              id: item.color.id,
+              name: item.color.name,
+            },
+            size: {
+              id: item.size.id,
+              name: item.size.name,
+            },
+            isAvailable: selectedVariant.isAvailable,
+            stockQuantity: selectedVariant.quantity,
+            cartItemId: item.id,
+          } as TProductVariant;
+        } catch (error) {
+          toast.error(`Error processing cart item:, ${error}, ${item}`);
           return null;
-        })
-      ).then((results) => results.filter(Boolean) as TProductVariant[]);
-    },
-    enabled: orderSelectedItems.length > 0,
-    staleTime: 5 * 60 * 1000, // 5 phút
-  });
+        }
+      })
+      .filter(Boolean) as TProductVariant[];
 
-  useEffect(() => {
-    return () => {
-      productCache.current.clear();
+    return {
+      productVariantList: processedItems,
+      loading: false,
     };
-  }, []);
+  }, [cartItems, selectedItems]);
 
   return { loading, productVariantList };
 }

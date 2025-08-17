@@ -29,9 +29,6 @@ export default function CartModal({
 
   // Lấy dữ liệu từ store
   const cartItems = useCartStore((state) => state.cartItems);
-  const setOrderSelectedItems = useCartStore(
-    (state) => state.setOrderSelectedItems
-  );
   const selectedTotalPrice = useCartStore((state) => state.selectedTotalPrice);
   const selectedItems = useCartStore((state) => state.selectedItems);
   const status = useCartStore((state) => state.status);
@@ -72,12 +69,6 @@ export default function CartModal({
   }, [open, userId, fetchCart]);
 
   const handleBuyNow = () => {
-    const selectedItemsData = cartItems.filter((item) =>
-      selectedItems.includes(Number(item.id))
-    );
-
-    setOrderSelectedItems(selectedItemsData);
-
     router.push('/order');
     onClose();
   };

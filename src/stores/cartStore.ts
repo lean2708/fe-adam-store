@@ -3,11 +3,10 @@
 import { fetchCartItemsAction } from '@/actions/cartActions';
 import type { TCartItem } from '@/types';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 export type State = {
   cartItems: TCartItem[];
-  orderSelectedItems: TCartItem[];
   status: 'idle' | 'loading' | 'success' | 'error';
   // total of all items in cart
   totalPrice: string;
@@ -20,7 +19,6 @@ export type State = {
 export type Actions = {
   fetchCart: (userId: number) => Promise<void>;
   setCartItems: (cartItems: TCartItem[]) => void;
-  setOrderSelectedItems: (items: TCartItem[]) => void;
   toggleItemSelection: (id: number) => void;
   toggleAllItems: (select: boolean) => void;
   updateCartItem: (itemId: string, newData: Partial<TCartItem>) => void;
@@ -66,7 +64,6 @@ export const useCartStore = create<State & Actions>()(
   persist(
     (set, get) => ({
       cartItems: [],
-      orderSelectedItems: [],
       totalPrice: '0',
       selectedItems: [],
       selectedTotalPrice: 0,
@@ -119,9 +116,6 @@ export const useCartStore = create<State & Actions>()(
           };
         }),
 
-      // Set order selected items
-      setOrderSelectedItems: (items) => set({ orderSelectedItems: items }),
-
       // Update a single item and recompute totals
       updateCartItem: (itemId, newData) =>
         set((state) => {
@@ -164,11 +158,10 @@ export const useCartStore = create<State & Actions>()(
       // Clear everything
       clearCart: () =>
         set(() => {
-          localStorage.removeItem('cart-storage');
+          useCartStore.persist.clearStorage();
 
           return {
             cartItems: [],
-            orderSelectedItems: [],
             totalPrice: '0',
             selectedItems: [],
             selectedTotalPrice: 0,
@@ -203,12 +196,12 @@ export const useCartStore = create<State & Actions>()(
     }),
     {
       name: 'cart-storage',
-      // Chỉ định các key muốn lưu vào localStorage
+      // Chỉ định các key muốn lưu vào sessionStorage
       partialize: (state) => ({
-        orderSelectedItems: state.orderSelectedItems,
         selectedItems: state.selectedItems,
         // selectedTotalPrice: state.selectedTotalPrice,
       }),
+      storage: createJSONStorage(() => sessionStorage),
     }
   )
 );
