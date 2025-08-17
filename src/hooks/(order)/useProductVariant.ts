@@ -4,7 +4,7 @@ import { useCartStore } from '@/stores/cartStore';
 import { TProductVariant } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { orderProductVariantKeys } from '@/lib/query_key';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function useProductVariant() {
   const orderSelectedItems = useCartStore((s) => s.orderSelectedItems);
@@ -71,6 +71,12 @@ export default function useProductVariant() {
     enabled: orderSelectedItems.length > 0,
     staleTime: 5 * 60 * 1000, // 5 phút
   });
+
+  useEffect(() => {
+    return () => {
+      productCache.current.clear();
+    };
+  }, []);
 
   return { loading, productVariantList };
 }

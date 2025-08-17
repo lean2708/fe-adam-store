@@ -13,31 +13,18 @@ import { useLocale } from 'next-intl';
 export function PaymentSummary() {
   const locale = useLocale();
   const { currentAddress } = useAddress();
-  const { productVariantList } = useProductVariant();
+  const { productVariantList, loading: loadingProducts } = useProductVariant();
   const selectedTotalPrice = useCartStore((s) => s.selectedTotalPrice);
-  const { selectedPromotion } = usePromotionStore();
+  const { calculateDiscount } = usePromotions();
 
   const { shippingFee, calculatingShipping, error } = useShippingFee(
     currentAddress,
     productVariantList
   );
 
-  const calculateDiscount = () => {
-    if (!selectedPromotion) return 0;
+  const discount = calculateDiscount(selectedTotalPrice);
 
-    const subtotal = selectedTotalPrice;
-
-    // Tính giảm giá theo %
-    if (selectedPromotion.discountPercent) {
-      let discount = subtotal * (selectedPromotion.discountPercent / 100);
-
-      return discount;
-    }
-
-    return 0;
-  };
-
-  const discount = calculateDiscount(); // Tạm thời chưa xử lý mã giảm giá
+  const isCalculatingTotal = loadingProducts || calculatingShipping;
   const total = selectedTotalPrice + (shippingFee || 0) - discount;
 
   if (error) {
@@ -68,7 +55,9 @@ export function PaymentSummary() {
       <Separator className='mt-4' />
       <div className='text-primary font-bold  pt-3 flex justify-between'>
         <span className=''>Thành tiền</span>
-        <span>{formatCurrency(total, locale)}</span>
+        <span>
+          {isCalculatingTotal ? 'Đang tính...' : formatCurrency(total, locale)}
+        </span>
       </div>
     </div>
   );

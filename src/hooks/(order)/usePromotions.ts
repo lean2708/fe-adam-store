@@ -28,9 +28,25 @@ export default function usePromotions() {
     }
   };
 
+  const calculateDiscount = (totalPrice: number) => {
+    if (!selectedPromotion) return 0;
+
+    const subtotal = totalPrice;
+
+    // Tính giảm giá theo %
+    if (selectedPromotion.discountPercent) {
+      let discount = subtotal * (selectedPromotion.discountPercent / 100);
+
+      return discount;
+    }
+
+    return 0;
+  };
+
   return {
     selectedPromotion,
     handleSelectPromotion,
+    calculateDiscount,
     loading,
     listPromotion,
   };

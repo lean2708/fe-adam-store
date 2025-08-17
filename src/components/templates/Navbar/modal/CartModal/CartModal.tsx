@@ -44,10 +44,31 @@ export default function CartModal({
 
   // Fetch dữ liệu khi mở modal
   useEffect(() => {
-    if (open && userId) {
-      setIsLoading(true);
-      fetchCart(userId).finally(() => setIsLoading(false));
-    }
+    // Biến cờ để kiểm tra xem component có còn mount không
+    let isMounted = true;
+
+    const fetchData = async () => {
+      if (open && userId) {
+        setIsLoading(true);
+        try {
+          await fetchCart(userId);
+        } catch (error) {
+          console.error('Failed to fetch cart:', error);
+        } finally {
+          // Chỉ cập nhật state nếu component vẫn còn mount
+          if (isMounted) {
+            setIsLoading(false);
+          }
+        }
+      }
+    };
+
+    fetchData();
+
+    // Hàm cleanup
+    return () => {
+      isMounted = false; // Đánh dấu là component đã unmount
+    };
   }, [open, userId, fetchCart]);
 
   const handleBuyNow = () => {
