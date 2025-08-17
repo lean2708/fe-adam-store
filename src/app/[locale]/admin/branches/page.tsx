@@ -6,7 +6,7 @@ import { useState } from "react";
 import { BranchesTable } from "@/components/templates/admin/branches/BranchesTable";
 import { BranchModal } from "@/components/templates/admin/branches/BranchModal";
 import { useBranches } from "@/hooks/admin/useBranches";
-import type { TBranch } from "@/types";
+import type { TBranch }  from "@/types";
 
 export default function BranchesAdminPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
