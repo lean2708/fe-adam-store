@@ -1,4 +1,4 @@
-import { TCartItem } from '@/types';
+import { TCartItem, TProductVariant } from '@/types';
 import {
   QUERY_KEY_ADDRESS,
   QUERY_KEY_ORDER_PRODUCT_VARIANT,
@@ -16,10 +16,23 @@ export const addressKeys = {
 export const orderProductVariantKeys = {
   all: [QUERY_KEY_ORDER_PRODUCT_VARIANT.LIST],
   productVariants: (selectedItems: TCartItem[]) => [
-    QUERY_KEY_ORDER_PRODUCT_VARIANT.LIST,
     selectedItems
       .map((item) => `${item.Product.id}-${item.color.id}-${item.size.id}`)
       .join(','),
     ,
+  ],
+};
+
+export const oderCalculationKeys = {
+  all: [QUERY_KEY_ORDER_PRODUCT_VARIANT.LIST],
+  shippingFee: (
+    currentAddressId: number | undefined,
+    orderItems: TProductVariant[] | undefined
+  ) => [
+    currentAddressId,
+    orderItems?.map((item) => ({
+      id: item.id,
+      quantity: item.quantity,
+    })),
   ],
 };

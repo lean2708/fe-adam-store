@@ -1,61 +1,57 @@
-// hooks/useShippingFee.ts
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { calculateShippingFeeAction } from '@/actions/orderActions';
-import type { TCartItem, TProductVariant } from '@/types';
+import type { TProductVariant } from '@/types';
 import type { AddressItem } from '@/types';
+import { QUERY_KEY_ORDER_FEE } from '@/lib/constants';
+import { oderCalculationKeys } from '@/lib/query_key';
 
 export default function useShippingFee(
   currentAddress: AddressItem | null,
-  orderItems: TCartItem[]
+  orderItems: TProductVariant[] | undefined
 ) {
-  const [shippingFee, setShippingFee] = useState<number | undefined>(0);
-  const [calculatingShipping, setCalculatingShipping] =
-    useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let isMounted = true;
-    const timer = setTimeout(async () => {
+  const {
+    data: shippingFee = 0,
+    isLoading: calculatingShipping,
+    error,
+    isError,
+  } = useQuery({
+    queryKey: [
+      QUERY_KEY_ORDER_FEE.SHIPPING_FEE,
+      oderCalculationKeys.shippingFee(currentAddress?.id, orderItems),
+    ],
+    queryFn: async () => {
       // Không tính phí nếu không có địa chỉ hoặc sản phẩm
-      if (!currentAddress?.id || !orderItems.length) {
-        isMounted && setShippingFee(0);
-        return;
+      if (!currentAddress?.id || !orderItems?.length) {
+        return 0;
       }
 
-      try {
-        isMounted && setCalculatingShipping(true);
-        setError(null);
+      // Chuẩn bị dữ liệu gửi đi
+      const shippingRequest = {
+        addressId: currentAddress.id,
+        orderItems: orderItems.map((item) => ({
+          productVariantId: Number(item.id) || 0,
+          quantity: item.quantity || 0,
+        })),
+      };
 
-        // Chuẩn bị dữ liệu gửi đi
-        const shippingRequest = {
-          addressId: currentAddress.id,
-          orderItems: orderItems.map((item) => ({
-            productVariantId: Number(item.id) || 0,
-            quantity: item.quantity || 0,
-          })),
-        };
+      // Gọi API tính phí
+      const result = await calculateShippingFeeAction(shippingRequest);
 
-        // Gọi API tính phí
-        const result = await calculateShippingFeeAction(shippingRequest);
-        if (result.success && result.data) {
-          isMounted && setShippingFee(result.data.total);
-        } else {
-          isMounted &&
-            setError(result.message || 'Failed to calculate shipping fee');
-        }
-      } catch (err) {
-        isMounted && setError('An error occurred');
-        isMounted && setShippingFee(0);
-      } finally {
-        isMounted && setCalculatingShipping(false);
+      if (result.success && result.data) {
+        return result.data.total;
+      } else {
+        throw new Error(result.message || 'Failed to calculate shipping fee');
       }
-    }, 500); // Debounce 500ms
+    },
+    enabled: Boolean(currentAddress?.id && orderItems?.length),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 2,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+  });
 
-    return () => {
-      isMounted = false;
-      clearTimeout(timer);
-    };
-  }, [currentAddress, orderItems]);
-
-  return { shippingFee, calculatingShipping, error };
+  return {
+    shippingFee,
+    calculatingShipping,
+    error: isError ? (error as Error)?.message || 'An error occurred' : null,
+  };
 }

@@ -2,24 +2,42 @@
 
 import { Separator } from '@/components/ui/separator';
 import useAddress from '@/hooks/(order)/useAddress';
+import useProductVariant from '@/hooks/(order)/useProductVariant';
+import usePromotions from '@/hooks/(order)/usePromotions';
 import useShippingFee from '@/hooks/useShippingFee';
 import { formatCurrency } from '@/lib/utils';
 import { useCartStore } from '@/stores/cartStore';
+import { usePromotionStore } from '@/stores/promotionStore';
 import { useLocale } from 'next-intl';
 
 export function PaymentSummary() {
   const locale = useLocale();
   const { currentAddress } = useAddress();
-
-  const orderSelectedItems = useCartStore((s) => s.orderSelectedItems);
+  const { productVariantList } = useProductVariant();
   const selectedTotalPrice = useCartStore((s) => s.selectedTotalPrice);
+  const { selectedPromotion } = usePromotionStore();
 
   const { shippingFee, calculatingShipping, error } = useShippingFee(
     currentAddress,
-    orderSelectedItems
+    productVariantList
   );
 
-  const discount = 0; // Tạm thời chưa xử lý mã giảm giá
+  const calculateDiscount = () => {
+    if (!selectedPromotion) return 0;
+
+    const subtotal = selectedTotalPrice;
+
+    // Tính giảm giá theo %
+    if (selectedPromotion.discountPercent) {
+      let discount = subtotal * (selectedPromotion.discountPercent / 100);
+
+      return discount;
+    }
+
+    return 0;
+  };
+
+  const discount = calculateDiscount(); // Tạm thời chưa xử lý mã giảm giá
   const total = selectedTotalPrice + (shippingFee || 0) - discount;
 
   if (error) {

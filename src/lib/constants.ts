@@ -12,3 +12,7 @@ export const QUERY_KEY_PROMOTION = {
 export const QUERY_KEY_ORDER_PRODUCT_VARIANT = {
   LIST: 'product-variant-list',
 };
+
+export const QUERY_KEY_ORDER_FEE = {
+  SHIPPING_FEE: 'shipping-fee',
+};
