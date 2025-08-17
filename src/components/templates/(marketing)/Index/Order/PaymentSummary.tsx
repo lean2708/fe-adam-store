@@ -2,6 +2,7 @@
 
 import { Separator } from '@/components/ui/separator';
 import useAddress from '@/hooks/(order)/useAddress';
+import useCalculateTotal from '@/hooks/(order)/useCalculateTotal';
 import useProductVariant from '@/hooks/(order)/useProductVariant';
 import usePromotions from '@/hooks/(order)/usePromotions';
 import useShippingFee from '@/hooks/useShippingFee';
@@ -16,19 +17,12 @@ export function PaymentSummary() {
   const selectedTotalPrice = useCartStore((s) => s.selectedTotalPrice);
   const { calculateDiscount } = usePromotions();
 
-  const { shippingFee, calculatingShipping, error } = useShippingFee(
-    currentAddress,
-    productVariantList
-  );
+  const { shippingFee } = useShippingFee(currentAddress, productVariantList);
+
+  const { total, isCalculatingTotal, calculatingShipping } =
+    useCalculateTotal();
 
   const discount = calculateDiscount(selectedTotalPrice);
-
-  const isCalculatingTotal = calculatingShipping;
-  const total = selectedTotalPrice + (shippingFee || 0) - discount;
-
-  if (error) {
-    console.log(error);
-  }
 
   return (
     <div className='space-y-3 text-sm'>

@@ -1,8 +1,17 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import useCalculateTotal from '@/hooks/(order)/useCalculateTotal';
+import { formatCurrency } from '@/lib/utils';
+import { useLocale } from 'next-intl';
 import Image from 'next/image';
 
 export function PaymentBar() {
+  const locale = useLocale();
+
+  const { total, isCalculatingTotal } = useCalculateTotal();
+
   return (
     <div className='fixed bottom-0 left-0 right-0 border-t-2 border-border bg-background'>
       <div className='max-w-screen flex items-center justify-between h-[10vh]'>
@@ -32,7 +41,11 @@ export function PaymentBar() {
         <Separator orientation='vertical' className='' />
 
         <div className='flex items-center justify-center px-4 h-full w-1/4'>
-          <p className='text-xl font-bold text-primary'>5,650,000 VND</p>
+          <p className='text-xl font-bold text-primary'>
+            {isCalculatingTotal
+              ? 'Đang tính...'
+              : formatCurrency(total, locale)}
+          </p>
         </div>
 
         <Separator orientation='vertical' className='' />

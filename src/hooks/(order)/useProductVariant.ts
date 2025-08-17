@@ -1,7 +1,7 @@
 import { useCartStore } from '@/stores/cartStore';
 import useStore from '@/stores/useStore';
 import { TProductVariant } from '@/types';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { toast } from 'sonner';
 
 export default function useProductVariant() {
