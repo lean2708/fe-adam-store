@@ -3,6 +3,8 @@
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import useCalculateTotal from '@/hooks/(order)/useCalculateTotal';
+import usePaymentMethod from '@/hooks/(order)/usePaymentMethod';
+import usePromotions from '@/hooks/(order)/usePromotions';
 import { formatCurrency } from '@/lib/utils';
 import { useLocale } from 'next-intl';
 import Image from 'next/image';
@@ -10,33 +12,36 @@ import Image from 'next/image';
 export function PaymentBar() {
   const locale = useLocale();
 
+  const { selectedMethodDetails } = usePaymentMethod();
   const { total, isCalculatingTotal } = useCalculateTotal();
+  const { selectedPromotion } = usePromotions();
+
+  const IconComponent = selectedMethodDetails?.icon;
 
   return (
     <div className='fixed bottom-0 left-0 right-0 border-t-2 border-border bg-background'>
       <div className='max-w-screen flex items-center justify-between h-[10vh]'>
-        <Button
-          variant={'outline'}
-          className='text-muted-foreground flex items-center justify-center gap-4 rounded-none hover:bg-accent h-full w-1/4 px-4'
-        >
-          <Image
-            width={32}
-            height={32}
-            src='/imgs/vn-pay-logo.png'
-            alt='VNPAY'
-            className='h-6'
-          />
-          Thanh toán qua VNPAY
-        </Button>
+        <div className='flex items-center justify-center px-4 h-full w-1/4'>
+          {selectedMethodDetails?.image && (
+            <Image
+              src={selectedMethodDetails.image}
+              alt={selectedMethodDetails.label || 'Payment method'}
+              className='object-contain h-6'
+              width={32}
+              height={32}
+            />
+          )}
+          <p className='text-lg font-bold text-primary'>
+            {selectedMethodDetails?.label}
+          </p>
+        </div>
 
         <Separator orientation='vertical' className='' />
-
-        <Button
-          variant={'outline'}
-          className='rounded-none h-full w-1/4 px-4 text-muted-foreground'
-        >
-          Mã giảm giá
-        </Button>
+        <div className='flex items-center justify-center px-4 h-full w-1/4'>
+          <p className='text-lg font-bold text-primary text-center'>
+            {selectedPromotion?.description || 'Chọn mã giảm giá'}
+          </p>
+        </div>
 
         <Separator orientation='vertical' className='' />
 

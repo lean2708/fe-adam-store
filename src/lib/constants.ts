@@ -1,6 +1,8 @@
+import { PAYMENT_METHODS } from '@/enums';
 import { TPaymentMethodOption } from '@/types';
 import { Truck } from 'lucide-react';
 
+// *List of query keys for different API endpoints
 export const QUERY_KEY_ADDRESS = {
   LIST: 'user-address-list',
   PROVINCES: 'provinces',
@@ -21,17 +23,19 @@ export const QUERY_KEY_ORDER_FEE = {
 };
 
 // *List of payment methods ( can use icon or image)
-export const PAYMENT_METHODS: TPaymentMethodOption[] = [
+export const DEFAULT_PAYMENT_METHODS: TPaymentMethodOption[] = [
   {
-    id: 'cod',
-    value: 'cod',
+    id: 'cash',
+    value: PAYMENT_METHODS.CASH,
     label: 'Thanh toán khi nhận hàng',
     icon: Truck,
+    isAvailable: true,
   },
   {
     id: 'vnpay',
-    value: 'vnpay',
+    value: PAYMENT_METHODS.VNPAY,
     label: 'Thanh toán qua VNPAY',
     image: '/imgs/vn-pay-logo.png',
+    isAvailable: true,
   },
 ];

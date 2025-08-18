@@ -1,5 +1,6 @@
 import { Label } from '@/components/ui/label';
 import { RadioGroupItem } from '@/components/ui/radio-group';
+import { PAYMENT_METHODS } from '@/enums';
 import { cn } from '@/lib/utils';
 import { TPaymentMethodOption } from '@/types';
 import Image from 'next/image';
@@ -12,7 +13,7 @@ const PaymentMethodItem = ({
 }: {
   method: TPaymentMethodOption;
   isSelected: boolean;
-  onSelect: (value: string) => void;
+  onSelect: (value: PAYMENT_METHODS) => void;
 }) => {
   const handleSelect = useCallback(() => {
     onSelect(method.value);

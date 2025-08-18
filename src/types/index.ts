@@ -1,5 +1,5 @@
 import { ImageBasic } from '@/api-client';
-import { ORDER_STATUS, USER_ROLE } from '@/enums';
+import { ORDER_STATUS, PAYMENT_METHODS, USER_ROLE } from '@/enums';
 
 export type TCategory = {
   id: string;
@@ -189,8 +189,9 @@ export type TShippingFee = {
 
 export interface TPaymentMethodOption {
   id: string;
-  value: string;
+  value: PAYMENT_METHODS;
   label: string;
   icon?: React.ComponentType<{ className?: string }>;
   image?: string;
+  isAvailable: boolean;
 }
