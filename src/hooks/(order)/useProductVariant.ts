@@ -10,6 +10,10 @@ export default function useProductVariant() {
   // const cartItems = useCartStore((s) => s.cartItems);
   // const selectedItems = useCartStore((s) => s.selectedItems);
 
+  const clearProductVariantsStore = () => {
+    useCartStore.persist.clearStorage();
+  };
+
   const { productVariantList, loading } = useMemo(() => {
     // Handle hydration - if cartItems or selectedItems are null/undefined, return loading state
     if (!cartItems || !selectedItems?.length) {
@@ -57,7 +61,6 @@ export default function useProductVariant() {
           // Trả về object với đầy đủ thông tin cần thiết
           return {
             id: selectedVariant.id,
-            productId: item.Product.id,
             name: item.Product.name,
             title: item.Product.title,
             imageUrl: item.Product.mainImage,
@@ -73,8 +76,6 @@ export default function useProductVariant() {
               name: item.size.name,
             },
             isAvailable: selectedVariant.isAvailable,
-            stockQuantity: selectedVariant.quantity,
-            cartItemId: item.id,
           } as TProductVariant;
         } catch (error) {
           toast.error(`Error processing cart item:, ${error}, ${item}`);
@@ -89,5 +90,5 @@ export default function useProductVariant() {
     };
   }, [cartItems, selectedItems]);
 
-  return { loading, productVariantList };
+  return { loading, productVariantList, clearProductVariantsStore };
 }

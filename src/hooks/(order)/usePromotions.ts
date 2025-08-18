@@ -5,7 +5,9 @@ import { TPromotion } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
 export default function usePromotions() {
-  const { selectedPromotion, setSelectedPromotion } = usePromotionStore();
+  const clearPromotion = usePromotionStore((s) => s.clearPromotion);
+  const selectedPromotion = usePromotionStore((s) => s.selectedPromotion);
+  const setSelectedPromotion = usePromotionStore((s) => s.setSelectedPromotion);
 
   // Lấy danh sách voucher khả dụng của user
   const { data: listPromotion = [], isLoading: loading } = useQuery<
@@ -26,6 +28,10 @@ export default function usePromotions() {
     } else {
       setSelectedPromotion(null);
     }
+  };
+
+  const clearSelectedPromotion = () => {
+    clearPromotion();
   };
 
   const calculateDiscount = (totalPrice: number) => {
@@ -49,5 +55,6 @@ export default function usePromotions() {
     calculateDiscount,
     loading,
     listPromotion,
+    clearSelectedPromotion,
   };
 }
