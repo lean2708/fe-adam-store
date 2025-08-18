@@ -1,17 +1,27 @@
 import { PAYMENT_METHODS } from '@/enums';
 import { usepaymentMethodsStore } from '@/stores/paymentMethodStore';
-import { AddressItem, TPaymentMethodOption } from '@/types';
-import { useCallback, useEffect } from 'react';
-import { toast } from 'sonner';
+import { useCallback } from 'react';
+import { useStore } from 'zustand';
 
 export default function usePaymentMethod() {
-  const selectedMethod = usepaymentMethodsStore((s) => s.selectedMethod);
-  const availableMethods = usepaymentMethodsStore((s) => s.availableMethods);
-  const setSelectedMethod = usepaymentMethodsStore((s) => s.setSelectedMethod);
-  const setAvailableMethods = usepaymentMethodsStore(
+  const selectedMethod = useStore(
+    usepaymentMethodsStore,
+    (s) => s.selectedMethod
+  );
+  const availableMethods = useStore(
+    usepaymentMethodsStore,
+    (s) => s.availableMethods
+  );
+  const setSelectedMethod = useStore(
+    usepaymentMethodsStore,
+    (s) => s.setSelectedMethod
+  );
+  const setAvailableMethods = useStore(
+    usepaymentMethodsStore,
     (s) => s.setAvailableMethods
   );
-  const resetPaymentMethod = usepaymentMethodsStore(
+  const resetPaymentMethod = useStore(
+    usepaymentMethodsStore,
     (s) => s.resetPaymentMethod
   );
 
@@ -43,28 +53,6 @@ export default function usePaymentMethod() {
     return availableMethods.filter((method) => method.isAvailable);
   }, [availableMethods]);
 
-  // Calculate payment fees (if any)
-  const calculatePaymentFee = useCallback(
-    (orderTotal: number) => {
-      const methodDetails = getSelectedMethodDetails();
-
-      // Add payment method specific fees here
-      switch (selectedMethod) {
-        case PAYMENT_METHODS.CASH:
-          return toast.info(
-            `orderTotal by ${methodDetails?.label}: ${orderTotal}`
-          );
-        case PAYMENT_METHODS.VNPAY:
-          return toast.info(
-            `orderTotal by ${methodDetails?.label}: ${orderTotal}`
-          );
-        default:
-          return 0; // No additional fee
-      }
-    },
-    [selectedMethod, getSelectedMethodDetails]
-  );
-
   // Validate payment method for order
   const validatePaymentMethod = useCallback(
     (orderTotal: number) => {
@@ -93,35 +81,6 @@ export default function usePaymentMethod() {
     [selectedMethod, getSelectedMethodDetails]
   );
 
-  // Update available methods based on business logic
-  // ?Can scale more (Example: Disable certain methods for specific regions )
-  const updateAvailableMethodsForOrder = useCallback(
-    (orderData: { total: number; shippingAddress?: AddressItem }) => {
-      // Tạo bản sao sâu của availableMethods
-      const methods = JSON.parse(JSON.stringify(availableMethods));
-      let hasChange = false;
-
-      // Kiểm tra và cập nhật trạng thái COD
-      const cashMethodIndex = methods.findIndex(
-        (m: TPaymentMethodOption) => m.value === PAYMENT_METHODS.CASH
-      );
-
-      if (cashMethodIndex >= 0) {
-        const shouldBeAvailable = orderData.total <= 20000000;
-        if (methods[cashMethodIndex].isAvailable !== shouldBeAvailable) {
-          methods[cashMethodIndex].isAvailable = shouldBeAvailable;
-          hasChange = true;
-        }
-      }
-
-      // Chỉ cập nhật nếu có thay đổi
-      if (hasChange) {
-        setAvailableMethods(methods);
-      }
-    },
-    [availableMethods, setAvailableMethods] // Giữ nguyên dependencies
-  );
-
   return {
     // State
     selectedMethod,
@@ -133,11 +92,9 @@ export default function usePaymentMethod() {
     handleSelectPaymentMethod,
     setAvailableMethods,
     resetPaymentMethod,
-    updateAvailableMethodsForOrder,
 
     // Utilities
     isMethodAvailable,
-    calculatePaymentFee,
     validatePaymentMethod,
   };
 }

@@ -1,8 +1,6 @@
 import { RadioGroup } from '@/components/ui/radio-group';
 import { cn } from '@/lib/utils';
 import PaymentMethodItem from './PaymentMethodItem';
-import { useCallback, useState } from 'react';
-import { DEFAULT_PAYMENT_METHODS } from '@/lib/constants';
 import { PAYMENT_METHODS } from '@/enums';
 import { TPaymentMethodOption } from '@/types';
 
@@ -28,7 +26,7 @@ function PaymentMethod({
       </h3>
 
       <RadioGroup
-        value={selectedMethod || defaultValue}
+        value={!selectedMethod ? defaultValue : selectedMethod}
         onValueChange={(value: PAYMENT_METHODS) => onPaymentMethodChange(value)}
         className='space-y-3'
       >

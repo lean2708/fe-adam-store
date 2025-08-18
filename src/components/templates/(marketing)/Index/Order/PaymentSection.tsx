@@ -8,54 +8,22 @@ import useAddress from '@/hooks/(order)/useAddress';
 import useCalculateTotal from '@/hooks/(order)/useCalculateTotal';
 import { useEffect, useRef } from 'react';
 import { PAYMENT_METHODS } from '@/enums';
+import { useOrderStore } from '@/stores/orderStore';
 
 export function PaymentSection() {
+  const setPaymentMethod = useOrderStore((state) => state.setPaymentMethod);
+
   const { listPromotion, selectedPromotion, handleSelectPromotion } =
     usePromotions();
 
-  const {
-    selectedMethod,
-    availableMethods,
-    selectedMethodDetails,
-    handleSelectPaymentMethod,
-    calculatePaymentFee,
-    validatePaymentMethod,
-    updateAvailableMethodsForOrder,
-  } = usePaymentMethod();
-
-  const { currentAddress } = useAddress();
-  const { total, isCalculatingTotal } = useCalculateTotal();
-
-  const prevTotal = useRef(total);
+  const { selectedMethod, availableMethods, handleSelectPaymentMethod } =
+    usePaymentMethod();
 
   // Handle payment method change with fee calculation
   const handlePaymentMethodChange = (method: PAYMENT_METHODS) => {
     handleSelectPaymentMethod(method);
-
-    // Calculate payment fee
-    const fee = calculatePaymentFee(total);
-
-    // Validate payment method
-    const validation = validatePaymentMethod(total);
-
-    console.log('Selected payment method:', {
-      method,
-      fee,
-      validation,
-      details: selectedMethodDetails,
-    });
+    setPaymentMethod(method);
   };
-
-  // Update available payment methods based on order conditions
-  useEffect(() => {
-    if (total > 0 && total !== prevTotal.current) {
-      updateAvailableMethodsForOrder({
-        total: total,
-        shippingAddress: currentAddress!,
-      });
-      prevTotal.current = total;
-    }
-  }, [total, currentAddress, updateAvailableMethodsForOrder]);
 
   useEffect(() => {
     return () => {
