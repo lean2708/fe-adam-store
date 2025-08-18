@@ -10,15 +10,18 @@ import {
   deleteOrder,
   cancelOrder,
   calculateShippingFeeApi,
+  createOrderApi,
 } from '@/lib/data/order';
 import type { ActionResponse } from '@/lib/types/actions';
 import type {
+  OrderRequest,
   OrderResponse,
   PageResponseOrderResponse,
   ShippingFeeResponse,
   ShippingRequest,
 } from '@/api-client/models';
 import { SearchOrdersForAdminOrderStatusEnum } from '@/api-client/apis/order-controller-api';
+import { extractErrorMessage } from '@/lib/utils';
 
 /**
  * Cancel an order by ID using API.
@@ -70,6 +73,21 @@ export async function calculateShippingFeeAction(
           ? error.message
           : 'Failed to fetch shipping fee calculate',
     };
+  }
+}
+
+export async function createOrderAction(
+  orderRequest: OrderRequest
+): Promise<ActionResponse<OrderResponse>> {
+  try {
+    const data = await createOrderApi(orderRequest);
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    const extracted = extractErrorMessage(error, 'Failed to create order.');
+    return { success: false, message: extracted.message, apiError: extracted };
   }
 }
 

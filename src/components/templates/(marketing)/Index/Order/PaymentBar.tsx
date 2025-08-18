@@ -3,11 +3,13 @@
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import useCalculateTotal from '@/hooks/(order)/useCalculateTotal';
+import useOrderAction from '@/hooks/(order)/useOrderAction';
 import usePaymentMethod from '@/hooks/(order)/usePaymentMethod';
 import usePromotions from '@/hooks/(order)/usePromotions';
 import { formatCurrency } from '@/lib/utils';
 import { useLocale } from 'next-intl';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export function PaymentBar() {
   const locale = useLocale();
@@ -16,7 +18,7 @@ export function PaymentBar() {
   const { total, isCalculatingTotal } = useCalculateTotal();
   const { selectedPromotion } = usePromotions();
 
-  const IconComponent = selectedMethodDetails?.icon;
+  const { handlePlaceOrder, isProcessing } = useOrderAction();
 
   return (
     <div className='fixed bottom-0 left-0 right-0 border-t-2 border-border bg-background'>
@@ -39,7 +41,7 @@ export function PaymentBar() {
         <Separator orientation='vertical' className='' />
         <div className='flex items-center justify-center px-4 h-full w-1/4'>
           <p className='text-lg font-bold text-primary text-center'>
-            {selectedPromotion?.description || 'Chọn mã giảm giá'}
+            {selectedPromotion?.code || 'Chọn mã giảm giá'}
           </p>
         </div>
 
@@ -57,7 +59,9 @@ export function PaymentBar() {
 
         <Button
           variant={'default'}
+          onClick={handlePlaceOrder}
           className='text-xl h-full rounded-none  w-1/4 px-4'
+          disabled={isProcessing || isCalculatingTotal}
         >
           Đặt hàng
         </Button>
