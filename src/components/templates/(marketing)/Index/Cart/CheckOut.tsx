@@ -6,6 +6,10 @@ import CheckOutActions from './CheckOut/CheckOutActions';
 import Fee from './CheckOut/Fee';
 import { useCartStore } from '@/stores/cartStore';
 import { useTranslations } from 'next-intl';
+import useAddress from '@/hooks/(order)/useAddress';
+import useProductVariant from '@/hooks/(order)/useProductVariant';
+import useShippingFee from '@/hooks/useShippingFee';
+import useCalculateTotal from '@/hooks/(order)/useCalculateTotal';
 
 export function CheckOut() {
   const t = useTranslations('Header');
@@ -14,13 +18,14 @@ export function CheckOut() {
   const selectedItems = useCartStore((state) => state.selectedItems);
   const cartItems = useCartStore((state) => state.cartItems);
 
+  const { currentAddress } = useAddress();
+  const { productVariantList } = useProductVariant();
+
+  const { shippingFee } = useShippingFee(currentAddress, productVariantList);
+
   // Nếu không có sản phẩm nào được chọn, tổng giá là 0
-  const totalPrice = selectedItems.length > 0 ? selectedTotalPrice : 0;
 
-  // Tính phí vận chuyển (miễn phí nếu tổng > 300,000 VND)
-  const shippingFee = totalPrice === 0 ? 0 : totalPrice > 300000 ? 0 : 10000;
-
-  const total = totalPrice + shippingFee;
+  const { total, calculatingShipping } = useCalculateTotal();
   const selectedCount = selectedItems.length;
 
   if (cartItems.length === 0) return null;
@@ -32,7 +37,11 @@ export function CheckOut() {
           {t('cart.checkOut.title', { count: selectedCount })}
         </h2>
 
-        <Fee subtotal={Number(totalPrice)} shippingFee={shippingFee} />
+        <Fee
+          subtotal={Number(total)}
+          shippingFee={shippingFee}
+          loading={calculatingShipping}
+        />
 
         <Total total={total} />
 
