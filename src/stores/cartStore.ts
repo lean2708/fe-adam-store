@@ -14,16 +14,21 @@ export type State = {
   selectedItems: number[];
   // total price of selected items only
   selectedTotalPrice: number;
+  // Cache timestamp to track when cart was last fetched
+  lastFetched: number | null;
+  // Cache duration in milliseconds (5 minutes)
+  cacheTimeout: number;
 };
 
 export type Actions = {
-  fetchCart: (userId: number) => Promise<void>;
+  fetchCart: (userId: number, forceRefresh?: boolean) => Promise<void>;
   setCartItems: (cartItems: TCartItem[]) => void;
   toggleItemSelection: (id: number) => void;
   toggleAllItems: (select: boolean) => void;
   updateCartItem: (itemId: string, newData: Partial<TCartItem>) => void;
   removeCartItem: (id: string) => void;
   clearCart: () => void;
+  isCartFresh: () => boolean;
 };
 
 // Resolve unit price for a cart item with fallbacks
@@ -68,9 +73,25 @@ export const useCartStore = create<State & Actions>()(
       selectedItems: [],
       selectedTotalPrice: 0,
       status: 'idle',
+      lastFetched: null,
+      cacheTimeout: 5 * 60 * 1000, // 5 minutes
 
-      // Load cart from server and normalize totals
-      fetchCart: async (userId: number) => {
+      // Check if cart data is still fresh
+      isCartFresh: () => {
+        const state = get();
+        if (!state.lastFetched) return false;
+        return Date.now() - state.lastFetched < state.cacheTimeout;
+      },
+
+      // Load cart from server with caching logic
+      fetchCart: async (userId: number, forceRefresh = false) => {
+        const state = get();
+        
+        // Skip fetch if data is fresh and not forcing refresh
+        if (!forceRefresh && state.isCartFresh() && state.cartItems.length > 0) {
+          return;
+        }
+
         set({ status: 'loading' });
         try {
           const response = await fetchCartItemsAction(userId, 0, 10, [
@@ -92,7 +113,8 @@ export const useCartStore = create<State & Actions>()(
               totalPrice: formatMoney(total),
               selectedItems: validSelected,
               selectedTotalPrice: selectedTotal,
-              status: 'success',
+              status: 'success',  
+              lastFetched: Date.now(),
             };
           });
         } catch {
@@ -103,16 +125,34 @@ export const useCartStore = create<State & Actions>()(
       // Replace cart items and recompute totals (also reconcile selection)
       setCartItems: (cartItems) =>
         set((state) => {
-          const total = sumAll(cartItems);
+          console.log('cartItems', cartItems);
+          
+          // Merge new items with existing ones, updating if exists, adding if new
+          const mergedItems = [...state.cartItems];
+          
+          cartItems.forEach(newItem => {
+            const existingIndex = mergedItems.findIndex(item => item.id === newItem.id);
+            if (existingIndex >= 0) {
+              // Update existing item
+              mergedItems[existingIndex] = { ...mergedItems[existingIndex], ...newItem };
+            } else {
+              // Add new item
+              mergedItems.push(newItem);
+            }
+          });
+          
+          const total = sumAll(mergedItems);
           const validSelected = state.selectedItems.filter((sid) =>
-            cartItems.some((it) => Number(it.id) === sid)
+            mergedItems.some((it) => Number(it.id) === sid)
           );
-          const selectedTotal = sumSelected(cartItems, validSelected);
+          const selectedTotal = sumSelected(mergedItems, validSelected);
+          
           return {
-            cartItems,
+            cartItems: mergedItems,
             totalPrice: formatMoney(total),
             selectedItems: validSelected,
             selectedTotalPrice: selectedTotal,
+            lastFetched: Date.now(),
           };
         }),
 
@@ -133,6 +173,7 @@ export const useCartStore = create<State & Actions>()(
             cartItems: updatedCartItems,
             totalPrice: formatMoney(total),
             selectedTotalPrice: selectedTotal,
+            lastFetched: Date.now(),
           };
         }),
 
@@ -152,10 +193,11 @@ export const useCartStore = create<State & Actions>()(
             totalPrice: formatMoney(total),
             selectedItems: updatedSelected,
             selectedTotalPrice: selectedTotal,
+            lastFetched: Date.now(),
           };
         }),
 
-      // Clear everything
+      // Clear everything including cache
       clearCart: () =>
         set(() => {
           useCartStore.persist.clearStorage();
@@ -166,6 +208,7 @@ export const useCartStore = create<State & Actions>()(
             selectedItems: [],
             selectedTotalPrice: 0,
             status: 'idle',
+            lastFetched: null,
           };
         }),
 
@@ -196,10 +239,12 @@ export const useCartStore = create<State & Actions>()(
     }),
     {
       name: 'cart-storage',
-      // Chỉ định các key muốn lưu vào sessionStorage
       partialize: (state) => ({
         selectedItems: state.selectedItems,
-        // selectedTotalPrice: state.selectedTotalPrice,
+        cartItems: state.cartItems,
+        lastFetched: state.lastFetched,
+        totalPrice: state.totalPrice,
+        selectedTotalPrice: state.selectedTotalPrice,
       }),
       storage: createJSONStorage(() => sessionStorage),
     }

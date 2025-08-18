@@ -4,10 +4,13 @@ import { toast } from 'sonner';
 import { addToCartAction } from '@/actions/cartActions';
 import { useAuth } from '../useAuth';
 import { useRouter } from 'next/navigation';
+import { useCartStore } from '@/stores/cartStore';
 
 export default function useProductDetails(product: TProduct) {
   const { user, isLogin } = useAuth();
   const router = useRouter();
+  const setCartItems = useCartStore((state) => state.setCartItems);
+  const cartItems = useCartStore((state) => state.cartItems);
 
   const [selectVariant, setSelectVariant] = useState<TVariant | undefined>(
     undefined
@@ -99,6 +102,10 @@ export default function useProductDetails(product: TProduct) {
     // console.log('Add to cart response:', res);
 
     if (res.status === 200) {
+      // Add new item to existing cart items
+      if (res.cartItem) {
+        setCartItems([...cartItems, res.cartItem]);
+      }
       return toast.success(`${res.message}`);
     }
 
