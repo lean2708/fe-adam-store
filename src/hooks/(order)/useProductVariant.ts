@@ -1,11 +1,14 @@
 import { useCartStore } from '@/stores/cartStore';
+import useStore from '@/stores/useStore';
 import { TProductVariant } from '@/types';
 import { useMemo } from 'react';
 import { toast } from 'sonner';
 
 export default function useProductVariant() {
-  const cartItems = useCartStore((s) => s.cartItems);
-  const selectedItems = useCartStore((s) => s.selectedItems);
+  const cartItems = useStore(useCartStore, (s) => s.cartItems);
+  const selectedItems = useStore(useCartStore, (s) => s.selectedItems);
+  // const cartItems = useCartStore((s) => s.cartItems);
+  // const selectedItems = useCartStore((s) => s.selectedItems);
 
   const { productVariantList, loading } = useMemo(() => {
     // Handle hydration - if cartItems or selectedItems are null/undefined, return loading state

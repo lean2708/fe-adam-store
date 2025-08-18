@@ -11,6 +11,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import EmptyCart from './EmptyCart';
+import useStore from '@/stores/useStore';
 
 export function CartItemsList() {
   const t = useTranslations('Header');
@@ -29,23 +30,13 @@ export function CartItemsList() {
 
   // *Kiểm tra xem checkbox tất cả có được chọn không
   const allSelected =
-    cartItems.length > 0 && selectedItems.length === cartItems.length;
+    cartItems?.length! > 0 && selectedItems.length === cartItems?.length;
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated && !user) {
       router.push('/login');
     }
   }, [isAuthenticated, user, isLoading, router]);
-
-  // useEffect(() => {
-  //   const fetchCartItems = async () => {
-  //     if (status === 'idle' && user?.id) {
-  //       await fetchCart(Number(user?.id));
-  //     }
-  //   };
-
-  //   fetchCartItems();
-  // }, [user?.id, status, fetchCart]);
 
   console.log('Cart items:', cartItems);
 
@@ -65,7 +56,7 @@ export function CartItemsList() {
 
   return (
     <>
-      {cartItems.length === 0 ? (
+      {cartItems?.length === 0 && status === 'success' ? (
         <EmptyCart className=' order-2' />
       ) : (
         <div className='lg:col-span-2 mb-24'>
@@ -86,7 +77,7 @@ export function CartItemsList() {
           </div>
 
           <div className='space-y-4'>
-            {cartItems.map((item) => (
+            {cartItems?.map((item) => (
               <CartItem
                 key={item.id}
                 cartItem={item}

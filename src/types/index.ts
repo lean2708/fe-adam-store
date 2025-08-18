@@ -186,3 +186,11 @@ export type TShippingFee = {
   createdBy?: string;
   createdAt?: Date | string;
 };
+
+export interface TPaymentMethodOption {
+  id: string;
+  value: string;
+  label: string;
+  icon?: React.ComponentType<{ className?: string }>;
+  image?: string;
+}

@@ -1,37 +1,14 @@
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { RadioGroup } from '@/components/ui/radio-group';
 import { cn } from '@/lib/utils';
-import { Truck } from 'lucide-react';
 import PaymentMethodItem from './PaymentMethodItem';
 import { useCallback, useState } from 'react';
-
-export interface PaymentMethodOption {
-  id: string;
-  value: string;
-  label: string;
-  icon?: React.ComponentType<{ className?: string }>;
-  image?: string;
-}
+import { PAYMENT_METHODS } from '@/lib/constants';
 
 interface Props {
   onPaymentMethodChange?: (value: string) => void;
   defaultValue?: string;
   className?: string;
 }
-
-const PAYMENT_METHODS: PaymentMethodOption[] = [
-  {
-    id: 'cod',
-    value: 'cod',
-    label: 'Thanh toán khi nhận hàng',
-    icon: Truck,
-  },
-  {
-    id: 'vnpay',
-    value: 'vnpay',
-    label: 'Thanh toán qua VNPAY',
-    image: '/imgs/vn-pay-logo.png',
-  },
-];
 
 function PaymentMethod({
   onPaymentMethodChange,

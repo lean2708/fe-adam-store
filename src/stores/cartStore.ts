@@ -86,9 +86,13 @@ export const useCartStore = create<State & Actions>()(
       // Load cart from server with caching logic
       fetchCart: async (userId: number, forceRefresh = false) => {
         const state = get();
-        
+
         // Skip fetch if data is fresh and not forcing refresh
-        if (!forceRefresh && state.isCartFresh() && state.cartItems.length > 0) {
+        if (
+          !forceRefresh &&
+          state.isCartFresh() &&
+          state.cartItems.length > 0
+        ) {
           return;
         }
 
@@ -113,7 +117,7 @@ export const useCartStore = create<State & Actions>()(
               totalPrice: formatMoney(total),
               selectedItems: validSelected,
               selectedTotalPrice: selectedTotal,
-              status: 'success',  
+              status: 'success',
               lastFetched: Date.now(),
             };
           });
@@ -126,27 +130,32 @@ export const useCartStore = create<State & Actions>()(
       setCartItems: (cartItems) =>
         set((state) => {
           console.log('cartItems', cartItems);
-          
+
           // Merge new items with existing ones, updating if exists, adding if new
           const mergedItems = [...state.cartItems];
-          
-          cartItems.forEach(newItem => {
-            const existingIndex = mergedItems.findIndex(item => item.id === newItem.id);
+
+          cartItems.forEach((newItem) => {
+            const existingIndex = mergedItems.findIndex(
+              (item) => item.id === newItem.id
+            );
             if (existingIndex >= 0) {
               // Update existing item
-              mergedItems[existingIndex] = { ...mergedItems[existingIndex], ...newItem };
+              mergedItems[existingIndex] = {
+                ...mergedItems[existingIndex],
+                ...newItem,
+              };
             } else {
               // Add new item
               mergedItems.push(newItem);
             }
           });
-          
+
           const total = sumAll(mergedItems);
           const validSelected = state.selectedItems.filter((sid) =>
             mergedItems.some((it) => Number(it.id) === sid)
           );
           const selectedTotal = sumSelected(mergedItems, validSelected);
-          
+
           return {
             cartItems: mergedItems,
             totalPrice: formatMoney(total),
@@ -241,10 +250,10 @@ export const useCartStore = create<State & Actions>()(
       name: 'cart-storage',
       partialize: (state) => ({
         selectedItems: state.selectedItems,
-        cartItems: state.cartItems,
+        // cartItems: state.cartItems,
         lastFetched: state.lastFetched,
-        totalPrice: state.totalPrice,
-        selectedTotalPrice: state.selectedTotalPrice,
+        // totalPrice: state.totalPrice,
+        // selectedTotalPrice: state.selectedTotalPrice,
       }),
       storage: createJSONStorage(() => sessionStorage),
     }
