@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Modal, ModalHeader, ModalBody } from "@/components/ui/modal";
 import { X } from "lucide-react";
 import {
@@ -29,32 +28,13 @@ import {
   fetchAllRolesAction,
 } from "@/actions/userActions";
 import {
-  UserUpdateRequestGenderEnum,
-  UserUpdateRequest,
-} from "@/api-client/models";
+  userFormSchema,
+  type UserFormData
+} from "@/actions/schema/userSchema";
 import type { TUser, TRole, TEntityBasic } from "@/types";
 import { toast } from "sonner";
 
-const userSchema = z
-  .object({
-    name: z.string().min(1, "Tên người dùng là bắt buộc"),
-    email: z.string().email({ message: "Địa chỉ email không hợp lệ" }),
-    password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự").optional(),
-    confirmPassword: z.string().optional(),
-    roleIds: z.array(z.number()).min(1, "Ít nhất một vai trò là bắt buộc"),
-  })
-  .refine(
-    (data) => {
-      if (!data.password && !data.confirmPassword) return true;
-      return data.password === data.confirmPassword;
-    },
-    {
-      message: "Mật khẩu không khớp",
-      path: ["confirmPassword"],
-    }
-  );
 
-type UserFormData = z.infer<typeof userSchema>;
 
 interface UserModalProps {
   open: boolean;
@@ -65,17 +45,21 @@ interface UserModalProps {
 export function UserModal({ open, onClose, user }: UserModalProps) {
   const [loading, setLoading] = useState(false);
   const [roles, setRoles] = useState<TRole[]>([]);
+  const [showPasswordFields, setShowPasswordFields] = useState(false);
 
   const isEditing = !!user;
 
   const form = useForm<UserFormData>({
-    resolver: zodResolver(userSchema),
+    resolver: zodResolver(userFormSchema),
     defaultValues: {
       name: "",
       email: "",
       password: "",
+      dob: "",
       confirmPassword: "",
       roleIds: [],
+      gender: undefined,
+      isEditing: false,
     },
   });
 
@@ -97,7 +81,11 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
         roleIds: user.roles
           ? Array.from(user.roles).map((role: TEntityBasic) => role.id)
           : [],
+        dob: user.dob || "",
+        gender: user.gender || undefined,
+        isEditing: true,
       });
+      setShowPasswordFields(false); // Hide password fields by default for editing
     } else {
       form.reset({
         name: "",
@@ -105,7 +93,11 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
         password: "",
         confirmPassword: "",
         roleIds: [],
+        dob: "",
+        gender: undefined,
+        isEditing: false,
       });
+      setShowPasswordFields(false); // Reset password fields visibility
     }
   }, [user, form]);
 
@@ -125,15 +117,16 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
     setLoading(true);
     try {
       if (isEditing) {
-        // Update user
-        const updateData: UserUpdateRequest = {
+        // Update user - pass the form data directly
+        const result = await updateUserAction(user.id!, {
           name: data.name,
-          roleIds: new Set(data.roleIds),
-          dob: "2025-08-04",
-          gender: UserUpdateRequestGenderEnum.Female,
-        };
-
-        const result = await updateUserAction(user.id!, updateData);
+          email: data.email,
+          roleIds: data.roleIds,
+          dob: data.dob,
+          gender: data.gender,
+          password: data.password,
+          confirmPassword: data.confirmPassword,
+        });
 
         if (result.success) {
           toast.success("Cập nhật người dùng thành công");
@@ -142,15 +135,16 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
           toast.error(result.message || "Không thể cập nhật người dùng");
         }
       } else {
-        // Create user
-        const createData = {
+        // Create user - pass the form data directly
+        const result = await createUserAction({
           name: data.name,
           email: data.email,
           password: data.password!,
-          roleIds: new Set(data.roleIds),
-        };
-
-        const result = await createUserAction(createData);
+          confirmPassword: data.confirmPassword!,
+          roleIds: data.roleIds,
+          dob: data.dob,
+          gender: data.gender,
+        });
 
         if (result.success) {
           toast.success("Tạo người dùng thành công");
@@ -256,7 +250,7 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
                     >
                       <FormControl>
                         <SelectTrigger className="bg-[#F0F0F0] rounded-xl">
-                          <SelectValue placeholder="Quản lý" />
+                          <SelectValue placeholder={roles[0]?.name} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -273,45 +267,167 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
               />
             </div>
 
-            {/* Password field - full width */}
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Mật khẩu</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-[#F0F0F0] rounded-xl"
-                      type="password"
-                      placeholder="Nhập mật khẩu"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {/* Date of Birth field - only show when editing */}
+            {isEditing && (
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="dob"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Ngày sinh</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="date"
+                          className="bg-[#F0F0F0] rounded-xl"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            {/* Confirm Password field - full width */}
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nhập lại mật khẩu</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-[#F0F0F0] rounded-xl"
-                      type="password"
-                      placeholder="Nhập lại mật khẩu"
-                      {...field}
+                <FormField
+                  control={form.control}
+                  name="gender"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Giới tính</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="bg-[#F0F0F0] rounded-xl">
+                            <SelectValue placeholder="Chọn giới tính" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="MALE">Nam</SelectItem>
+                          <SelectItem value="FEMALE">Nữ</SelectItem>
+                          <SelectItem value="OTHER">Khác</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
+
+            {/* Password fields */}
+            {!isEditing ? (
+              // For creating new users - password is required
+              <>
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        Mật khẩu <span className="text-red-500">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className="bg-[#F0F0F0] rounded-xl"
+                          type="password"
+                          placeholder="Nhập mật khẩu"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        Nhập lại mật khẩu <span className="text-red-500">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className="bg-[#F0F0F0] rounded-xl"
+                          type="password"
+                          placeholder="Nhập lại mật khẩu"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            ) : (
+              // For editing users - password is optional
+              <div className="space-y-4">
+                {/* <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Thay đổi mật khẩu</span>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setShowPasswordFields(!showPasswordFields);
+                      if (!showPasswordFields) {
+                        // Clear password fields when hiding
+                        form.setValue("password", "");
+                        form.setValue("confirmPassword", "");
+                      }
+                    }}
+                  >
+                    {showPasswordFields ? "Ẩn" : "Hiển thị"}
+                  </Button>
+                </div>
+
+                {showPasswordFields && (
+                  <>
+                    <div className="text-sm text-gray-600 bg-blue-50 p-3 rounded-lg">
+                      <strong>Lưu ý:</strong> Để trống các trường mật khẩu nếu không muốn thay đổi mật khẩu hiện tại.
+                    </div>
+
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Mật khẩu mới (tùy chọn)</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="password"
+                              placeholder="Nhập mật khẩu mới"
+                              className="bg-[#F0F0F0] rounded-xl"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+                    <FormField
+                      control={form.control}
+                      name="confirmPassword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Xác nhận mật khẩu mới</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="password"
+                              placeholder="Nhập lại mật khẩu mới"
+                              className="bg-[#F0F0F0] rounded-xl"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </>
+                )} */}
+              </div>
+            )}
 
             <div className="flex justify-end gap-3 pt-6 border-t mt-6">
               <Button

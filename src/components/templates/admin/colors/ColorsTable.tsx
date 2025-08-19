@@ -147,9 +147,6 @@ export function ColorsTable({
                     {t("status")}
                   </TableHead>
                   <TableHead className="font-semibold text-gray-900">
-                    {t("creator")}
-                  </TableHead>
-                  <TableHead className="font-semibold text-gray-900">
                     {t("actions")}
                   </TableHead>
                 </TableRow>
@@ -195,7 +192,6 @@ export function ColorsTable({
                         ACTIVE
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-gray-600">System</TableCell>
                     <TableCell>
                       <ActionDropdown
                         onEdit={() => onEdit(color)}

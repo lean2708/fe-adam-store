@@ -151,10 +151,7 @@ export default function ProductVariantsPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <Button onClick={() => router.back()} variant="outline" size="sm">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              {t("back") || "Back"}
-            </Button>
+          
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
                 {product.name}

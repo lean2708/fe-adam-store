@@ -248,7 +248,7 @@ export function ProductVariantsTable({
               </div>
               <ActionDropdown
                 onEdit={() => onEdit(product)}
-                onUpdate={onUpdate ? () => onUpdate(product) : undefined}
+                // onUpdate={onUpdate ? () => onUpdate(product) : undefined}
                 onDelete={() => onDelete(product.id)}
                 onRestore={
                   product.status === "INACTIVE" && onRestore
@@ -428,7 +428,7 @@ export function ProductVariantsTable({
                   <TableCell className="text-right">
                     <ActionDropdown
                       onEdit={undefined}
-                      onUpdate={onUpdate ? () => onUpdate(product) : undefined}
+                      // onUpdate={onUpdate ? () => onUpdate(product) : undefined}
                       onDelete={() => onDelete(product.id)}
                       onRestore={
                         product.status === "INACTIVE" && onRestore

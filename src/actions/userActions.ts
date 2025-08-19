@@ -20,6 +20,12 @@ import {
 } from "@/lib/data/user";
 import { extractErrorMessage } from "@/lib/utils";
 import { changePassword1, getMyInfoApi } from "@/lib/data/auth";
+import {
+  userCreateSchema,
+  UserUpdateFormData,
+  userUpdateSchema,
+  type UserCreateFormData,
+} from "@/actions/schema/userSchema";
 
 
 /**
@@ -66,15 +72,35 @@ export async function searchUsersAction(
 }
 
 /**
- * Create a new user
+ * Create a new user with validation
  */
 export async function createUserAction(
-  userData: UserCreationRequest
+  formData: UserCreateFormData
 ): Promise<ActionResponse<TUser>> {
   try {
+    // Validate the form data
+    const validatedData = userCreateSchema.parse(formData);
+
+    // Transform to API request format
+    const userData: UserCreationRequest = {
+      name: validatedData.name,
+      email: validatedData.email,
+      password: validatedData.password,
+      roleIds: validatedData.roleIds,
+
+    };
+
     const result = await createUser(userData);
     return result;
   } catch (error) {
+    // Handle validation errors
+    if (error instanceof Error && error.name === 'ZodError') {
+      return {
+        success: false,
+        message: "Dữ liệu không hợp lệ",
+      };
+    }
+
     const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
@@ -85,17 +111,45 @@ export async function createUserAction(
 }
 
 /**
- * Update a user
+ * Update a user with validation
  */
 export async function updateUserAction(
   id: number,
-  userData: UserUpdateRequest
+  formData: UserUpdateFormData
 ): Promise<ActionResponse<TUser>> {
   try {
+    // Validate the form data
+    const validatedData = userUpdateSchema.parse(formData);
+
+    // Transform to API request format
+    const userData: UserUpdateRequest = {
+      name: validatedData.name,
+      roleIds: validatedData.roleIds,
+      dob: validatedData.dob || "",
+      gender: validatedData.gender as any,
+    };
+    console.log(userData);
+    
+    // Only include password if it's provided
+    if (validatedData.password && validatedData.password.length > 0) {
+      (userData as any).password = validatedData.password;
+    }
+
     const result = await updateUser(id, userData);
     return result;
   } catch (error) {
+    // Handle validation errors
+    if (error instanceof Error && error.name === 'ZodError') {
+      return {
+        success: false,
+        message: "Dữ liệu không hợp lệ",
+      };
+    }
+
     const extractedError = extractErrorMessage(error, "Lỗi server");
+  
+    console.log(error);
+    
     return {
       success: false,
       message: extractedError.message,
@@ -183,7 +237,7 @@ export async function fetchUserByIdAction(
     };
   }
 }
-export async function getInfoUser() {
+export async function getInfoUser(): Promise<ActionResponse<TUser>> {
   try {
     const data = await getMyInfoApi();
     return {
@@ -191,9 +245,11 @@ export async function getInfoUser() {
       data,
     };
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi lấy thông tin người dùng");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch user",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
@@ -201,7 +257,7 @@ export async function changePasswordAction(newPass: {
   oldPassword: string,
   newPassword: string,
   confirmPassword: string
-}) {
+}): Promise<ActionResponse<any>> {
   try {
     const data = await changePassword1(newPass);
     return {
@@ -209,9 +265,11 @@ export async function changePasswordAction(newPass: {
       data,
     };
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi đổi mật khẩu");
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch user",
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }

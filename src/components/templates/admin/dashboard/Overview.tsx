@@ -65,7 +65,7 @@ export function Overview({ dateRange }: OverviewProps) {
           // Transform the data for the chart
           const chartData = result.data.map((item: TRevenueByMonth) => {
             // Handle the month number - convert to month name
-            let monthName = t("unknown");
+            let monthName = "unknown";
             if (item.month && item.month >= 1 && item.month <= 12) {
               const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -144,7 +144,6 @@ export function Overview({ dateRange }: OverviewProps) {
               <ChartTooltipContent
                 formatter={(value: number) => [
                   formatCurrency(value, locale),
-                  t("revenue")
                 ]}
               />
             }
