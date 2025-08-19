@@ -20,6 +20,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { formatCurrency } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 interface ProductVariant {
   id?: number;
@@ -39,6 +41,7 @@ interface ProductVariant {
 interface ProductVariantsTableComponentProps {
   variants: ProductVariant[];
   productName: string;
+  handleOpenAddModal: () => void;
   onEditVariant: (variant: ProductVariant) => void;
 }
 
@@ -46,6 +49,7 @@ export function ProductVariantsTableComponent({
   variants,
   productName,
   onEditVariant,
+  handleOpenAddModal,
 }: ProductVariantsTableComponentProps) {
   const t = useTranslations("Admin.products");
   const locale = useLocale();
@@ -75,7 +79,19 @@ export function ProductVariantsTableComponent({
 
   return (
     <div className="bg-white rounded-lg shadow-sm border">
-      <div className="p-6">
+      <div className="p-6 ">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-bold text-black">
+            {t("productVariants") || "Biến thể sản phẩm"}
+          </h3>
+          <Button
+            onClick={handleOpenAddModal}
+            className="bg-black hover:bg-gray-800 text-white"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            {t("addVariant") || "Add Variant"}
+          </Button>
+        </div>
         <Table>
           <TableHeader>
             <TableRow>
@@ -96,16 +112,17 @@ export function ProductVariantsTableComponent({
                   className="text-center py-8 text-muted-foreground"
                 >
                   {totalVariants === 0
-                    ? (t("noVariantsFound") || "No variants found")
-                    : "No variants on this page"
-                  }
+                    ? t("noVariantsFound") || "No variants found"
+                    : "No variants on this page"}
                 </TableCell>
               </TableRow>
             ) : (
               paginatedVariants.map((variant, index) => (
                 <TableRow key={variant.id || `variant-${index}`}>
                   <TableCell>
-                    <span className="font-mono text-sm">{variant.id || "N/A"}</span>
+                    <span className="font-mono text-sm">
+                      {variant.id || "N/A"}
+                    </span>
                   </TableCell>
                   <TableCell>
                     <span className="text-sm">{productName}</span>
@@ -177,7 +194,9 @@ export function ProductVariantsTableComponent({
                 </Select>
               </div>
               <div className="text-sm text-gray-600">
-                {t("showingResults") || "Showing"} {startIndex + 1}-{Math.min(endIndex, totalVariants)} {t("of") || "of"} {totalVariants} {t("variants") || "variants"}
+                {t("showingResults") || "Showing"} {startIndex + 1}-
+                {Math.min(endIndex, totalVariants)} {t("of") || "of"}{" "}
+                {totalVariants} {t("variants") || "variants"}
               </div>
             </div>
             <AdminPagination

@@ -79,16 +79,16 @@ const getSidebarItems = () => [
     href: "/admin/chat",
     icon: MessageCircle,
   },
-  {
-    titleKey: "navigation.files",
-    href: "/admin/files",
-    icon: FileImage,
-  },
-  {
-    titleKey: "navigation.search",
-    href: "/admin/search",
-    icon: Search,
-  },
+  // {
+  //   titleKey: "navigation.files",
+  //   href: "/admin/files",
+  //   icon: FileImage,
+  // },
+  // {
+  //   titleKey: "navigation.search",
+  //   href: "/admin/search",
+  //   icon: Search,
+  // },
 ];
 
 export default function AdminSidebar() {

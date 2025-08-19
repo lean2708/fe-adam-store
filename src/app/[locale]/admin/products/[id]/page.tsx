@@ -157,11 +157,8 @@ export default function ProductVariantsPage() {
             </Button>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
-                {t("variantsTitle") || "Product Variants"}
+                {product.name}
               </h1>
-              <p className="text-sm text-gray-600">
-                {product.name || product.title} (ID: {product.id})
-              </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -175,13 +172,6 @@ export default function ProductVariantsPage() {
                 className={`h-4 w-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`}
               />
               {t("refresh") || "Refresh"}
-            </Button>
-            <Button
-              onClick={handleOpenAddModal}
-              className="bg-black hover:bg-gray-800 text-white"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              {t("addVariant") || "Add Variant"}
             </Button>
           </div>
         </div>
@@ -212,7 +202,6 @@ export default function ProductVariantsPage() {
                   }}
                 >
                   <CarouselContent>
-                    
                     {product.images.map((image, index) => (
                       <CarouselItem
                         key={index}
@@ -338,7 +327,7 @@ export default function ProductVariantsPage() {
             {/* Product Description */}
             {product.description && (
               <div className="mt-6 pt-6 border-t">
-                <h3 className="text-sm font-medium text-gray-700 mb-3">
+                <h3 className="text-sm font-bold text-black mb-3">
                   {t("description") || "Product Description"}
                 </h3>
                 <div className="text-sm text-gray-600 space-y-2">
@@ -353,6 +342,7 @@ export default function ProductVariantsPage() {
 
         {/* Variants Table */}
         <ProductVariantsTableComponent
+          handleOpenAddModal={handleOpenAddModal}
           variants={allVariants}
           productName={product.name || product.title || ""}
           onEditVariant={handleEditVariant}
