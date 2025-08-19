@@ -22,6 +22,10 @@ import type {
 } from '@/api-client/models';
 import { SearchOrdersForAdminOrderStatusEnum } from '@/api-client/apis/order-controller-api';
 import { extractErrorMessage } from '@/lib/utils';
+import {
+  calculateShippingFeeSchema,
+  createOrderSchema,
+} from './schema/orderSchema';
 
 /**
  * Cancel an order by ID using API.
@@ -60,7 +64,16 @@ export async function calculateShippingFeeAction(
   shippingRequest: ShippingRequest
 ): Promise<ActionResponse<ShippingFeeResponse>> {
   try {
-    const data = await calculateShippingFeeApi(shippingRequest);
+    const validated = calculateShippingFeeSchema.safeParse(shippingRequest);
+    if (!validated.success) {
+      return {
+        success: false,
+        message: 'data shippingRequest invalid',
+        errors: validated.error.flatten().fieldErrors,
+      };
+    }
+
+    const data = await calculateShippingFeeApi(validated.data);
     return {
       success: true,
       data,
@@ -80,7 +93,16 @@ export async function createOrderAction(
   orderRequest: OrderRequest
 ): Promise<ActionResponse<OrderResponse>> {
   try {
-    const data = await createOrderApi(orderRequest);
+    const validated = createOrderSchema.safeParse(orderRequest);
+    if (!validated.success) {
+      return {
+        success: false,
+        message: 'data orderRequest invalid',
+        errors: validated.error.flatten().fieldErrors,
+      };
+    }
+
+    const data = await createOrderApi(validated.data);
     return {
       success: true,
       data,
