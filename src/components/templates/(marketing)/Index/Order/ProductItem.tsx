@@ -12,6 +12,7 @@ export function ProductItem({ product }: { product: TProductVariant }) {
         alt={product.name || 'Product Item'}
         className='w-32 h-44 object-cover rounded-lg'
         loading='lazy'
+        unoptimized
       />
       <div className='flex-1'>
         <h4 className='font-bold text-primary mb-1 line-clamp-1'>

@@ -9,7 +9,6 @@ import usePromotions from '@/hooks/(order)/usePromotions';
 import { formatCurrency } from '@/lib/utils';
 import { useLocale } from 'next-intl';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 export function PaymentBar() {
   const locale = useLocale();

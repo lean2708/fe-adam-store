@@ -1,4 +1,7 @@
-import { createOrderAction } from '@/actions/orderActions';
+import {
+  createOrderAction,
+  createOrderViaVNPayAction,
+} from '@/actions/orderActions';
 import { PAYMENT_METHODS } from '@/enums';
 import useAddress from '@/hooks/(order)/useAddress';
 import usePaymentMethod from '@/hooks/(order)/usePaymentMethod';
@@ -16,8 +19,12 @@ export default function useOrderAction() {
   const { productVariantList, clearProductVariantsStore } = useProductVariant();
   const { currentAddress } = useAddress();
   const { selectedMethod } = usePaymentMethod();
+
   const { selectedPromotion, clearSelectedPromotion } = usePromotions();
   const { shippingFee } = useShippingFee(currentAddress, productVariantList);
+
+  // Check if current method is VNPay
+  const isVNPayMethod = selectedMethod === PAYMENT_METHODS.VNPAY;
 
   // Validation logic
   const validateOrder = () => {
@@ -74,27 +81,21 @@ export default function useOrderAction() {
     }
   };
 
-  // Mock VNPay payment processing
+  // VNPay payment processing
   const processVNPayPayment = async (orderData: any) => {
-    // Mock VNPay API call
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Simulate VNPay response
-        const isSuccess = Math.random() > 0.1; // 90% success rate for demo
+    try {
+      const response = await createOrderViaVNPayAction(orderData);
 
-        if (isSuccess) {
-          resolve({
-            success: true,
-            paymentUrl: `https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?vnp_Amount=${
-              orderData.total * 100
-            }&vnp_Command=pay&vnp_CreateDate=${Date.now()}&vnp_CurrCode=VND&vnp_IpAddr=127.0.0.1&vnp_Locale=vn&vnp_OrderInfo=Thanh%20toan%20don%20hang&vnp_OrderType=other&vnp_ReturnUrl=http://localhost:3000/payment/vnpay/return&vnp_TmnCode=DEMO&vnp_TxnRef=${Date.now()}&vnp_Version=2.1.0`,
-            transactionId: `VNP_${Date.now()}`,
-          });
-        } else {
-          reject(new Error('VNPay payment failed'));
-        }
-      }, 2000); // Simulate network delay
-    });
+      if (!response.success) {
+        toast.error(response.message);
+        return null;
+      }
+
+      return response.data;
+    } catch (error) {
+      toast.error('Thanh toán VNPAY không thành công');
+      return null;
+    }
   };
 
   // Handle cash payment
@@ -104,12 +105,13 @@ export default function useOrderAction() {
 
       if (!response.success) {
         toast.error(response.message);
-        return;
+        return null;
       }
 
       return response.data;
     } catch (error) {
       toast.error('Thanh toán CASH không thành công');
+      return null;
     }
   };
 
@@ -125,44 +127,25 @@ export default function useOrderAction() {
       const orderData = prepareOrderData();
 
       if (selectedMethod === PAYMENT_METHODS.CASH) {
-        await processCashPayment(orderData);
+        const result = await processCashPayment(orderData);
 
-        cleanupOrderStates();
-
-        toast.success('Đặt hàng thành công!');
-        router.replace('/orders');
+        if (result) {
+          cleanupOrderStates();
+          toast.success('Đặt hàng thành công!');
+          router.replace('/orders');
+        }
       } else if (selectedMethod === PAYMENT_METHODS.VNPAY) {
-        // Handle VNPay payment
-        toast.loading('Đang xử lý thanh toán VNPay...', {
-          id: 'vnpay-processing',
-        });
+        const res = await processVNPayPayment(orderData);
 
-        // try {
-        //   // First create the order
-        //   const orderResponse = await createOrderAction(orderData);
+        if (res?.paymentUrl) {
+          cleanupOrderStates();
+          toast.success(res.message);
 
-        //   if (!orderResponse.success) {
-        //     throw new Error(orderResponse.message || 'Tạo đơn hàng thất bại');
-        //   }
-
-        //   // Then process VNPay payment
-        //   const vnpayResponse = await processVNPayPayment({
-        //     ...orderData,
-        //     orderId: orderResponse.data?.id,
-        //     total: shippingFee + (selectedPromotion ? 0 : 0), // Calculate total properly
-        //   });
-
-        //   toast.dismiss('vnpay-processing');
-
-        //   if (vnpayResponse.success) {
-        //     toast.success('Chuyển hướng đến VNPay để thanh toán');
-        //     // Redirect to VNPay payment page
-        //     window.location.href = vnpayResponse.paymentUrl;
-        //   }
-        // } catch (vnpayError) {
-        //   toast.dismiss('vnpay-processing');
-        //   throw vnpayError;
-        // }
+          window.location.href = res.paymentUrl;
+        } else {
+          toast.dismiss('vnpay-processing');
+          toast.error('Không thể tạo liên kết thanh toán VNPay');
+        }
       } else {
         throw new Error('Phương thức thanh toán không được hỗ trợ');
       }
@@ -180,5 +163,6 @@ export default function useOrderAction() {
     handlePlaceOrder,
     isProcessing,
     validateOrder,
+    isVNPayMethod,
   };
 }

@@ -11,6 +11,7 @@ import {
   cancelOrder,
   calculateShippingFeeApi,
   createOrderApi,
+  payOrderApi,
 } from '@/lib/data/order';
 import type { ActionResponse } from '@/lib/types/actions';
 import type {
@@ -19,6 +20,7 @@ import type {
   PageResponseOrderResponse,
   ShippingFeeResponse,
   ShippingRequest,
+  VNPayResponse,
 } from '@/api-client/models';
 import { SearchOrdersForAdminOrderStatusEnum } from '@/api-client/apis/order-controller-api';
 import { extractErrorMessage } from '@/lib/utils';
@@ -109,6 +111,35 @@ export async function createOrderAction(
     };
   } catch (error) {
     const extracted = extractErrorMessage(error, 'Failed to create order.');
+    return { success: false, message: extracted.message, apiError: extracted };
+  }
+}
+
+export async function createOrderViaVNPayAction(
+  orderRequest: OrderRequest
+): Promise<ActionResponse<VNPayResponse>> {
+  try {
+    const validated = createOrderSchema.safeParse(orderRequest);
+    if (!validated.success) {
+      return {
+        success: false,
+        message: 'data orderRequest invalid',
+        errors: validated.error.flatten().fieldErrors,
+      };
+    }
+
+    const order = await createOrderApi(validated.data);
+
+    const data = await payOrderApi(order?.id!);
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    const extracted = extractErrorMessage(
+      error,
+      'Failed to create order via vnpay.'
+    );
     return { success: false, message: extracted.message, apiError: extracted };
   }
 }
