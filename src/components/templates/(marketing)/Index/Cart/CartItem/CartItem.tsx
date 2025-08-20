@@ -46,7 +46,7 @@ export function CartItem({
     maxQuantity,
     totalPrice,
     currentColor,
-    currentVariant,
+    price,
     onChangeColor,
     onChangeSize,
     onRemoveItem,
@@ -94,8 +94,7 @@ export function CartItem({
 
               <div className='text-right'>
                 <p className='text-sm text-primary font-normal mb-1'>
-                  {formatCurrency(currentVariant?.price || 0, locale)} ×{' '}
-                  {cartItem.quantity}
+                  {formatCurrency(price || 0, locale)} × {cartItem.quantity}
                 </p>
 
                 <p className='font-bold text-primary mb-2'>

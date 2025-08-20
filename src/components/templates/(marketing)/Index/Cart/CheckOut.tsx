@@ -10,6 +10,7 @@ import useAddress from '@/hooks/(order)/useAddress';
 import useProductVariant from '@/hooks/(order)/useProductVariant';
 import useShippingFee from '@/hooks/useShippingFee';
 import useCalculateTotal from '@/hooks/(order)/useCalculateTotal';
+import { useCartItem } from '@/hooks/(cart)/useCartItem';
 
 export function CheckOut() {
   const t = useTranslations('Header');
@@ -38,7 +39,7 @@ export function CheckOut() {
         </h2>
 
         <Fee
-          subtotal={Number(total)}
+          subtotal={Number(selectedTotalPrice)}
           shippingFee={shippingFee}
           loading={calculatingShipping}
         />

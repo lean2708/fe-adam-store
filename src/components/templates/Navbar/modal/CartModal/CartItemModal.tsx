@@ -22,11 +22,12 @@ function CartItemModal({
   const locale = useLocale();
 
   const removeCartItem = useCartStore((state) => state.removeCartItem);
+  const updateCartItem = useCartStore((state) => state.updateCartItem);
 
-  const { currentVariant, onRemoveItem, isChanged } = useCartItem(
+  const { price, onRemoveItem, isChanged } = useCartItem(
     cartItem,
     product,
-    undefined,
+    updateCartItem,
     removeCartItem
   );
 
@@ -58,7 +59,7 @@ function CartItemModal({
 
         <div className='mt-1'>
           <p className='text-base font-bold text-primary'>
-            {formatCurrency(currentVariant?.price || 0, locale)}
+            {formatCurrency(price || 0, locale)}
           </p>
           <p className='text-base text-primary'>x{cartItem.quantity}</p>
         </div>

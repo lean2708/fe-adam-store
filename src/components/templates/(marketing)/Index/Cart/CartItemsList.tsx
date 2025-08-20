@@ -38,9 +38,17 @@ export function CartItemsList() {
     }
   }, [isAuthenticated, user, isLoading, router]);
 
-  console.log('Cart items:', cartItems);
+  // console.log('Cart items:', cartItems);
 
-  if (status === 'loading' || status === 'idle') {
+  // Thêm useEffect để fetch cart khi component mount
+  // useEffect(() => {
+  //   if (isAuthenticated && user) {
+  //     console.log('Fetching cart...');
+  //     fetchCart(user.id!);
+  //   }
+  // }, [isAuthenticated, user, fetchCart]);
+
+  if (status === 'loading') {
     return (
       <div className='lg:col-span-2 mb-24 space-y-4'>
         {Array.from({ length: (cartItems?.length ?? 0) || 4 }).map((_, idx) => (

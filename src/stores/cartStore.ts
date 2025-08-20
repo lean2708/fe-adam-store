@@ -39,12 +39,8 @@ const resolveUnitPrice = (item: TCartItem): number => {
   if (typeof direct === 'number') return direct;
 
   // Try to locate chosen variant by color/size in Product
-  const color = item.Product?.colors?.find(
-    (c) => c.name === (item as any).color
-  );
-  const variant = color?.variants?.find(
-    (v) => v.size?.name === (item as any).size
-  );
+  const color = item.Product?.colors?.find((c) => c.name === item.color.name);
+  const variant = color?.variants?.find((v) => v.size?.name === item.size.name);
   if (typeof variant?.price === 'number') return variant.price;
 
   // Fallback to first variant of first color
@@ -93,7 +89,9 @@ export const useCartStore = create<State & Actions>()(
           state.isCartFresh() &&
           state.cartItems.length > 0
         ) {
-          return;
+          if (state.status !== 'success') {
+            set({ status: 'success' });
+          }
         }
 
         set({ status: 'loading' });
