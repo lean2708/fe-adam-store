@@ -159,7 +159,10 @@
       "welcome": "Chào mừng đến với bảng điều khiển quản trị. Đây là những gì đang diễn ra với cửa hàng của bạn hôm nay.",
       "overview": {
         "title": "Tổng quan",
-        "description": "Doanh thu hàng tháng trong năm hiện tại"
+        "description": "Doanh thu hàng tháng trong năm hiện tại",
+ 
+        "button": "Xuất doanh thu",
+        "loading": "Đang xuất..."
       },
       "recentOrders": {
         "title": "Đơn hàng gần đây",

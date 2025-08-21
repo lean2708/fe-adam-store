@@ -93,10 +93,10 @@ export function DashboardOverview({ className }: DashboardOverviewProps) {
             {isExporting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Đang xuất...
+                {t("dashboard.overview.loading")}
               </>
             ) : (
-              "Xuất doanh thu"
+              t("dashboard.overview.button")
             )}
           </Button>
         </CardContent>

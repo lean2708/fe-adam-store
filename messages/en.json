@@ -160,7 +160,9 @@
       "welcome": "Welcome to your admin dashboard. Here's what's happening with your store today.",
       "overview": {
         "title": "Overview",
-        "description": "Monthly revenue for the current year"
+        "description": "Monthly revenue for the current year",
+        "button": "Export revenue",
+        "loading": "Exporting..."
       },
       "recentOrders": {
         "title": "Recent Orders",
