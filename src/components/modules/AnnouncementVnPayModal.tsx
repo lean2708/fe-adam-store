@@ -19,7 +19,7 @@ import { toast } from 'sonner';
 type Props = {};
 
 const AnnouncementVnPayModal = (props: Props) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [orderStatus, setOrderStatus] = useState<{
     orderId: string;
     isSuccess: boolean;

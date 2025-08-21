@@ -13,6 +13,7 @@ import {
   createOrderApi,
   payOrderApi,
   payCallbackHandlerApi,
+  retryPaymentApi,
 } from '@/lib/data/order';
 import type { ActionResponse } from '@/lib/types/actions';
 import type {
@@ -160,6 +161,21 @@ export async function vnPayCallbackAction(
       error,
       'Failed to post  pay callback.'
     );
+    return { success: false, message: extracted.message, apiError: extracted };
+  }
+}
+
+export async function retryPaymentviaVnPayAction(
+  orderId: number
+): Promise<ActionResponse<VNPayResponse>> {
+  try {
+    const data = await retryPaymentApi(orderId);
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    const extracted = extractErrorMessage(error, 'Failed to get retry vnpay.');
     return { success: false, message: extracted.message, apiError: extracted };
   }
 }
