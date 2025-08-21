@@ -128,6 +128,7 @@ export default function useOrderAction() {
 
       if (selectedMethod === PAYMENT_METHODS.CASH) {
         const result = await processCashPayment(orderData);
+        console.log('orderData: ', orderData);
 
         if (result) {
           cleanupOrderStates();

@@ -12,12 +12,14 @@ import {
   calculateShippingFeeApi,
   createOrderApi,
   payOrderApi,
+  payCallbackHandlerApi,
 } from '@/lib/data/order';
 import type { ActionResponse } from '@/lib/types/actions';
 import type {
   OrderRequest,
   OrderResponse,
   PageResponseOrderResponse,
+  PaymentCallbackRequest,
   ShippingFeeResponse,
   ShippingRequest,
   VNPayResponse,
@@ -139,6 +141,24 @@ export async function createOrderViaVNPayAction(
     const extracted = extractErrorMessage(
       error,
       'Failed to create order via vnpay.'
+    );
+    return { success: false, message: extracted.message, apiError: extracted };
+  }
+}
+
+export async function vnPayCallbackAction(
+  paymentCallbackRequest: PaymentCallbackRequest
+): Promise<ActionResponse<OrderResponse>> {
+  try {
+    const data = await payCallbackHandlerApi(paymentCallbackRequest);
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    const extracted = extractErrorMessage(
+      error,
+      'Failed to post  pay callback.'
     );
     return { success: false, message: extracted.message, apiError: extracted };
   }
