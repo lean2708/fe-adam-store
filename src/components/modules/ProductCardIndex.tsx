@@ -1,9 +1,13 @@
-import Image from "next/image";
-import { TProduct } from "@/types";
-import { cn, formatCurrency } from "@/lib/utils";
-import { toast } from "sonner";
-import { useState } from "react";
-import { useLocale } from "next-intl";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
+import { useLocale } from 'next-intl';
+
+import { TProduct } from '@/types';
+import { cn, formatCurrency } from '@/lib/utils';
+import { SIZE_LIST } from '@/lib/constants';
+import { Button } from '../ui/button';
+import useProductDetails from '@/hooks/(product_details)/useProductDetails';
 
 interface ProductCardIndexProps {
   product: TProduct;
@@ -13,89 +17,150 @@ interface ProductCardIndexProps {
 
 export default function ProductCardIndex({
   product,
-  badgeText = "Mới",
-  className = ""
+  badgeText = 'Mới',
+  className = '',
 }: ProductCardIndexProps) {
   const locale = useLocale();
-  const [selectedColor, setSelectedColor] = useState(1)
+
+  const [colorSelected, setColorSelected] = useState<number | undefined>(
+    undefined
+  );
+  const [sizeSelected, setSizeSelected] = useState<number | undefined>(
+    undefined
+  );
+
+  const {
+    selectVariant,
+    onChangeColor,
+    onChangeSize,
+    handleAddToCart,
+    selectedColor,
+    selectedSize,
+  } = useProductDetails(product);
+
+  const handleColorClick = (colorId: number | undefined) => {
+    setColorSelected(colorId);
+    setSizeSelected(undefined);
+    onChangeColor(colorId);
+    onChangeSize(undefined);
+  };
+
+  const handleSizeClick = (sizeId: number | undefined) => {
+    setSizeSelected(sizeId);
+    onChangeSize(sizeId);
+  };
+
+  const handleAddToCartClick = async () => {
+    await handleAddToCart();
+  };
+
+  const variantList =
+    product.colors?.find((c) => c.id === colorSelected)?.variants || [];
+  const defaultPrice = product.colors?.[0]?.variants?.[0]?.price || 0;
+
   return (
-    <div className={`group cursor-pointer relative ${className}`}>
-      {/* Product Image */}
-      <div className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden mb-3 relative">
-        <Image
-          src={product.mainImage || "https://images.pexels.com/photos/6069525/pexels-photo-6069525.jpeg?auto=compress&cs=tinysrgb&h=400&w=300"}
-          alt={product.name || "Product image"}
-          width={300}
-          height={400}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        />
+    <div className={cn('group relative cursor-pointer', className)}>
+      {/* Product Image Container */}
+      <div className='relative mb-4 aspect-[3/4] overflow-hidden rounded-xl bg-gray-50'>
+        <Link href={`product/${product.id}`} className='block h-full w-full'>
+          <Image
+            src={
+              product.mainImage ||
+              'https://images.pexels.com/photos/6069525/pexels-photo-6069525.jpeg?auto=compress&cs=tinysrgb&h=400&w=300placeholder-product.jpg'
+            }
+            alt={product.name || 'Product image'}
+            width={300}
+            height={400}
+            className='h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110'
+          />
 
-        {/* Badge */}
-        <div className="absolute top-3 right-3 z-10">
-          <span className="bg-black text-white text-xs font-medium px-3 py-1 rounded-full">
-            {badgeText}
-          </span>
-        </div>
+          {/* Badge */}
+          {badgeText && (
+            <div className='absolute right-3 top-3 z-10'>
+              <span className='rounded-full bg-black px-3 py-1 text-xs font-medium text-white shadow-lg'>
+                {badgeText}
+              </span>
+            </div>
+          )}
+        </Link>
 
-        {/* Hover Bottom Panel */}
-        <div className="absolute bottom-0 left-2 right-2 bg-white/95 backdrop-blur-sm p-3 sm:p-4 md:p-5 transform translate-y-full group-hover:-translate-y-2 transition-transform duration-300 ease-out rounded-lg border border-gray-200 shadow-lg">
+        {/* Hover Panel */}
+        <div className='absolute bottom-0 left-0 right-0 translate-y-full transform bg-white/95 p-4 backdrop-blur-sm transition-transform duration-300 ease-out group-hover:-translate-y-0 rounded-t-xl border-t border-gray-100 shadow-xl'>
           {/* Add to Cart Button */}
-          <button className="w-full bg-black text-white py-2 sm:py-2.5 md:py-3 rounded-lg font-medium text-xs sm:text-sm mb-2 sm:mb-3 hover:bg-gray-800 transition-colors shadow-sm border border-black/10">
+          <Button
+            onClick={handleAddToCartClick}
+            className='mb-3 w-full rounded-lg bg-black py-3 text-sm font-medium text-white transition-colors hover:bg-gray-800 focus:ring-2 focus:ring-black focus:ring-offset-2'
+          >
             Thêm vào giỏ hàng +
-          </button>
+          </Button>
 
-          {/* Size Options */}
-          <div className="flex justify-center gap-1 sm:gap-2 flex-wrap">
-            {product.colors
-              ?.find((color) => color.id === selectedColor)?.variants
-              ?.slice()
-              .sort((a, b) => {
-                const aId = a.size?.id ?? 0;
-                const bId = b.size?.id ?? 0;
-                return aId - bId;
-              })
-              .map((variant) => (
-                <span key={variant.id} className={cn(
-                  "px-2 sm:px-3 py-1 text-xs font-medium rounded-full border border-gray-200 transition-colors shadow-sm",
-                  variant.status === "available"
-                    ? "bg-gray-100 text-gray-400 line-through cursor-not-allowed opacity-60"
-                    : "bg-gray-100 hover:bg-gray-200 cursor-pointer hover:border-gray-300"
-                )}
-                >
-                  {variant.size?.name}</span>
-              ))}
+          {/* Size Selection */}
+          {colorSelected && (
+            <div className='flex flex-wrap justify-center gap-2'>
+              {SIZE_LIST.map((size) => {
+                const variant = variantList.find(
+                  (v) => v.size?.name === size.name
+                );
+                const isAvailable = variant && variant.quantity! > 0;
+                const isSelected = variant?.size?.id === sizeSelected;
 
-          </div>
+                return (
+                  <Button
+                    key={size.key}
+                    variant='outline'
+                    size='sm'
+                    disabled={!isAvailable}
+                    onClick={() =>
+                      isAvailable && handleSizeClick(variant.size?.id)
+                    }
+                    className={cn(
+                      'h-8 min-w-[2.5rem] rounded-full border px-3 text-xs font-medium transition-all',
+                      isSelected
+                        ? 'border-black bg-black text-white'
+                        : isAvailable
+                        ? 'border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:bg-gray-50'
+                        : 'border-gray-200 bg-gray-100 text-gray-400 line-through opacity-60'
+                    )}
+                  >
+                    {size.name}
+                  </Button>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Color dots */}
-      <div className="flex items-center gap-2 mb-3">
+      {/* Color Selection */}
+      <div className='mb-3 flex items-center gap-2'>
         {product.colors?.map((color) => (
-          <span
+          <button
             key={color.id}
-            className="inline-block border border-gray-300"
-            style={{
-              width: '50px',
-              height: '29px',
-              borderRadius: '100px',
-              opacity: 1,
-              backgroundColor: color.name
-            }}
-            onClick={() => setSelectedColor(color.id)}
+            onClick={() => handleColorClick(color.id)}
+            className={cn(
+              'h-7 w-12 rounded-full border-2 transition-all duration-200 hover:scale-110',
+              color.id === selectedColor
+                ? 'border-gray-800 ring-2 ring-gray-800 ring-offset-2'
+                : 'border-gray-300 hover:border-gray-400'
+            )}
+            style={{ backgroundColor: color.name }}
+            aria-label={`Select color ${color.name}`}
           />
         ))}
       </div>
 
-      {/* Product Title */}
-      <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2 uppercase tracking-wide">
-        {product.title}
-      </h3>
+      {/* Product Info */}
+      <div className='space-y-2'>
+        <Link href={`product/${product.id}`}>
+          <h3 className='text-sm font-medium uppercase tracking-wide text-gray-900 transition-colors hover:text-gray-600 dark:text-gray-100 dark:hover:text-gray-300'>
+            {product.title}
+          </h3>
+        </Link>
 
-      {/* Price */}
-      <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-        {formatCurrency(product.colors?.[0]?.variants?.[0]?.price || 0, locale)}
-      </p>
+        <p className='text-sm font-semibold text-gray-900 dark:text-gray-100'>
+          {formatCurrency(defaultPrice, locale)}
+        </p>
+      </div>
     </div>
   );
 }

@@ -39,3 +39,13 @@ export const DEFAULT_PAYMENT_METHODS: TPaymentMethodOption[] = [
     isAvailable: true,
   },
 ];
+
+// *List of sizes
+export const SIZE_LIST = [
+  { name: 'XS', key: 'XS' },
+  { name: 'S', key: 'S' },
+  { name: 'M', key: 'M' },
+  { name: 'L', key: 'L' },
+  { name: 'XL', key: 'XL' },
+  { name: 'XXL', key: 'XXL' },
+];
