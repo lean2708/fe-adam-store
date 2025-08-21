@@ -7,7 +7,7 @@ export interface ModalProps {
   children: ReactNode
   className?: string
   style?: React.CSSProperties
-  variant?: "dropdown" | "centered" | "sidebar" | "custom"
+  variant?: "dropdown" | "centered" | "sidebar" | "custom"|'top'
   size?: "sm" | "md" | "lg" | "xl" | "full"
   position?: "top-right" | "top-left" | "bottom-right" | "bottom-left" | "center" | "left" | "right"
   showOverlay?: boolean
@@ -18,7 +18,8 @@ const variantStyles = {
   dropdown: "absolute bg-white rounded-lg shadow-xl border border-gray-200 z-50",
   centered: "fixed inset-0 z-50 flex items-center justify-center",
   sidebar: "fixed top-0 h-full bg-white z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto",
-  custom: ""
+  custom: "",
+  top: "fixed inset-0 z-50 flex",
 }
 
 const sizeStyles = {
@@ -137,7 +138,32 @@ export function Modal({
       </>
     )
   }
-
+  if ( variant === 'top') {
+    return (
+      <>
+        {showOverlay && (
+          <div className="fixed inset-0 bg-black/30 z-40 transition-opacity duration-300 w-screen h-screen" />
+        )}
+        <div className={variantStyles.top}>
+          <div
+            ref={modalContentRef}
+            className={cn(
+              "relative bg-white rounded-lg shadow-xl mx-4 my-8 z-50 flex flex-col overflow-hidden",
+              sizeStyles[size],
+              className
+            )}
+            style={{
+              maxHeight: "80vh",
+              ...style
+            }}
+            {...props}
+          >
+            {children}
+          </div>
+        </div>
+      </>
+    )
+  }
   // For sidebar modals
   if (variant === "sidebar") {
     return (

@@ -68,7 +68,7 @@ export default function ContentSearch() {
         if (state.minPrice) filters.push(...priceFilters[state.minPrice - 1]);
         const res = await searchAllProductsAction(
           state.page,
-          12,
+          15,
           [`minPrice,${state.sort}`],
           [`name~${query}`, ...filters]
         );

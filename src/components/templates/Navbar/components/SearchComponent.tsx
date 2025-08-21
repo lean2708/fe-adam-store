@@ -17,8 +17,8 @@ export default function SearchComponent({
 }: SearchComponentProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const query = searchParams.get("query");
 
+  const query = searchParams.get("query");
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -29,9 +29,10 @@ export default function SearchComponent({
 
   // đồng bộ value từ URL khi ở trang search
   useEffect(() => {
-    const decoded = query ? decodeURIComponent(query) : "";
+    const queryNew = searchParams.get("query");
+    const decoded = queryNew ? decodeURIComponent(queryNew) : "";
     setSearchValue(decoded);
-  }, [query]);
+  }, [searchParams]);
 
   // debounce input
   useEffect(() => {
@@ -55,21 +56,6 @@ export default function SearchComponent({
     },
     [onSearchExpand]
   );
-
-  // click outside → đóng input
-  // const handleClickOutside = useCallback(
-  //   (event: MouseEvent) => {
-  //     if (!isSearchExpanded) return;
-  //     const target = event.target as Element;
-  //     if (searchRef.current?.contains(target)) return;
-  //     if (expandedSearchRef.current?.contains(target)) return;
-  //     const searchModal = document.querySelector("[data-search-modal]");
-  //     if (searchModal?.contains(target)) return;
-
-  //     handleSearchExpand(false);
-  //   },
-  //   [isSearchExpanded, handleSearchExpand]
-  // );
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
       if (!isSearchExpanded) return;
@@ -80,7 +66,10 @@ export default function SearchComponent({
       if (searchModal?.contains(target)) return;
 
       handleSearchExpand(false);
-      setSearchValue("");
+      if (!query) {
+        setSearchValue("");
+      }
+
       setSearchModalOpen(false);
     },
     [isSearchExpanded, handleSearchExpand]

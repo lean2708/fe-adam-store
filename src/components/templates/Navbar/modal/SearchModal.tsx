@@ -43,7 +43,7 @@ export default function SearchModal({
     try {
       const response = await searchProductsAction(
         0,
-        5,
+        6,
         ["createdAt,desc"],
         [`name~${query}`]
       );
@@ -74,19 +74,20 @@ export default function SearchModal({
       data-search-modal
       open={open}
       onClose={onClose}
-      variant="centered"
-      size="xl"
+      variant="top"
+      position="top-left"
+      size="full"
       showOverlay={true}
+      style={{
+        maxHeight: '625px',
+        top:'50px'
+      }}
       closeOnClickOutside={!isSearchExpanded}
     >
       <ModalBody style={{ maxHeight: "70vh" }}>
         <div className="mb-4 font-semibold text-lg">
           Kết quả tìm kiếm
-          {searchQuery && (
-            <span className="text-sm font-normal text-gray-600 ml-2">
-              cho "{searchQuery}"
-            </span>
-          )}
+          
         </div>
 
         {!searchQuery.trim() ? (
@@ -96,7 +97,7 @@ export default function SearchModal({
             </p>
           </div>
         ) : isSearching ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
             {Array.from({ length: 5 }).map((_, i) => (
               <ProductCardSkeleton key={i} />
             ))}
@@ -106,7 +107,7 @@ export default function SearchModal({
             <p className="text-gray-500 text-lg">Không có sản phẩm nào cả</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
             {searchResults.map((item) => {
               const hasImageError = imageErrors[item.id] || false;
               const imageSrc = hasImageError ? "/fallback.png" : item.mainImage;
@@ -153,7 +154,7 @@ export default function SearchModal({
 
       <ModalFooter sticky={true}>
         {!isSearching &&
-          searchResults.length === 5 &&
+          searchResults.length === 6 &&
           searchQuery.trim() !== "" && (
             <div className="flex items-center justify-center w-full">
               <Button

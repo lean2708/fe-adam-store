@@ -6,9 +6,9 @@ import { ChevronRight } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 const priceOptions = [
-  { id: 1, name: "Dưới 500k" },
-  { id: 2, name: "500k - 1 triệu" },
-  { id: 3, name: "Trên 1 triệu" },
+  { id: 1, name: "Dưới 500,000" },
+  { id: 2, name: "500,000 - 1,000,000" },
+  { id: 3, name: "Trên 1,000,000" },
 ];
 export function SideSearch() {
   const router = useRouter();
@@ -28,6 +28,17 @@ export function SideSearch() {
       : undefined,
     listColor: [],
   });
+  useEffect(() => {
+    setState((ps) => ({
+      ...ps,
+      minPrice: searchParams.get("minPrice")
+        ? Number(searchParams.get("minPrice"))
+        : undefined,
+      colorSort: searchParams.get("color")
+        ? Number(searchParams.get("color"))
+        : undefined,
+    }));
+  }, [searchParams]);
 
   useEffect(() => {
     const getColor = async () => {
