@@ -48,7 +48,16 @@ export function BranchesTable({
 }: BranchesTableProps) {
   const t = useTranslations("Admin.branches");
   const locale = useLocale();
-
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "ACTIVE":
+        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+      case "INACTIVE":
+        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
+      default:
+        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300";
+    }
+  };
   return (
     <div>
       <div className="p-6 border-b bg-gray-50 ">
@@ -144,16 +153,12 @@ export function BranchesTable({
                     </TableCell>
                     <TableCell>
                       <Badge
-                        variant={
-                          branch.status === "ACTIVE" ? "default" : "secondary"
-                        }
-                        className={
-                          branch.status === "ACTIVE"
-                            ? "bg-green-100 text-green-800 hover:bg-green-100"
-                            : "bg-gray-100 text-gray-800"
-                        }
+                        variant="secondary"
+                        className={getStatusColor(branch.status || "INACTIVE")}
                       >
-                        {branch.status || "UNKNOWN"}
+                        {t(branch.status || "INACTIVE") ||
+                          branch.status ||
+                          "INACTIVE"}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-gray-600">

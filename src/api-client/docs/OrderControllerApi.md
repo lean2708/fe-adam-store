@@ -376,7 +376,7 @@ const { status, data } = await apiInstance.pay(
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **payCallbackHandler**
-> ApiResponseOrderResponse payCallbackHandler(paymentCallbackRequest)
+> ApiResponseOrderResponse payCallbackHandler()
 
 Api này dùng để xử lý sau khi thanh toán đơn hàng
 
@@ -385,17 +385,18 @@ Api này dùng để xử lý sau khi thanh toán đơn hàng
 ```typescript
 import {
     OrderControllerApi,
-    Configuration,
-    PaymentCallbackRequest
+    Configuration
 } from './api';
 
 const configuration = new Configuration();
 const apiInstance = new OrderControllerApi(configuration);
 
-let paymentCallbackRequest: PaymentCallbackRequest; //
+let responseCode: string; // (default to undefined)
+let orderId: number; // (default to undefined)
 
 const { status, data } = await apiInstance.payCallbackHandler(
-    paymentCallbackRequest
+    responseCode,
+    orderId
 );
 ```
 
@@ -403,7 +404,8 @@ const { status, data } = await apiInstance.payCallbackHandler(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **paymentCallbackRequest** | **PaymentCallbackRequest**|  | |
+| **responseCode** | [**string**] |  | defaults to undefined|
+| **orderId** | [**number**] |  | defaults to undefined|
 
 
 ### Return type
@@ -416,7 +418,7 @@ const { status, data } = await apiInstance.payCallbackHandler(
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: */*
 
 

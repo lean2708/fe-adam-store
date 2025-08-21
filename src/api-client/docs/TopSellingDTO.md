@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **productId** | **number** |  | [optional] [default to undefined]
 **productName** | **string** |  | [optional] [default to undefined]
+**imageUrl** | **string** |  | [optional] [default to undefined]
 **status** | **string** |  | [optional] [default to undefined]
 **soldQuantity** | **number** |  | [optional] [default to undefined]
 **totalRevenue** | **number** |  | [optional] [default to undefined]
@@ -19,6 +20,7 @@ import { TopSellingDTO } from './api';
 const instance: TopSellingDTO = {
     productId,
     productName,
+    imageUrl,
     status,
     soldQuantity,
     totalRevenue,

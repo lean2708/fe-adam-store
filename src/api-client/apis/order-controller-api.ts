@@ -38,8 +38,6 @@ import type { OrderAddressRequest } from '../models';
 // @ts-ignore
 import type { OrderRequest } from '../models';
 // @ts-ignore
-import type { PaymentCallbackRequest } from '../models';
-// @ts-ignore
 import type { ShippingRequest } from '../models';
 /**
  * OrderControllerApi - axios parameter creator
@@ -323,13 +321,16 @@ export const OrderControllerApiAxiosParamCreator = function (configuration?: Con
         /**
          * Api này dùng để xử lý sau khi thanh toán đơn hàng
          * @summary Payment CallBack for Order
-         * @param {PaymentCallbackRequest} paymentCallbackRequest 
+         * @param {string} responseCode 
+         * @param {number} orderId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        payCallbackHandler: async (paymentCallbackRequest: PaymentCallbackRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'paymentCallbackRequest' is not null or undefined
-            assertParamExists('payCallbackHandler', 'paymentCallbackRequest', paymentCallbackRequest)
+        payCallbackHandler: async (responseCode: string, orderId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'responseCode' is not null or undefined
+            assertParamExists('payCallbackHandler', 'responseCode', responseCode)
+            // verify required parameter 'orderId' is not null or undefined
+            assertParamExists('payCallbackHandler', 'orderId', orderId)
             const localVarPath = `/v1/private/orders/vn-pay-callback`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -346,14 +347,19 @@ export const OrderControllerApiAxiosParamCreator = function (configuration?: Con
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (responseCode !== undefined) {
+                localVarQueryParameter['responseCode'] = responseCode;
+            }
+
+            if (orderId !== undefined) {
+                localVarQueryParameter['orderId'] = orderId;
+            }
+
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(paymentCallbackRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -618,12 +624,13 @@ export const OrderControllerApiFp = function(configuration?: Configuration) {
         /**
          * Api này dùng để xử lý sau khi thanh toán đơn hàng
          * @summary Payment CallBack for Order
-         * @param {PaymentCallbackRequest} paymentCallbackRequest 
+         * @param {string} responseCode 
+         * @param {number} orderId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async payCallbackHandler(paymentCallbackRequest: PaymentCallbackRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseOrderResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.payCallbackHandler(paymentCallbackRequest, options);
+        async payCallbackHandler(responseCode: string, orderId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiResponseOrderResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.payCallbackHandler(responseCode, orderId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['OrderControllerApi.payCallbackHandler']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -761,7 +768,7 @@ export const OrderControllerApiFactory = function (configuration?: Configuration
          * @throws {RequiredError}
          */
         payCallbackHandler(requestParameters: OrderControllerApiPayCallbackHandlerRequest, options?: RawAxiosRequestConfig): AxiosPromise<ApiResponseOrderResponse> {
-            return localVarFp.payCallbackHandler(requestParameters.paymentCallbackRequest, options).then((request) => request(axios, basePath));
+            return localVarFp.payCallbackHandler(requestParameters.responseCode, requestParameters.orderId, options).then((request) => request(axios, basePath));
         },
         /**
          * Api này dùng để thanh toán lại đơn hàng(khi đang trong phần chờ thanh toán)
@@ -902,10 +909,17 @@ export interface OrderControllerApiPayRequest {
 export interface OrderControllerApiPayCallbackHandlerRequest {
     /**
      * 
-     * @type {PaymentCallbackRequest}
+     * @type {string}
      * @memberof OrderControllerApiPayCallbackHandler
      */
-    readonly paymentCallbackRequest: PaymentCallbackRequest
+    readonly responseCode: string
+
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderControllerApiPayCallbackHandler
+     */
+    readonly orderId: number
 }
 
 /**
@@ -1092,7 +1106,7 @@ export class OrderControllerApi extends BaseAPI {
      * @memberof OrderControllerApi
      */
     public payCallbackHandler(requestParameters: OrderControllerApiPayCallbackHandlerRequest, options?: RawAxiosRequestConfig) {
-        return OrderControllerApiFp(this.configuration).payCallbackHandler(requestParameters.paymentCallbackRequest, options).then((request) => request(this.axios, this.basePath));
+        return OrderControllerApiFp(this.configuration).payCallbackHandler(requestParameters.responseCode, requestParameters.orderId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

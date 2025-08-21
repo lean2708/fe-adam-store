@@ -96,7 +96,6 @@ export * from './page-response-size-response';
 export * from './page-response-user-response';
 export * from './page-response-ward-response';
 export * from './participant-info';
-export * from './payment-callback-request';
 export * from './payment-history-response';
 export * from './permission-response';
 export * from './product-request';

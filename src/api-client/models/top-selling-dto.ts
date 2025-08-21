@@ -37,6 +37,12 @@ export interface TopSellingDTO {
      * @type {string}
      * @memberof TopSellingDTO
      */
+    'imageUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TopSellingDTO
+     */
     'status'?: TopSellingDTOStatusEnum;
     /**
      * 
