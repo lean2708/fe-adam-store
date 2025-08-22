@@ -8,20 +8,25 @@ import usePaymentMethod from '@/hooks/(order)/usePaymentMethod';
 import useProductVariant from '@/hooks/(order)/useProductVariant';
 import usePromotions from '@/hooks/(order)/usePromotions';
 import useShippingFee from '@/hooks/useShippingFee';
-import { useRouter } from 'next/navigation';
+import { useBuyNowStore } from '@/stores/buyNowStore';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { useCheckoutDatas } from './useCheckOutDatas';
 
 export default function useOrderAction() {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const { productVariantList, clearProductVariantsStore } = useProductVariant();
+  const { clearProductVariantsStore } = useProductVariant();
   const { currentAddress } = useAddress();
   const { selectedMethod } = usePaymentMethod();
+  const { items: products, subtotal, type } = useCheckoutDatas();
 
   const { selectedPromotion, clearSelectedPromotion } = usePromotions();
-  const { shippingFee } = useShippingFee(currentAddress, productVariantList);
+  const { shippingFee } = useShippingFee(currentAddress, products);
+
+  const clearBuyNowItems = useBuyNowStore((state) => state.clearBuyNowItems);
 
   // Check if current method is VNPay
   const isVNPayMethod = selectedMethod === PAYMENT_METHODS.VNPAY;
@@ -38,7 +43,7 @@ export default function useOrderAction() {
       return false;
     }
 
-    if (productVariantList.length === 0) {
+    if (products.length === 0) {
       toast.error('Giỏ hàng trống');
       return false;
     }
@@ -50,7 +55,7 @@ export default function useOrderAction() {
   const prepareOrderData = () => {
     const baseOrderData = {
       addressId: currentAddress!.id!,
-      orderItems: productVariantList.map((item) => ({
+      orderItems: products.map((item) => ({
         productVariantId: item.id!,
         quantity: item.quantity!,
       })),
@@ -71,11 +76,13 @@ export default function useOrderAction() {
   // Clean up all order-related states
   const cleanupOrderStates = () => {
     try {
-      // Clear promotion selection
       clearSelectedPromotion();
 
-      // Clear product variants (selcet cart items)
-      clearProductVariantsStore();
+      if (type === 'cart') {
+        clearProductVariantsStore();
+      } else {
+        clearBuyNowItems();
+      }
     } catch (error) {
       console.error('Error cleaning up order states:', error);
     }

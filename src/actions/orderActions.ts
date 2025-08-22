@@ -20,7 +20,6 @@ import type {
   OrderRequest,
   OrderResponse,
   PageResponseOrderResponse,
-  PaymentCallbackRequest,
   ShippingFeeResponse,
   ShippingRequest,
   VNPayResponse,
@@ -31,6 +30,7 @@ import {
   calculateShippingFeeSchema,
   createOrderSchema,
 } from './schema/orderSchema';
+import { PaymentCallbackRequest } from '@/api-client/models/payment-callback-request';
 
 /**
  * Cancel an order by ID using API.

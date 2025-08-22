@@ -62,7 +62,7 @@ export default function useProductVariant() {
           return {
             id: selectedVariant.id,
             name: item.Product.name,
-            title: item.Product.title,
+            // title: item.Product.title,
             imageUrl: item.Product.mainImage,
             price: selectedVariant.price,
             quantity: item.quantity,

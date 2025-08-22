@@ -30,7 +30,7 @@ const AnnouncementVnPayModal = (props: Props) => {
   //   const t = useTranslations('OrderStatus');
 
   useEffect(() => {
-    const orderId = searchParams.get('orderId');
+    const orderId = searchParams.get('vnp_TxnRef');
     const requestCode = searchParams.get('vnp_ResponseCode');
 
     if (!orderId || !requestCode) {

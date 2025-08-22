@@ -1,8 +1,8 @@
 import Navbar from '@/components/templates/Navbar/Navbar';
 import { Suspense } from 'react';
-import Loading from '../(marketing)/loading';
 import { cn } from '@/lib/utils';
 import { manrope } from '@/config/fonts';
+import Loading from './loading';
 
 export default async function OrderLayout({
   children,

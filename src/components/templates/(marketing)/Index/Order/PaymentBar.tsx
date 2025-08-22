@@ -40,7 +40,9 @@ export function PaymentBar() {
         <Separator orientation='vertical' className='' />
         <div className='flex items-center justify-center px-4 h-full w-1/4'>
           <p className='text-lg font-bold text-primary text-center'>
-            {selectedPromotion?.discountPercent + '%' || 'Chọn mã giảm giá'}
+            {selectedPromotion?.discountPercent
+              ? selectedPromotion?.discountPercent + '%'
+              : 'Chọn mã giảm giá'}
           </p>
         </div>
 

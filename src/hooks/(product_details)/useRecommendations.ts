@@ -11,7 +11,7 @@ export default function useRecommendations() {
       try {
         setLoading(true);
 
-        const randomPage = Math.floor(Math.random() * 8);
+        const randomPage = Math.floor(Math.random() * 7);
         console.log('randomPage', randomPage);
         const response = await getAllProductsAction(randomPage, 10, [
           'soldQuantity,desc',

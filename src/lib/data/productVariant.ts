@@ -1,3 +1,4 @@
+import { ProductVariantResponse } from '@/api-client';
 import { ControllerFactory } from './factory-api-client';
 import { TProductVariant } from '@/types';
 
@@ -15,7 +16,7 @@ export async function getProductVariantApi(
   productId: number,
   colorId: number,
   sizeId: number
-): Promise<TProductVariant> {
+): Promise<ProductVariantResponse> {
   const api = await getProductVariantController();
   const response = await api.findByProductAndColorAndSize({
     productId,

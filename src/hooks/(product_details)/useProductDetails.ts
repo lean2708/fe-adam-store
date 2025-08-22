@@ -1,21 +1,29 @@
-import { useState, useRef } from 'react';
-import { TProduct, TVariant } from '@/types';
+import { useState, useRef, useTransition } from 'react';
+import { TProduct, TProductVariant, TVariant } from '@/types';
 import { toast } from 'sonner';
 import { addToCartAction } from '@/actions/cartActions';
 import { useAuth } from '../useAuth';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/stores/cartStore';
+import { getProductVariantByColorAndSizeAction } from '@/actions/productVariantActions';
+import { useBuyNowStore } from '@/stores/buyNowStore';
 
 export default function useProductDetails(product: TProduct) {
   const { user, isLogin } = useAuth();
   const router = useRouter();
   const setCartItems = useCartStore((state) => state.setCartItems);
   const cartItems = useCartStore((state) => state.cartItems);
+  const setBuyNowItems = useBuyNowStore((state) => state.setBuyNowItems);
+  const clearBuyNowItems = useBuyNowStore((state) => state.clearBuyNowItems);
+
+  const [isPending, startTransition] = useTransition();
 
   const [selectVariant, setSelectVariant] = useState<TVariant | undefined>(
     undefined
   );
   const [quantity, setQuantity] = useState(1);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [isBuyingNow, setIsBuyingNow] = useState(false);
 
   // Không chọn mặc định color và size
   const selectedColor = useRef<number | undefined>(undefined);
@@ -91,25 +99,29 @@ export default function useProductDetails(product: TProduct) {
       );
     }
 
-    const res = await addToCartAction(
-      {
-        productVariantId: selectVariant?.id ?? 0,
-        quantity: quantity,
-      },
-      user?.id || 0
-    );
+    setIsAddingToCart(true);
 
-    // console.log('Add to cart response:', res);
+    try {
+      const res = await addToCartAction(
+        {
+          productVariantId: selectVariant?.id ?? 0,
+          quantity: quantity,
+        },
+        user?.id || 0
+      );
 
-    if (res.status === 200) {
-      // Add new item to existing cart items
-      if (res.cartItem) {
-        setCartItems([...cartItems, res.cartItem]);
+      if (res.status === 200) {
+        // Add new item to existing cart items
+        if (res.cartItem) {
+          setCartItems([...cartItems, res.cartItem]);
+        }
+        return toast.success(`${res.message}`);
       }
-      return toast.success(`${res.message}`);
-    }
 
-    return toast.error(`${res.message}`);
+      return toast.error(`${res.message}`);
+    } finally {
+      setIsAddingToCart(false);
+    }
   };
 
   const handleBuyNow = async () => {
@@ -123,6 +135,42 @@ export default function useProductDetails(product: TProduct) {
         'Vui lòng chọn đầy đủ màu sắc và kích thước của sản phẩm trước khi đặt hàng'
       );
     }
+
+    setIsBuyingNow(true);
+
+    try {
+      // Get product variant details
+      const variantDetails = await getProductVariantByColorAndSizeAction(
+        product.id,
+        selectedColor.current,
+        selectedSize.current
+      );
+
+      if (variantDetails.success && variantDetails.product) {
+        // Transform the response to match TProductVariant format
+        const buyNowProduct: TProductVariant = {
+          id: variantDetails.product.id,
+          name: product.name,
+          imageUrl: product.mainImage,
+          price: variantDetails.product.price,
+          quantity: quantity,
+          color: variantDetails.product.color,
+          size: variantDetails.product.size,
+          isAvailable: variantDetails.product.isAvailable,
+        };
+
+        clearBuyNowItems();
+        setBuyNowItems([buyNowProduct]);
+
+        startTransition(() => {
+          router.push('/order?type=buy-now');
+        });
+      } else {
+        toast.error('Không thể lấy thông tin sản phẩm');
+      }
+    } finally {
+      setIsBuyingNow(false);
+    }
   };
 
   return {
@@ -134,6 +182,10 @@ export default function useProductDetails(product: TProduct) {
     decreaseQuantity,
     handleAddToCart,
     handleBuyNow,
+    // Loading states
+    isPending,
+    isAddingToCart,
+    isBuyingNow,
     // Trả về các giá trị đã chọn
     selectedVariant: selectVariant,
     selectedQuantity: quantity,

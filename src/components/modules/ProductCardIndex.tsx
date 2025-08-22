@@ -62,7 +62,7 @@ export default function ProductCardIndex({
     <div className={cn('group relative cursor-pointer', className)}>
       {/* Product Image Container */}
       <div className='relative mb-4 aspect-[3/4] overflow-hidden rounded-xl bg-gray-50'>
-        <Link href={`product/${product.id}`} className='block h-full w-full'>
+        <Link href={`/product/${product.id}`} className='block h-full w-full'>
           <Image
             src={
               product.mainImage ||
