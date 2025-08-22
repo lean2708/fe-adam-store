@@ -139,7 +139,6 @@ docs/PageResponseSizeResponse.md
 docs/PageResponseUserResponse.md
 docs/PageResponseWardResponse.md
 docs/ParticipantInfo.md
-docs/PaymentCallbackRequest.md
 docs/PaymentHistoryControllerApi.md
 docs/PaymentHistoryResponse.md
 docs/PermissionControllerApi.md
@@ -291,7 +290,6 @@ models/page-response-size-response.ts
 models/page-response-user-response.ts
 models/page-response-ward-response.ts
 models/participant-info.ts
-models/payment-callback-request.ts
 models/payment-history-response.ts
 models/permission-response.ts
 models/product-request.ts

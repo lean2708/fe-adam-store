@@ -5,12 +5,12 @@ import {
   type VariantCreateRequest,
   type VariantUpdateRequest,
   type PageResponseProductVariantResponse,
-  type ApiResponsePageResponseProductVariantResponse
-} from "@/api-client";
-import { ControllerFactory } from "./factory-api-client";
-import type { TProductVariant } from "@/types";
-import type { ActionResponse } from "@/lib/types/actions";
-import { extractErrorMessage } from "@/lib/utils";
+  type ApiResponsePageResponseProductVariantResponse,
+} from '@/api-client';
+import { ControllerFactory } from './factory-api-client';
+import type { TProductVariant } from '@/types';
+import type { ActionResponse } from '@/lib/types/actions';
+import { extractErrorMessage } from '@/lib/utils';
 
 /**
  * Helper to get an instance of ProductVariantControllerApi with NextAuth using factory.
@@ -29,7 +29,9 @@ async function getProductController() {
 /**
  * Transform ProductVariantResponse to TProductVariant
  */
-function transformProductVariantResponseToTProductVariant(response: ProductVariantResponse): TProductVariant {
+function transformProductVariantResponseToTProductVariant(
+  response: ProductVariantResponse
+): TProductVariant {
   return {
     id: response.id || 0,
     price: response.price,
@@ -45,7 +47,9 @@ function transformProductVariantResponseToTProductVariant(response: ProductVaria
 /**
  * Transform array of ProductVariantResponse to TProductVariant array
  */
-function transformProductVariantArrayToTProductVariantArray(responses: ProductVariantResponse[]): TProductVariant[] {
+function transformProductVariantArrayToTProductVariantArray(
+  responses: ProductVariantResponse[]
+): TProductVariant[] {
   return responses.map(transformProductVariantResponseToTProductVariant);
 }
 
@@ -57,26 +61,36 @@ export async function fetchAllProductVariantsByProductIdApi(
   page: number = 0,
   size: number = 20,
   sort?: string[]
-): Promise<ActionResponse<{ items: TProductVariant[]; totalPages: number; totalItems: number; page: number; size: number }>> {
+): Promise<
+  ActionResponse<{
+    items: TProductVariant[];
+    totalPages: number;
+    totalItems: number;
+    page: number;
+    size: number;
+  }>
+> {
   try {
     const api = await getProductController();
     const response = await api.getVariantsByProductIdForAdmin({
       productId,
       page,
       size,
-      sort
+      sort,
     });
 
     if (response.data.code !== 200) {
       return {
         success: false,
-        message: response.data.message || "Failed to fetch product variants",
+        message: response.data.message || 'Failed to fetch product variants',
         code: response.data.code,
       };
     }
 
     const result = response.data.result;
-    const variants = transformProductVariantArrayToTProductVariantArray(result?.items || []);
+    const variants = transformProductVariantArrayToTProductVariantArray(
+      result?.items || []
+    );
 
     return {
       success: true,
@@ -85,12 +99,15 @@ export async function fetchAllProductVariantsByProductIdApi(
         totalPages: result?.totalPages || 0,
         totalItems: result?.totalItems || 0,
         page: result?.page || 0,
-        size: result?.size || size
+        size: result?.size || size,
       },
       code: response.data.code,
     };
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Failed to fetch product variants");
+    const extractedError = extractErrorMessage(
+      error,
+      'Failed to fetch product variants'
+    );
     return {
       success: false,
       message: extractedError.message,
@@ -124,7 +141,7 @@ export async function createProductVariantApi(variantData: {
     if (response.data.code !== 200) {
       return {
         success: false,
-        message: response.data.message || "Failed to create product variant",
+        message: response.data.message || 'Failed to create product variant',
         code: response.data.code,
       };
     }
@@ -132,11 +149,16 @@ export async function createProductVariantApi(variantData: {
     return {
       success: true,
       message: response.data.message,
-      data: transformProductVariantResponseToTProductVariant(response.data?.result || {}),
+      data: transformProductVariantResponseToTProductVariant(
+        response.data?.result || {}
+      ),
       code: response.data.code,
     };
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Failed to create product variant");
+    const extractedError = extractErrorMessage(
+      error,
+      'Failed to create product variant'
+    );
     return {
       success: false,
       message: extractedError.message,
@@ -168,7 +190,7 @@ export async function updateProductVariantApi(
     if (response.data.code !== 200) {
       return {
         success: false,
-        message: response.data.message || "Failed to update product variant",
+        message: response.data.message || 'Failed to update product variant',
         code: response.data.code,
       };
     }
@@ -176,11 +198,16 @@ export async function updateProductVariantApi(
     return {
       success: true,
       message: response.data.message,
-      data: transformProductVariantResponseToTProductVariant(response.data?.result || {}),
+      data: transformProductVariantResponseToTProductVariant(
+        response.data?.result || {}
+      ),
       code: response.data.code,
     };
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Failed to update product variant");
+    const extractedError = extractErrorMessage(
+      error,
+      'Failed to update product variant'
+    );
     return {
       success: false,
       message: extractedError.message,
@@ -192,7 +219,9 @@ export async function updateProductVariantApi(
 /**
  * Delete a product variant (soft delete)
  */
-export async function deleteProductVariantApi(id: number): Promise<ActionResponse<void>> {
+export async function deleteProductVariantApi(
+  id: number
+): Promise<ActionResponse<void>> {
   try {
     const api = await getProductVariantController();
     const response = await api.delete5({ id });
@@ -200,7 +229,7 @@ export async function deleteProductVariantApi(id: number): Promise<ActionRespons
     if (response.data.code !== 200) {
       return {
         success: false,
-        message: response.data.message || "Failed to delete product variant",
+        message: response.data.message || 'Failed to delete product variant',
         code: response.data.code,
       };
     }
@@ -211,7 +240,10 @@ export async function deleteProductVariantApi(id: number): Promise<ActionRespons
       code: response.data.code,
     };
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Failed to delete product variant");
+    const extractedError = extractErrorMessage(
+      error,
+      'Failed to delete product variant'
+    );
     return {
       success: false,
       message: extractedError.message,
@@ -223,7 +255,9 @@ export async function deleteProductVariantApi(id: number): Promise<ActionRespons
 /**
  * Restore a product variant
  */
-export async function restoreProductVariantApi(id: number): Promise<ActionResponse<TProductVariant>> {
+export async function restoreProductVariantApi(
+  id: number
+): Promise<ActionResponse<TProductVariant>> {
   try {
     const api = await getProductVariantController();
     const response = await api.restore3({ id });
@@ -231,7 +265,7 @@ export async function restoreProductVariantApi(id: number): Promise<ActionRespon
     if (response.data.code !== 200) {
       return {
         success: false,
-        message: response.data.message || "Failed to restore product variant",
+        message: response.data.message || 'Failed to restore product variant',
         code: response.data.code,
       };
     }
@@ -239,11 +273,16 @@ export async function restoreProductVariantApi(id: number): Promise<ActionRespon
     return {
       success: true,
       message: response.data.message,
-      data: transformProductVariantResponseToTProductVariant(response.data?.result || {}),
+      data: transformProductVariantResponseToTProductVariant(
+        response.data?.result || {}
+      ),
       code: response.data.code,
     };
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Failed to restore product variant");
+    const extractedError = extractErrorMessage(
+      error,
+      'Failed to restore product variant'
+    );
     return {
       success: false,
       message: extractedError.message,
@@ -265,13 +304,13 @@ export async function findProductVariantByProductColorSizeApi(
     const response = await api.findByProductAndColorAndSize({
       productId,
       colorId,
-      sizeId
+      sizeId,
     });
 
     if (response.data.code !== 200) {
       return {
         success: false,
-        message: response.data.message || "Product variant not found",
+        message: response.data.message || 'Product variant not found',
         code: response.data.code,
       };
     }
@@ -279,15 +318,45 @@ export async function findProductVariantByProductColorSizeApi(
     return {
       success: true,
       message: response.data.message,
-      data: transformProductVariantResponseToTProductVariant(response.data?.result || {}),
+      data: transformProductVariantResponseToTProductVariant(
+        response.data?.result || {}
+      ),
       code: response.data.code,
     };
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Failed to find product variant");
+    const extractedError = extractErrorMessage(
+      error,
+      'Failed to find product variant'
+    );
     return {
       success: false,
       message: extractedError.message,
       code: 500,
     };
   }
+}
+
+/**
+ * get a Product by color and size.
+ */
+export async function getProductVariantApi(
+  productId: number,
+  colorId: number,
+  sizeId: number
+): Promise<ProductVariantResponse> {
+  const api = await getProductVariantController();
+  const response = await api.findByProductAndColorAndSize({
+    productId,
+    colorId,
+    sizeId,
+  });
+  if (response.data.code !== 200) {
+    throw response.data;
+  }
+
+  if (!response.data.result) {
+    throw response.data;
+  }
+
+  return response.data.result;
 }

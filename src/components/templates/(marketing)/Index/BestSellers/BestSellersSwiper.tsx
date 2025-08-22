@@ -13,7 +13,6 @@ import ProductCardIndex from '@/components/modules/ProductCardIndex';
 import { getAllProductsAction } from '@/actions/productActions';
 import { ProductCardWithColorsSkeleton } from '@/components/ui/skeleton';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
 export default function BestSellersSwiper() {
@@ -82,9 +81,10 @@ export default function BestSellersSwiper() {
             key={product.id}
             className='basis-1/2 md:basis-1/3 lg:basis-1/5'
           >
-            <Link href={`product/${product.id}`}>
-              <ProductCardIndex product={product} badgeText={t('bestSellers.badgeText')} />
-            </Link>
+            <ProductCardIndex
+              product={product}
+              badgeText={t('bestSellers.badgeText')}
+            />
           </CarouselItem>
         ))}
       </CarouselContent>

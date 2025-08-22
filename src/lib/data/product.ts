@@ -1,5 +1,5 @@
-import { PageResponseReviewResponse } from "./../../api-client/models/page-response-review-response";
-import type { TProduct } from "@/types"; // your local template type
+import { PageResponseReviewResponse } from './../../api-client/models/page-response-review-response';
+import type { TProduct } from '@/types'; // your local template type
 
 import {
   ProductControllerApi,
@@ -7,10 +7,10 @@ import {
   type ProductUpdateRequest,
   ProductResponse,
   type PageResponseProductResponse,
-} from "@/api-client";
-import { ControllerFactory } from "./factory-api-client";
-import { getPublicAxiosInstance } from "@/lib/auth/axios-config";
-import { transformProductResponseToTProduct } from "./transform/product";
+} from '@/api-client';
+import { ControllerFactory } from './factory-api-client';
+import { getPublicAxiosInstance } from '@/lib/auth/axios-config';
+import { transformProductResponseToTProduct } from './transform/product';
 
 /**
  * Helper to get an instance of ProductControllerApi with NextAuth using factory.
@@ -105,7 +105,7 @@ export async function fetchAllProductsTotalApi(
     products: (response.data.result?.items ?? []).map(
       transformProductResponseToTProduct
     ),
-    totalItem: response.data.result?.totalItems
+    totalItem: response.data.result?.totalItems,
   };
 }
 /**
@@ -160,7 +160,7 @@ export async function fetchProductReviewsApi(
     throw response.data;
   }
   if (!response.data.result) {
-    throw new Error("ProductResponse is missing in the response.");
+    throw new Error('ProductResponse is missing in the response.');
   }
   return response.data.result as PageResponseReviewResponse;
 }
@@ -195,7 +195,7 @@ export async function searchProductApi(
 export async function fetchAllProductsForAdmin(
   page: number = 0,
   size: number = 10,
-  sort: string[] = ["id,desc"]
+  sort: string[] = ['id,desc']
 ): Promise<PageResponseProductResponse> {
   const controller = await ControllerFactory.getProductController();
   const response = await controller.fetchAllProductsForAdmin({
@@ -205,7 +205,7 @@ export async function fetchAllProductsForAdmin(
   });
 
   if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to fetch products");
+    throw new Error(response.data.message || 'Failed to fetch products');
   }
 
   return response.data.result!;
@@ -221,10 +221,9 @@ export async function createProduct(
   const response = await controller.create6({
     productRequest: productData,
   });
-  console.log(response);
-  
-  if (response.data.code !== 201) {
-    throw new Error(response.data.message || "Failed to create product");
+
+  if (response.data.code !== 200) {
+    throw new Error(response.data.message || 'Failed to create product');
   }
 
   return response.data.result!;
@@ -244,7 +243,7 @@ export async function updateProduct(
   });
 
   if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to update product");
+    throw new Error(response.data.message || 'Failed to update product');
   }
 
   return response.data.result!;
@@ -258,7 +257,7 @@ export async function deleteProduct(id: number): Promise<void> {
   const response = await controller.delete4({ id });
 
   if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to delete product");
+    throw new Error(response.data.message || 'Failed to delete product');
   }
 }
 
@@ -270,7 +269,7 @@ export async function restoreProduct(id: number): Promise<ProductResponse> {
   const response = await controller.restore2({ id });
 
   if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to restore product");
+    throw new Error(response.data.message || 'Failed to restore product');
   }
 
   return response.data.result!;
@@ -284,7 +283,7 @@ export async function fetchProductById(id: number): Promise<ProductResponse> {
   const response = await controller.fetchDetailById({ id });
 
   if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to fetch product");
+    throw new Error(response.data.message || 'Failed to fetch product');
   }
 
   return response.data.result!;

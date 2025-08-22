@@ -7,7 +7,6 @@ import { manrope } from '@/config/fonts';
 import { useCartStore } from '@/stores/cartStore';
 import { useEffect, useState } from 'react';
 import CartItemModal from './CartItemModal';
-import { CartItemModalSkeleton } from '@/components/ui/skeleton';
 import EmptyCart from '@/components/templates/(marketing)/Index/Cart/EmptyCart';
 import { useAuth } from '@/hooks/useAuth';
 import CartModalUnauthenticated from './CartModalUnauthenticated';
@@ -42,11 +41,37 @@ export default function CartModal({
 
   // Fetch dữ liệu khi mở modal
   useEffect(() => {
-    if (open && userId) {
-      setIsLoading(true);
-      fetchCart(userId).finally(() => setIsLoading(false));
-    }
+    // Biến cờ để kiểm tra xem component có còn mount không
+    let isMounted = true;
+
+    const fetchData = async () => {
+      if (open && userId) {
+        setIsLoading(true);
+        try {
+          await fetchCart(userId);
+        } catch (error) {
+          console.error('Failed to fetch cart:', error);
+        } finally {
+          // Chỉ cập nhật state nếu component vẫn còn mount
+          if (isMounted) {
+            setIsLoading(false);
+          }
+        }
+      }
+    };
+
+    fetchData();
+
+    // Hàm cleanup
+    return () => {
+      isMounted = false; // Đánh dấu là component đã unmount
+    };
   }, [open, userId, fetchCart]);
+
+  const handleBuyNow = () => {
+    router.push('/order');
+    onClose();
+  };
 
   if (isLoading || status === 'loading') {
     return <CartModalSkeleton open={open} onClose={onClose} />;
@@ -117,7 +142,8 @@ export default function CartModal({
               <Button
                 variant={'default'}
                 className='w-full py-3 rounded-md font-medium'
-                onClick={onClose}
+                onClick={handleBuyNow}
+                disabled={selectedItems.length === 0}
               >
                 {t('cart.buyNow')}
               </Button>

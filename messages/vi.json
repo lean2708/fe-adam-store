@@ -65,6 +65,104 @@
       "product_not_found": "Không tìm thấy sản phẩm."
     }
   },
+  "Order": {
+    "title": "Xác nhận đơn hàng",
+    "action": "Đặt hàng",
+    "order_annouce": {
+      "order_code": "Mã Đơn Hàng",
+      "success": {
+        "title": "Thanh toán thành công",
+        "message": "Bạn đã thanh toán bằng VN pay thành công, vui lòng kiểm tra đơn hàng trong mục orders"
+      },
+      "failure": {
+        "title": "Thanh toán thất bại",
+        "message": "Thanh toán thất bại. Vui lòng kiểm tra đơn hàng trong mục orders để thanh toán lại"
+      },
+      "action": {
+        "close": "Đóng",
+        "go_to_orders": "Đến đơn hàng của tôi"
+      }
+    },
+    "delivery_info": {
+      "title": "Giao hàng",
+      "info_receiver": {
+        "name": "Họ và tên",
+        "address": "Địa chỉ nhận hàng",
+        "phone": "Số điện thoại"
+      },
+      "no_address": "Bạn chưa có địa chỉ nào. Vui lòng thêm địa chỉ mới.",
+      "action": {
+        "add_address": "Thêm địa chỉ",
+        "edit_address": "Chỉnh sửa"
+      }
+    },
+    "payment_display": {
+      "selected_discount": "Chọn mã giảm giá",
+      "calcultating": "Đang tính..."
+    },
+    "promotion": {
+      "title": "Mã giảm giá",
+      "placeholder": "Chọn mã giảm giá",
+      "no_promotion": "Không có mã giảm giá nào"
+    },
+    "payment_section": {
+      "title": "Phương thức thang toán"
+    },
+    "payment_summary": {
+      "title": "Chi tiết thanh toán",
+      "sub_total": "Tạm tính",
+      "shipping_fee": "Phí vận chuyển",
+      "promotion": "Mã giảm giá",
+      "total": "Thành tiền ",
+      "calcultating": "Đang tính..."
+    },
+    "product_list": {
+      "title": "Sản phẩm",
+      "color": "Màu sắc",
+      "size": "Kích thước",
+      "quanity": "Số lượng"
+    }
+  },
+  "Header": {
+    "search": {
+      "placeholder": "Tìm kiếm sản phẩm...",
+      "noResults": "Không tìm thấy sản phẩm nào"
+    },
+    "cart": {
+      "title": "Giỏ hàng của bạn",
+      "viewCart": "Giỏ hàng của bạn",
+      "allProducts": "Tất cả sản phẩm",
+      "empty": {
+        "title": "Giỏ hàng của bạn đang trống",
+        "desc": "Có vẻ như bạn chưa thêm bất kỳ sản phẩm nào vào giỏ hàng. Hãy bắt đầu mua sắm và bổ sung những sản phẩm yêu thích của bạn vào giỏ hàng!",
+        "action": "Tiếp tục mua sắm"
+      },
+      "buyNow": "Mua ngay",
+      "subtotal": "Tạm tính",
+      "products": "sản phẩm",
+      "selected": "Đã Chọn",
+      "checkOut": {
+        "title": "Tổng đơn hàng ({count} sản phẩm)",
+        "productFeeTotal": "Tổng tiền hàng",
+        "shippingFee": "Phí vận chuyển",
+        "total": "Tổng cộng",
+        "action": {
+          "order": "Đặt hàng",
+          "continue_to_buy": "Tiếp tục mua sắm"
+        }
+      },
+      "color": "Màu sắc",
+      "size": "Kích thước",
+      "remove": "Xóa",
+      "deleteAll": "Xóa tất cả"
+    },
+    "user": {
+      "login": "Đăng nhập",
+      "register": "Đăng ký",
+      "profile": "Hồ sơ",
+      "logout": "Đăng xuất"
+    }
+  },
   "Footer": {
     "brand": {
       "title": "Adam Store lắng nghe bạn!",

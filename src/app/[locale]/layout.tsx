@@ -4,9 +4,10 @@ import { Toaster } from 'sonner';
 import ThemeProvider from '@/providers/theme-provider';
 import AuthProvider from '@/providers/auth-provider';
 import { fontVariables } from '@/config/fonts';
-import { NextIntlClientProvider } from "next-intl";
+import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { QueryProvider } from '@/providers/react-query-provider';
+import CartInitializer from '@/providers/CartInitializer';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -26,7 +27,6 @@ export default async function RootLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
 
-
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
@@ -34,20 +34,20 @@ export default async function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
+          attribute='class'
+          defaultTheme='light'
           enableSystem
           disableTransitionOnChange
         >
           <NextIntlClientProvider locale={locale} messages={messages}>
-
             <AuthProvider>
               <QueryProvider>
+                <CartInitializer />
                 {children}
               </QueryProvider>
               <Toaster
                 richColors
-                position="top-right"
+                position='top-right'
                 expand={false}
                 visibleToasts={4}
               />
