@@ -1,5 +1,4 @@
 import { useCartStore } from '@/stores/cartStore';
-import useProductVariant from './useProductVariant';
 import usePromotions from './usePromotions';
 import useShippingFee from '../useShippingFee';
 import useAddress from './useAddress';
@@ -30,8 +29,14 @@ export default function useCalculateTotal() {
       return subtotal + (shippingFee || 0) - discount;
     }
     return selectedTotalPrice + (shippingFee || 0) - discount;
-  }, [type, subtotal, calculateDiscount]);
-  // const total = selectedTotalPrice + (shippingFee || 0) - discount;
+  }, [
+    type,
+    subtotal,
+    calculateDiscount,
+    discount,
+    selectedTotalPrice,
+    shippingFee,
+  ]);
 
   return { total, isCalculatingTotal, calculatingShipping };
 }

@@ -13,7 +13,6 @@ import ProductCardIndex from '@/components/modules/ProductCardIndex';
 import { getAllProductsAction } from '@/actions/productActions';
 import { ProductCardWithColorsSkeleton } from '@/components/ui/skeleton';
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
 export default function BestSellersSwiper() {

@@ -29,14 +29,8 @@ export default function ProductCardIndex({
     undefined
   );
 
-  const {
-    selectVariant,
-    onChangeColor,
-    onChangeSize,
-    handleAddToCart,
-    selectedColor,
-    selectedSize,
-  } = useProductDetails(product);
+  const { onChangeColor, onChangeSize, handleAddToCart, selectedColor } =
+    useProductDetails(product);
 
   const handleColorClick = (colorId: number | undefined) => {
     setColorSelected(colorId);

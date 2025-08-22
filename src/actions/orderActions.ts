@@ -133,6 +133,13 @@ export async function createOrderViaVNPayAction(
 
     const order = await createOrderApi(validated.data);
 
+    if (!order?.id) {
+      return {
+        success: false,
+        message: 'Failed to create order - no order ID returned',
+      };
+    }
+
     const data = await payOrderApi(order?.id!);
     return {
       success: true,

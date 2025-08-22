@@ -1,12 +1,9 @@
 'use client';
 
 import { ProductItem } from './ProductItem';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { useRouter, useSearchParams } from 'next/navigation';
-import useProductVariant from '@/hooks/(order)/useProductVariant';
-import { useBuyNowStore } from '@/stores/buyNowStore';
-import { TProductVariant } from '@/types';
+import { useRouter } from 'next/navigation';
 import { useCheckoutDatas } from '@/hooks/(order)/useCheckOutDatas';
 
 export function ProductList() {

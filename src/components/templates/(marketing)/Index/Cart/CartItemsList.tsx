@@ -11,7 +11,6 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import EmptyCart from './EmptyCart';
-import useStore from '@/stores/useStore';
 
 export function CartItemsList() {
   const t = useTranslations('Header');
@@ -25,28 +24,18 @@ export function CartItemsList() {
   const toggleItemSelection = useCartStore((s) => s.toggleItemSelection);
   const toggleAllItems = useCartStore((s) => s.toggleAllItems);
 
-  const fetchCart = useCartStore((s) => s.fetchCart);
   const status = useCartStore((s) => s.status);
 
   // *Kiểm tra xem checkbox tất cả có được chọn không
   const allSelected =
-    cartItems?.length! > 0 && selectedItems.length === cartItems?.length;
+    (cartItems?.length ?? 0) > 0 &&
+    selectedItems.length === (cartItems?.length ?? 0);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated && !user) {
       router.push('/login');
     }
   }, [isAuthenticated, user, isLoading, router]);
-
-  // console.log('Cart items:', cartItems);
-
-  // Thêm useEffect để fetch cart khi component mount
-  // useEffect(() => {
-  //   if (isAuthenticated && user) {
-  //     console.log('Fetching cart...');
-  //     fetchCart(user.id!);
-  //   }
-  // }, [isAuthenticated, user, fetchCart]);
 
   if (status === 'loading') {
     return (

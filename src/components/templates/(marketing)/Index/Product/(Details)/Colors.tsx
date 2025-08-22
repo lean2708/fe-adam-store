@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { TColor, TVariant } from '@/types';
+import { TColor } from '@/types';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 

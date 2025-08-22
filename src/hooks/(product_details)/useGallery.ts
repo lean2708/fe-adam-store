@@ -60,7 +60,11 @@ export default function useGallery(images: ImageBasic[]) {
     if (!api || !isAutoPlaying) return;
 
     const interval = setInterval(() => {
-      api.canScrollNext() ? api.scrollNext() : api.scrollTo(0);
+      if (api.canScrollNext()) {
+        api.scrollNext();
+      } else {
+        api.scrollTo(0);
+      }
     }, 5000);
 
     return () => clearInterval(interval);

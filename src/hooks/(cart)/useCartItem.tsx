@@ -11,7 +11,7 @@ import { useAuth } from '../useAuth';
 export const useCartItem = (
   cartItem: TCartItem,
   product: Omit<TProduct, 'Category'>,
-  updateCartItem?: (id: string, item: any) => void,
+  updateCartItem?: (id: string, item: TCartItem) => void,
   removeCartItem?: (id: string) => void
 ) => {
   const { user } = useAuth();
@@ -138,6 +138,7 @@ export const useCartItem = (
           toast.error(res.message || 'Cập nhật thất bại');
         }
       } catch (error) {
+        console.error('Đã xảy ra lỗi khi cập nhật: ', error);
         toast.error('Đã xảy ra lỗi khi cập nhật');
       } finally {
         setIsChanged(false);
@@ -173,6 +174,7 @@ export const useCartItem = (
           toast.error(res.message || 'Cập nhật thất bại');
         }
       } catch (error) {
+        console.error('Đã xảy ra lỗi khi cập nhật: ', error);
         toast.error('Đã xảy ra lỗi khi cập nhật');
       } finally {
         setIsChanged(false);
@@ -216,6 +218,7 @@ export const useCartItem = (
           setQuantity(cartItem.quantity);
         }
       } catch (error) {
+        console.error('Đã xảy ra lỗi khi cập nhật: ', error);
         toast.error('Đã xảy ra lỗi khi cập nhật số lượng');
         // Revert quantity nếu có lỗi
         setQuantity(cartItem.quantity);
@@ -249,6 +252,7 @@ export const useCartItem = (
         toast.error(res.message || 'Xóa sản phẩm thất bại');
       }
     } catch (error) {
+      console.error('Đã xảy ra lỗi khi xóa sản phẩm: ', error);
       toast.error('Đã xảy ra lỗi khi xóa sản phẩm');
     } finally {
       setIsChanged(false);

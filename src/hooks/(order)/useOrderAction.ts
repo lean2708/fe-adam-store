@@ -9,7 +9,7 @@ import useProductVariant from '@/hooks/(order)/useProductVariant';
 import usePromotions from '@/hooks/(order)/usePromotions';
 import useShippingFee from '@/hooks/useShippingFee';
 import { useBuyNowStore } from '@/stores/buyNowStore';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { useCheckoutDatas } from './useCheckOutDatas';
@@ -21,7 +21,7 @@ export default function useOrderAction() {
   const { clearProductVariantsStore } = useProductVariant();
   const { currentAddress } = useAddress();
   const { selectedMethod } = usePaymentMethod();
-  const { items: products, subtotal, type } = useCheckoutDatas();
+  const { items: products, type } = useCheckoutDatas();
 
   const { selectedPromotion, clearSelectedPromotion } = usePromotions();
   const { shippingFee } = useShippingFee(currentAddress, products);
@@ -100,6 +100,7 @@ export default function useOrderAction() {
 
       return response.data;
     } catch (error) {
+      console.error('Thanh toán VNPAY không thành công: ', error);
       toast.error('Thanh toán VNPAY không thành công');
       return null;
     }
@@ -117,6 +118,7 @@ export default function useOrderAction() {
 
       return response.data;
     } catch (error) {
+      console.error('Thanh toán CASH không thành công: ', error);
       toast.error('Thanh toán CASH không thành công');
       return null;
     }

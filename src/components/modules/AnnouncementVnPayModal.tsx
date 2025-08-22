@@ -16,9 +16,7 @@ import { CheckCircle, XCircle } from 'lucide-react';
 import { vnPayCallbackAction } from '@/actions/orderActions';
 import { toast } from 'sonner';
 
-type Props = {};
-
-const AnnouncementVnPayModal = (props: Props) => {
+const AnnouncementVnPayModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [orderStatus, setOrderStatus] = useState<{
     orderId: string;

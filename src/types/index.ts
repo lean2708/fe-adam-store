@@ -1,5 +1,5 @@
 import { ImageBasic } from '@/api-client';
-import { ORDER_STATUS, PAYMENT_METHODS, USER_ROLE } from '@/enums';
+import { PAYMENT_METHODS } from '@/enums';
 
 export type TCategory = {
   id: string;

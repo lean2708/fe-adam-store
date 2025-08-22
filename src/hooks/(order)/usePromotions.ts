@@ -41,7 +41,7 @@ export default function usePromotions() {
 
     // Tính giảm giá theo %
     if (selectedPromotion.discountPercent) {
-      let discount = subtotal * (selectedPromotion.discountPercent / 100);
+      const discount = subtotal * (selectedPromotion.discountPercent / 100);
 
       return discount;
     }

@@ -4,16 +4,11 @@ import { Separator } from '@/components/ui/separator';
 import useAddress from '@/hooks/(order)/useAddress';
 import useCalculateTotal from '@/hooks/(order)/useCalculateTotal';
 import { useCheckoutDatas } from '@/hooks/(order)/useCheckOutDatas';
-import useProductVariant from '@/hooks/(order)/useProductVariant';
 import usePromotions from '@/hooks/(order)/usePromotions';
 import useShippingFee from '@/hooks/useShippingFee';
 import { formatCurrency } from '@/lib/utils';
-import { useBuyNowStore } from '@/stores/buyNowStore';
 import { useCartStore } from '@/stores/cartStore';
-import { TProductVariant } from '@/types';
 import { useLocale } from 'next-intl';
-import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 export function PaymentSummary() {
   const locale = useLocale();

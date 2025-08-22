@@ -10,7 +10,6 @@ import useAddress from '@/hooks/(order)/useAddress';
 import useProductVariant from '@/hooks/(order)/useProductVariant';
 import useShippingFee from '@/hooks/useShippingFee';
 import useCalculateTotal from '@/hooks/(order)/useCalculateTotal';
-import { useCartItem } from '@/hooks/(cart)/useCartItem';
 
 export function CheckOut() {
   const t = useTranslations('Header');

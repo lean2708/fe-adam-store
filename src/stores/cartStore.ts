@@ -34,7 +34,7 @@ export type Actions = {
 // Resolve unit price for a cart item with fallbacks
 const resolveUnitPrice = (item: TCartItem): number => {
   // Prefer variant/price if they exist on cart item (client-chosen)
-  // @ts-ignore optional fields depending on your TCartItem; safe to read
+  // @ts-expect-error optional fields depending on your TCartItem; safe to read
   const direct = item.variant?.price ?? (item as any).price;
   if (typeof direct === 'number') return direct;
 

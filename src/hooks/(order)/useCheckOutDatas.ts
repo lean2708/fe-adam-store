@@ -3,7 +3,6 @@ import { useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
 import { useCartStore } from '@/stores/cartStore';
 import { useBuyNowStore } from '@/stores/buyNowStore';
-import { TProductVariant } from '@/types';
 import useProductVariant from './useProductVariant';
 
 export function useCheckoutDatas() {

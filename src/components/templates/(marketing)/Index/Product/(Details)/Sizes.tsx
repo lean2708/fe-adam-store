@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { SIZE_LIST } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import { TColor, TVariant } from '@/types';
+import { TColor } from '@/types';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 

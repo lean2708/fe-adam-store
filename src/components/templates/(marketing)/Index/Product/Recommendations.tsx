@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/carousel';
 import ProductCardIndex from '@/components/modules/ProductCardIndex';
 import { ProductCardWithColorsSkeleton } from '@/components/ui/skeleton';
-import Link from 'next/link';
 import useRecommendations from '@/hooks/(product_details)/useRecommendations';
 
 export default function Recommendations() {

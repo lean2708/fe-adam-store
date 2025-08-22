@@ -3,7 +3,7 @@
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { cn, formatCurrency } from '@/lib/utils';
 import { roboto } from '@/config/fonts';
