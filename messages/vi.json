@@ -94,11 +94,11 @@
       "action": {
         "add_address": "Thêm địa chỉ",
         "edit_address": "Chỉnh sửa"
-      },
-      "payment_display": {
-        "selected_discount": "Chọn mã giảm giá",
-        "calcultating": "Đang tính..."
       }
+    },
+    "payment_display": {
+      "selected_discount": "Chọn mã giảm giá",
+      "calcultating": "Đang tính..."
     },
     "promotion": {
       "title": "Mã giảm giá",

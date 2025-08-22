@@ -94,11 +94,11 @@
       "action": {
         "add_address": "Add Address",
         "edit_address": "Edit"
-      },
-      "payment_display": {
-        "selected_discount": "Select a discount code",
-        "calcultating": "Calculating..."
       }
+    },
+    "payment_display": {
+      "selected_discount": "Select a discount code",
+      "calcultating": "Calculating..."
     },
     "promotion": {
       "title": "Promotion Code",

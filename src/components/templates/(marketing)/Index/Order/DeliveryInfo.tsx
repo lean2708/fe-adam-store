@@ -34,7 +34,7 @@ export function DeliveryInfo() {
     return (
       <div>
         <div className='flex flex-row items-center justify-between mb-3'>
-          <h2 className='text-2xl font-bold text-primary'>Giao hàng</h2>
+          <h2 className='text-2xl font-bold text-primary'>{t('title')}</h2>
           <Skeleton className='w-32 h-10 rounded-full' />
         </div>
         <div className='flex flex-row gap-12'>
@@ -63,12 +63,10 @@ export function DeliveryInfo() {
             className='px-6 py-5 font-medium text-primary rounded-full'
             asChild
           >
-            <Link href='/address'>Thêm địa chỉ</Link>
+            <Link href='/address'>{t('action.add_address')}</Link>
           </Button>
         </div>
-        <p className='text-muted-foreground'>
-          Bạn chưa có địa chỉ nào. Vui lòng thêm địa chỉ mới.
-        </p>
+        <p className='text-muted-foreground'>{t('no_address')}</p>
       </div>
     );
   }

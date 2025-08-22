@@ -94,14 +94,7 @@ export function AddNewAddressModal({
         setSelectedProvince(null);
       }
     }
-  }, [
-    open,
-    provinces.length,
-    loadingProvinces,
-    reset,
-    setSelectedProvince,
-    setSelectedDistrict,
-  ]);
+  }, [open, provinces.length, loadingProvinces]);
 
   const onSubmit = (data: AddressSchema) => {
     const addressData = {

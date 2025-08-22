@@ -21,7 +21,7 @@ const Promotions = ({
   promotion,
   onPromotionChange,
 }: PromotionsProps) => {
-  const t = useTranslations('Order.promotions');
+  const t = useTranslations('Order.promotion');
 
   const handleValueChange = (value: string) => {
     if (value === '' || value === 'none') {
