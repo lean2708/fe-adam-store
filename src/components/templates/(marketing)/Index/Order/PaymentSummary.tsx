@@ -8,9 +8,10 @@ import usePromotions from '@/hooks/(order)/usePromotions';
 import useShippingFee from '@/hooks/useShippingFee';
 import { formatCurrency } from '@/lib/utils';
 import { useCartStore } from '@/stores/cartStore';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 export function PaymentSummary() {
+  const t = useTranslations('Order.payment_summary');
   const locale = useLocale();
 
   const { items: products, subtotal, type } = useCheckoutDatas();
@@ -31,11 +32,9 @@ export function PaymentSummary() {
 
   return (
     <div className='space-y-3 text-sm'>
-      <h4 className='text-2xl font-bold text-primary mb-4'>
-        Chi tiết thanh toán
-      </h4>
+      <h4 className='text-2xl font-bold text-primary mb-4'>{t('title')}</h4>
       <div className='flex justify-between text-muted-foreground'>
-        <span className=''>Tạm tính</span>
+        <span className=''>{t('sub_total')}</span>
         <span>
           {formatCurrency(
             type === 'buy-now' ? subtotal : selectedTotalPrice,
@@ -44,22 +43,24 @@ export function PaymentSummary() {
         </span>
       </div>
       <div className='flex justify-between text-muted-foreground'>
-        <span className=''>Phí vận chuyển</span>
+        <span className=''>{t('shipping_fee')}</span>
         <span>
           {calculatingShipping
-            ? 'Đang tính...'
+            ? t('calcultating')
             : `${formatCurrency(shippingFee || 0, locale)}`}
         </span>
       </div>
       <div className='flex justify-between text-muted-foreground'>
-        <span className=''>Mã giảm giá</span>
+        <span className=''>{t('promotion')}</span>
         <span>{formatCurrency(discount, locale)}</span>
       </div>
       <Separator className='mt-4' />
       <div className='text-primary font-bold  pt-3 flex justify-between'>
-        <span className=''>Thành tiền</span>
+        <span className=''>{t('total')}</span>
         <span>
-          {isCalculatingTotal ? 'Đang tính...' : formatCurrency(total, locale)}
+          {isCalculatingTotal
+            ? t('calcultating')
+            : formatCurrency(total, locale)}
         </span>
       </div>
     </div>

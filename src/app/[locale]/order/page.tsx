@@ -4,14 +4,17 @@ import { PaymentSection } from '@/components/templates/(marketing)/Index/Order/P
 import { PaymentSummary } from '@/components/templates/(marketing)/Index/Order/PaymentSummary';
 import { ProductList } from '@/components/templates/(marketing)/Index/Order/ProductList';
 import { Separator } from '@/components/ui/separator';
+import { getTranslations } from 'next-intl/server';
 
-function OrderPage() {
+async function OrderPage() {
+  const t = await getTranslations('Order');
+
   return (
     <div className='adam-store-bg'>
       {/* Main Content */}
       <main className='max-w-7xl mx-auto py-8'>
         <h1 className=' text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl font-semibold text-primary text-center mb-12'>
-          Xác nhận đơn hàng
+          {t('title')}
         </h1>
 
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-12 mb-32'>

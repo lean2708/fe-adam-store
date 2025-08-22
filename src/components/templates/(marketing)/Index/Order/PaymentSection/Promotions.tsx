@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/select';
 import { TPromotion } from '@/types';
 import { BadgePercent } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import React from 'react';
 
 interface PromotionsProps {
@@ -20,6 +21,8 @@ const Promotions = ({
   promotion,
   onPromotionChange,
 }: PromotionsProps) => {
+  const t = useTranslations('Order.promotions');
+
   const handleValueChange = (value: string) => {
     if (value === '' || value === 'none') {
       // Handle clearing selection
@@ -32,19 +35,19 @@ const Promotions = ({
   const currentValue = promotion?.id ? promotion.id.toString() : '';
   return (
     <div className='mb-4'>
-      <p className=' text-primary font-bold mb-3'>Mã giảm giá</p>
+      <p className=' text-primary font-bold mb-3'>{t('title')}</p>
 
       <Select value={currentValue} onValueChange={handleValueChange}>
         <SelectTrigger className='w-full h-16 p-3 border border-border rounded-2xl bg-background text-muted-foreground font-medium justify-between'>
           <div className='flex items-center gap-2'>
             <BadgePercent className='size-6' />
-            <SelectValue placeholder={'Chọn mã giảm giá'} />
+            <SelectValue placeholder={t('placeholder')} />
           </div>
         </SelectTrigger>
         <SelectContent>
           {promotionList.length === 0 && (
             <SelectItem key={1} value={'none'}>
-              Không có mã giảm giá
+              {t('no_promotion')}
             </SelectItem>
           )}
           {promotionList.map((promo) => (

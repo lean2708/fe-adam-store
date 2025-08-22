@@ -4,9 +4,7 @@ import Promotions from './PaymentSection/Promotions';
 import PaymentMethod from './PaymentSection/PaymentMethod';
 import usePromotions from '@/hooks/(order)/usePromotions';
 import usePaymentMethod from '@/hooks/(order)/usePaymentMethod';
-import useAddress from '@/hooks/(order)/useAddress';
-import useCalculateTotal from '@/hooks/(order)/useCalculateTotal';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { PAYMENT_METHODS } from '@/enums';
 import { useOrderStore } from '@/stores/orderStore';
 

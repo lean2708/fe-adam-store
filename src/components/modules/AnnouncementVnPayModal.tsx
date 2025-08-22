@@ -25,7 +25,7 @@ const AnnouncementVnPayModal = () => {
 
   const searchParams = useSearchParams();
   const router = useRouter();
-  //   const t = useTranslations('OrderStatus');
+  const t = useTranslations('Order.order_annouce');
 
   useEffect(() => {
     const orderId = searchParams.get('vnp_TxnRef');
@@ -94,10 +94,7 @@ const AnnouncementVnPayModal = () => {
 
             {/* Title */}
             <AlertDialogTitle className='text-lg font-semibold mb-2'>
-              {/* {orderStatus?.isSuccess ? t('success.title') : t('failure.title')} */}
-              {orderStatus?.isSuccess
-                ? 'Thanh toán thành công'
-                : 'Thanh toán thất bại'}
+              {orderStatus?.isSuccess ? t('success.title') : t('failure.title')}
             </AlertDialogTitle>
           </div>
         </AlertDialogHeader>
@@ -105,20 +102,16 @@ const AnnouncementVnPayModal = () => {
         {/* Content */}
         <div className='text-center space-y-4'>
           <AlertDialogDescription className='text-muted-foreground'>
-            {/* {orderStatus?.isSuccess
-              ? t('success.message')
-              : t('failure.message')} */}
             {orderStatus?.isSuccess
-              ? 'Bạn đã thanh toán bằng VN pay thành công, vui lòng kiểm tra đơn hàng trong mục orders'
-              : 'Bạn đã thanh toán bằng VN pay thất bại, vui lòng kiểm tra đơn hàng trong mục orders'}
+              ? t('success.message')
+              : t('failure.message')}
           </AlertDialogDescription>
 
           {/* Order ID Display */}
           {orderStatus && (
             <div className='bg-muted rounded-lg p-3'>
               <p className='text-sm text-muted-foreground mb-1'>
-                {/* {t('orderId')} */}
-                mã orderID:
+                {t('order_code')}:
               </p>
               <p className='font-mono text-sm font-medium'>
                 {orderStatus.orderId}
@@ -132,8 +125,7 @@ const AnnouncementVnPayModal = () => {
             onClick={() => router.push('/orders')}
             className={`px-6 py-3 rounded-full font-medium transition-colors  `}
           >
-            {/* {t('close')} */}
-            Go to My Orders
+            {t('action.go_to_orders')}
           </AlertDialogAction>
           <AlertDialogAction
             onClick={handleClose}
@@ -143,8 +135,7 @@ const AnnouncementVnPayModal = () => {
                 : 'bg-red-600 hover:bg-red-700 text-white'
             }`}
           >
-            {/* {t('close')} */}
-            Close
+            {t('action.close')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

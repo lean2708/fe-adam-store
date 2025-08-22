@@ -7,10 +7,11 @@ import useOrderAction from '@/hooks/(order)/useOrderAction';
 import usePaymentMethod from '@/hooks/(order)/usePaymentMethod';
 import usePromotions from '@/hooks/(order)/usePromotions';
 import { formatCurrency } from '@/lib/utils';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 
 export function PaymentBar() {
+  const t = useTranslations('Order');
   const locale = useLocale();
 
   const { selectedMethodDetails } = usePaymentMethod();
@@ -42,7 +43,7 @@ export function PaymentBar() {
           <p className='text-lg font-bold text-primary text-center'>
             {selectedPromotion?.discountPercent
               ? selectedPromotion?.discountPercent + '%'
-              : 'Chọn mã giảm giá'}
+              : t('payment_display.selected_discount')}
           </p>
         </div>
 
@@ -51,7 +52,7 @@ export function PaymentBar() {
         <div className='flex items-center justify-center px-4 h-full w-1/4'>
           <p className='text-xl font-bold text-primary'>
             {isCalculatingTotal
-              ? 'Đang tính...'
+              ? t('payment_display.calcultating')
               : formatCurrency(total, locale)}
           </p>
         </div>
@@ -64,7 +65,7 @@ export function PaymentBar() {
           className='text-xl h-full rounded-none  w-1/4 px-4'
           disabled={isProcessing || isCalculatingTotal}
         >
-          Đặt hàng
+          {t('action')}
         </Button>
       </div>
     </div>

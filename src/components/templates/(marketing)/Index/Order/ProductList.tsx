@@ -5,8 +5,11 @@ import { useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useCheckoutDatas } from '@/hooks/(order)/useCheckOutDatas';
+import { useTranslations } from 'next-intl';
 
 export function ProductList() {
+  const t = useTranslations('Order.product_list');
+
   const { isAuthenticated, isLoading, user } = useAuth();
   const router = useRouter();
 
@@ -20,7 +23,7 @@ export function ProductList() {
 
   return (
     <div>
-      <h3 className='text-2xl font-bold text-primary mb-6'>Sản phẩm</h3>
+      <h3 className='text-2xl font-bold text-primary mb-6'>{t('title')}</h3>
       <div className='space-y-6 overflow-y-auto h-screen'>
         {products?.map((product, index) => (
           <ProductItem key={index} product={product} />

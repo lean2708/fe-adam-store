@@ -1,8 +1,11 @@
 import { formatCurrency } from '@/lib/utils';
 import { TProductVariant } from '@/types';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
 export function ProductItem({ product }: { product: TProductVariant }) {
+  const t = useTranslations('Order.product_list');
+
   return (
     <div className='flex gap-4'>
       <Image
@@ -19,13 +22,13 @@ export function ProductItem({ product }: { product: TProductVariant }) {
           {product.name}
         </h4>
         <p className='text-sm text-muted-foreground mb-1'>
-          Màu sắc: {product.color?.name}
+          {t('color')}: {product.color?.name}
         </p>
         <p className='text-sm text-muted-foreground mb-1'>
-          Kích cỡ: {product.size?.name}
+          {t('size')}: {product.size?.name}
         </p>
         <p className='text-sm text-muted-foreground'>
-          Số lượng: {product.quantity}
+          {t('quanity')}: {product.quantity}
         </p>
       </div>
       <div className='text-right'>

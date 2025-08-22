@@ -9,8 +9,11 @@ import { useState } from 'react';
 import AddressSectionModal from './Address/AddressSectionModal';
 import { AddNewAddressModal } from './Address/AddNewAddressModal';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useTranslations } from 'next-intl';
 
 export function DeliveryInfo() {
+  const t = useTranslations('Order.delivery_info');
+
   const { user } = useAuth();
   const { currentAddress, loading, listAddress, setCurrentAddress } =
     useAddress();
@@ -54,7 +57,7 @@ export function DeliveryInfo() {
     return (
       <div>
         <div className='flex flex-row items-center justify-between mb-3'>
-          <h2 className='text-2xl font-bold text-primary'>Giao hàng</h2>
+          <h2 className='text-2xl font-bold text-primary'> {t('title')}</h2>
           <Button
             variant='outline'
             className='px-6 py-5 font-medium text-primary rounded-full'
@@ -73,20 +76,20 @@ export function DeliveryInfo() {
   return (
     <div>
       <div className='flex flex-row items-center justify-between mb-3'>
-        <h2 className='text-2xl font-bold text-primary'>Giao hàng</h2>
+        <h2 className='text-2xl font-bold text-primary'>{t('title')}</h2>
         <Button
           variant='outline'
           className='px-6 py-5 font-medium text-primary rounded-full'
           onClick={() => setIsVisible(true)}
         >
-          Chỉnh sửa
+          {t('action.edit_address')}
         </Button>
       </div>
       <div className='flex flex-row gap-12'>
         <div className='flex flex-col justify-between text-muted-foreground gap-2'>
-          <span>Họ và tên:</span>
-          <span>Địa chỉ nhận hàng:</span>
-          <span>Số điện thoại:</span>
+          <span>{t('info_receiver.name')}:</span>
+          <span>{t('info_receiver.address')}:</span>
+          <span>{t('info_receiver.phone')}:</span>
         </div>
         <div className='flex flex-col justify-between text-muted-foreground gap-2'>
           <span>{user?.name}</span>
