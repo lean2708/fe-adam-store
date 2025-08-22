@@ -4,11 +4,11 @@ import {
   type PageResponseOrderResponse,
   type OrderRequest,
   type ShippingRequest,
-  type PaymentCallbackRequest,
   type OrderAddressRequest,
 } from '@/api-client';
 import { SearchOrdersForAdminOrderStatusEnum } from '@/api-client/apis/order-controller-api';
 import { ControllerFactory } from './factory-api-client';
+import { PaymentCallbackRequest } from '@/api-client/models/payment-callback-request';
 
 /**
  * Helper to get an instance of OrderControllerApi with NextAuth using factory.
