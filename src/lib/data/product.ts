@@ -282,6 +282,7 @@ export async function restoreProduct(id: number): Promise<ProductResponse> {
 export async function fetchProductById(id: number): Promise<ProductResponse> {
   const controller = await ControllerFactory.getProductController();
   const response = await controller.fetchDetailById({ id });
+  console.log(response);
 
   if (response.data.code !== 200) {
     throw new Error(response.data.message || "Failed to fetch product");

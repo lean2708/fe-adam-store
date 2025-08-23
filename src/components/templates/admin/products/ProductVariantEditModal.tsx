@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { Modal, ModalHeader, ModalBody } from "@/components/ui/modal";
+import { Modal, ModalBody } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { X } from "lucide-react";
+
 
 import { z } from "zod";
 import { updateProductVariantAction, addProductVariantAction } from "@/actions/productVariantActions";
@@ -196,22 +196,13 @@ export function ProductVariantEditModal({
       size="md"
       showOverlay={true}
       closeOnClickOutside={true}
+      showCloseButton={true}
     >
-      <ModalHeader>
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">
-            {variant ? (t("editVariantTitle") || "Sửa biến thể sản phẩm") : (t("addVariantTitle") || "Thêm biến thể sản phẩm")}
-          </h2>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleClose}
-            className="h-8 w-8 p-0"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      </ModalHeader>
+      <div className="p-4 border-b">
+        <h2 className="text-lg font-semibold">
+          {variant ? (t("editVariantTitle") || "Sửa biến thể sản phẩm") : (t("addVariantTitle") || "Thêm biến thể sản phẩm")}
+        </h2>
+      </div>
 
       <ModalBody>
 

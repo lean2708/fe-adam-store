@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Modal, ModalHeader, ModalBody } from "@/components/ui/modal";
+import { Modal, ModalBody } from "@/components/ui/modal";
 import { useTranslations } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
 import { ProductVariantEditModal } from "./ProductVariantEditModal";
-import { RefreshCw, X } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import type { TProduct } from "@/types";
 
@@ -51,27 +51,16 @@ export function ProductVariantModal({ open, onClose, editingVariant }: ProductVa
         size="md"
         showOverlay={true}
         closeOnClickOutside={true}
+        showCloseButton={true}
       >
-        <ModalHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold">
-                {t("productVariants") || "Product Variants"}
-              </h2>
-              <p className="text-sm text-gray-600 mt-1">
-                {t("manageProductVariants") || "Manage variants for this product"}
-              </p>
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              className="h-8 w-8 p-0"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-        </ModalHeader>
+        <div className="p-4 border-b">
+          <h2 className="text-lg font-semibold">
+            {t("productVariants") || "Product Variants"}
+          </h2>
+          <p className="text-sm text-gray-600 mt-1">
+            {t("manageProductVariants") || "Manage variants for this product"}
+          </p>
+        </div>
 
         <ModalBody>
           <div className="flex flex-col items-center justify-center py-8 space-y-4">

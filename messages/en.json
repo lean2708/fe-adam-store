@@ -188,7 +188,7 @@
       "paymentHistory": "Payment History"
     },
     "products": {
-      
+      "restorePayment": "Restore",
       "updateProductTitle": "Update Product",
       "updateProduct": "Update Product",
       "title": "Products Management",
@@ -352,7 +352,12 @@
       "noUsersFound": "No users found",
       "noRoles": "No roles",
       "openMenu": "Open menu",
-      "ACTIVE": "Active"
+      "ACTIVE": "Active",
+      "gender": {
+        "MALE": "Male",
+        "FEMALE": "Female",
+        "Other": "Other"
+      }
     },
     "branches": {
       "ACTIVE": "Active",

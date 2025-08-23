@@ -327,6 +327,7 @@ export async function fetchProductByIdAction(
 ): Promise<ActionResponse<ProductResponse>> {
   try {
     const data = await fetchProductById(id);
+    
     return {
       success: true,
       data,

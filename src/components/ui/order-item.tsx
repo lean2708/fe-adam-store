@@ -183,13 +183,9 @@ function ItemProductOrder(props: {
           alt={"" + item.image?.id}
         />
         <div className="h-full flex flex-col justify-between ml-3">
-          <h4 className="font-bold">{item.productVariant?.product?.name}</h4>
-          <p className="text-[#888888]">
-            Màu sắc: {item.productVariant?.color?.name}
-          </p>
-          <p className="text-[#888888]">
-            Kích cỡ: {item.productVariant?.size?.name}
-          </p>
+          <h4 className="font-bold">{item.Product.title}</h4>
+          <p className="text-[#888888]">Màu sắc: {item.color}</p>
+          <p className="text-[#888888]">Kích cỡ: {item.size}</p>
           <p className="text-[#888888]">×{item.quantity}</p>
         </div>
       </div>

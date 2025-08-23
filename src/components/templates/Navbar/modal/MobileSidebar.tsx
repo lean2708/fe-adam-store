@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { X } from "lucide-react";
 import { Modal } from "@/components/ui/modal";
 import { getAllCategoriesAction } from "@/actions/categoryActions";
 import { TCategory } from "@/types";
@@ -47,9 +46,6 @@ export default function MobileSidebar({
       <div className="p-4">
         {/* Close Button */}
         <div className="flex justify-between items-center mb-6">
-          <button onClick={onClose} className="p-2">
-            <X className="h-6 w-6 text-gray-600" />
-          </button>
           <h2 className="text-lg font-medium text-gray-900">Danh mục</h2>
           <div className="w-10"></div>
         </div>

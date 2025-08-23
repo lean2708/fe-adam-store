@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { useTranslations, useLocale } from "next-intl";
-import { formatDate, formatCurrency } from "@/lib/utils";
+import { formatDate, formatCurrency, getStatusColor } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -43,23 +43,7 @@ interface OrdersTableProps {
   ) => void;
 }
 
-// Helper function to get status color
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case "PENDING":
-      return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
-    case "PROCESSING":
-      return "bg-blue-100 text-blue-800 hover:bg-blue-100";
-    case "SHIPPED":
-      return "bg-purple-100 text-purple-800 hover:bg-purple-100";
-    case "DELIVERED":
-      return "bg-green-100 text-green-800 hover:bg-green-100";
-    case "CANCELLED":
-      return "bg-red-100 text-red-800 hover:bg-red-100";
-    default:
-      return "bg-gray-100 text-gray-800 hover:bg-gray-100";
-  }
-};
+
 
 export function OrdersTable({
   orders,
@@ -203,7 +187,7 @@ export function OrdersTable({
                     <TableCell>
                       <Badge
                         variant="secondary"
-                        className={getStatusColor(order.status || "PENDING")}
+                        className={getStatusColor(order.status || "PENDING", "order")}
                       >
                         {getStatusText(order.status || "PENDING")}
                       </Badge>

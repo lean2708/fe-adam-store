@@ -145,7 +145,7 @@ export function TopProducts({ dateRange }: TopProductsProps) {
             <TableRow className="bg-muted/50">
               <TableHead className="font-medium">Tên sản phẩm</TableHead>
               <TableHead className="font-medium text-center">Đã bán</TableHead>
-              <TableHead className="font-medium text-right">Giá</TableHead>
+              <TableHead className="font-medium text-right">Doanh thu</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

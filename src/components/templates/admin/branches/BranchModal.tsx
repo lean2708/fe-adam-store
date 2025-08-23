@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Modal, ModalHeader, ModalBody } from "@/components/ui/modal";
-import { X } from "lucide-react";
+import { Modal, ModalBody } from "@/components/ui/modal";
+
 import { useTranslations } from "next-intl";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -146,6 +146,7 @@ export function BranchModal({ open, onClose, editingBranch }: BranchModalProps) 
       size="lg"
       showOverlay={true}
       closeOnClickOutside={false}
+      showCloseButton={true}
       className="bg-white rounded-lg shadow-xl"
     >
       <ModalBody className="p-8">

@@ -114,9 +114,9 @@ export default function UsersPage() {
   const handleModalClose = (shouldRefresh?: boolean) => {
     setIsModalOpen(false);
     setSelectedUser(null);
-    if (shouldRefresh) {
-      fetchUsers(currentPage);
-    }
+    // if (shouldRefresh) {
+    //   fetchUsers(currentPage);
+    // }
   };
 
   return (

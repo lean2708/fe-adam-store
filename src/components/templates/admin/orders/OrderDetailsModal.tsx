@@ -1,11 +1,11 @@
 "use client";
 
-import { Modal, ModalHeader, ModalBody } from "@/components/ui/modal";
+import { Modal, ModalBody } from "@/components/ui/modal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useTranslations, useLocale } from "next-intl";
-import { formatDate, formatCurrency } from "@/lib/utils";
-import { ShoppingCart, User, MapPin, Calendar, Package, X } from "lucide-react";
+import { formatDate, formatCurrency, getStatusColor } from "@/lib/utils";
+import { ShoppingCart, User, MapPin, Calendar, Package } from "lucide-react";
 import type { TOrder } from "@/types";
 import Image from "next/image";
 
@@ -14,24 +14,6 @@ interface OrderDetailsModalProps {
   onClose: () => void;
   order: TOrder | null;
 }
-
-// Helper function to get status color
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case "PENDING":
-      return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
-    case "PROCESSING":
-      return "bg-blue-100 text-blue-800 hover:bg-blue-100";
-    case "SHIPPED":
-      return "bg-purple-100 text-purple-800 hover:bg-purple-100";
-    case "DELIVERED":
-      return "bg-green-100 text-green-800 hover:bg-green-100";
-    case "CANCELLED":
-      return "bg-red-100 text-red-800 hover:bg-red-100";
-    default:
-      return "bg-gray-100 text-gray-800 hover:bg-gray-100";
-  }
-};
 
 // Helper function to get status text
 const getStatusText = (status: string, t: any) => {
@@ -69,9 +51,10 @@ export function OrderDetailsModal({
       size="lg"
       showOverlay={true}
       closeOnClickOutside={false}
+      showCloseButton={true}
       className="bg-white rounded-lg shadow-xl"
     >
-      <ModalHeader className="flex items-center justify-between p-6 border-b">
+      <div className="flex items-center justify-between p-6 border-b">
         {/* Left side: icon + text */}
         <div className="flex items-center gap-2">
           <ShoppingCart className="h-5 w-5" />
@@ -79,17 +62,7 @@ export function OrderDetailsModal({
             {t("viewDetails")} - #{order.id}
           </span>
         </div>
-
-        {/* Right side: close button */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onClose}
-          className="h-8 w-8 p-0"
-        >
-          <X className="h-4 w-4" />
-        </Button>
-      </ModalHeader>
+      </div>
 
       <ModalBody className="space-y-6">
         {/* Order Status and Date */}
@@ -97,7 +70,10 @@ export function OrderDetailsModal({
           <div>
             <Badge
               variant="secondary"
-              className={`${getStatusColor(order.status || "PENDING")} text-sm`}
+              className={`${getStatusColor(
+                order.status || "PENDING",
+                "order"
+              )} text-sm`}
             >
               {getStatusText(order.status || "PENDING", t)}
             </Badge>
@@ -182,7 +158,7 @@ export function OrderDetailsModal({
                 <div className="text-right">
                   <p className="font-medium text-gray-900">
                     {formatCurrency(
-                      parseFloat(item.Product?.price || "0") * item.quantity,
+                      parseFloat(item.Product?.price + "" || "0") * item.quantity,
                       locale
                     )}
                   </p>

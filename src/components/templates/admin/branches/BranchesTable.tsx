@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { useTranslations, useLocale } from "next-intl";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getStatusColor } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -48,16 +48,6 @@ export function BranchesTable({
 }: BranchesTableProps) {
   const t = useTranslations("Admin.branches");
   const locale = useLocale();
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "ACTIVE":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
-      case "INACTIVE":
-        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
-      default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300";
-    }
-  };
   return (
     <div>
       <div className="p-6 border-b bg-gray-50 ">
@@ -154,7 +144,7 @@ export function BranchesTable({
                     <TableCell>
                       <Badge
                         variant="secondary"
-                        className={getStatusColor(branch.status || "INACTIVE")}
+                        className={getStatusColor(branch.status || "INACTIVE", "general")}
                       >
                         {t(branch.status || "INACTIVE") ||
                           branch.status ||

@@ -17,6 +17,7 @@ import { AdminPagination } from "@/components/ui/pagination";
 import { FolderTree, RefreshCw, Plus } from "lucide-react";
 import Image from "next/image";
 import type { TCategory } from "@/types";
+import { getStatusColor } from "@/lib/utils";
 
 interface CategoriesTableProps {
   categories: TCategory[];
@@ -48,16 +49,7 @@ export function CategoriesTable({
 }: CategoriesTableProps) {
   const t = useTranslations("Admin.categories");
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "ACTIVE":
-        return "bg-green-100 text-green-800 border-green-200";
-      case "INACTIVE":
-        return "bg-red-100 text-red-800 border-red-200";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
-    }
-  };
+
 
   if (loading) {
     return (
@@ -240,7 +232,7 @@ export function CategoriesTable({
               <div className="flex items-center justify-between text-xs">
                 <Badge
                   variant="secondary"
-                  className={getStatusColor(category.status || "INACTIVE")}
+                  className={getStatusColor(category.status || "INACTIVE", "general")}
                 >
                   {t(category.status || "INACTIVE") ||
                     category.status ||
@@ -329,7 +321,8 @@ export function CategoriesTable({
                       <Badge
                         variant="secondary"
                         className={getStatusColor(
-                          category.status || "INACTIVE"
+                          category.status || "INACTIVE",
+                          "general"
                         )}
                       >
                         {t(category.status || "INACTIVE") ||

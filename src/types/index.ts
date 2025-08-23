@@ -1,5 +1,6 @@
+import { EntityBasic } from '@/api-client/models';
 import { ImageBasic } from '@/api-client';
-import { ORDER_STATUS, USER_ROLE } from '@/enums';
+import { ORDER_STATUS } from '@/enums';
 
 export type TCategory = {
   id: string;
@@ -22,12 +23,8 @@ export type TOrder = {
   address: string;
   totalPrice: string;
   userId: string;
-  userName: string
-  customerName: string;
-  discountAmount: number;
-  orderDate: string;
-  orderItems: TOrderItem[];
-  orderStatus: string;
+  userName: string;
+  customerPhone?: string;
 };
 
 export type TOrderItem = {
@@ -38,14 +35,13 @@ export type TOrderItem = {
   size: number;
   productId: string;
   imageUrl: string;
-  image: TImage;
-  productVariant: ProductVariant;
+  // productVariant: TProductVariant;
   unitPrice: number;
   isReview?: boolean;
   Product: {
     id: string;
     title: string;
-    price: string;
+    price: number;
     description: string;
     colors: string[];
     sizes: number[];
@@ -168,11 +164,14 @@ export interface TSize {
   name: string;
 }
 
-export interface ProductVariant {
+export interface TProductVariant {
   id: number;
-  product: TProduct;
-  color: TColor;
-  size: TSize;
+  price: number
+  quantity: number
+  isAvailable?: boolean
+  status: any
+  color?: EntityBasic;
+  size?: EntityBasic;
 }
 
 
