@@ -79,13 +79,13 @@ export default function SearchModal({
       size="full"
       showOverlay={true}
       style={{
-        maxHeight: '625px',
+        maxHeight: '567px',
         top:'50px'
       }}
       closeOnClickOutside={!isSearchExpanded}
     >
-      <ModalBody style={{ maxHeight: "70vh" }}>
-        <div className="mb-4 font-semibold text-lg">
+      <ModalBody className="!pb-0" scrollable={false}>
+        <div className="mb-2 font-semibold text-lg">
           Kết quả tìm kiếm
           
         </div>
@@ -127,7 +127,7 @@ export default function SearchModal({
                     onClose();
                   }}
                 >
-                  <CardContent className="p-0 pb-6">
+                  <CardContent className="p-0 pb-4">
                     <div className="aspect-[3/4] adam-store-bg-light rounded-lg overflow-hidden relative flex items-center justify-center">
                       <AspectRatio ratio={3 / 4}>
                         <Image
@@ -152,13 +152,13 @@ export default function SearchModal({
         )}
       </ModalBody>
 
-      <ModalFooter sticky={true}>
+      <ModalFooter sticky={true} className="h-auto !py-2">
         {!isSearching &&
           searchResults.length === 6 &&
           searchQuery.trim() !== "" && (
             <div className="flex items-center justify-center w-full">
               <Button
-                className="cursor-pointer bg-black text-white px-6 py-2 rounded-md"
+                className="cursor-pointer bg-black text-white px-5 py-2 rounded-md"
                 onClick={() => {
                   router.push(
                     `/search?query=${encodeURIComponent(searchQuery)}`
