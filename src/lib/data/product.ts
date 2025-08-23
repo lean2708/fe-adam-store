@@ -105,7 +105,7 @@ export async function fetchAllProductsTotalApi(
     products: (response.data.result?.items ?? []).map(
       transformProductResponseToTProduct
     ),
-    totalItem: response.data.result?.totalItems
+    totalItem: response.data.result?.totalItems,
   };
 }
 /**
@@ -188,7 +188,22 @@ export async function searchProductApi(
     transformProductResponseToTProduct
   );
 }
-
+export async function searchAllProductApi(
+  page?: number,
+  size?: number,
+  sort?: string[],
+  search?: string[]
+) {
+  const api = await getProductController();
+  const response = await api.searchProduct({ page, size, sort, search });
+  return{
+    items: (response.data.result?.items ?? []).map(
+      transformProductResponseToTProduct
+    ),
+    totalItems: response.data.result?.totalItems,
+     totalPages: response.data.result?.totalPages
+  }
+}
 /**
  * Fetch all products for admin with pagination (returns raw API response)
  */
@@ -222,7 +237,7 @@ export async function createProduct(
     productRequest: productData,
   });
   console.log(response);
-  
+
   if (response.data.code !== 201) {
     throw new Error(response.data.message || "Failed to create product");
   }
