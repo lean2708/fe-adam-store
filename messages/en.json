@@ -246,7 +246,7 @@
       "paymentHistory": "Payment History"
     },
     "products": {
-      
+      "restorePayment": "Restore",
       "updateProductTitle": "Update Product",
       "updateProduct": "Update Product",
       "title": "Products Management",
@@ -351,7 +351,7 @@
       "deleteProduct": "Delete Product"
     },
     "categories": {
-      
+      "deletePayment":"Delete",
       "categoriesTitle": "Category Management",
       "categoriesDescription": "Manage product categories and classifications",
       "addCategory": "Add Category",
@@ -410,7 +410,12 @@
       "noUsersFound": "No users found",
       "noRoles": "No roles",
       "openMenu": "Open menu",
-      "ACTIVE": "Active"
+      "ACTIVE": "Active",
+      "gender": {
+        "MALE": "Male",
+        "FEMALE": "Female",
+        "Other": "Other"
+      }
     },
     "branches": {
       "ACTIVE": "Active",

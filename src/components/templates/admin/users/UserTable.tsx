@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations, useLocale } from "next-intl";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getStatusColor } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -27,6 +27,7 @@ import {
   Edit,
   Trash2,
   RotateCcw,
+  RefreshCw,
   Users,
 } from "lucide-react";
 import type { TUser } from "@/types";
@@ -37,6 +38,7 @@ interface UserTableProps {
   loading: boolean;
   searchTerm: string;
   onSearchChange: (value: string) => void;
+  onRefresh: () => void;
   onCreateUser: () => void;
   onEditUser: (user: TUser) => void;
   onDeleteUser: (id: number) => void;
@@ -54,6 +56,7 @@ export function UserTable({
   loading,
   searchTerm,
   onSearchChange,
+  onRefresh,
   onCreateUser,
   onEditUser,
   onDeleteUser,
@@ -77,6 +80,7 @@ export function UserTable({
     }
   };
 
+
   // No client-side filtering needed since we're using server-side search
   const filteredUsers = users;
 
@@ -92,6 +96,10 @@ export function UserTable({
           <p className="text-sm text-gray-600 mt-1">{t("users.description")}</p>
         </div>
         <div className="flex gap-3">
+          <Button onClick={onRefresh} variant="outline" size="sm">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            {t("common.refresh") || "Làm mới"}
+          </Button>
           <Button onClick={onCreateUser} size="sm">
             <Plus className="mr-2 h-4 w-4" />
             {t("users.addUser")}
@@ -212,7 +220,9 @@ export function UserTable({
 
                     {/* Giới tính */}
                     <TableCell>
-                      <div className="text-sm">{user.gender || "N/A"}</div>
+                      <div className="text-sm">
+                        {t(`users.gender.${user.gender || "Other"}`)}
+                      </div>
                     </TableCell>
 
                     {/* Sinh nhật */}
@@ -254,7 +264,10 @@ export function UserTable({
                       
                       <Badge
                         variant="secondary"
-                        className={getStatusColor(user.status || "INACTIVE")}
+                        className={getStatusColor(
+                          user.status || "INACTIVE",
+                          "general"
+                        )}
                       >
                         {t(user.status || "INACTIVE") ||
                           user.status ||

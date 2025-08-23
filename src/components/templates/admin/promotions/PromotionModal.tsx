@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { Modal, ModalHeader, ModalBody } from "@/components/ui/modal";
-import { X } from "lucide-react";
+import { Modal, ModalBody } from "@/components/ui/modal";
+
 import { useTranslations } from "next-intl";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -141,26 +141,17 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
       size="xl"
       showOverlay={true}
       closeOnClickOutside={false}
+      showCloseButton={true}
       className="bg-white rounded-lg shadow-xl"
     >
-      <ModalHeader className="flex items-center justify-between p-6 border-b">
-        <div>
-          <h2 className="text-xl font-semibold text-gray-900">
-            {editingPromotion ? t("editPromotion") : t("addPromotion")}
-          </h2>
-          <p className="text-sm text-gray-600 mt-1">
-            {editingPromotion ? t("editPromotionDescription") : t("addPromotionDescription")}
-          </p>
-        </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onClose}
-          className="h-8 w-8 p-0"
-        >
-          <X className="h-4 w-4" />
-        </Button>
-      </ModalHeader>
+      <div className="p-6 border-b">
+        <h2 className="text-xl font-semibold text-gray-900">
+          {editingPromotion ? t("editPromotion") : t("addPromotion")}
+        </h2>
+        <p className="text-sm text-gray-600 mt-1">
+          {editingPromotion ? t("editPromotionDescription") : t("addPromotionDescription")}
+        </p>
+      </div>
 
       <ModalBody className="p-6">
         <form onSubmit={handleSubmit} className="space-y-4">

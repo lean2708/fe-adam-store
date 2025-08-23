@@ -5,14 +5,12 @@ import type {
   PageResponseUserResponse,
   PageResponseRoleResponse,
   UserUpdateRequest,
-  PageResponsePromotionResponse,
-} from '@/api-client/models';
-import { ActionResponse } from '../types/actions';
-import { extractErrorMessage } from '../utils';
-import {
-  transformUserResponseToTUser,
-  transformApiResponsePageResponseUserToActionResponse,
-} from './transform/user';
+  PageResponsePromotionResponse
+} from "@/api-client/models";
+import { ActionResponse } from "../types/actions";
+import { extractErrorMessage } from "../utils";
+import { transformUserResponseToTUser, transformApiResponsePageResponseUserToActionResponse } from "./transform/user";
+import { TUser } from '@/types';
 
 // Legacy function - keeping for backward compatibility
 export async function fetchAllAddressUserApi() {
@@ -28,7 +26,7 @@ export async function fetchAllUsersForAdmin(
   page: number = 0,
   size: number = 10,
   sort: string[] = ['id,desc']
-): Promise<PageResponseUserResponse> {
+): Promise<ActionResponse<TUser[]>> {
   const controller = await ControllerFactory.getUserController();
   const response = await controller.fetchAllForAdmin({
     page,
@@ -40,8 +38,10 @@ export async function fetchAllUsersForAdmin(
     throw new Error(response.data.message || 'Failed to fetch users');
   }
 
-  return response.data.result!;
+  return transformApiResponsePageResponseUserToActionResponse(response.data);
 }
+
+
 
 /**
  * Fetch all promotions available for user
@@ -94,7 +94,6 @@ export async function createUser(
     };
   }
 }
-
 /**
  * Update a user
  */

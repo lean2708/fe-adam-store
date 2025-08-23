@@ -1,5 +1,7 @@
+import { EntityBasic } from '@/api-client/models';
 import { ImageBasic } from '@/api-client';
-import { ORDER_STATUS, PAYMENT_METHODS } from '@/enums';
+import { ORDER_STATUS } from '@/enums';
+import { PAYMENT_METHODS } from '@/enums';
 
 export type TCategory = {
   id: string;
@@ -15,7 +17,7 @@ export type TCategory = {
 export type TOrder = {
   OrderItems: TOrderItem[];
 } & {
-  id: string;
+  id: number;
   createdAt: Date;
   updatedAt: Date;
   status: ORDER_STATUS | string;
@@ -23,11 +25,7 @@ export type TOrder = {
   totalPrice: string;
   userId: string;
   userName: string;
-  customerName: string;
-  discountAmount: number;
-  orderDate: string;
-  orderItems: TOrderItem[];
-  orderStatus: string;
+  customerPhone?: string;
 };
 
 export type TOrderItem = {
@@ -38,14 +36,14 @@ export type TOrderItem = {
   size: number;
   productId: string;
   imageUrl: string;
-  image: TImage;
-  productVariant: ProductVariant;
+  image?: TImage;
+  productVariant?: TProductVariant;
   unitPrice: number;
   isReview?: boolean;
   Product: {
     id: string;
     title: string;
-    price: string;
+    price: number;
     description: string;
     colors: string[];
     sizes: number[];
@@ -125,7 +123,7 @@ export interface Ward {
   name?: string;
 }
 
-export interface AddressItem {
+export interface TAddressItem {
   id?: number;
   isDefault?: boolean;
   isVisible?: boolean;
@@ -147,12 +145,6 @@ export interface TSize {
   name: string;
 }
 
-export interface ProductVariant {
-  id: number;
-  product: TProduct;
-  color: TColor;
-  size: TSize;
-}
 
 export type TEntityBasic = {
   id?: number;
@@ -169,17 +161,6 @@ export type TVariant = {
   size?: TEntityBasic;
 };
 
-export type TProductVariant = {
-  id?: number;
-  name?: string;
-  price?: number;
-  quantity?: number;
-  isAvailable?: boolean;
-  imageUrl?: string;
-  status?: string;
-  size?: TEntityBasic;
-  color?: TEntityBasic;
-};
 
 export type TColor = {
   id: number;
@@ -207,6 +188,8 @@ export type TPaymentHistory = {
   paymentStatus?: 'PAID' | 'PENDING' | 'REFUNDED' | 'CANCELED' | 'FAILED';
   paymentTime?: string;
 };
+
+
 
 // Additional types for admin functionality
 export type TUser = {
@@ -332,20 +315,27 @@ export type TPromotion = {
   createdBy?: string;
   createdAt?: Date | string;
 };
-
 export type TShippingFee = {
   id?: number;
-  address?: AddressItem;
+  address?: TAddressItem;
   orderItem?: TOrderItem[];
   createdBy?: string;
   createdAt?: Date | string;
 };
 
-export interface TPaymentMethodOption {
-  id: string;
-  value: PAYMENT_METHODS;
+export type TProductVariant = {
   label: string;
   icon?: React.ComponentType<{ className?: string }>;
   image?: string;
-  isAvailable: boolean;
-}
+  id?: number;
+  name?: string;
+  price?: number;
+  quantity?: number;
+  isAvailable?: boolean;
+  imageUrl?: string;
+  status?: string;
+  size?: TEntityBasic;
+  color?: TEntityBasic;
+};
+
+

@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Modal, ModalHeader, ModalBody } from "@/components/ui/modal";
-import { X } from "lucide-react";
+import { Modal, ModalBody } from "@/components/ui/modal";
+
 import {
   Form,
   FormControl,
@@ -33,6 +33,7 @@ import {
 } from "@/actions/schema/userSchema";
 import type { TUser, TRole, TEntityBasic } from "@/types";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 
 
@@ -45,7 +46,8 @@ interface UserModalProps {
 export function UserModal({ open, onClose, user }: UserModalProps) {
   const [loading, setLoading] = useState(false);
   const [roles, setRoles] = useState<TRole[]>([]);
-  const [showPasswordFields, setShowPasswordFields] = useState(false);
+  const t = useTranslations("Admin.users");
+
 
   const isEditing = !!user;
 
@@ -170,28 +172,19 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
       size="xl"
       showOverlay={true}
       closeOnClickOutside={false}
+      showCloseButton={true}
       className="bg-white rounded-lg shadow-xl"
     >
-      <ModalHeader className="flex items-center justify-between p-6 border-b">
-        <div>
-          <h2 className="text-xl font-semibold text-gray-900">
-            {isEditing ? "Chỉnh sửa người dùng" : "Thêm người dùng"}
-          </h2>
-          <p className="text-sm text-gray-600 mt-1">
-            {isEditing
-              ? "Cập nhật thông tin người dùng và vai trò."
-              : "Tạo tài khoản người dùng mới với vai trò."}
-          </p>
-        </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => onClose()}
-          className="h-8 w-8 p-0"
-        >
-          <X className="h-4 w-4" />
-        </Button>
-      </ModalHeader>
+      <div className="p-6 border-b">
+        <h2 className="text-xl font-semibold text-gray-900">
+          {isEditing ? "Chỉnh sửa người dùng" : "Thêm người dùng"}
+        </h2>
+        <p className="text-sm text-gray-600 mt-1">
+          {isEditing
+            ? "Cập nhật thông tin người dùng và vai trò."
+            : "Tạo tài khoản người dùng mới với vai trò."}
+        </p>
+      </div>
 
       <ModalBody className="p-6">
         <Form {...form}>
@@ -293,17 +286,17 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
                   name="gender"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Giới tính</FormLabel>
+                      <FormLabel>{t("gender.title")}</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger className="bg-[#F0F0F0] rounded-xl">
-                            <SelectValue placeholder="Chọn giới tính" />
+                            <SelectValue placeholder={t("gender.placeholder")} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="MALE">Nam</SelectItem>
-                          <SelectItem value="FEMALE">Nữ</SelectItem>
-                          <SelectItem value="OTHER">Khác</SelectItem>
+                          <SelectItem value="MALE">{t("gender.Male")}</SelectItem>
+                          <SelectItem value="FEMALE">{t("gender.Female")}</SelectItem>
+                          <SelectItem value="OTHER">{t("gender.Other")}</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

@@ -8,14 +8,11 @@ import {
   fetchAllProductVariantsByProductIdApi,
   findProductVariantByProductColorSizeApi,
   getProductVariantApi,
-} from '@/lib/data/productVariant';
-import {
-  productVariantSchema,
-  productVariantUpdateSchema,
-} from './schema/productVariantSchema';
-import type { ActionResponse } from '@/lib/types/actions';
-import { extractErrorMessage } from '@/lib/utils';
-import type { TProductVariant } from '@/types';
+} from "@/lib/data/productVariant";
+import { productVariantSchema, productVariantUpdateSchema } from "./schema/productVariantSchema";
+import type { ActionResponse } from "@/lib/types/actions";
+import { extractErrorMessage } from "@/lib/utils";
+import type { TProductVariant } from "@/types";
 
 /**
  * Create a new product variant
@@ -193,7 +190,6 @@ export async function findProductVariantByProductColorSizeAction(
     };
   }
 }
-
 export async function getProductVariantByColorAndSizeAction(
   productId: number,
   colorId: number,

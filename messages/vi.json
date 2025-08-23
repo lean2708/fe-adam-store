@@ -272,7 +272,7 @@
       }
     },
     "navigation": {
-      "dashboard": "Bảng điều khiển",
+      "dashboard": "Tổng quan",
       "products": "Sản phẩm",
       "search": "Tìm kiếm",
       "orders": "Đơn hàng",
@@ -287,6 +287,7 @@
       "paymentHistory": "Lịch sử thanh toán"
     },
     "products": {
+      "restorePayment": "Khôi phục",
       "updateProductTitle": "Cập nhật sản phẩm",
       "updateProduct": "Cập nhật sản phẩm",
       "title": "Quản lý sản phẩm",
@@ -451,7 +452,33 @@
       "searchPlaceholder": "Tìm kiếm theo tên hoặc email...",
       "noUsersFound": "Không tìm thấy người dùng",
       "noRoles": "Không có vai trò",
-      "openMenu": "Mở menu"
+      "openMenu": "Mở menu",
+      "gender": {
+        "title": "Giới tính",
+        "placeholder": "Chọn giới tính",
+        "MALE": "Nam",
+        "FEMALE": "Nữ",
+        "Other": "Khác"
+      },
+      "modalDescriptionEdit": "Cập nhật thông tin người dùng và vai trò.",
+      "modalDescriptionCreate": "Tạo tài khoản người dùng mới với vai trò.",
+      "nameLabel": "Tên người dùng",
+      "namePlaceholder": "Nhập tên người dùng",
+      "emailPlaceholder": "Nhập email",
+      "dobLabel": "Ngày sinh",
+      "passwordLabel": "Mật khẩu",
+      "passwordPlaceholder": "Nhập mật khẩu",
+      "confirmPasswordLabel": "Nhập lại mật khẩu",
+      "confirmPasswordPlaceholder": "Nhập lại mật khẩu",
+      "cancelButton": "Hủy bỏ",
+      "saveButtonLoading": "Đang lưu...",
+      "updateButton": "Cập nhật",
+      "confirmButton": "Xác nhận",
+      "toastUpdateSuccess": "Cập nhật người dùng thành công",
+      "toastUpdateError": "Không thể cập nhật người dùng",
+      "toastCreateSuccess": "Tạo người dùng thành công",
+      "toastCreateError": "Không thể tạo người dùng",
+      "toastFetchRolesError": "Không thể tải vai trò"
     },
     "branches": {
       "ACTIVE": "Hoạt động",

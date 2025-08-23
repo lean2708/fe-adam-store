@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { useTranslations, useLocale } from "next-intl";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getStatusColor } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -14,7 +14,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { ActionDropdown } from "@/components/ui/action-dropdown";
 import { AdminPagination } from "@/components/ui/pagination";
-import { MapPin, Building, Phone, Plus } from "lucide-react";
+import { MapPin, Building, Phone, Plus, RefreshCw } from "lucide-react";
 import type { TBranch } from "@/types";
 import { Button } from "@/components/ui/button";
 
@@ -48,16 +48,6 @@ export function BranchesTable({
 }: BranchesTableProps) {
   const t = useTranslations("Admin.branches");
   const locale = useLocale();
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "ACTIVE":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
-      case "INACTIVE":
-        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
-      default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300";
-    }
-  };
   return (
     <div>
       <div className="p-6 border-b bg-gray-50 ">
@@ -68,13 +58,19 @@ export function BranchesTable({
               {t("storeBranches")}
             </h2>
           </div>
-          <Button
-            onClick={onCreateBranch}
-            className="bg-black hover:bg-gray-800 text-white"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            {t("addBranch")}
-          </Button>
+          <div className="flex gap-3">
+            <Button onClick={onRefresh} variant="outline" size="sm">
+              <RefreshCw className="h-4 w-4 mr-2" />
+              {t("common.refresh") || "Làm mới"}
+            </Button>
+            <Button
+              onClick={onCreateBranch}
+              className="bg-black hover:bg-gray-800 text-white"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              {t("addBranch")}
+            </Button>
+          </div>
         </div>
         <p className="text-sm text-gray-600 mt-1">{t("listOfAllBranches")}</p>
       </div>
@@ -154,7 +150,7 @@ export function BranchesTable({
                     <TableCell>
                       <Badge
                         variant="secondary"
-                        className={getStatusColor(branch.status || "INACTIVE")}
+                        className={getStatusColor(branch.status || "INACTIVE", "general")}
                       >
                         {t(branch.status || "INACTIVE") ||
                           branch.status ||

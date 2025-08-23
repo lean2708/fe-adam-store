@@ -69,6 +69,10 @@ export default function UsersPage() {
     fetchUsers(0, value);
   };
 
+  const handleRefresh = () => {
+    fetchUsers(currentPage, searchTerm);
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -114,9 +118,9 @@ export default function UsersPage() {
   const handleModalClose = (shouldRefresh?: boolean) => {
     setIsModalOpen(false);
     setSelectedUser(null);
-    if (shouldRefresh) {
-      fetchUsers(currentPage);
-    }
+    // if (shouldRefresh) {
+    //   fetchUsers(currentPage);
+    // }
   };
 
   return (
@@ -132,6 +136,7 @@ export default function UsersPage() {
             onEditUser={handleEditUser}
             onDeleteUser={handleDeleteUser}
             onRestoreUser={handleRestoreUser}
+            onRefresh={handleRefresh} // Add this line
             currentPage={currentPage}
             totalPages={totalPages}
             totalElements={totalElements}

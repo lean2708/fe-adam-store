@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Modal, ModalHeader, ModalBody } from "@/components/ui/modal";
+import { Modal, ModalBody } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ActionDropdown } from "@/components/ui/action-dropdown";
@@ -9,7 +9,7 @@ import { ProductVariantEditModal } from "./ProductVariantEditModal";
 import { useTranslations, useLocale } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatCurrency } from "@/lib/utils";
-import { X, Plus, RefreshCw } from "lucide-react";
+import { Plus, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import type { TProduct } from "@/types";
 
@@ -95,9 +95,10 @@ export function ProductVariantsModal({
       size="xl"
       showOverlay={true}
       closeOnClickOutside={false}
+      showCloseButton={true}
       className="bg-white rounded-lg shadow-xl max-h-[80vh] overflow-hidden"
     >
-      <ModalHeader className="flex items-center justify-between p-6 border-b">
+      <div className="flex items-center justify-between p-6 border-b">
         <div>
           <h2 className="text-lg font-semibold text-gray-900">
             {t("productVariants") || "Biến thể sản phẩm"}
@@ -114,16 +115,8 @@ export function ProductVariantsModal({
           >
             <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
           </Button>
-          <Button
-            onClick={onClose}
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0"
-          >
-            <X className="h-4 w-4" />
-          </Button>
         </div>
-      </ModalHeader>
+      </div>
 
       <ModalBody className="p-6 overflow-auto max-h-[60vh]">
 

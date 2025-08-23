@@ -217,6 +217,9 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
         visible={isReview}
         orderItem={item}
         onClose={() => setIsReview(false)}
+        returnRivew={function (): void {
+          throw new Error("Function not implemented.");
+        }}
       />
     </div>
   );

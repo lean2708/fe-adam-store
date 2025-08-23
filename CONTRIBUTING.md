@@ -159,7 +159,6 @@ Here are the specific roles and steps for creating a new release:
     git pull
     git flow release start v1.2.0
     ```
-
 3.  **Finish Release**: After approval, **Le Dinh Phung** will use `git-flow` to automate the merging and tagging process:
 
     ```bash

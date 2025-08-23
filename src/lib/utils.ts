@@ -4,6 +4,7 @@ import axios from "axios";
 import { ApiErrorResponse } from "@/api-client/models/api-error-response";
 import { TProduct } from "@/types";
 import { enAU, es, Locale, vi } from "react-day-picker/locale";
+import { ORDER_STATUS } from '@/enums';
 
 
 export function cn(...inputs: ClassValue[]) {
@@ -25,7 +26,7 @@ export function isValidColor(strColor: string) {
     return true;
   }
 
-  // return 'false' if color wasn't assigned
+  // return 'whitespace-nowrapfalse' if color wasn't assigned
   return s.color == strColor.toLowerCase();
 }
 
@@ -137,10 +138,66 @@ export function formatDate(dateString: string | undefined, locale: string = 'vi'
 
 export function getReactDayPickerLocale(locale: string = 'vi'): Locale {
   console.log(locale);
-  
+
   if (locale === 'vi') {
     return vi;
   } else {
     return enAU;
   }
 }
+
+/**
+ * Get status color classes for different status types
+ * @param status - The status string
+ * @param type - The type of status (general, order, payment)
+ * @returns Tailwind CSS classes for the status
+ */
+export const getStatusColor = (status: string, type: 'general' | 'order' | 'payment' = 'general') => {
+  console.log(status);
+
+  switch (type) {
+    case 'order':
+      switch (status) {
+        case ORDER_STATUS.DELIVERED:
+          return 'whitespace-nowrap bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 hover:bg-green-100';
+        case ORDER_STATUS.PROCESSING:
+          return 'whitespace-nowrap bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300 hover:bg-blue-100';
+        case ORDER_STATUS.SHIPPED:
+          return 'whitespace-nowrap bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300 hover:bg-purple-100';
+        case ORDER_STATUS.PENDING:
+          return 'whitespace-nowrap bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300 hover:bg-yellow-100';
+        case ORDER_STATUS.CANCELED:
+          return 'whitespace-nowrap bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 hover:bg-red-100';
+        default:
+          return 'whitespace-nowrap bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300 hover:bg-gray-100';
+      }
+
+
+    case 'payment':
+      switch (status) {
+        case 'PAID':
+          return 'whitespace-nowrap bg-green-100 text-green-800 hover:bg-green-100';
+        case 'PENDING':
+          return 'whitespace-nowrap bg-yellow-100 text-yellow-800 hover:bg-yellow-100';
+        case 'REFUNDED':
+          return 'whitespace-nowrap bg-purple-100 text-purple-800 hover:bg-purple-100';
+        case 'CANCELED':
+          return 'whitespace-nowrap bg-red-100 text-red-800 hover:bg-red-100';
+        case 'FAILED':
+          return 'whitespace-nowrap bg-orange-100 text-orange-800 hover:bg-orange-100';
+        default:
+          return 'whitespace-nowrap bg-gray-100 text-gray-800 hover:bg-gray-100';
+      }
+
+    case 'general':
+    default:
+      switch (status) {
+        case 'ACTIVE':
+          return 'whitespace-nowrap bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+        case 'INACTIVE':
+          return 'whitespace-nowrap bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+        default:
+          return 'whitespace-nowrap bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+      }
+  }
+};

@@ -11,11 +11,12 @@ import { toast } from 'sonner';
 
 export default function ChooseAddress(props: {
   visible: boolean;
+  onSuccess: (address: TAddressItem) => void;
   orderItem?: TOrder;
   onSuccess: (id: AddressItem) => void;
   onClose: () => void;
 }) {
-  const { visible, onSuccess, onClose, orderItem } = props;
+  const { visible, onClose, orderItem, onSuccess } = props;
   const [loading, setLoading] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [confirm, setConfirm] = useState(false);
@@ -23,10 +24,21 @@ export default function ChooseAddress(props: {
   const [listAddress, setListAddress] = useState<AddressItem[]>([]);
 
   useEffect(() => {
+    const defaultIndex = listAddress.findIndex((addr) => addr.isDefault);
+    setSelectedIndex(defaultIndex >= 0 ? defaultIndex : 0);
+
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, [onClose]);
+  useEffect(() => {
     async function getAddress() {
       try {
         setLoading(true);
         const res = await getAllAddressUser();
+        console.log(res);
         if (res.status === 200 && res.address?.items) {
           setListAddress(res.address.items as AddressItem[]);
         }
@@ -36,13 +48,7 @@ export default function ChooseAddress(props: {
         setLoading(false);
       }
     }
-    if (visible) {
-      getAddress();
-      if (listAddress.length > 0) {
-        const defaultIndex = listAddress.findIndex((addr) => addr.id);
-        setSelectedIndex(defaultIndex >= 0 ? defaultIndex : 0);
-      }
-    }
+    getAddress();
   }, [visible]);
   useEffect(() => {
     if (listAddress.length && orderItem?.id && orderItem.address) {
@@ -55,6 +61,7 @@ export default function ChooseAddress(props: {
         setSelectedIndex(foundIndex);
       }
     }
+    
   }, [listAddress, orderItem]);
 
   const handleUpdateAddress = async () => {
@@ -154,6 +161,11 @@ export default function ChooseAddress(props: {
                       {item.streetDetail}, {item.ward?.name},{' '}
                       {item.district?.name}, {item.province?.name}
                     </p>
+                    {item.isDefault && (
+                      <span className="absolute -top-3 left-5 px-2 py-0.5 bg-white">
+                        Mặc định
+                      </span>
+                    )}
                   </div>
                 </label>
               </li>
@@ -175,3 +187,4 @@ export default function ChooseAddress(props: {
     </div>
   );
 }
+// props: { loading: boolean, onClose: () => void, title: string, confirm: boolean, onSubmit: () => void

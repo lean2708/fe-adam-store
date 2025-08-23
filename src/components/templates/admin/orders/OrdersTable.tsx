@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { useTranslations, useLocale } from "next-intl";
-import { formatDate, formatCurrency } from "@/lib/utils";
+import { formatDate, formatCurrency, getStatusColor } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -21,8 +21,10 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { ActionDropdown } from "@/components/ui/action-dropdown";
 import { AdminPagination } from "@/components/ui/pagination";
-import { ShoppingCart, Eye, X } from "lucide-react";
+import { ShoppingCart, Eye, X, RefreshCw } from "lucide-react";
 import type { TOrder, SearchOrdersForAdminOrderStatusEnum } from "@/types";
+import { Button } from "@/components/ui/button";
+import { ORDER_STATUS } from "@/enums";
 
 interface OrdersTableProps {
   orders: TOrder[];
@@ -31,6 +33,7 @@ interface OrdersTableProps {
   onCancelOrder: (id: string) => void;
   onDeleteOrder: (id: string) => void;
   onRestoreOrder?: (id: string) => void;
+  onRefresh: () => void;
   // Pagination props
   currentPage: number;
   totalPages: number;
@@ -42,24 +45,6 @@ interface OrdersTableProps {
     value: SearchOrdersForAdminOrderStatusEnum | "ALL"
   ) => void;
 }
-
-// Helper function to get status color
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case "PENDING":
-      return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
-    case "PROCESSING":
-      return "bg-blue-100 text-blue-800 hover:bg-blue-100";
-    case "SHIPPED":
-      return "bg-purple-100 text-purple-800 hover:bg-purple-100";
-    case "DELIVERED":
-      return "bg-green-100 text-green-800 hover:bg-green-100";
-    case "CANCELLED":
-      return "bg-red-100 text-red-800 hover:bg-red-100";
-    default:
-      return "bg-gray-100 text-gray-800 hover:bg-gray-100";
-  }
-};
 
 export function OrdersTable({
   orders,
@@ -74,22 +59,23 @@ export function OrdersTable({
   onPageChange,
   statusFilter,
   onStatusFilterChange,
+  onRefresh,
 }: OrdersTableProps) {
   const t = useTranslations("Admin.orders");
   const locale = useLocale();
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case "PENDING":
-        return t("pending");
-      case "PROCESSING":
-        return t("processing");
-      case "SHIPPED":
-        return t("shipped");
-      case "DELIVERED":
+      case ORDER_STATUS.DELIVERED:
         return t("delivered");
-      case "CANCELLED":
-        return t("cancelled");
+      case ORDER_STATUS.PROCESSING:
+        return t("processing");
+      case ORDER_STATUS.SHIPPED:
+        return t("shipped");
+      case ORDER_STATUS.CANCELED:
+        return t("cancelled"); // vẫn giữ key cũ
+      case ORDER_STATUS.PENDING:
+        return t("pending");
       default:
         return status;
     }
@@ -129,6 +115,9 @@ export function OrdersTable({
                 <SelectItem value="CANCELLED">{t("cancelled")}</SelectItem>
               </SelectContent>
             </Select>
+            <Button onClick={onRefresh} variant="outline" size="icon">
+              <RefreshCw className="h-4 w-4" />
+            </Button>
           </div>
         </div>
         <p className="text-sm text-gray-600 mt-1">{t("description")}</p>
@@ -203,7 +192,10 @@ export function OrdersTable({
                     <TableCell>
                       <Badge
                         variant="secondary"
-                        className={getStatusColor(order.status || "PENDING")}
+                        className={getStatusColor(
+                          order.status || "PENDING",
+                          "order"
+                        )}
                       >
                         {getStatusText(order.status || "PENDING")}
                       </Badge>
@@ -224,7 +216,6 @@ export function OrdersTable({
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-
                         {/* Action Dropdown */}
                         <ActionDropdown
                           onEdit={

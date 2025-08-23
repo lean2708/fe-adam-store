@@ -1,5 +1,6 @@
-import React, { ReactNode, useEffect } from "react"
-import { cn } from "@/lib/utils"
+import React, { ReactNode, useEffect } from "react";
+import { cn } from "@/lib/utils";
+import { X } from "lucide-react";
 
 export interface ModalProps {
   open: boolean
@@ -12,6 +13,7 @@ export interface ModalProps {
   position?: "top-right" | "top-left" | "bottom-right" | "bottom-left" | "center" | "left" | "right"
   showOverlay?: boolean
   closeOnClickOutside?: boolean
+  showCloseButton?: boolean
 }
 
 const variantStyles = {
@@ -51,6 +53,7 @@ export function Modal({
   position = "top-right",
   showOverlay = false,
   closeOnClickOutside = true,
+  showCloseButton = false,
   ...props
 }: ModalProps) {
   // Custom click outside handler that ignores dropdown portals
@@ -132,6 +135,14 @@ export function Modal({
             }}
             {...props}
           >
+            {showCloseButton && (
+              <button
+                onClick={onClose}
+                className="absolute top-2 right-2 p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 z-10"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            )}
             {children}
           </div>
         </div>
@@ -185,6 +196,14 @@ export function Modal({
           }}
           {...props}
         >
+          {showCloseButton && (
+            <button
+              onClick={onClose}
+              className="absolute top-2 right-2 p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 z-10"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          )}
           {children}
         </div>
       </>
@@ -213,6 +232,14 @@ export function Modal({
         }}
         {...props}
       >
+        {showCloseButton && (
+          <button
+            onClick={onClose}
+            className="absolute top-2 right-2 p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 z-10"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        )}
         {children}
       </div>
     </>

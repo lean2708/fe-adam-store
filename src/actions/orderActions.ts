@@ -237,7 +237,7 @@ export async function searchOrdersForAdminAction(
   sort: string[] = ['id,desc'],
   orderStatus?: SearchOrdersForAdminOrderStatusEnum
 ): Promise<
-  ActionResponse<{ items: TOrder[]; totalItems: number; totalPages: number }>
+  ActionResponse<TOrder[]>
 > {
   try {
     const data = await searchOrdersForAdmin(
@@ -248,10 +248,7 @@ export async function searchOrdersForAdminAction(
       sort,
       orderStatus
     );
-    return {
-      success: true,
-      data,
-    };
+    return data;
   } catch (error) {
     return {
       success: false,

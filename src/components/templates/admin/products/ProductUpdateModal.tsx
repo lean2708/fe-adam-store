@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Modal, ModalHeader, ModalBody } from "@/components/ui/modal";
+import { Modal, ModalBody } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Upload, X } from "lucide-react";
+import { Upload } from "lucide-react";
 import { z } from "zod";
 import { fetchAllColorsAction } from "@/actions/colorActions";
 import { fetchAllSizesAction } from "@/actions/sizeActions";
@@ -157,22 +157,9 @@ export function ProductUpdateModal({
       size="xl"
       showOverlay={true}
       closeOnClickOutside={!isDropdownOpen}
+      showCloseButton={true}
     >
-      <ModalHeader>
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">
-            {t("updateProductTitle") || "Cập nhật sản phẩm"}
-          </h2>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleClose}
-            className="h-8 w-8 p-0"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      </ModalHeader>
+
 
       <ModalBody className="p-8">
         <h2 className="text-xl font-semibold text-gray-900 mb-8">

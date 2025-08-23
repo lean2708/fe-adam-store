@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslations, useLocale } from "next-intl";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getStatusColor } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -54,17 +54,7 @@ interface PromotionTableProps {
   onPageChange: (page: number) => void;
 }
 
-// Helper function to get status color
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case "ACTIVE":
-      return "bg-green-100 text-green-800 hover:bg-green-100";
-    case "INACTIVE":
-      return "bg-red-100 text-red-800 hover:bg-red-100";
-    default:
-      return "bg-gray-100 text-gray-800 hover:bg-gray-100";
-  }
-};
+
 
 // Helper function to format period
 const formatPeriod = (
@@ -267,7 +257,8 @@ export function PromotionTable({
                       <Badge
                         variant="secondary"
                         className={getStatusColor(
-                          promotion.status || "INACTIVE"
+                          promotion.status || "INACTIVE",
+                          "general"
                         )}
                       >
                         {getStatusText(promotion.status || "INACTIVE")}
