@@ -237,14 +237,7 @@ export async function createProduct(
     productRequest: productData,
   });
 
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-=======
-
->>>>>>> develop
->>>>>>> feature/admin
   if (response.data.code !== 200) {
     throw new Error(response.data.message || 'Failed to create product');
   }
