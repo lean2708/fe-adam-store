@@ -1,5 +1,5 @@
 import { ImageBasic } from '@/api-client';
-import { ORDER_STATUS, USER_ROLE } from '@/enums';
+import { ORDER_STATUS, PAYMENT_METHODS } from '@/enums';
 
 export type TCategory = {
   id: string;
@@ -22,7 +22,7 @@ export type TOrder = {
   address: string;
   totalPrice: string;
   userId: string;
-  userName: string
+  userName: string;
   customerName: string;
   discountAmount: number;
   orderDate: string;
@@ -63,8 +63,8 @@ export type TCartItem = {
   createdAt: Date | string;
   updatedAt: Date | string;
   quantity: number;
-  color: string;
-  size: string;
+  color: TEntityBasic;
+  size: TEntityBasic;
   productId: string;
   Product: TProduct;
   userId: string;
@@ -110,52 +110,31 @@ export type TReview = {
   updatedAt?: string;
 };
 
-export type TAddress = {
-  id?: number;
-  isDefault: boolean;
-  isVisible?: boolean;
-  status?: string;
-  phone?: string;
-  streetDetail: string;
-  ward: {
-    code?: string;
-    name: string;
-  };
-  district: {
-    id?: number;
-    name: string;
-  };
-  province: {
-    id?: number;
-    name: string;
-  };
-};
-
-export interface TProvince {
+export interface Province {
   id?: number;
   name?: string;
 }
 
-export interface TDistrict {
+export interface District {
   id?: number;
   name?: string;
 }
 
-export interface TWard {
+export interface Ward {
   code?: string;
   name?: string;
 }
 
-export interface TAddressItem {
-  id: number;
-  isDefault: boolean;
-  isVisible: boolean;
-  phone: string;
-  status: string;
-  streetDetail: string;
-  province: TProvince;
-  district: TDistrict;
-  ward: TWard;
+export interface AddressItem {
+  id?: number;
+  isDefault?: boolean;
+  isVisible?: boolean;
+  phone?: string;
+  status?: string;
+  streetDetail?: string;
+  province?: Province;
+  district?: District;
+  ward?: Ward;
 }
 
 export interface TImage {
@@ -175,9 +154,6 @@ export interface ProductVariant {
   size: TSize;
 }
 
-
-
-
 export type TEntityBasic = {
   id?: number;
   name?: string;
@@ -191,6 +167,18 @@ export type TVariant = {
   imageUrl?: string;
   status?: string;
   size?: TEntityBasic;
+};
+
+export type TProductVariant = {
+  id?: number;
+  name?: string;
+  price?: number;
+  quantity?: number;
+  isAvailable?: boolean;
+  imageUrl?: string;
+  status?: string;
+  size?: TEntityBasic;
+  color?: TEntityBasic;
 };
 
 export type TColor = {
@@ -211,8 +199,6 @@ export type TBranch = {
   updatedBy?: string;
 };
 
-
-
 export type TPaymentHistory = {
   id: number;
   isPrimary?: boolean;
@@ -220,18 +206,6 @@ export type TPaymentHistory = {
   totalAmount?: number;
   paymentStatus?: 'PAID' | 'PENDING' | 'REFUNDED' | 'CANCELED' | 'FAILED';
   paymentTime?: string;
-};
-
-export type TPromotion = {
-  id: number;
-  code?: string;
-  description?: string;
-  discountPercent?: number;
-  startDate?: string;
-  endDate?: string;
-  status?: 'ACTIVE' | 'INACTIVE';
-  createdBy?: string;
-  createdAt?: string;
 };
 
 // Additional types for admin functionality
@@ -336,7 +310,7 @@ export enum SearchOrdersForAdminOrderStatusEnum {
   PROCESSING = 'PROCESSING',
   SHIPPED = 'SHIPPED',
   DELIVERED = 'DELIVERED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED',
 }
 
 export enum GetOrdersForUserOrderStatusEnum {
@@ -344,6 +318,34 @@ export enum GetOrdersForUserOrderStatusEnum {
   PROCESSING = 'PROCESSING',
   SHIPPED = 'SHIPPED',
   DELIVERED = 'DELIVERED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED',
 }
 
+export type TPromotion = {
+  id?: number;
+  code?: string;
+  description?: string;
+  discountPercent?: number;
+  startDate?: Date | string;
+  endDate?: Date | string;
+  status?: 'ACTIVE' | 'INACTIVE';
+  createdBy?: string;
+  createdAt?: Date | string;
+};
+
+export type TShippingFee = {
+  id?: number;
+  address?: AddressItem;
+  orderItem?: TOrderItem[];
+  createdBy?: string;
+  createdAt?: Date | string;
+};
+
+export interface TPaymentMethodOption {
+  id: string;
+  value: PAYMENT_METHODS;
+  label: string;
+  icon?: React.ComponentType<{ className?: string }>;
+  image?: string;
+  isAvailable: boolean;
+}

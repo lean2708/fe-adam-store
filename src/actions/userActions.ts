@@ -1,13 +1,14 @@
-"use server";
+'use server';
 
-import type { ActionResponse } from "@/lib/types/actions";
+import type { ActionResponse } from '@/lib/types/actions';
 import type {
   UserCreationRequest,
   UserUpdateRequest,
   PageResponseUserResponse,
-  PageResponseRoleResponse
-} from "@/api-client/models";
-import type { TUser } from "@/types";
+  PageResponseRoleResponse,
+  PageResponsePromotionResponse,
+} from '@/api-client/models';
+import type { TUser } from '@/types';
 import {
   fetchAllUsersForAdmin,
   searchUsersForAdmin,
@@ -17,16 +18,16 @@ import {
   restoreUser,
   fetchUserById,
   fetchAllRoles,
-} from "@/lib/data/user";
-import { extractErrorMessage } from "@/lib/utils";
-import { changePassword1, getMyInfoApi } from "@/lib/data/auth";
+  fetchPromotionsbyUser,
+} from '@/lib/data/user';
+import { extractErrorMessage } from '@/lib/utils';
+import { changePassword1, getMyInfoApi } from '@/lib/data/auth';
 import {
   userCreateSchema,
   UserUpdateFormData,
   userUpdateSchema,
   type UserCreateFormData,
-} from "@/actions/schema/userSchema";
-
+} from '@/actions/schema/userSchema';
 
 /**
  * Fetch all users for admin
@@ -38,9 +39,9 @@ export async function fetchAllUsersAction(
 ): Promise<ActionResponse<TUser[]>> {
   try {
     const users = await fetchAllUsersForAdmin(page, size, sort);
-    return users;
+    return { success: true, data: users };
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi server");
+    const extractedError = extractErrorMessage(error, 'Lỗi server');
     return {
       success: false,
       message: extractedError.message,
@@ -62,7 +63,7 @@ export async function searchUsersAction(
     const users = await searchUsersForAdmin(page, size, sort, search);
     return users;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi tìm kiếm");
+    const extractedError = extractErrorMessage(error, 'Lỗi tìm kiếm');
     return {
       success: false,
       message: extractedError.message,
@@ -87,7 +88,6 @@ export async function createUserAction(
       email: validatedData.email,
       password: validatedData.password,
       roleIds: validatedData.roleIds,
-
     };
 
     const result = await createUser(userData);
@@ -97,11 +97,11 @@ export async function createUserAction(
     if (error instanceof Error && error.name === 'ZodError') {
       return {
         success: false,
-        message: "Dữ liệu không hợp lệ",
+        message: 'Dữ liệu không hợp lệ',
       };
     }
 
-    const extractedError = extractErrorMessage(error, "Lỗi server");
+    const extractedError = extractErrorMessage(error, 'Lỗi server');
     return {
       success: false,
       message: extractedError.message,
@@ -125,11 +125,11 @@ export async function updateUserAction(
     const userData: UserUpdateRequest = {
       name: validatedData.name,
       roleIds: validatedData.roleIds,
-      dob: validatedData.dob || "",
+      dob: validatedData.dob || '',
       gender: validatedData.gender as any,
     };
     console.log(userData);
-    
+
     // Only include password if it's provided
     if (validatedData.password && validatedData.password.length > 0) {
       (userData as any).password = validatedData.password;
@@ -142,14 +142,14 @@ export async function updateUserAction(
     if (error instanceof Error && error.name === 'ZodError') {
       return {
         success: false,
-        message: "Dữ liệu không hợp lệ",
+        message: 'Dữ liệu không hợp lệ',
       };
     }
 
-    const extractedError = extractErrorMessage(error, "Lỗi server");
-  
+    const extractedError = extractErrorMessage(error, 'Lỗi server');
+
     console.log(error);
-    
+
     return {
       success: false,
       message: extractedError.message,
@@ -173,7 +173,7 @@ export async function deleteUserAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to delete user",
+      message: error instanceof Error ? error.message : 'Failed to delete user',
     };
   }
 }
@@ -188,7 +188,7 @@ export async function restoreUserAction(
     const result = await restoreUser(id);
     return result;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi server");
+    const extractedError = extractErrorMessage(error, 'Lỗi server');
     return {
       success: false,
       message: extractedError.message,
@@ -213,7 +213,28 @@ export async function fetchAllRolesAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch roles",
+      message: error instanceof Error ? error.message : 'Failed to fetch roles',
+    };
+  }
+}
+
+/**
+ * Fetch all roles
+ */
+export async function fetchPromotionsbyUserAction(
+  page: number = 0,
+  size: number = 10
+): Promise<ActionResponse<PageResponsePromotionResponse>> {
+  try {
+    const data = await fetchPromotionsbyUser(page, size);
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Failed to fetch roles',
     };
   }
 }
@@ -233,7 +254,7 @@ export async function fetchUserByIdAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch user",
+      message: error instanceof Error ? error.message : 'Failed to fetch user',
     };
   }
 }
@@ -245,7 +266,10 @@ export async function getInfoUser(): Promise<ActionResponse<TUser>> {
       data,
     };
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi lấy thông tin người dùng");
+    const extractedError = extractErrorMessage(
+      error,
+      'Lỗi lấy thông tin người dùng'
+    );
     return {
       success: false,
       message: extractedError.message,
@@ -253,10 +277,11 @@ export async function getInfoUser(): Promise<ActionResponse<TUser>> {
     };
   }
 }
+
 export async function changePasswordAction(newPass: {
-  oldPassword: string,
-  newPassword: string,
-  confirmPassword: string
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 }): Promise<ActionResponse<any>> {
   try {
     const data = await changePassword1(newPass);
@@ -265,7 +290,7 @@ export async function changePasswordAction(newPass: {
       data,
     };
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi đổi mật khẩu");
+    const extractedError = extractErrorMessage(error, 'Lỗi đổi mật khẩu');
     return {
       success: false,
       message: extractedError.message,

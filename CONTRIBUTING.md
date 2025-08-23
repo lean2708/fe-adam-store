@@ -10,14 +10,14 @@ To ensure consistency across the team, you must initialize `git-flow` with the f
 git flow init -f
 ```
 
--   **Branch name for production releases**: `main`
--   **Branch name for "next release" development**: `develop`
--   **Feature branch prefix**: `feature/`
--   **Bugfix branch prefix**: `bugfix/`
--   **Release branch prefix**: `release/`
--   **Hotfix branch prefix**: `hotfix/`
--   **Support branch prefix**: `support/`
--   **Version tag prefix**: `v`
+- **Branch name for production releases**: `main`
+- **Branch name for "next release" development**: `develop`
+- **Feature branch prefix**: `feature/`
+- **Bugfix branch prefix**: `bugfix/`
+- **Release branch prefix**: `release/`
+- **Hotfix branch prefix**: `hotfix/`
+- **Support branch prefix**: `support/`
+- **Version tag prefix**: `v`
 
 This will set up your local repository to follow the branching model used in this project.
 
@@ -25,9 +25,9 @@ This will set up your local repository to follow the branching model used in thi
 
 Our repository has two main branches with an infinite lifetime:
 
--   `main`: This branch contains production-ready code. It is always stable and deployable. Direct commits to `main` are strictly forbidden.
--   `develop`: This is the primary development branch where all completed features and bugfixes are merged.
--   `qa`: This branch contains features that are ready for testing. It is deployed to the QA environment.
+- `main`: This branch contains production-ready code. It is always stable and deployable. Direct commits to `main` are strictly forbidden.
+- `develop`: This is the primary development branch where all completed features and bugfixes are merged.
+- `qa`: This branch contains features that are ready for testing. It is deployed to the QA environment.
 
 ## Branching Strategy
 
@@ -35,31 +35,31 @@ We use several types of supporting branches for day-to-day development. These br
 
 ### 1. Feature Branches
 
--   **Purpose**: To develop new features.
--   **Branch from**: `develop`
--   **Merge back into**: `develop`
--   **Naming Convention**: `feature/issue-number-short-description` (e.g., `feature/123-add-user-authentication`)
+- **Purpose**: To develop new features.
+- **Branch from**: `develop`
+- **Merge back into**: `develop`
+- **Naming Convention**: `feature/issue-number-short-description` (e.g., `feature/123-add-user-authentication`)
 
 ### 2. Bugfix Branches
 
--   **Purpose**: To fix non-critical bugs discovered in the `develop` branch.
--   **Branch from**: `develop`
--   **Merge back into**: `develop`
--   **Naming Convention**: `bugfix/issue-number-fix-login-button`
+- **Purpose**: To fix non-critical bugs discovered in the `develop` branch.
+- **Branch from**: `develop`
+- **Merge back into**: `develop`
+- **Naming Convention**: `bugfix/issue-number-fix-login-button`
 
 ### 3. Release Branches
 
--   **Purpose**: To prepare for a new production release. This branch is deployed to the **QA environment** for final testing, bug fixing, and documentation generation.
--   **Branch from**: `qa`
--   **Merge back into**: `main` (with a release tag) and `develop` (to incorporate any last-minute fixes).
--   **Naming Convention**: `release/v1.2.0`
+- **Purpose**: To prepare for a new production release. This branch is deployed to the **QA environment** for final testing, bug fixing, and documentation generation.
+- **Branch from**: `qa`
+- **Merge back into**: `main` (with a release tag) and `develop` (to incorporate any last-minute fixes).
+- **Naming Convention**: `release/v1.2.0`
 
 ### 4. Hotfix Branches
 
--   **Purpose**: To fix critical bugs in the `main` (production) branch.
--   **Branch from**: `main`
--   **Merge back into**: `main` (with a new patch version tag) and `develop`.
--   **Naming Convention**: `hotfix/v1.2.1`
+- **Purpose**: To fix critical bugs in the `main` (production) branch.
+- **Branch from**: `main`
+- **Merge back into**: `main` (with a new patch version tag) and `develop`.
+- **Naming Convention**: `hotfix/v1.2.1`
 
 ## Contribution Workflow
 
@@ -97,15 +97,15 @@ Make your changes and commit them with clear and descriptive messages. Follow th
 [optional footer(s)]
 ```
 
--   **Types**: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`.
--   **Example**:
+- **Types**: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`.
+- **Example**:
 
-    ```
-    feat: Add user login functionality
+  ```
+  feat: Add user login functionality
 
-    Implement the user login form with email and password fields.
-    Closes #45
-    ```
+  Implement the user login form with email and password fields.
+  Closes #45
+  ```
 
 ### Step 4: Create a Pull Request (PR)
 
@@ -120,32 +120,32 @@ Make your changes and commit them with clear and descriptive messages. Follow th
 
 ### Step 5: Assigning and Reviewing
 
--   **Assignees**: **Le Dinh Phung** will be assigned to all new issues and pull requests to handle the technical implementation.
--   **Reviewers**: **Le Van An** will be added as a reviewer to all pull requests to verify that the changes meet the requirements.
+- **Assignees**: **Le Dinh Phung** will be assigned to all new issues and pull requests to handle the technical implementation.
+- **Reviewers**: **Le Van An** will be added as a reviewer to all pull requests to verify that the changes meet the requirements.
 
 ### Step 6: Code Review and Merging to `develop`
 
--   **Code Review**: **Le Van An** is responsible for the final review and approval of all pull requests targeting `develop`. At least one approval is required before merging.
--   **Conflict Resolution and Merging**: **Le Dinh Phung** is responsible for resolving any merge conflicts and merging the pull request into `develop` after it has been approved.
+- **Code Review**: **Le Van An** is responsible for the final review and approval of all pull requests targeting `develop`. At least one approval is required before merging.
+- **Conflict Resolution and Merging**: **Le Dinh Phung** is responsible for resolving any merge conflicts and merging the pull request into `develop` after it has been approved.
 
 ### Step 7: Promoting to QA
 
--   When a set of features is ready for testing, **Le Dinh Phung** will merge the `develop` branch into the `qa` branch. This triggers a deployment to the QA environment.
+- When a set of features is ready for testing, **Le Dinh Phung** will merge the `develop` branch into the `qa` branch. This triggers a deployment to the QA environment.
 
-    ```bash
-    git checkout qa
-    git pull
-    git merge develop
-    git push origin qa
-    ```
+  ```bash
+  git checkout qa
+  git pull
+  git merge develop
+  git push origin qa
+  ```
 
 ## Deployment (Vercel)
 
 We use Vercel for automated deployments:
 
--   **Staging Environment**: Every push to the `develop` branch automatically deploys to a staging environment for internal review.
--   **QA Environment**: Every push to the `qa` branch automatically deploys to a dedicated QA environment. This is where **Le Van An** conducts final testing before a production release.
--   **Production Environment**: Every push to the `main` branch automatically deploys to the production environment.
+- **Staging Environment**: Every push to the `develop` branch automatically deploys to a staging environment for internal review.
+- **QA Environment**: Every push to the `qa` branch automatically deploys to a dedicated QA environment. This is where **Le Van An** conducts final testing before a production release.
+- **Production Environment**: Every push to the `main` branch automatically deploys to the production environment.
 
 ## Release and Tagging Process
 
@@ -159,6 +159,7 @@ Here are the specific roles and steps for creating a new release:
     git pull
     git flow release start v1.2.0
     ```
+
 3.  **Finish Release**: After approval, **Le Dinh Phung** will use `git-flow` to automate the merging and tagging process:
 
     ```bash

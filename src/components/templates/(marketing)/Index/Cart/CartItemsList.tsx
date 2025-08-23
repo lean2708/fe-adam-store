@@ -24,12 +24,12 @@ export function CartItemsList() {
   const toggleItemSelection = useCartStore((s) => s.toggleItemSelection);
   const toggleAllItems = useCartStore((s) => s.toggleAllItems);
 
-  const fetchCart = useCartStore((s) => s.fetchCart);
   const status = useCartStore((s) => s.status);
 
   // *Kiểm tra xem checkbox tất cả có được chọn không
   const allSelected =
-    cartItems.length > 0 && selectedItems.length === cartItems.length;
+    (cartItems?.length ?? 0) > 0 &&
+    selectedItems.length === (cartItems?.length ?? 0);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated && !user) {
@@ -37,19 +37,7 @@ export function CartItemsList() {
     }
   }, [isAuthenticated, user, isLoading, router]);
 
-  useEffect(() => {
-    const fetchCartItems = async () => {
-      if (status === 'idle' && user?.id) {
-        await fetchCart(Number(user?.id));
-      }
-    };
-
-    fetchCartItems();
-  }, [user?.id, status, fetchCart]);
-
-  // console.log('Cart items:', cartItems);
-
-  if (status === 'loading' || status === 'idle') {
+  if (status === 'loading') {
     return (
       <div className='lg:col-span-2 mb-24 space-y-4'>
         {Array.from({ length: (cartItems?.length ?? 0) || 4 }).map((_, idx) => (
@@ -65,7 +53,7 @@ export function CartItemsList() {
 
   return (
     <>
-      {cartItems.length === 0 ? (
+      {cartItems?.length === 0 && status === 'success' ? (
         <EmptyCart className=' order-2' />
       ) : (
         <div className='lg:col-span-2 mb-24'>
@@ -86,7 +74,7 @@ export function CartItemsList() {
           </div>
 
           <div className='space-y-4'>
-            {cartItems.map((item) => (
+            {cartItems?.map((item) => (
               <CartItem
                 key={item.id}
                 cartItem={item}

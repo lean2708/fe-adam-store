@@ -1,11 +1,9 @@
 import { Modal, ModalBody } from '@/components/ui/modal';
 import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { manrope } from '@/config/fonts';
 import { CartItemModalSkeleton } from '@/components/ui/skeleton';
-import { TCartItem } from '@/types';
 
 interface UnauthenticatedModalProps {
   open: boolean;

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useTranslations, useLocale } from "next-intl";
+import { useState } from 'react';
+import { useTranslations, useLocale } from 'next-intl';
 import {
   Table,
   TableBody,
@@ -9,19 +9,19 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { ActionDropdown } from "@/components/ui/action-dropdown";
-import { AdminPagination } from "@/components/ui/pagination";
+} from '@/components/ui/table';
+import { ActionDropdown } from '@/components/ui/action-dropdown';
+import { AdminPagination } from '@/components/ui/pagination';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { formatCurrency } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+} from '@/components/ui/select';
+import { formatCurrency } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
 
 interface ProductVariant {
   id?: number;
@@ -51,7 +51,7 @@ export function ProductVariantsTableComponent({
   onEditVariant,
   handleOpenAddModal,
 }: ProductVariantsTableComponentProps) {
-  const t = useTranslations("Admin.products");
+  const t = useTranslations('Admin.products');
   const locale = useLocale();
 
   // Pagination state
@@ -78,30 +78,30 @@ export function ProductVariantsTableComponent({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border">
-      <div className="p-6 ">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-black">
-            {t("productVariants") || "Biến thể sản phẩm"}
+    <div className='bg-white rounded-lg shadow-sm border'>
+      <div className='p-6 '>
+        <div className='flex items-center justify-between mb-4'>
+          <h3 className='text-lg font-bold text-black'>
+            {t('productVariants') || 'Biến thể sản phẩm'}
           </h3>
           <Button
             onClick={handleOpenAddModal}
-            className="bg-black hover:bg-gray-800 text-white"
+            className='bg-black hover:bg-gray-800 text-white'
           >
-            <Plus className="h-4 w-4 mr-2" />
-            {t("addVariant") || "Add Variant"}
+            <Plus className='h-4 w-4 mr-2' />
+            {t('addVariant') || 'Add Variant'}
           </Button>
         </div>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t("id") || "ID"}</TableHead>
-              <TableHead>{t("product") || "Product"}</TableHead>
-              <TableHead>{t("price") || "Price"}</TableHead>
-              <TableHead>{t("quantity") || "Quantity"}</TableHead>
-              <TableHead>{t("size") || "Size"}</TableHead>
-              <TableHead>{t("color") || "Color"}</TableHead>
-              <TableHead>{t("actions") || "Actions"}</TableHead>
+              <TableHead>{t('id') || 'ID'}</TableHead>
+              <TableHead>{t('product') || 'Product'}</TableHead>
+              <TableHead>{t('price') || 'Price'}</TableHead>
+              <TableHead>{t('quantity') || 'Quantity'}</TableHead>
+              <TableHead>{t('size') || 'Size'}</TableHead>
+              <TableHead>{t('color') || 'Color'}</TableHead>
+              <TableHead>{t('actions') || 'Actions'}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -109,57 +109,57 @@ export function ProductVariantsTableComponent({
               <TableRow>
                 <TableCell
                   colSpan={7}
-                  className="text-center py-8 text-muted-foreground"
+                  className='text-center py-8 text-muted-foreground'
                 >
                   {totalVariants === 0
-                    ? t("noVariantsFound") || "No variants found"
-                    : "No variants on this page"}
+                    ? t('noVariantsFound') || 'No variants found'
+                    : 'No variants on this page'}
                 </TableCell>
               </TableRow>
             ) : (
               paginatedVariants.map((variant, index) => (
                 <TableRow key={variant.id || `variant-${index}`}>
                   <TableCell>
-                    <span className="font-mono text-sm">
-                      {variant.id || "N/A"}
+                    <span className='font-mono text-sm'>
+                      {variant.id || 'N/A'}
                     </span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">{productName}</span>
+                    <span className='text-sm'>{productName}</span>
                   </TableCell>
                   <TableCell>
-                    <span className="font-medium">
+                    <span className='font-medium'>
                       {variant.price
                         ? formatCurrency(variant.price, locale)
-                        : "N/A"}
+                        : 'N/A'}
                     </span>
                   </TableCell>
                   <TableCell>
                     <span
                       className={`font-medium ${
                         (variant.quantity || 0) > 0
-                          ? "text-green-600"
-                          : "text-red-600"
+                          ? 'text-green-600'
+                          : 'text-red-600'
                       }`}
                     >
                       {variant.quantity || 0}
                     </span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">
-                      {variant.size?.name || "N/A"}
+                    <span className='text-sm'>
+                      {variant.size?.name || 'N/A'}
                     </span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">
-                      {variant.colorName || "N/A"}
+                    <span className='text-sm'>
+                      {variant.colorName || 'N/A'}
                     </span>
                   </TableCell>
                   <TableCell>
                     <ActionDropdown
                       onEdit={() => onEditVariant(variant)}
-                      translationNamespace="Admin.products"
-                      customEditLabel={t("editVariant") || "Edit Variant"}
+                      translationNamespace='Admin.products'
+                      customEditLabel={t('editVariant') || 'Edit Variant'}
                     />
                   </TableCell>
                 </TableRow>
@@ -171,32 +171,32 @@ export function ProductVariantsTableComponent({
 
       {/* Pagination Controls */}
       {totalPages > 1 && (
-        <div className="border-t">
-          <div className="flex justify-between items-center mt-4 px-6 pb-6">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-600">
-                  {t("itemsPerPage") || "Items per page"}:
+        <div className='border-t'>
+          <div className='flex justify-between items-center mt-4 px-6 pb-6'>
+            <div className='flex items-center space-x-4'>
+              <div className='flex items-center space-x-2'>
+                <span className='text-sm text-gray-600'>
+                  {t('itemsPerPage') || 'Items per page'}:
                 </span>
                 <Select
                   value={pageSize.toString()}
                   onValueChange={handlePageSizeChange}
                 >
-                  <SelectTrigger className="w-20">
+                  <SelectTrigger className='w-20'>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="5">5</SelectItem>
-                    <SelectItem value="10">10</SelectItem>
-                    <SelectItem value="20">20</SelectItem>
-                    <SelectItem value="50">50</SelectItem>
+                    <SelectItem value='5'>5</SelectItem>
+                    <SelectItem value='10'>10</SelectItem>
+                    <SelectItem value='20'>20</SelectItem>
+                    <SelectItem value='50'>50</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              <div className="text-sm text-gray-600">
-                {t("showingResults") || "Showing"} {startIndex + 1}-
-                {Math.min(endIndex, totalVariants)} {t("of") || "of"}{" "}
-                {totalVariants} {t("variants") || "variants"}
+              <div className='text-sm text-gray-600'>
+                {t('showingResults') || 'Showing'} {startIndex + 1}-
+                {Math.min(endIndex, totalVariants)} {t('of') || 'of'}{' '}
+                {totalVariants} {t('variants') || 'variants'}
               </div>
             </div>
             <AdminPagination
@@ -205,7 +205,7 @@ export function ProductVariantsTableComponent({
               onPageChange={handlePageChange}
               totalItems={totalVariants}
               itemsPerPage={pageSize}
-              itemName="variants"
+              itemName='variants'
             />
           </div>
         </div>

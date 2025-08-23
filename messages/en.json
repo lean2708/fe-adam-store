@@ -65,6 +65,64 @@
       "product_not_found": "The product you are looking for does not exist."
     }
   },
+  "Order": {
+    "title": "Order Confirmation",
+    "action": "Place Order",
+    "order_annouce": {
+      "order_code": "Order Code",
+      "success": {
+        "title": "Payment Successful",
+        "message": "You have successfully paid with VN pay. Please check your order in the 'My Orders' section."
+      },
+      "failure": {
+        "title": "Payment Failed",
+        "message": "Payment failed. Please check your order in the 'My Orders' section to try again."
+      },
+      "action": {
+        "close": "Close",
+        "go_to_orders": "Go to My Orders"
+      }
+    },
+    "delivery_info": {
+      "title": "Delivery Information",
+      "info_receiver": {
+        "name": "Full Name",
+        "address": "Shipping Address",
+        "phone": "Phone Number"
+      },
+      "no_address": "You don't have any saved addresses. Please add a new one.",
+      "action": {
+        "add_address": "Add Address",
+        "edit_address": "Edit"
+      }
+    },
+    "payment_display": {
+      "selected_discount": "Select a discount code",
+      "calcultating": "Calculating..."
+    },
+    "promotion": {
+      "title": "Promotion Code",
+      "placeholder": "Select a promotion code",
+      "no_promotion": "No promotion codes available"
+    },
+    "payment_section": {
+      "title": "Payment Method"
+    },
+    "payment_summary": {
+      "title": "Payment Details",
+      "sub_total": "Subtotal",
+      "shipping_fee": "Shipping Fee",
+      "promotion": "Promotion Code",
+      "total": "Total",
+      "calcultating": "Calculating..."
+    },
+    "product_list": {
+      "title": "Products",
+      "color": "Color",
+      "size": "Size",
+      "quanity": "Quantity"
+    }
+  },
   "Header": {
     "search": {
       "placeholder": "Search products...",

@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
+import { SIZE_LIST } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import { TColor, TVariant } from '@/types';
+import { TColor } from '@/types';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
@@ -8,15 +9,6 @@ type SizesProps = {
   tColor: TColor;
   onChangeSize: (size: number | undefined) => void;
 };
-
-const SIZE_LIST = [
-  { name: 'XS', key: 'XS' },
-  { name: 'S', key: 'S' },
-  { name: 'M', key: 'M' },
-  { name: 'L', key: 'L' },
-  { name: 'XL', key: 'XL' },
-  { name: 'XXL', key: 'XXL' },
-];
 
 export default function Sizes({ tColor, onChangeSize }: SizesProps) {
   const t = useTranslations('Marketing.product_details');

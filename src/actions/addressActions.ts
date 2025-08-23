@@ -1,6 +1,14 @@
-"use server";
-import { createAddressById, deleteAddressById, fetchAllDistrictById, fetchAllProvince, fetchAllWardByIdDistrict, getAddressById, updateAddressById } from "@/lib/data/address";
-import { fetchAllAddressUserApi } from "@/lib/data/user";
+'use server';
+import {
+  createAddressById,
+  deleteAddressById,
+  fetchAllDistrictById,
+  fetchAllProvince,
+  fetchAllWardByIdDistrict,
+  getAddressById,
+  updateAddressById,
+} from '@/lib/data/address';
+import { fetchAllAddressUserApi } from '@/lib/data/user';
 export async function getAllAddressUser() {
   try {
     const address = await fetchAllAddressUserApi();
@@ -11,14 +19,14 @@ export async function getAllAddressUser() {
   } catch (error) {
     return {
       status: 500,
-      message: "server error",
+      message: 'server error',
       error,
     };
   }
 }
 export async function fetchProvince() {
   try {
-    const provinces = await fetchAllProvince()
+    const provinces = await fetchAllProvince();
     return {
       status: 200,
       provinces,
@@ -26,14 +34,14 @@ export async function fetchProvince() {
   } catch (error) {
     return {
       status: 500,
-      message: "server error",
+      message: 'server error',
       error,
     };
   }
 }
 export async function fetchDistrictByProvinceId(id: number) {
   try {
-    const districts = await fetchAllDistrictById(id)
+    const districts = await fetchAllDistrictById(id);
     return {
       status: 200,
       districts,
@@ -41,14 +49,14 @@ export async function fetchDistrictByProvinceId(id: number) {
   } catch (error) {
     return {
       status: 500,
-      message: "server error",
+      message: 'server error',
       error,
     };
   }
 }
 export async function fetchWardByDistrictId(id: number) {
   try {
-    const ward = await fetchAllWardByIdDistrict(id)
+    const ward = await fetchAllWardByIdDistrict(id);
     return {
       status: 200,
       ward,
@@ -56,14 +64,14 @@ export async function fetchWardByDistrictId(id: number) {
   } catch (error) {
     return {
       status: 500,
-      message: "server error",
+      message: 'server error',
       error,
     };
   }
 }
 export async function fetchAddressById(id: number) {
   try {
-    const address = await getAddressById(id)
+    const address = await getAddressById(id);
     return {
       status: 200,
       address,
@@ -71,7 +79,7 @@ export async function fetchAddressById(id: number) {
   } catch (error) {
     return {
       status: 500,
-      message: "server error",
+      message: 'server error',
       error,
     };
   }
@@ -79,15 +87,16 @@ export async function fetchAddressById(id: number) {
 export async function updateAddressByIdAction(
   id: number,
   addressRequest: {
-    isDefault: boolean,
-    phone: string,
-    streetDetail: string,
-    wardCode: string,
-    districtId: number,
-    provinceId: number
-  }) {
+    isDefault: boolean;
+    phone: string;
+    streetDetail: string;
+    wardCode: string;
+    districtId: number;
+    provinceId: number;
+  }
+) {
   try {
-    const newAddress = await updateAddressById(id, addressRequest)
+    const newAddress = await updateAddressById(id, addressRequest);
     return {
       status: 200,
       newAddress,
@@ -95,22 +104,21 @@ export async function updateAddressByIdAction(
   } catch (error) {
     return {
       status: 500,
-      message: "server error",
+      message: 'server error',
       error,
     };
   }
 }
-export async function createAddressByIdAction(
-  addressRequest: {
-    isDefault: boolean,
-    phone: string,
-    streetDetail: string,
-    wardCode: string,
-    districtId: number,
-    provinceId: number
-  }) {
+export async function createAddressByIdAction(addressRequest: {
+  isDefault: boolean;
+  phone: string;
+  streetDetail: string;
+  wardCode: string;
+  districtId: number;
+  provinceId: number;
+}) {
   try {
-    const newAddress = await createAddressById( addressRequest)
+    const newAddress = await createAddressById(addressRequest);
     return {
       status: 200,
       newAddress,
@@ -118,22 +126,22 @@ export async function createAddressByIdAction(
   } catch (error) {
     return {
       status: 500,
-      message: "server error",
+      message: 'server error',
       error,
     };
   }
 }
-export async function deteleAddressById(id: number){
+export async function deteleAddressById(id: number) {
   try {
-      const res = await deleteAddressById( id)
+    const res = await deleteAddressById(id);
     return {
       status: 200,
       res,
     };
   } catch (error) {
-       return {
+    return {
       status: 500,
-      message: "server error",
+      message: 'server error',
       error,
     };
   }

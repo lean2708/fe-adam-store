@@ -4,9 +4,15 @@ import { useTranslations } from 'next-intl';
 export default function ProductActions({
   onAddToCart,
   onBuyNow,
+  loading,
 }: {
   onAddToCart: () => void;
   onBuyNow: () => void;
+  loading: {
+    isAddingToCart: boolean;
+    isBuyingNow: boolean;
+    isPending: boolean;
+  };
 }) {
   const t = useTranslations('Marketing.product_details');
 
@@ -16,6 +22,7 @@ export default function ProductActions({
         variant={'outline'}
         onClick={onAddToCart}
         className='px-10 py-3  rounded-md font-semibold text-primary text-lg cursor-pointer'
+        disabled={loading.isAddingToCart}
       >
         {t('product_infor.product_actions.add_to_cart')}
       </Button>
@@ -23,6 +30,7 @@ export default function ProductActions({
         variant={'default'}
         onClick={onBuyNow}
         className='px-10 py-3  rounded-md font-semibold text-lg cursor-pointer'
+        disabled={loading.isPending || loading.isBuyingNow}
       >
         {t('product_infor.product_actions.buy_now')}
       </Button>

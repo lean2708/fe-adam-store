@@ -5,9 +5,11 @@ import React from 'react';
 function Fee({
   subtotal,
   shippingFee,
+  loading,
 }: {
   subtotal: number;
   shippingFee: number;
+  loading: boolean;
 }) {
   const t = useTranslations('Header');
   const locale = useLocale();
@@ -21,7 +23,11 @@ function Fee({
       <div className='flex justify-between text-sm text-primary'>
         <span className=''>{t('cart.checkOut.shippingFee')}</span>
         <span className='font-medium'>
-          {shippingFee === 0 ? 'Miễn phí' : formatCurrency(shippingFee, locale)}
+          {loading
+            ? 'Calculating...'
+            : shippingFee === 0
+            ? '0 VNĐ'
+            : formatCurrency(shippingFee, locale)}
         </span>
       </div>
     </div>
