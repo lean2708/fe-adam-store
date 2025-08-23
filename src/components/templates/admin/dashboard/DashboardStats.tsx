@@ -28,7 +28,7 @@ export function DashboardStats({ dateRange }: DashboardStatsProps) {
     lastMonth.setMonth(today.getMonth() - 1);
     return {
       from: lastMonth.toISOString().split("T")[0],
-      to: today.toISOString().split("T")[0]
+      to: today.toISOString().split("T")[0],
     };
   };
 
@@ -36,26 +36,27 @@ export function DashboardStats({ dateRange }: DashboardStatsProps) {
 
   // Query for order/revenue stats
   const { data: stats, isLoading: statsLoading } = useQuery({
-    queryKey: ['dashboard-stats', from, to],
+    queryKey: ["dashboard-stats", from, to],
     queryFn: async () => {
       console.log("DashboardStats: Fetching data for range", { from, to });
       const result = await getOrderRevenueSummaryAction(from, to);
       if (!result.success) {
-        throw new Error(result.message || 'Failed to fetch stats');
+        throw new Error(result.message || "Failed to fetch stats");
       }
       return result.data;
     },
   });
 
-
-
   const loading = statsLoading;
-
 
   const statsCards = [
     {
-      title: locale === 'vi' ? "Tổng doanh thu" : "Total Revenue",
-      value: stats?.totalRevenue ? formatCurrency(stats.totalRevenue, locale) : (locale === 'vi' ? "0 VNĐ" : "$0"),
+      title: locale === "vi" ? "Tổng doanh thu" : "Total Revenue",
+      value: stats?.totalRevenue
+        ? formatCurrency(stats.totalRevenue, locale)
+        : locale === "vi"
+        ? "0 VNĐ"
+        : "$0",
       icon: DollarSign,
       // description: locale === 'vi' ? "so với tháng trước" : "vs last month",
       change: "+20.25%",
@@ -63,8 +64,11 @@ export function DashboardStats({ dateRange }: DashboardStatsProps) {
       bgColor: "bg-green-50 dark:bg-green-900/20",
     },
     {
-      title: locale === 'vi' ? "Số lượng đơn hàng" : "Total Orders",
-      value: stats?.totalOrders?.toLocaleString(locale === 'vi' ? 'vi-VN' : 'en-US') || (locale === 'vi' ? "0" : "0"),
+      title: locale === "vi" ? "Số lượng đơn hàng" : "Total Orders",
+      value:
+        stats?.totalOrders?.toLocaleString(
+          locale === "vi" ? "vi-VN" : "en-US"
+        ) || (locale === "vi" ? "0" : "0"),
       icon: ShoppingCart,
       // description: locale === 'vi' ? "so với tháng trước" : "vs last month",
       change: "-20.25%",
@@ -77,7 +81,10 @@ export function DashboardStats({ dateRange }: DashboardStatsProps) {
     return (
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: 3 }).map((_, i) => (
-          <Card key={i} className="bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm">
+          <Card
+            key={i}
+            className="bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm"
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
@@ -99,7 +106,10 @@ export function DashboardStats({ dateRange }: DashboardStatsProps) {
       {statsCards.map((stat, index) => {
         const Icon = stat.icon;
         return (
-          <Card key={index} className="relative overflow-hidden bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm">
+          <Card
+            key={index}
+            className="relative overflow-hidden bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm"
+          >
             <CardContent className="p-6">
               <div className="flex items-start justify-between">
                 <div className="space-y-2">
@@ -112,7 +122,13 @@ export function DashboardStats({ dateRange }: DashboardStatsProps) {
                 </div>
                 {stat.change && (
                   <div className="flex flex-col justify-center items-center space-y-1 px-1">
-                    <span className={`text-xs font-medium ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
+                    <span
+                      className={`text-xs font-medium ${
+                        stat.change.startsWith("+")
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }`}
+                    >
                       {stat.change}
                     </span>
                     <div className={`rounded-full p-3 ${stat.bgColor}`}>
@@ -120,7 +136,6 @@ export function DashboardStats({ dateRange }: DashboardStatsProps) {
                     </div>
                   </div>
                 )}
-
               </div>
             </CardContent>
           </Card>

@@ -1,25 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ProductHeader } from "@/components/templates/admin/products/ProductHeader";
 import { ProductVariantsStats } from "@/components/templates/admin/products/ProductVariantsStats";
 import { ProductVariantsTable } from "@/components/templates/admin/products/ProductVariantsTable";
 import { ProductVariantModal } from "@/components/templates/admin/products/ProductVariantModal";
-import { ProductVariantsModal } from "@/components/templates/admin/products/ProductVariantsModal";
 import { ProductCreateModal } from "@/components/templates/admin/products/ProductCreateModal";
-import { ProductUpdateModal } from "@/components/templates/admin/products/ProductUpdateModal";
+
 import { useProducts } from "@/hooks/admin/useProductVariants";
 
 import type { TProduct } from "@/types";
 
 export default function ProductsPage() {
+  const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isVariantsModalOpen, setIsVariantsModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<TProduct | null>(null);
-  const [selectedProduct, setSelectedProduct] = useState<TProduct | null>(null);
-  const [updatingProduct, setUpdatingProduct] = useState<TProduct | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(20);
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,13 +32,7 @@ export default function ProductsPage() {
   };
 
   const handleUpdateProduct = (product: TProduct) => {
-    setUpdatingProduct(product);
-    setIsUpdateModalOpen(true);
-  };
-
-  const handleCloseUpdateModal = () => {
-    setIsUpdateModalOpen(false);
-    setUpdatingProduct(null);
+    router.push(`/admin/products/${product.id}`);
   };
 
   const handleEditProduct = (product: TProduct) => {
@@ -50,8 +41,7 @@ export default function ProductsPage() {
   };
 
   const handleViewDetails = (product: TProduct) => {
-    setSelectedProduct(product);
-    setIsVariantsModalOpen(true);
+    router.push(`/admin/products/${product.id}`);
   };
 
 
@@ -61,10 +51,7 @@ export default function ProductsPage() {
     setEditingProduct(null);
   };
 
-  const handleCloseVariantsModal = () => {
-    setIsVariantsModalOpen(false);
-    setSelectedProduct(null);
-  };
+
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 0 && newPage < totalPages) {
@@ -125,22 +112,14 @@ export default function ProductsPage() {
           editingVariant={editingProduct}
         />
 
-        <ProductVariantsModal
-          open={isVariantsModalOpen}
-          onClose={handleCloseVariantsModal}
-          product={selectedProduct}
-        />
+
 
         <ProductCreateModal
           open={isCreateModalOpen}
           onClose={handleCloseCreateModal}
         />
 
-        <ProductUpdateModal
-          open={isUpdateModalOpen}
-          onClose={handleCloseUpdateModal}
-          product={updatingProduct}
-        />
+
       </div>
     </div>
   );

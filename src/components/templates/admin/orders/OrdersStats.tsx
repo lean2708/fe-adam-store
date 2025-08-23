@@ -102,7 +102,7 @@ export function OrdersStats({ orders, totalElements }: OrdersStatsProps) {
 
   return (
     <div>
-      <h2 className="text-lg font-semibold mb-4">Statistics</h2>
+      <h2 className="text-lg font-semibold mb-4">{t("title")}</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {stats.map((stat, index) => (
           <Card key={index} className={`bg-gradient-to-br ${stat.color}`}>

@@ -5,16 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useTranslations, useLocale } from "next-intl";
 import { formatDate, formatCurrency } from "@/lib/utils";
-import {
-  ShoppingCart,
-  User,
-  MapPin,
-  Calendar,
-  Package,
-  X
-} from "lucide-react";
+import { ShoppingCart, User, MapPin, Calendar, Package, X } from "lucide-react";
 import type { TOrder } from "@/types";
-import Image from 'next/image';
+import Image from "next/image";
 
 interface OrderDetailsModalProps {
   open: boolean;
@@ -25,40 +18,44 @@ interface OrderDetailsModalProps {
 // Helper function to get status color
 const getStatusColor = (status: string) => {
   switch (status) {
-    case 'PENDING':
-      return 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100';
-    case 'PROCESSING':
-      return 'bg-blue-100 text-blue-800 hover:bg-blue-100';
-    case 'SHIPPED':
-      return 'bg-purple-100 text-purple-800 hover:bg-purple-100';
-    case 'DELIVERED':
-      return 'bg-green-100 text-green-800 hover:bg-green-100';
-    case 'CANCELLED':
-      return 'bg-red-100 text-red-800 hover:bg-red-100';
+    case "PENDING":
+      return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
+    case "PROCESSING":
+      return "bg-blue-100 text-blue-800 hover:bg-blue-100";
+    case "SHIPPED":
+      return "bg-purple-100 text-purple-800 hover:bg-purple-100";
+    case "DELIVERED":
+      return "bg-green-100 text-green-800 hover:bg-green-100";
+    case "CANCELLED":
+      return "bg-red-100 text-red-800 hover:bg-red-100";
     default:
-      return 'bg-gray-100 text-gray-800 hover:bg-gray-100';
+      return "bg-gray-100 text-gray-800 hover:bg-gray-100";
   }
 };
 
 // Helper function to get status text
 const getStatusText = (status: string, t: any) => {
   switch (status) {
-    case 'PENDING':
+    case "PENDING":
       return t("pending");
-    case 'PROCESSING':
+    case "PROCESSING":
       return t("processing");
-    case 'SHIPPED':
+    case "SHIPPED":
       return t("shipped");
-    case 'DELIVERED':
+    case "DELIVERED":
       return t("delivered");
-    case 'CANCELLED':
+    case "CANCELLED":
       return t("cancelled");
     default:
       return status;
   }
 };
 
-export function OrderDetailsModal({ open, onClose, order }: OrderDetailsModalProps) {
+export function OrderDetailsModal({
+  open,
+  onClose,
+  order,
+}: OrderDetailsModalProps) {
   const t = useTranslations("Admin.orders");
   const locale = useLocale();
 
@@ -75,22 +72,23 @@ export function OrderDetailsModal({ open, onClose, order }: OrderDetailsModalPro
       className="bg-white rounded-lg shadow-xl"
     >
       <ModalHeader className="flex items-center justify-between p-6 border-b">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <ShoppingCart className="h-5 w-5" />
-            <span>
-              {t("viewDetails")} - #{order.id}
-            </span>
-          </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClose}
-            className="h-8 w-8 p-0"
-          >
-            <X className="h-4 w-4" />
-          </Button>
+        {/* Left side: icon + text */}
+        <div className="flex items-center gap-2">
+          <ShoppingCart className="h-5 w-5" />
+          <span>
+            {t("viewDetails")} - #{order.id}
+          </span>
         </div>
+
+        {/* Right side: close button */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onClose}
+          className="h-8 w-8 p-0"
+        >
+          <X className="h-4 w-4" />
+        </Button>
       </ModalHeader>
 
       <ModalBody className="space-y-6">
@@ -166,7 +164,7 @@ export function OrderDetailsModal({ open, onClose, order }: OrderDetailsModalPro
                   )}
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-medium text-gray-900">
+                  <h4 className=" text-gray-900">
                     {item.Product?.title || "Unknown Product"}
                   </h4>
                   <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">

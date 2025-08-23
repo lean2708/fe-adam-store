@@ -297,6 +297,7 @@ export type TTopSelling = {
   status?: 'ACTIVE' | 'INACTIVE';
   soldQuantity?: number;
   totalRevenue?: number;
+  imageUrl?: string;
 };
 
 export type TRevenueByMonth = {

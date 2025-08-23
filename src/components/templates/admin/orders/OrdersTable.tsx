@@ -224,14 +224,6 @@ export function OrdersTable({
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        {/* View Details Button */}
-                        <button
-                          onClick={() => onViewDetails(order)}
-                          className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded hover:bg-blue-200 transition-colors"
-                        >
-                          <Eye className="h-3 w-3" />
-                          {t("viewDetails")}
-                        </button>
 
                         {/* Action Dropdown */}
                         <ActionDropdown
@@ -241,6 +233,7 @@ export function OrdersTable({
                               ? () => onCancelOrder(order.id?.toString() || "")
                               : undefined
                           }
+                          onViewDetails={() => onViewDetails(order)}
                           onDelete={() =>
                             onDeleteOrder(order.id?.toString() || "")
                           }

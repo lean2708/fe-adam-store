@@ -66,6 +66,16 @@ export function UserTable({
 }: UserTableProps) {
   const t = useTranslations("Admin");
   const locale = useLocale();
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "ACTIVE":
+        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+      case "INACTIVE":
+        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
+      default:
+        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300";
+    }
+  };
 
   // No client-side filtering needed since we're using server-side search
   const filteredUsers = users;
@@ -241,18 +251,16 @@ export function UserTable({
 
                     {/* Trạng thái */}
                     <TableCell>
+                      
                       <Badge
-                        variant={
-                          user.status === "ACTIVE" ? "default" : "secondary"
-                        }
-                        className={
-                          user.status === "ACTIVE"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }
+                        variant="secondary"
+                        className={getStatusColor(user.status || "INACTIVE")}
                       >
-                        {user.status || "INACTIVE"}
+                        {t(user.status || "INACTIVE") ||
+                          user.status ||
+                          "INACTIVE"}
                       </Badge>
+        
                     </TableCell>
 
                     {/* Hành động */}
@@ -260,7 +268,9 @@ export function UserTable({
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">{t("users.openMenu")}</span>
+                            <span className="sr-only">
+                              {t("users.openMenu")}
+                            </span>
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>

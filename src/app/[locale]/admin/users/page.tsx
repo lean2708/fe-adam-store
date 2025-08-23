@@ -121,7 +121,7 @@ export default function UsersPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="admin-page-container space-y-6 mt-4">
+      <div className="admin-page-container space-y-6 mt-4 rounded-lg">
         <div className="bg-white rounded-lg shadow-sm border p-6">
           <UserTable
             users={users}

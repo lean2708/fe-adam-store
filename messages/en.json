@@ -152,13 +152,17 @@
   },
 
   "Admin": {
+    "ACTIVE": "Active",
+    "INACTIVE": "Inactive",
     "dashboard": {
       "noRevenueData": "No revenue data available",
       "title": "Dashboard",
       "welcome": "Welcome to your admin dashboard. Here's what's happening with your store today.",
       "overview": {
         "title": "Overview",
-        "description": "Monthly revenue for the current year"
+        "description": "Monthly revenue for the current year",
+        "button": "Export revenue",
+        "loading": "Exporting..."
       },
       "recentOrders": {
         "title": "Recent Orders",
@@ -184,31 +188,19 @@
       "paymentHistory": "Payment History"
     },
     "products": {
+      
       "updateProductTitle": "Update Product",
       "updateProduct": "Update Product",
       "title": "Products Management",
-      "variantsTitle": "Product Management",
       "variantsDescription": "Manage products including variants, colors, sizes, prices, and inventory",
-      "editProduct": "Edit Product",
-      "addVariant": "Add Variant",
-      "editVariant": "Edit Variant",
-      "productDetails": "Product Details",
       "name": "Product Name",
       "price": "Price",
       "stock": "Stock",
-      "description": "Description",
       "images": "Images",
-      "colors": "Colors",
       "sizes": "Sizes",
-      "color": "Color",
-      "size": "Size",
-      "quantity": "Quantity",
       "soldQuantity": "Sold Quantity",
       "variantCount": "Variants",
-      "rating": "Rating",
       "status": "Status",
-      "actions": "Actions",
-      "product": "Product",
       "selectProduct": "Select a product",
       "selectColor": "Select color",
       "selectSize": "Select size",
@@ -231,7 +223,6 @@
       "availableProducts": "available products",
       "allColorsSizes": "All colors and sizes",
       "acrossAllVariants": "Across all variants",
-      "refresh": "Refresh",
       "cancel": "Cancel",
       "save": "Save",
       "add": "Add",
@@ -251,7 +242,6 @@
       "noVariants": "No variants available",
       "noProductsFound": "No products found",
       "noProductsDescription": "Create your first product to get started",
-      "id": "ID",
       "productName": "Product Name",
       "ACTIVE": "Active",
       "INACTIVE": "Inactive",
@@ -261,23 +251,49 @@
       "manageProductVariants": "Manage variants for this product",
       "productVariantInfo": "Managing variants for product",
       "refreshing": "Refreshing...",
-      "refreshSuccess": "Data refreshed successfully",
-      "refreshError": "Failed to refresh data",
       "productsTitle": "Product Management",
       "productsDescription": "Manage products including variants, colors, sizes, prices and inventory",
       "searchProducts": "Search products...",
       "addProduct": "Add Product",
+      "productNotFound": "Product not found",
+      "back": "Back",
+      "category": "Category",
+      "categoryShirt": "Shirt",
+      "reviews": "Reviews",
+      "noVariantsFound": "No variants found",
+      "itemsPerPage": "Items per page",
+      "showingResults": "Showing",
+      "of": "of",
+      "variants": "variants",
+      "noImagesAvailable": "No images available",
+      "refreshSuccess": "Data refreshed successfully",
+      "refreshError": "Failed to refresh data",
+      "variantsTitle": "Product Variants",
+      "refresh": "Refresh",
+      "addVariant": "Add Variant",
+      "productDetails": "Product Details",
+      "editProduct": "Edit Product",
+      "rating": "Rating",
+      "colors": "Colors",
+      "description": "Product Description",
+      "id": "ID",
+      "product": "Product",
+      "quantity": "Quantity",
+      "size": "Size",
+      "color": "Color",
+      "actions": "Actions",
+      "editVariant": "Edit Variant",
       "addProductTitle": "Add Product",
       "enterProductName": "Enter product name",
       "enterDescription": "Enter product description",
       "image": "Image",
       "uploadImage": "Upload image",
       "productCreated": "Product created successfully",
-      "category": "Category",
       "selectCategory": "Select category",
       "deleteProduct": "Delete Product"
     },
     "categories": {
+      
       "categoriesTitle": "Category Management",
       "categoriesDescription": "Manage product categories and classifications",
       "addCategory": "Add Category",
@@ -313,6 +329,7 @@
       "INACTIVE": "Inactive"
     },
     "users": {
+      
       "title": "Users Management",
       "description": "Manage system users",
       "addUser": "Add User",
@@ -334,9 +351,12 @@
       "searchPlaceholder": "Search by name or email...",
       "noUsersFound": "No users found",
       "noRoles": "No roles",
-      "openMenu": "Open menu"
+      "openMenu": "Open menu",
+      "ACTIVE": "Active"
     },
     "branches": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
       "title": "Branch Management",
       "description": "Manage store branches and locations",
       "addBranch": "Add Branch",
@@ -375,6 +395,8 @@
       "deleteBranchConfirm": "Are you sure you want to delete this branch?"
     },
     "sizes": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
       "title": "Size Management",
       "description": "Manage product sizes",
       "addSize": "Add Size",
@@ -396,6 +418,8 @@
       "refresh": "Refresh"
     },
     "colors": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
       "title": "Color Management",
       "description": "Manage product colors and variations",
       "addColor": "Add Color",
@@ -430,6 +454,8 @@
       "colorPreviewNote": "Color preview is generated based on the name. Common color names like 'red', 'blue', 'green' will show their standard colors."
     },
     "orders": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
       "noRecentOrders": "No recent orders",
       "title": "Order Management",
       "description": "Manage customer orders and order status",
@@ -484,6 +510,8 @@
       "quantity": "Quantity"
     },
     "paymentHistory": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
       "title": "Payment History",
       "description": "Manage payment transactions and history",
       "totalPayments": "Total Payments",
@@ -523,6 +551,8 @@
       "no": "No"
     },
     "promotions": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
       "title": "Promotions",
       "description": "Manage promotional offers and discounts",
       "totalPromotions": "Total Promotions",
@@ -579,6 +609,8 @@
       "restorePromotionConfirm": "Are you sure you want to restore this promotion?"
     },
     "files": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
       "title": "Files Management",
       "description": "Manage uploaded files",
       "uploadFile": "Upload File",

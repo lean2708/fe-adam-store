@@ -151,13 +151,18 @@
     }
   },
   "Admin": {
+    "ACTIVE": "Hoạt động",
+    "INACTIVE": "Không hoạt động",
     "dashboard": {
-      "noRevenueData" : "Không có dữ liệu doanh thu",
+      "noRevenueData": "Không có dữ liệu doanh thu",
       "title": "Tổng Quan",
       "welcome": "Chào mừng đến với bảng điều khiển quản trị. Đây là những gì đang diễn ra với cửa hàng của bạn hôm nay.",
       "overview": {
         "title": "Tổng quan",
-        "description": "Doanh thu hàng tháng trong năm hiện tại"
+        "description": "Doanh thu hàng tháng trong năm hiện tại",
+ 
+        "button": "Xuất doanh thu",
+        "loading": "Đang xuất..."
       },
       "recentOrders": {
         "title": "Đơn hàng gần đây",
@@ -187,28 +192,15 @@
       "updateProductTitle": "Cập nhật sản phẩm",
       "updateProduct": "Cập nhật sản phẩm",
       "title": "Quản lý sản phẩm",
-      "variantsTitle": "Quản lý sản phẩm",
       "variantsDescription": "Quản lý sản phẩm bao gồm biến thể, màu sắc, kích cỡ, giá cả và tồn kho",
-      "editProduct": "Sửa sản phẩm",
-      "addVariant": "Thêm biến thể",
-      "editVariant": "Sửa biến thể",
-      "productDetails": "Chi tiết sản phẩm",
       "name": "Tên sản phẩm",
       "price": "Giá",
       "stock": "Tồn kho",
-      "description": "Mô tả",
       "images": "Hình ảnh",
-      "colors": "Màu sắc",
       "sizes": "Kích cỡ",
-      "color": "Màu sắc",
-      "size": "Kích cỡ",
-      "quantity": "Số lượng",
       "soldQuantity": "Số lượng đã bán",
       "variantCount": "Số biến thể",
-      "rating": "Điểm đánh giá",
       "status": "Trạng thái",
-      "actions": "Hành động",
-      "product": "Sản phẩm",
       "selectProduct": "Chọn sản phẩm",
       "selectColor": "Chọn màu sắc",
       "selectSize": "Chọn kích cỡ",
@@ -249,7 +241,6 @@
       "noVariants": "Không có biến thể nào",
       "noProductsFound": "Không tìm thấy sản phẩm nào",
       "noProductsDescription": "Tạo sản phẩm đầu tiên để bắt đầu",
-      "id": "ID",
       "productName": "Tên sản phẩm",
       "ACTIVE": "Hoạt động",
       "INACTIVE": "Không hoạt động",
@@ -259,21 +250,45 @@
       "add": "Thêm",
       "manageProductVariants": "Quản lý biến thể cho sản phẩm này",
       "productVariantInfo": "Quản lý biến thể cho sản phẩm",
-      "refresh": "Làm mới",
       "refreshing": "Đang làm mới...",
-      "refreshSuccess": "Dữ liệu đã được làm mới thành công",
-      "refreshError": "Không thể làm mới dữ liệu",
       "productsTitle": "Quản lý sản phẩm",
       "productsDescription": "Quản lý sản phẩm bao gồm biến thể, màu sắc, kích cỡ, giá cả và tồn kho",
       "searchProducts": "Tìm kiếm sản phẩm...",
       "addProduct": "Thêm sản phẩm",
+      "productNotFound": "Không tìm thấy sản phẩm",
+      "back": "Quay lại",
+      "category": "Danh mục",
+      "categoryShirt": "Áo phông",
+      "reviews": "Đánh giá",
+      "noVariantsFound": "Không tìm thấy biến thể nào",
+      "itemsPerPage": "Số mục mỗi trang",
+      "showingResults": "Hiển thị",
+      "of": "của",
+      "variants": "biến thể",
+      "noImagesAvailable": "Không có hình ảnh",
+      "refreshSuccess": "Dữ liệu đã được làm mới thành công",
+      "refreshError": "Không thể làm mới dữ liệu",
+      "variantsTitle": "Biến thể sản phẩm",
+      "refresh": "Làm mới",
+      "addVariant": "Thêm biến thể",
+      "productDetails": "Chi tiết sản phẩm",
+      "editProduct": "Chỉnh sửa sản phẩm",
+      "rating": "Đánh giá",
+      "colors": "Màu sắc",
+      "description": "Mô tả sản phẩm",
+      "id": "ID",
+      "product": "Sản phẩm",
+      "quantity": "Số lượng",
+      "size": "Kích cỡ",
+      "color": "Màu sắc",
+      "actions": "Hành động",
+      "editVariant": "Chỉnh sửa biến thể",
       "addProductTitle": "Thêm sản phẩm",
       "enterProductName": "Nhập tên sản phẩm",
       "enterDescription": "Nhập mô tả sản phẩm",
       "image": "Hình ảnh",
       "uploadImage": "Tải lên hình ảnh",
       "productCreated": "Sản phẩm đã được tạo thành công",
-      "category": "Danh mục",
       "selectCategory": "Chọn danh mục",
       "deleteProduct": "Xóa sản phẩm"
     },
@@ -315,6 +330,8 @@
     },
 
     "users": {
+      "ACTIVE": "Hoạt động",
+      "INACTIVE": "Không hoạt động",
       "title": "Quản lý người dùng",
       "description": "Quản lý người dùng hệ thống",
       "addUser": "Thêm người dùng",
@@ -339,6 +356,8 @@
       "openMenu": "Mở menu"
     },
     "branches": {
+      "ACTIVE": "Hoạt động",
+      "INACTIVE": "Không hoạt động",
       "title": "Quản lý chi nhánh",
       "description": "Quản lý chi nhánh và địa điểm cửa hàng",
       "addBranch": "Thêm chi nhánh",
@@ -378,6 +397,8 @@
     },
 
     "sizes": {
+      "ACTIVE": "Hoạt động",
+      "INACTIVE": "Không hoạt động",
       "title": "Quản lý kích cỡ",
       "description": "Quản lý kích cỡ sản phẩm",
       "addSize": "Thêm kích cỡ",
@@ -399,6 +420,8 @@
       "refresh": "Làm mới"
     },
     "colors": {
+      "ACTIVE": "Hoạt động",
+      "INACTIVE": "Không hoạt động",
       "title": "Quản lý màu sắc",
       "description": "Quản lý màu sắc và biến thể sản phẩm",
       "addColor": "Thêm màu",
@@ -433,6 +456,8 @@
       "colorPreviewNote": "Xem trước màu được tạo dựa trên tên. Các tên màu phổ biến như 'đỏ', 'xanh', 'lục' sẽ hiển thị màu chuẩn của chúng."
     },
     "orders": {
+      "ACTIVE": "Hoạt động",
+      "INACTIVE": "Không hoạt động",
       "noRecentOrders": "Không có đơn hàng gần đây",
       "title": "Quản lý đơn hàng",
       "description": "Quản lý đơn hàng khách hàng và trạng thái đơn hàng",
@@ -487,6 +512,8 @@
       "quantity": "Số lượng"
     },
     "paymentHistory": {
+      "ACTIVE": "Hoạt động",
+      "INACTIVE": "Không hoạt động",
       "title": "Lịch sử thanh toán",
       "description": "Quản lý giao dịch thanh toán và lịch sử",
       "totalPayments": "Tổng thanh toán",
@@ -526,6 +553,8 @@
       "no": "Không"
     },
     "promotions": {
+      "ACTIVE": "Hoạt động",
+      "INACTIVE": "Không hoạt động",
       "title": "Khuyến mãi",
       "description": "Quản lý chương trình khuyến mãi và giảm giá",
       "totalPromotions": "Tổng khuyến mãi",
@@ -582,6 +611,8 @@
       "restorePromotionConfirm": "Bạn có chắc chắn muốn khôi phục khuyến mãi này không?"
     },
     "files": {
+      "ACTIVE": "Hoạt động",
+      "INACTIVE": "Không hoạt động",
       "title": "Quản lý tệp tin",
       "description": "Quản lý tệp tin đã tải lên",
       "uploadFile": "Tải lên tệp tin",
