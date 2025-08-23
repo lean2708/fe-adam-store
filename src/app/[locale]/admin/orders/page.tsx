@@ -21,7 +21,8 @@ export default function OrdersAdminPage() {
     loading,
     handleDelete,
     handleCancel,
-    handleRestore
+    handleRestore,
+    handleRefresh
   } = useOrders(currentPage, 10, statusFilter);
 
   const handlePageChange = (newPage: number) => {
@@ -63,6 +64,7 @@ export default function OrdersAdminPage() {
             onCancelOrder={handleCancel}
             onDeleteOrder={handleDelete}
             onRestoreOrder={handleRestore}
+            onRefresh={handleRefresh}
             currentPage={currentPage}
             totalPages={totalPages}
             totalElements={totalElements}

@@ -1,17 +1,23 @@
 import { Button } from '@/components/ui/button';
+import { useCartStore } from '@/stores/cartStore';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-type Props = {};
-
-const CheckOutActions = (props: Props) => {
+const CheckOutActions = () => {
   const t = useTranslations('Header');
 
   const router = useRouter();
+
+  const selectedItems = useCartStore((state) => state.selectedItems);
+
   return (
     <div className='space-y-3 '>
-      <Button className='w-full cursor-pointer py-3 font-medium'>
+      <Button
+        onClick={() => router.push('/order')}
+        className='w-full cursor-pointer py-3 font-medium'
+        disabled={selectedItems.length === 0}
+      >
         {t('cart.checkOut.action.order')}
       </Button>
       <Button

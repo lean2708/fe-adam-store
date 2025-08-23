@@ -16,8 +16,8 @@ type TabStatus =
 
 export default function OrderItem(props: {
   onDeleted: (id: number) => void;
+  onRetryPay: () => void;
   id: number;
-  reviewed: (idProduct: number, idOrder: number) => void;
   activeStatus: TabStatus;
   totalPrice?: number;
   items?: TOrderItem[];
@@ -26,8 +26,11 @@ export default function OrderItem(props: {
   const btnByStatus: Record<TabStatus, React.ReactNode> = {
     PENDING: (
       <>
-        <button className="w-40 px-4 py-2 mr-4 rounded-md border border-[#C5C4C2] text-sm text-[#C5C4C2] bg-[#E5E4E1]">
-          Chờ
+        <button
+          onClick={() => onRetryPay()}
+          className="w-52 px-4 mr-4 py-2 rounded-md border border-[#888888] text-sm"
+        >
+          Thanh toán lại
         </button>
         <button
           onClick={() => openModule()}
@@ -93,7 +96,7 @@ export default function OrderItem(props: {
   };
   const {
     onDeleted,
-    reviewed,
+    onRetryPay,
     id,
     items,
     activeStatus,
@@ -102,12 +105,13 @@ export default function OrderItem(props: {
   } = props;
   const [dropList, setDropList] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   if (!items) return null;
   const CloseOrder = async () => {
     try {
       setLoading(true);
-      if (id) {
+      if (items[selectedIndex].id) {
         const res = await cancelOrderAction(String(id));
         console.log(res);
         if (res.status === 200) {
@@ -116,32 +120,23 @@ export default function OrderItem(props: {
           toast.success("Hủy đơn hàng thành công");
         }
       }
+    } catch (error) {
     } finally {
       setLoading(false);
     }
   };
+  console.log(items);
   return (
     <>
-      <ItemProductOrder
-        item={items[0]}
-        active={activeStatus}
-        reviewed={(idProduct: number) => reviewed(idProduct, id)}
-      />
+      {!dropList && <ItemProductOrder item={items[0]} active={activeStatus} />}
       {dropList &&
-        items
-          .slice(1)
-          .map((item: TOrderItem) => (
-            <ItemProductOrder
-              key={item.id}
-              item={item}
-              active={activeStatus}
-              reviewed={(idProduct: number) => reviewed(idProduct, id)}
-            />
-          ))}
+        items.map((item: TOrderItem) => (
+          <ItemProductOrder item={item} active={activeStatus} />
+        ))}
       {!dropList && items.length > 1 && (
         <button
           onClick={() => setDropList(true)}
-          className="outline-none w-full flex justify-center py-2 border-b-1 border-dashed border-gray-400"
+          className="outline-none w-full flex justify-center py-2 border-b-1 border-dashed"
         >
           <p>Xem thêm</p>
           <ChevronDown className="ml-3" />
@@ -166,26 +161,37 @@ export default function OrderItem(props: {
     </>
   );
 }
-
-function ItemProductOrder(props: {
-  item: TOrderItem;
-  active: TabStatus;
-  reviewed: (idProduct: number) => void;
-}) {
-  const { item, reviewed, active } = props;
+function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
+  const { item, active } = props;
   const [isReview, setIsReview] = useState(false);
+  const [reviewed, setReviewed] = useState(false);
+  useEffect(() => {
+    if (item.id) checkReview();
+  }, []);
+  const checkReview = async () => {
+    try {
+      const res = await checkReviewAction(item.id);
+      if (res.status && res.review) setReviewed(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <div className="border-b-1 border-dashed border-gray-400 py-2 w-full flex justify-between min-h-25 items-center">
+    <div className="border-b-1 border-dashed py-2 w-full flex justify-between min-h-25 items-center">
       <div className="flex ">
         <img
           className="h-25 rounded-sm"
-          src={item.imageUrl}
+          src={item.image?.imageUrl}
           alt={"" + item.image?.id}
         />
         <div className="h-full flex flex-col justify-between ml-3">
-          <h4 className="font-bold">{item.Product.title}</h4>
-          <p className="text-[#888888]">Màu sắc: {item.color}</p>
-          <p className="text-[#888888]">Kích cỡ: {item.size}</p>
+          <h4 className="font-bold">{item.productVariant?.product?.name}</h4>
+          <p className="text-[#888888]">
+            Màu sắc: {item.productVariant?.color?.name}
+          </p>
+          <p className="text-[#888888]">
+            Kích cỡ: {item.productVariant?.size?.name}
+          </p>
           <p className="text-[#888888]">×{item.quantity}</p>
         </div>
       </div>
@@ -203,18 +209,17 @@ function ItemProductOrder(props: {
             onClick={() => setIsReview(true)}
             className="px-4 py-2 bg-black rounded-md text-white"
           >
-            {item.isReview ? "Xem đánh giá" : "Đánh giá"}
+            {reviewed ? "Xem đánh giá" : "Đánh giá"}
           </button>
         )}
       </p>
       <ReviewModule
-        isReview={item.isReview || false}
-        returnRivew={() => {
-          reviewed(item.id);
-        }}
         visible={isReview}
         orderItem={item}
         onClose={() => setIsReview(false)}
+        returnRivew={function (): void {
+          throw new Error("Function not implemented.");
+        }}
       />
     </div>
   );

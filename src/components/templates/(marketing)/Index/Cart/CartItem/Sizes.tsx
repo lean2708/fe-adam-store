@@ -1,5 +1,4 @@
 import React from 'react';
-import Loader from '@/components/modules/Loader';
 import { TEntityBasic } from '@/types';
 import {
   Select,

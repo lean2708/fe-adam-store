@@ -12,7 +12,11 @@ import {
   ResetPasswordRequest,
 } from '@/api-client';
 
-import { getPublicAxiosInstance, getNextAuthSession, getAuthenticatedAxiosInstance } from '@/lib/auth/axios-config';
+import {
+  getPublicAxiosInstance,
+  getNextAuthSession,
+  getAuthenticatedAxiosInstance,
+} from '@/lib/auth/axios-config';
 import { ControllerFactory } from './factory-api-client';
 
 /**
@@ -38,7 +42,6 @@ function getPublicAuthController() {
   const instance = getPublicAxiosInstance();
   return new AuthControllerApi(undefined, undefined, instance);
 }
-
 
 /**
  * Authenticates a user by sending their credentials to the backend.
@@ -169,7 +172,7 @@ export async function getMyInfoApi(token?: string): Promise<UserResponse> {
 
   const response = await authApi.getMyInfo();
 
-  console.log(response)
+  // console.log(response)
   if (response.data.code !== 200 || !response.data.result) {
     throw response.data;
   }
@@ -246,13 +249,13 @@ export async function refreshTokenApi(refreshRequest: {
   return response.data.result;
 }
 export async function changePassword1(newPass: {
-  oldPassword: string,
-  newPassword: string,
-  confirmPassword: string
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 }) {
   const authApi = await getAuthController();
   const response = await authApi.changePassword({
     changePasswordRequest: newPass,
   });
-  return response.data.result
+  return response.data.result;
 }

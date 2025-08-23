@@ -14,7 +14,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { ActionDropdown } from "@/components/ui/action-dropdown";
 import { AdminPagination } from "@/components/ui/pagination";
-import { MapPin, Building, Phone, Plus } from "lucide-react";
+import { MapPin, Building, Phone, Plus, RefreshCw } from "lucide-react";
 import type { TBranch } from "@/types";
 import { Button } from "@/components/ui/button";
 
@@ -58,13 +58,19 @@ export function BranchesTable({
               {t("storeBranches")}
             </h2>
           </div>
-          <Button
-            onClick={onCreateBranch}
-            className="bg-black hover:bg-gray-800 text-white"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            {t("addBranch")}
-          </Button>
+          <div className="flex gap-3">
+            <Button onClick={onRefresh} variant="outline" size="sm">
+              <RefreshCw className="h-4 w-4 mr-2" />
+              {t("common.refresh") || "Làm mới"}
+            </Button>
+            <Button
+              onClick={onCreateBranch}
+              className="bg-black hover:bg-gray-800 text-white"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              {t("addBranch")}
+            </Button>
+          </div>
         </div>
         <p className="text-sm text-gray-600 mt-1">{t("listOfAllBranches")}</p>
       </div>

@@ -40,7 +40,7 @@ export default function ImagePreviewModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className='max-w-6xl w-full h-[80vh] bg-background '>
+      <DialogContent className='xl:max-w-6xl lg:max-w-4xl md:max-w-2xl  w-full h-[80vh] bg-background '>
         <DialogTitle className='hidden'></DialogTitle>
         <DialogDescription className='hidden'></DialogDescription>
 

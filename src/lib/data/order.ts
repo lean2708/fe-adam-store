@@ -4,11 +4,11 @@ import {
   type PageResponseOrderResponse,
   type OrderRequest,
   type ShippingRequest,
-  type PaymentCallbackRequest,
-  type OrderAddressRequest
-} from "@/api-client";
-import { SearchOrdersForAdminOrderStatusEnum } from "@/api-client/apis/order-controller-api";
-import { ControllerFactory } from "./factory-api-client";
+  type OrderAddressRequest,
+} from '@/api-client';
+import { SearchOrdersForAdminOrderStatusEnum } from '@/api-client/apis/order-controller-api';
+import { ControllerFactory } from './factory-api-client';
+import { PaymentCallbackRequest } from '@/api-client/models/payment-callback-request';
 
 /**
  * Helper to get an instance of OrderControllerApi with NextAuth using factory.
@@ -20,7 +20,9 @@ async function getOrderController() {
 /**
  * Calculate shipping fee for an order.
  */
-export async function calculateShippingFeeApi(shippingRequest: ShippingRequest) {
+export async function calculateShippingFeeApi(
+  shippingRequest: ShippingRequest
+) {
   const api = await getOrderController();
   const response = await api.calculateShippingFee({ shippingRequest });
   return response.data.result;
@@ -63,7 +65,9 @@ export async function deleteOrderApi(id: number) {
 //   return response.data.result;
 // }
 
-export async function fetchAllOrdersUserApi(status: GetOrdersForUserOrderStatusEnum) {
+export async function fetchAllOrdersUserApi(
+  status: GetOrdersForUserOrderStatusEnum
+) {
   const api = await getOrderController();
   const response = await api.getOrdersForUser({ orderStatus: status });
   return response.data.result;
@@ -89,9 +93,11 @@ export async function payOrderApi(orderId: number) {
 /**
  * Payment callback handler for order.
  */
-export async function payCallbackHandlerApi(paymentCallbackRequest: PaymentCallbackRequest) {
+export async function payCallbackHandlerApi(
+  paymentCallbackRequest: PaymentCallbackRequest
+) {
   const api = await getOrderController();
-  const response = await api.payCallbackHandler({ paymentCallbackRequest });
+  const response = await api.payCallbackHandler(paymentCallbackRequest);
   return response.data.result;
 }
 
@@ -116,9 +122,15 @@ export async function retryPaymentApi(orderId: number) {
 /**
  * Update address for an order.
  */
-export async function updateOrderAddressApi(orderId: number, orderAddressRequest: OrderAddressRequest) {
+export async function updateOrderAddressApi(
+  orderId: number,
+  orderAddressRequest: OrderAddressRequest
+) {
   const api = await getOrderController();
-  const response = await api.updateAddress({ orderId:orderId, orderAddressRequest: orderAddressRequest });
+  const response = await api.updateAddress({
+    orderId: orderId,
+    orderAddressRequest: orderAddressRequest,
+  });
   return response.data.result;
 }
 
@@ -130,7 +142,7 @@ export async function searchOrdersForAdmin(
   endDate: string,
   page: number = 0,
   size: number = 10,
-  sort: string[] = ["id,desc"],
+  sort: string[] = ['id,desc'],
   orderStatus?: SearchOrdersForAdminOrderStatusEnum
 ): Promise<PageResponseOrderResponse> {
   const controller = await ControllerFactory.getOrderController();
@@ -140,11 +152,11 @@ export async function searchOrdersForAdmin(
     page,
     size,
     sort,
-    orderStatus
+    orderStatus,
   });
 
   if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to search orders");
+    throw new Error(response.data.message || 'Failed to search orders');
   }
 
   return response.data.result!;
@@ -158,7 +170,7 @@ export async function fetchOrderById(id: number): Promise<OrderResponse> {
   const response = await controller.fetchDetailById1({ id });
 
   if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to fetch order details");
+    throw new Error(response.data.message || 'Failed to fetch order details');
   }
 
   return response.data.result!;
@@ -172,7 +184,7 @@ export async function deleteOrder(id: number): Promise<void> {
   const response = await controller.delete7({ id });
 
   if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to delete order");
+    throw new Error(response.data.message || 'Failed to delete order');
   }
 }
 
@@ -184,7 +196,7 @@ export async function cancelOrder(orderId: number): Promise<OrderResponse> {
   const response = await controller.cancelOrder({ orderId });
 
   if (response.data.code !== 200) {
-    throw new Error(response.data.message || "Failed to cancel order");
+    throw new Error(response.data.message || 'Failed to cancel order');
   }
 
   return response.data.result!;

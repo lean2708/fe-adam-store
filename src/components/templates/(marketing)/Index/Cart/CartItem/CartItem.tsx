@@ -3,7 +3,7 @@
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { cn, formatCurrency } from '@/lib/utils';
 import { roboto } from '@/config/fonts';
@@ -46,7 +46,7 @@ export function CartItem({
     maxQuantity,
     totalPrice,
     currentColor,
-    currentVariant,
+    price,
     onChangeColor,
     onChangeSize,
     onRemoveItem,
@@ -94,8 +94,7 @@ export function CartItem({
 
               <div className='text-right'>
                 <p className='text-sm text-primary font-normal mb-1'>
-                  {formatCurrency(currentVariant?.price || 0, locale)} ×{' '}
-                  {cartItem.quantity}
+                  {formatCurrency(price || 0, locale)} × {cartItem.quantity}
                 </p>
 
                 <p className='font-bold text-primary mb-2'>
@@ -107,7 +106,7 @@ export function CartItem({
             <div className='flex gap-4 mb-2 -mt-2'>
               <Colors
                 cartItemId={cartItem.id}
-                color={currentColor?.name ?? cartItem.color}
+                color={currentColor?.name ?? cartItem.color.name ?? ''}
                 productColors={product.colors ?? []}
                 onChangeColor={onChangeColor}
                 isChanging={isChanged}

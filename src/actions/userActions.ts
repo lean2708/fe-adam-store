@@ -1,11 +1,12 @@
-"use server";
+'use server';
 
-import type { ActionResponse } from "@/lib/types/actions";
+import type { ActionResponse } from '@/lib/types/actions';
 import type {
   UserCreationRequest,
   UserUpdateRequest,
   PageResponseUserResponse,
-  PageResponseRoleResponse
+  PageResponseRoleResponse,
+  PageResponsePromotionResponse
 } from "@/api-client/models";
 import type { TUser } from "@/types";
 import {
@@ -16,6 +17,7 @@ import {
   deleteUser,
   restoreUser,
   fetchUserById,
+  fetchPromotionsbyUser,
   fetchAllRoles,
 } from "@/lib/data/user";
 import { extractErrorMessage } from "@/lib/utils";
@@ -173,7 +175,7 @@ export async function deleteUserAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to delete user",
+      message: error instanceof Error ? error.message : 'Failed to delete user',
     };
   }
 }
@@ -213,7 +215,28 @@ export async function fetchAllRolesAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch roles",
+      message: error instanceof Error ? error.message : 'Failed to fetch roles',
+    };
+  }
+}
+
+/**
+ * Fetch all roles
+ */
+export async function fetchPromotionsbyUserAction(
+  page: number = 0,
+  size: number = 10
+): Promise<ActionResponse<PageResponsePromotionResponse>> {
+  try {
+    const data = await fetchPromotionsbyUser(page, size);
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Failed to fetch roles',
     };
   }
 }
@@ -233,7 +256,7 @@ export async function fetchUserByIdAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch user",
+      message: error instanceof Error ? error.message : 'Failed to fetch user',
     };
   }
 }
@@ -253,6 +276,7 @@ export async function getInfoUser(): Promise<ActionResponse<TUser>> {
     };
   }
 }
+
 export async function changePasswordAction(newPass: {
   oldPassword: string,
   newPassword: string,

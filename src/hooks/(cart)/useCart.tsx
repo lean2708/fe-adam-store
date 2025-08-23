@@ -18,6 +18,7 @@ export const useCart = (userId: string) => {
         toast.error(res.message || 'Xóa giỏ hàng thất bại');
       }
     } catch (error) {
+      console.error('Đã xảy ra lỗi khi xóa giỏ hàng: ', error);
       toast.error('Đã xảy ra lỗi khi xóa giỏ hàng');
     }
   }, [clearCart]);

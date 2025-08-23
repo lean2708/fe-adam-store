@@ -27,6 +27,7 @@ import {
   Edit,
   Trash2,
   RotateCcw,
+  RefreshCw,
   Users,
 } from "lucide-react";
 import type { TUser } from "@/types";
@@ -37,6 +38,7 @@ interface UserTableProps {
   loading: boolean;
   searchTerm: string;
   onSearchChange: (value: string) => void;
+  onRefresh: () => void;
   onCreateUser: () => void;
   onEditUser: (user: TUser) => void;
   onDeleteUser: (id: number) => void;
@@ -54,6 +56,7 @@ export function UserTable({
   loading,
   searchTerm,
   onSearchChange,
+  onRefresh,
   onCreateUser,
   onEditUser,
   onDeleteUser,
@@ -82,6 +85,10 @@ export function UserTable({
           <p className="text-sm text-gray-600 mt-1">{t("users.description")}</p>
         </div>
         <div className="flex gap-3">
+          <Button onClick={onRefresh} variant="outline" size="sm">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            {t("common.refresh") || "Làm mới"}
+          </Button>
           <Button onClick={onCreateUser} size="sm">
             <Plus className="mr-2 h-4 w-4" />
             {t("users.addUser")}

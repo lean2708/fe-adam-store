@@ -285,3 +285,29 @@ export async function findProductVariantByProductColorSizeApi(
     };
   }
 }
+
+
+/**
+ * get a Product by color and size.
+ */
+export async function getProductVariantApi(
+  productId: number,
+  colorId: number,
+  sizeId: number
+): Promise<ProductVariantResponse> {
+  const api = await getProductVariantController();
+  const response = await api.findByProductAndColorAndSize({
+    productId,
+    colorId,
+    sizeId,
+  });
+  if (response.data.code !== 200) {
+    throw response.data;
+  }
+
+  if (!response.data.result) {
+    throw response.data;
+  }
+
+  return response.data.result;
+}

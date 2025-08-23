@@ -20,10 +20,11 @@ import {
   DistrictControllerApi,
   AddressControllerApi,
   AuthControllerApi,
-  ReviewControllerApi
-} from "@/api-client";
-import { getAuthenticatedAxiosInstance } from "@/lib/auth/axios-config";
-import { AxiosInstance } from "axios";
+  ReviewControllerApi,
+  ProductVariantControllerApi,
+} from '@/api-client';
+import { getAuthenticatedAxiosInstance } from '@/lib/auth/axios-config';
+import { AxiosInstance } from 'axios';
 
 /**
  * Controller factory for creating authenticated API controller instances
@@ -75,6 +76,11 @@ export class ControllerFactory {
   static async getProductController(): Promise<ProductControllerApi> {
     const axiosInstance = await this.getAxiosInstance();
     return new ProductControllerApi(undefined, undefined, axiosInstance);
+  }
+
+  static async getProductVariantController(): Promise<ProductVariantControllerApi> {
+    const axiosInstance = await this.getAxiosInstance();
+    return new ProductVariantControllerApi(undefined, undefined, axiosInstance);
   }
 
   /**
@@ -205,6 +211,7 @@ export interface ApiClient {
   statisticsControllerApi: StatisticsControllerApi;
   userControllerApi: UserControllerApi;
   productControllerApi: ProductControllerApi;
+  productVariantControllerApi: ProductVariantControllerApi;
   orderControllerApi: OrderControllerApi;
   fileControllerApi: FileControllerApi;
   roleControllerApi: RoleControllerApi;
@@ -227,6 +234,8 @@ export async function getAuthenticatedApiClient(): Promise<ApiClient> {
     statisticsControllerApi: await ControllerFactory.getStatisticsController(),
     userControllerApi: await ControllerFactory.getUserController(),
     productControllerApi: await ControllerFactory.getProductController(),
+    productVariantControllerApi:
+      await ControllerFactory.getProductVariantController(),
     orderControllerApi: await ControllerFactory.getOrderController(),
     fileControllerApi: await ControllerFactory.getFileController(),
     roleControllerApi: await ControllerFactory.getRoleController(),
@@ -234,8 +243,10 @@ export async function getAuthenticatedApiClient(): Promise<ApiClient> {
     cartControllerApi: await ControllerFactory.getCartController(),
     cartItemControllerApi: await ControllerFactory.getCartItemController(),
     categoryControllerApi: await ControllerFactory.getCategoryController(),
-    chatMessageControllerApi: await ControllerFactory.getChatMessageController(),
-    conversationControllerApi: await ControllerFactory.getConversationController(),
+    chatMessageControllerApi:
+      await ControllerFactory.getChatMessageController(),
+    conversationControllerApi:
+      await ControllerFactory.getConversationController(),
     sizeControllerApi: await ControllerFactory.getSizeController(),
     colorControllerApi: await ControllerFactory.getColorController(),
     promotionControllerApi: await ControllerFactory.getPromotionController(),

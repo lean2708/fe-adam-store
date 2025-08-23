@@ -10,7 +10,6 @@ import type { ActionResponse } from '@/lib/types/actions';
 import { extractErrorMessage } from '@/lib/utils';
 import { TCartItem } from '@/types';
 import { CartItemRequest } from '@/api-client';
-import { number } from 'zod';
 
 /**
  * Fetch all cart items for the current user (paginated).

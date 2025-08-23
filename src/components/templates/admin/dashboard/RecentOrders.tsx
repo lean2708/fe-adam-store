@@ -8,6 +8,7 @@ import type { TOrder } from "@/types";
 import Link from "next/link";
 import { formatCurrency, formatDate, getStatusColor } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
+import { ORDER_STATUS } from "@/enums";
 
 interface RecentOrdersProps {
   dateRange?: {
@@ -72,15 +73,15 @@ export function RecentOrders({ dateRange }: RecentOrdersProps) {
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case "DELIVERED":
+      case ORDER_STATUS.DELIVERED:
         return t("delivered");
-      case "PROCESSING":
+      case ORDER_STATUS.PROCESSING:
         return t("processing");
-      case "SHIPPED":
+      case ORDER_STATUS.SHIPPED:
         return t("shipped");
-      case "CANCELLED":
-        return t("cancelled");
-      case "PENDING":
+      case ORDER_STATUS.CANCELED:
+        return t("cancelled"); // vẫn giữ key cũ
+      case ORDER_STATUS.PENDING:
         return t("pending");
       default:
         return status;

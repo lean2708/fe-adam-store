@@ -19,7 +19,16 @@ export default function Details({ product }: { product: TProduct }) {
     decreaseQuantity,
     handleAddToCart,
     handleBuyNow,
+    isAddingToCart,
+    isBuyingNow,
+    isPending,
   } = useProductDetails(product);
+
+  const loading = {
+    isAddingToCart,
+    isBuyingNow,
+    isPending,
+  };
 
   return (
     <div className='space-y-6 w-full'>
@@ -37,7 +46,11 @@ export default function Details({ product }: { product: TProduct }) {
         onIncrease={increaseQuantity}
       />
 
-      <ProductActions onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} />
+      <ProductActions
+        onAddToCart={handleAddToCart}
+        onBuyNow={handleBuyNow}
+        loading={loading}
+      />
 
       <ProductDescription />
     </div>

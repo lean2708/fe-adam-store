@@ -81,7 +81,7 @@ function transformApiStatusToOrderStatus(apiStatus?: OrderResponse['orderStatus'
     if (apiStatus && Object.values(ORDER_STATUS).includes(apiStatus as any)) {
         return apiStatus as any;
     }
-    return ORDER_STATUS.PROGRESS; // Default status if status is unknown or not provided
+    return ORDER_STATUS.PROCESSING; // Default status if status is unknown or not provided
 }
 
 /**
@@ -100,7 +100,7 @@ export async function transformOrderResponseToTOrder(apiOrder: OrderResponse): P
 
     return {
         OrderItems: transformedOrderItems,
-        id: apiOrder.id?.toString() ?? "",
+        id: apiOrder.id || 0,
         customerPhone: apiOrder.address?.phone,
         createdAt: apiOrder.orderDate ? new Date(apiOrder.orderDate) : new Date(),
         updatedAt: apiOrder.orderDate ? new Date(apiOrder.orderDate) : new Date(),

@@ -69,6 +69,10 @@ export default function UsersPage() {
     fetchUsers(0, value);
   };
 
+  const handleRefresh = () => {
+    fetchUsers(currentPage, searchTerm);
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -132,6 +136,7 @@ export default function UsersPage() {
             onEditUser={handleEditUser}
             onDeleteUser={handleDeleteUser}
             onRestoreUser={handleRestoreUser}
+            onRefresh={handleRefresh} // Add this line
             currentPage={currentPage}
             totalPages={totalPages}
             totalElements={totalElements}

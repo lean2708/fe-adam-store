@@ -3,19 +3,20 @@ import { Card, CardTitle } from "../ui/card";
 import { CircleX } from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
 import { cn } from "@/lib/utils";
+import { TAddressItem, TOrder } from "@/types";
 import { updateAddressForOrderByID } from "@/actions/orderActions";
 import { getAllAddressUser } from "@/actions/addressActions";
-import { TAddressItem, TOrder } from "@/types";
+import Link from "next/link";
 import ConfirmDialogModule from "./ConfirmDialogModule";
 import { toast } from "sonner";
 
 export default function ChooseAddress(props: {
   visible: boolean;
+  onSuccess: (address: TAddressItem) => void;
   orderItem?: TOrder;
-  onSuccess: (id: TAddressItem) => void;
   onClose: () => void;
 }) {
-  const { visible, onSuccess, onClose, orderItem } = props;
+  const { visible, onClose, orderItem, onSuccess } = props;
   const [loading, setLoading] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [confirm, setConfirm] = useState(false);
@@ -23,10 +24,21 @@ export default function ChooseAddress(props: {
   const [listAddress, setListAddress] = useState<TAddressItem[]>([]);
 
   useEffect(() => {
+    const defaultIndex = listAddress.findIndex((addr) => addr.isDefault);
+    setSelectedIndex(defaultIndex >= 0 ? defaultIndex : 0);
+
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, [onClose]);
+  useEffect(() => {
     async function getAddress() {
       try {
         setLoading(true);
         const res = await getAllAddressUser();
+        console.log(res);
         if (res.status === 200 && res.address?.items) {
           setListAddress(res.address.items as TAddressItem[]);
         }
@@ -36,24 +48,19 @@ export default function ChooseAddress(props: {
         setLoading(false);
       }
     }
-    if (visible) {
-      getAddress();
-      if (listAddress.length > 0) {
-        const defaultIndex = listAddress.findIndex((addr) => addr.id);
-        setSelectedIndex(defaultIndex >= 0 ? defaultIndex : 0);
-      }
-    }
+    getAddress();
   }, [visible]);
   useEffect(() => {
-    if (listAddress.length && orderItem?.id) {
+    if (orderItem && listAddress.length > 0) {
+      console.log("opkasdasd");
       const foundIndex = listAddress.findIndex(
-        (item) => item.id === orderItem.address.id
+        (item) => item.id === orderItem.address?.id
       );
-      console.log(orderItem.address.id, "Index" + foundIndex);
       if (foundIndex !== -1) {
         setSelectedIndex(foundIndex);
       }
     }
+    
   }, [listAddress, orderItem]);
 
   const handleUpdateAddress = async () => {
@@ -62,7 +69,7 @@ export default function ChooseAddress(props: {
         setIsSubmit(true);
         const res = await updateAddressForOrderByID(
           orderItem.id,
-          listAddress[selectedIndex].id
+          listAddress[selectedIndex].id || 0
         );
         console.log(res);
         if (res.status === 200) {
@@ -85,8 +92,11 @@ export default function ChooseAddress(props: {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
-      onClick={confirm ? undefined : stopPropagation}
+      className={cn(
+        "fixed inset-0 z-50 flex items-center justify-center bg-black/40",
+        isSubmit && "cursor-wait"
+      )}
+      onClick={isSubmit ? undefined : () => onClose()}
     >
       <Card
         className="relative w-full max-w-xl bg-white dark:bg-neutral-950 rounded-xl shadow-lg"
@@ -105,9 +115,10 @@ export default function ChooseAddress(props: {
             <CircleX size={30} />
           </button>
         </div>
+
+        {/* Body */}
         <ul className="pb-6 px-6">
           {loading && <Skeleton className="h-18 w-full" />}
-          
           {!loading &&
             listAddress.length !== 0 &&
             listAddress.map((item: TAddressItem, index) => (
@@ -124,40 +135,41 @@ export default function ChooseAddress(props: {
                     name="address"
                     checked={selectedIndex === index}
                     onChange={() => setSelectedIndex(index)}
-                    className="peer h-4 w-4 scale-100 peer inset-0 cursor-pointer appearance-none rounded-full bg-[length:24px_24px] bg-center"
+                    className="peer h-4 w-4 scale-100 hidden"
                   />
 
                   <div className="text-left ml-2">
                     <p
                       className={cn(
-                        selectedIndex !== index && "text-gray-400"
+                        "font-medium",
+                        !item.isDefault && "text-gray-400"
                       )}
                     >
-                      {(() => {
-                        const phoneNumber = item.phone.startsWith("0")
-                          ? item.phone.slice(1)
-                          : item.phone;
-
-                        return `(+84) ${phoneNumber.slice(
-                          0,
-                          3
-                        )} ${phoneNumber.slice(3, 6)} ${phoneNumber.slice(6)}`;
-                      })()}
+                      (+84) {item.phone}
                     </p>
                     <p
                       className={cn(
                         "font-medium",
-                        selectedIndex !== index && "text-gray-400"
+                        !item.isDefault && "text-gray-400"
                       )}
                     >
-                      {item.streetDetail}, {item.ward.name},{" "}
-                      {item.district.name}, {item.province.name}
+                      {item.streetDetail}, {item.ward?.name},{" "}
+                      {item.district?.name}, {item.province?.name}
                     </p>
+                    {item.isDefault && (
+                      <span className="absolute -top-3 left-5 px-2 py-0.5 bg-white">
+                        Mặc định
+                      </span>
+                    )}
                   </div>
                 </label>
               </li>
             ))}
           <li className="h-14 w-full mt-3 flex justify-center items-center border-gray-600 border rounded-lg font-medium cursor-pointer">
+            <Link
+              href={"/address"}
+              className="h-14 w-full mt-3 flex justify-center items-center border-gray-600 border rounded-lg font-medium cursor-pointer"
+            />
             Thêm địa chỉ mới
           </li>
         </ul>
@@ -174,3 +186,4 @@ export default function ChooseAddress(props: {
     </div>
   );
 }
+// props: { loading: boolean, onClose: () => void, title: string, confirm: boolean, onSubmit: () => void

@@ -7,6 +7,7 @@ import {
   restoreProductVariantApi,
   fetchAllProductVariantsByProductIdApi,
   findProductVariantByProductColorSizeApi,
+  getProductVariantApi,
 } from "@/lib/data/productVariant";
 import { productVariantSchema, productVariantUpdateSchema } from "./schema/productVariantSchema";
 import type { ActionResponse } from "@/lib/types/actions";
@@ -148,5 +149,26 @@ export async function findProductVariantByProductColorSizeAction(
       success: false,
       message: extractedError.message,
     };
+  }
+}
+export async function getProductVariantByColorAndSizeAction(
+  productId: number,
+  colorId: number,
+  sizeId: number
+) {
+  try {
+    const product = await getProductVariantApi(productId, colorId, sizeId);
+    return {
+      success: true,
+      status: 200,
+      message: 'Get product variant success',
+      product,
+    };
+  } catch (error) {
+    const extracted = extractErrorMessage(
+      error,
+      'Failed to get product variant.'
+    );
+    return { success: false, message: extracted.message, apiError: extracted };
   }
 }

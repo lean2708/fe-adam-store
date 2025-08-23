@@ -17,8 +17,8 @@ export async function transformCartItemResponseToTCartItem(
     // price: apiCartItem.price ?? 0,
     createdAt: new Date().toString(), // Replace with actual date if available
     updatedAt: new Date().toString(), // Replace with actual date if available
-    color: variant?.color?.name ?? '',
-    size: variant?.size?.name ?? '', // Assuming size is represented by ID
+    color: variant?.color!,
+    size: variant?.size!, // Assuming size is represented by ID
     productId: product?.id?.toString() ?? '',
     Product: product,
 
@@ -53,8 +53,8 @@ export async function transformCartItemResponseToTCartItemWithProduct(
     quantity: apiCartItem.quantity ?? 0,
     createdAt: new Date(), // Replace with actual date if available
     updatedAt: new Date(), // Replace with actual date if available
-    color: variant?.color?.name ?? '',
-    size: variant?.size?.name ?? '',
+    color: variant?.color!,
+    size: variant?.size!,
     productId: product?.id?.toString() ?? '',
     Product: product as TProduct,
     userId: '', // Replace with actual user ID if available from context
