@@ -1,7 +1,7 @@
 import {
   GetOrdersForUserOrderStatusEnum,
   type OrderResponse,
-  type PageResponseOrderResponse,
+
   type OrderRequest,
   type ShippingRequest,
   type OrderAddressRequest,
@@ -9,6 +9,9 @@ import {
 import { SearchOrdersForAdminOrderStatusEnum } from '@/api-client/apis/order-controller-api';
 import { ControllerFactory } from './factory-api-client';
 import { PaymentCallbackRequest } from '@/api-client/models/payment-callback-request';
+import { transformPageResponseOrderToActionResponse } from './transform/order';
+import { ActionResponse } from '../types/actions';
+import { TOrder } from '@/types';
 
 /**
  * Helper to get an instance of OrderControllerApi with NextAuth using factory.
@@ -144,7 +147,7 @@ export async function searchOrdersForAdmin(
   size: number = 10,
   sort: string[] = ['id,desc'],
   orderStatus?: SearchOrdersForAdminOrderStatusEnum
-): Promise<PageResponseOrderResponse> {
+): Promise<ActionResponse<TOrder[]>> {
   const controller = await ControllerFactory.getOrderController();
   const response = await controller.searchOrdersForAdmin({
     startDate,
@@ -159,7 +162,7 @@ export async function searchOrdersForAdmin(
     throw new Error(response.data.message || 'Failed to search orders');
   }
 
-  return response.data.result!;
+  return await transformPageResponseOrderToActionResponse(response.data.result!);
 }
 
 /**

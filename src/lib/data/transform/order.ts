@@ -130,17 +130,18 @@ export async function transformOrderArrayToTOrderArray(apiOrders: OrderResponse[
  */
 export async function transformPageResponseOrderToActionResponse(
     apiResponse: PageResponseOrderResponse
-): Promise<ActionResponse<{ items: TOrder[], totalItems: number, totalPages: number }>> {
+): Promise<ActionResponse<TOrder[]>> {
     try {
         const transformedOrders = await transformOrderArrayToTOrderArray(apiResponse.items ?? []);
 
         return {
             success: true,
-            data: {
-                items: transformedOrders,
-                totalItems: apiResponse.totalItems ?? 0,
-                totalPages: apiResponse.totalPages ?? 0
-            }
+            actionSizeResponse: {
+                size: apiResponse.size ?? 0,
+                totalPages: apiResponse.totalPages ?? 0,
+                totalItems: apiResponse.totalItems ?? 0// For
+            },
+            data: transformedOrders
         };
     } catch (error) {
         return {
