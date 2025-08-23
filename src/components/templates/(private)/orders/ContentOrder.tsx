@@ -1,6 +1,9 @@
 'use client';
 
-import { getAllOrderUserAction } from '@/actions/orderActions';
+import {
+  getAllOrderUserAction,
+  retryPaymentviaVnPayAction,
+} from '@/actions/orderActions';
 import { AddressItem, TOrder, TOrderItem } from '@/types';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -10,6 +13,7 @@ import OrderItem from '@/components/ui/order-item';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { checkReviewAction } from '@/actions/reviewActions';
+import { toast } from 'sonner';
 
 type TabStatus =
   | 'PENDING'
@@ -65,9 +69,15 @@ export function ContentOrder() {
       setState((prev) => ({ ...prev, isLoading: true }));
       const res = await getAllOrderUserAction(state.activeStatus);
       if (res.status === 200 && res.orders) {
+        // Transform OrderResponse[] to TOrder[] to match expected structure
+        const transformedOrders: TOrder[] = res.orders.map((order: any) => ({
+          ...order,
+          orderItems: order.OrderItems || order.orderItems || [],
+        }));
+
         setState((prevState) => ({
           ...prevState,
-          listOrders: res.orders as TOrder[],
+          listOrders: transformedOrders,
         }));
       }
     } catch (error) {
@@ -114,6 +124,22 @@ export function ContentOrder() {
       listOrders: arrayMap,
     }));
   };
+
+  const handleRetryPayment = async (orderId: number) => {
+    try {
+      const res = await retryPaymentviaVnPayAction(orderId);
+
+      if (res.success && res.data?.paymentUrl) {
+        router.push(res.data.paymentUrl);
+      } else {
+        toast.error('Không thể tạo liên kết thanh toán. Vui lòng thử lại.');
+      }
+    } catch (error) {
+      console.error('Failed to retry payment:', error);
+      toast.error('Có lỗi xảy ra khi tạo liên kết thanh toán.');
+    }
+  };
+
   return (
     <>
       <div className='rounded-xl border-2 border-black dark:border-white'>
@@ -187,14 +213,12 @@ export function ContentOrder() {
                       </h3>
 
                       <OrderItem
-                        reviewed={(idProduct: number, idOrder: number) =>
-                          setNewListOrderAfterReview(idProduct, idOrder)
-                        }
+                        onRetryPay={() => handleRetryPayment(+item.id)}
                         onDeleted={(id: number) => {
                           if (id) {
                             const updatedOrders = [...state.listOrders];
                             const foundIndex = updatedOrders.findIndex(
-                              (item) => item.id === id
+                              (item) => +item.id === id
                             );
                             if (foundIndex !== -1) {
                               updatedOrders.splice(foundIndex, 1);
@@ -205,9 +229,9 @@ export function ContentOrder() {
                             }
                           }
                         }}
-                        id={item.id}
+                        id={+item.id}
                         items={item.orderItems as TOrderItem[]}
-                        totalPrice={item.totalPrice}
+                        totalPrice={+item.totalPrice}
                         activeStatus={state.activeStatus}
                         openModule={() => {
                           setState((pv) => ({
@@ -235,14 +259,17 @@ export function ContentOrder() {
             );
             if (foundIndex !== -1) {
               const updatedOrders = [...state.listOrders];
+              // Format address as string to match TOrder type
+              const addressString = `${address.streetDetail}, ${address.ward?.name}, ${address.district?.name}, ${address.province?.name}`;
               updatedOrders[foundIndex] = {
                 ...updatedOrders[foundIndex],
-                address: address,
+                address: addressString,
               };
               setState((ps) => ({
                 ...ps,
                 listOrders: updatedOrders,
-                isLoading: false,
+                isVisible: false,
+                itemOnModule: undefined,
               }));
             }
           }
