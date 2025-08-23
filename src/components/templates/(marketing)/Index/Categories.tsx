@@ -62,7 +62,7 @@ export default function Categories() {
           <CategoryItem
             key={category.id}
             title={category.name}
-            imageSrc={category.imageUrl} id={""}          />
+            imageSrc={category.imageUrl} id={category.id}          />
         ))}
       </div>
     </section>

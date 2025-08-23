@@ -31,7 +31,10 @@ import {
   createOrderSchema,
 } from './schema/orderSchema';
 import { PaymentCallbackRequest } from '@/api-client/models/payment-callback-request';
+<<<<<<< HEAD
 import { transformPageResponseOrderToActionResponse } from '@/lib/data/transform/order';
+=======
+>>>>>>> develop
 import { TOrder } from '@/types';
 
 /**
@@ -237,10 +240,22 @@ export async function searchOrdersForAdminAction(
   size: number = 10,
   sort: string[] = ['id,desc'],
   orderStatus?: SearchOrdersForAdminOrderStatusEnum
-): Promise<ActionResponse<{ items: TOrder[], totalItems: number, totalPages: number }>> {
+): Promise<
+  ActionResponse<{ items: TOrder[]; totalItems: number; totalPages: number }>
+> {
   try {
-    const data = await searchOrdersForAdmin(startDate, endDate, page, size, sort, orderStatus);
-    return await transformPageResponseOrderToActionResponse(data);
+    const data = await searchOrdersForAdmin(
+      startDate,
+      endDate,
+      page,
+      size,
+      sort,
+      orderStatus
+    );
+    return {
+      success: true,
+      data,
+    };
   } catch (error) {
     return {
       success: false,

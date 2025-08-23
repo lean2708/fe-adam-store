@@ -63,7 +63,7 @@ export default function Navbar() {
           </Button>
         </div>
 
-        {/* Logo */}
+        {/* `Logo */}`
         {/* Centered Logo - Hidden on mobile */}
         <div className='hidden sm:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10'>
           <Logo />

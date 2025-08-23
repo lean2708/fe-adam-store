@@ -108,38 +108,17 @@ export type TReview = {
   updatedAt?: string;
 };
 
-export type TAddress = {
-  id?: number;
-  isDefault: boolean;
-  isVisible?: boolean;
-  status?: string;
-  phone?: string;
-  streetDetail: string;
-  ward: {
-    code?: string;
-    name: string;
-  };
-  district: {
-    id?: number;
-    name: string;
-  };
-  province: {
-    id?: number;
-    name: string;
-  };
-};
-
-export interface TProvince {
+export interface Province {
   id?: number;
   name?: string;
 }
 
-export interface TDistrict {
+export interface District {
   id?: number;
   name?: string;
 }
 
-export interface TWard {
+export interface Ward {
   code?: string;
   name?: string;
 }
@@ -151,9 +130,9 @@ export interface TAddressItem {
   phone?: string;
   status?: string;
   streetDetail?: string;
-  province?: TProvince;
-  district?: TDistrict;
-  ward?: TWard;
+  province?: Province;
+  district?: District;
+  ward?: Ward;
 }
 
 export interface TImage {
@@ -165,9 +144,6 @@ export interface TSize {
   id: number;
   name: string;
 }
-
-
-
 
 
 export type TEntityBasic = {
@@ -203,8 +179,6 @@ export type TBranch = {
   updatedAt?: string;
   updatedBy?: string;
 };
-
-
 
 export type TPaymentHistory = {
   id: number;
@@ -319,7 +293,7 @@ export enum SearchOrdersForAdminOrderStatusEnum {
   PROCESSING = 'PROCESSING',
   SHIPPED = 'SHIPPED',
   DELIVERED = 'DELIVERED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED',
 }
 
 export enum GetOrdersForUserOrderStatusEnum {
@@ -327,7 +301,7 @@ export enum GetOrdersForUserOrderStatusEnum {
   PROCESSING = 'PROCESSING',
   SHIPPED = 'SHIPPED',
   DELIVERED = 'DELIVERED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED',
 }
 
 export type TPromotion = {

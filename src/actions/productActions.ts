@@ -14,6 +14,7 @@ import {
   restoreProduct,
   fetchProductById,
   fetchAllProductsTotalApi,
+  searchAllProductApi,
 } from '@/lib/data/product';
 import { productUpdateSchema } from '@/actions/schema/productSchema';
 import type { ActionResponse } from '@/lib/types/actions';
@@ -196,6 +197,25 @@ export async function searchProductsAction(
     return {
       status: 200,
       products,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      error,
+    };
+  }
+}
+export async function searchAllProductsAction(
+  page?: number,
+  size?: number,
+  sort?: string[],
+  search?: string[]
+) {
+  try {
+    const data = await searchAllProductApi(page, size, sort, search);
+    return {
+      status: 200,
+      data,
     };
   } catch (error) {
     return {

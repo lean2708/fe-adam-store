@@ -40,9 +40,9 @@ export async function fetchAllUsersAction(
 ): Promise<ActionResponse<TUser[]>> {
   try {
     const users = await fetchAllUsersForAdmin(page, size, sort);
-    return users;
+    return { success: true, data: users };
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi server");
+    const extractedError = extractErrorMessage(error, 'Lỗi server');
     return {
       success: false,
       message: extractedError.message,
@@ -64,7 +64,7 @@ export async function searchUsersAction(
     const users = await searchUsersForAdmin(page, size, sort, search);
     return users;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi tìm kiếm");
+    const extractedError = extractErrorMessage(error, 'Lỗi tìm kiếm');
     return {
       success: false,
       message: extractedError.message,
@@ -89,7 +89,6 @@ export async function createUserAction(
       email: validatedData.email,
       password: validatedData.password,
       roleIds: validatedData.roleIds,
-
     };
 
     const result = await createUser(userData);
@@ -190,7 +189,7 @@ export async function restoreUserAction(
     const result = await restoreUser(id);
     return result;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi server");
+    const extractedError = extractErrorMessage(error, 'Lỗi server');
     return {
       success: false,
       message: extractedError.message,

@@ -1,4 +1,4 @@
-"use server";
+'use server';
 
 import {
   createProductVariantApi,
@@ -17,12 +17,14 @@ import type { TProductVariant } from "@/types";
 /**
  * Create a new product variant
  */
-export async function addProductVariantAction(formData: FormData): Promise<ActionResponse<TProductVariant>> {
-  const productId = parseInt(formData.get("productId") as string);
-  const colorId = parseInt(formData.get("colorId") as string);
-  const sizeId = parseInt(formData.get("sizeId") as string);
-  const price = parseFloat(formData.get("price") as string);
-  const quantity = parseInt(formData.get("quantity") as string);
+export async function addProductVariantAction(
+  formData: FormData
+): Promise<ActionResponse<TProductVariant>> {
+  const productId = parseInt(formData.get('productId') as string);
+  const colorId = parseInt(formData.get('colorId') as string);
+  const sizeId = parseInt(formData.get('sizeId') as string);
+  const price = parseFloat(formData.get('price') as string);
+  const quantity = parseInt(formData.get('quantity') as string);
 
   const validatedFields = productVariantSchema.safeParse({
     productId,
@@ -35,7 +37,7 @@ export async function addProductVariantAction(formData: FormData): Promise<Actio
   if (!validatedFields.success) {
     return {
       success: false,
-      message: "Invalid data",
+      message: 'Invalid data',
       errors: validatedFields.error.flatten().fieldErrors,
     };
   }
@@ -58,8 +60,12 @@ export async function updateProductVariantAction(
   variantId: number,
   formData: FormData
 ): Promise<ActionResponse<TProductVariant>> {
-  const price = formData.get("price") ? parseFloat(formData.get("price") as string) : undefined;
-  const quantity = formData.get("quantity") ? parseInt(formData.get("quantity") as string) : undefined;
+  const price = formData.get('price')
+    ? parseFloat(formData.get('price') as string)
+    : undefined;
+  const quantity = formData.get('quantity')
+    ? parseInt(formData.get('quantity') as string)
+    : undefined;
 
   const updateData: any = {};
   if (price !== undefined) updateData.price = price;
@@ -70,7 +76,7 @@ export async function updateProductVariantAction(
   if (!validatedFields.success) {
     return {
       success: false,
-      message: "Invalid data",
+      message: 'Invalid data',
       errors: validatedFields.error.flatten().fieldErrors,
     };
   }
@@ -82,12 +88,17 @@ export async function updateProductVariantAction(
 /**
  * Delete a product variant (soft delete)
  */
-export async function deleteProductVariantAction(variantId: number): Promise<ActionResponse<void>> {
+export async function deleteProductVariantAction(
+  variantId: number
+): Promise<ActionResponse<void>> {
   try {
     const result = await deleteProductVariantApi(variantId);
     return result;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Failed to delete product variant");
+    const extractedError = extractErrorMessage(
+      error,
+      'Failed to delete product variant'
+    );
     return {
       success: false,
       message: extractedError.message,
@@ -98,12 +109,17 @@ export async function deleteProductVariantAction(variantId: number): Promise<Act
 /**
  * Restore a product variant
  */
-export async function restoreProductVariantAction(variantId: number): Promise<ActionResponse<TProductVariant>> {
+export async function restoreProductVariantAction(
+  variantId: number
+): Promise<ActionResponse<TProductVariant>> {
   try {
     const result = await restoreProductVariantApi(variantId);
     return result;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Failed to restore product variant");
+    const extractedError = extractErrorMessage(
+      error,
+      'Failed to restore product variant'
+    );
     return {
       success: false,
       message: extractedError.message,
@@ -119,12 +135,28 @@ export async function getAllProductVariantsByProductIdAction(
   page: number = 0,
   size: number = 20,
   sort?: string[]
-): Promise<ActionResponse<{ items: TProductVariant[]; totalPages: number; totalItems: number; page: number; size: number }>> {
+): Promise<
+  ActionResponse<{
+    items: TProductVariant[];
+    totalPages: number;
+    totalItems: number;
+    page: number;
+    size: number;
+  }>
+> {
   try {
-    const result = await fetchAllProductVariantsByProductIdApi(productId, page, size, sort);
+    const result = await fetchAllProductVariantsByProductIdApi(
+      productId,
+      page,
+      size,
+      sort
+    );
     return result;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Failed to load product variants");
+    const extractedError = extractErrorMessage(
+      error,
+      'Failed to load product variants'
+    );
     return {
       success: false,
       message: extractedError.message,
@@ -141,10 +173,17 @@ export async function findProductVariantByProductColorSizeAction(
   sizeId: number
 ): Promise<ActionResponse<TProductVariant>> {
   try {
-    const result = await findProductVariantByProductColorSizeApi(productId, colorId, sizeId);
+    const result = await findProductVariantByProductColorSizeApi(
+      productId,
+      colorId,
+      sizeId
+    );
     return result;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Failed to find product variant");
+    const extractedError = extractErrorMessage(
+      error,
+      'Failed to find product variant'
+    );
     return {
       success: false,
       message: extractedError.message,

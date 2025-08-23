@@ -1,5 +1,5 @@
-import { PageResponseReviewResponse } from "./../../api-client/models/page-response-review-response";
-import type { TProduct } from "@/types"; // your local template type
+import { PageResponseReviewResponse } from './../../api-client/models/page-response-review-response';
+import type { TProduct } from '@/types'; // your local template type
 
 import {
   ProductControllerApi,
@@ -7,10 +7,10 @@ import {
   type ProductUpdateRequest,
   ProductResponse,
   type PageResponseProductResponse,
-} from "@/api-client";
-import { ControllerFactory } from "./factory-api-client";
-import { getPublicAxiosInstance } from "@/lib/auth/axios-config";
-import { transformProductResponseToTProduct } from "./transform/product";
+} from '@/api-client';
+import { ControllerFactory } from './factory-api-client';
+import { getPublicAxiosInstance } from '@/lib/auth/axios-config';
+import { transformProductResponseToTProduct } from './transform/product';
 
 /**
  * Helper to get an instance of ProductControllerApi with NextAuth using factory.
@@ -105,7 +105,7 @@ export async function fetchAllProductsTotalApi(
     products: (response.data.result?.items ?? []).map(
       transformProductResponseToTProduct
     ),
-    totalItem: response.data.result?.totalItems
+    totalItem: response.data.result?.totalItems,
   };
 }
 /**
@@ -160,7 +160,7 @@ export async function fetchProductReviewsApi(
     throw response.data;
   }
   if (!response.data.result) {
-    throw new Error("ProductResponse is missing in the response.");
+    throw new Error('ProductResponse is missing in the response.');
   }
   return response.data.result as PageResponseReviewResponse;
 }
@@ -188,7 +188,22 @@ export async function searchProductApi(
     transformProductResponseToTProduct
   );
 }
-
+export async function searchAllProductApi(
+  page?: number,
+  size?: number,
+  sort?: string[],
+  search?: string[]
+) {
+  const api = await getProductController();
+  const response = await api.searchProduct({ page, size, sort, search });
+  return{
+    items: (response.data.result?.items ?? []).map(
+      transformProductResponseToTProduct
+    ),
+    totalItems: response.data.result?.totalItems,
+     totalPages: response.data.result?.totalPages
+  }
+}
 /**
  * Fetch all products for admin with pagination (returns raw API response)
  */
@@ -222,6 +237,10 @@ export async function createProduct(
     productRequest: productData,
   });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> develop
   if (response.data.code !== 200) {
     throw new Error(response.data.message || 'Failed to create product');
   }

@@ -87,6 +87,7 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
         gender: user.gender || undefined,
         isEditing: true,
       });
+      setShowPasswordFields(false); // Hide password fields by default for editing
     } else {
       form.reset({
         name: "",
@@ -98,6 +99,7 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
         gender: undefined,
         isEditing: false,
       });
+      setShowPasswordFields(false); // Reset password fields visibility
     }
   }, [user, form]);
 

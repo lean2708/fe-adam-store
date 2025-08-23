@@ -44,5 +44,3 @@ next-env.d.ts
 
 pnpm-lock.yaml
 .env
-test-results
-package-lock.json

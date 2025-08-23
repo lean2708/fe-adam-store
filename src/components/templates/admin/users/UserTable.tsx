@@ -70,6 +70,7 @@ export function UserTable({
   const t = useTranslations("Admin");
   const locale = useLocale();
 
+
   // No client-side filtering needed since we're using server-side search
   const filteredUsers = users;
 
@@ -250,6 +251,7 @@ export function UserTable({
 
                     {/* Trạng thái */}
                     <TableCell>
+                      
                       <Badge
                         variant="secondary"
                         className={getStatusColor(
@@ -261,6 +263,7 @@ export function UserTable({
                           user.status ||
                           "INACTIVE"}
                       </Badge>
+        
                     </TableCell>
 
                     {/* Hành động */}
