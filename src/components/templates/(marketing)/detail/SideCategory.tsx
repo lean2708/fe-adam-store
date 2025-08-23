@@ -18,8 +18,10 @@ export default function SideCategory() {
       try {
         setLoading(true);
         const response = await getAllCategoriesAction();
-        if (response.status === 200 && response.categories) {
-          setCategories(response.categories);
+        if (response.success && response.data) {
+          console.log(response.data)
+          setCategories(response.data);
+          
         }
       } catch (error) {
         console.error("Failed to fetch categories:", error);
@@ -39,7 +41,7 @@ export default function SideCategory() {
   return (
     <aside>
       <h2 className="h-20 w-full text-4xl font-bold flex pl-8 items-center">
-        {categories.find((item) => item.id === paramCate)?.title}
+        {categories.find((item) => item.id === paramCate)?.name}
         {!paramCate && "Sản phẩm"}
       </h2>
       <p
@@ -93,7 +95,7 @@ export default function SideCategory() {
                       </svg>
                     )}
                   </span>
-                  {item.title}
+                  {item.name}
                 </label>
               </li>
             ))}
