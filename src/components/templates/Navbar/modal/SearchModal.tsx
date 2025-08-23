@@ -75,20 +75,17 @@ export default function SearchModal({
       open={open}
       onClose={onClose}
       variant="top"
-      position="top-left"
       size="full"
       showOverlay={true}
       style={{
-        maxHeight: '567px',
-        top:'50px'
+        top: "50px",
+   
       }}
+      className="overflow-hidden lg:!max-h-[calc((100vw-32px-120px)/6+18px+16px+235px)]  sm:!max-h-[calc((100vw-32px-48px)/3+18px+16px+230px)]  !max-h-[calc((100vw-32px-24px)/2+18px+16px+230px)]"
       closeOnClickOutside={!isSearchExpanded}
     >
-      <ModalBody className="!pb-0" scrollable={false}>
-        <div className="mb-2 font-semibold text-lg">
-          Kết quả tìm kiếm
-          
-        </div>
+      <ModalBody className="!pb-0 h-full !mb-0 !bottom-0">
+        <div className="mb-2 font-semibold text-lg">Kết quả tìm kiếm</div>
 
         {!searchQuery.trim() ? (
           <div className="flex items-center justify-center h-40">
@@ -97,8 +94,8 @@ export default function SearchModal({
             </p>
           </div>
         ) : isSearching ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            {Array.from({ length: 5 }).map((_, i) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
               <ProductCardSkeleton key={i} />
             ))}
           </div>
@@ -107,7 +104,7 @@ export default function SearchModal({
             <p className="text-gray-500 text-lg">Không có sản phẩm nào cả</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
             {searchResults.map((item) => {
               const hasImageError = imageErrors[item.id] || false;
               const imageSrc = hasImageError ? "/fallback.png" : item.mainImage;
