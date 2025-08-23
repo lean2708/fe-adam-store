@@ -825,6 +825,7 @@
       "refreshMessagesError": "Lỗi khi làm mới tin nhắn"
     },
     "common": {
+      "refresh":"Làm mới",
       "add": "Thêm",
       "edit": "Sửa",
       "delete": "Xóa",

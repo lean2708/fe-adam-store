@@ -61,7 +61,7 @@ export function BranchesTable({
           <div className="flex gap-3">
             <Button onClick={onRefresh} variant="outline" size="sm">
               <RefreshCw className="h-4 w-4 mr-2" />
-              {t("common.refresh") || "Làm mới"}
+              {t("refresh") || "Làm mới"}
             </Button>
             <Button
               onClick={onCreateBranch}

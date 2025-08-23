@@ -40,7 +40,7 @@ export async function fetchAllUsersAction(
 ): Promise<ActionResponse<TUser[]>> {
   try {
     const users = await fetchAllUsersForAdmin(page, size, sort);
-    return { success: true, data: users };
+    return users;
   } catch (error) {
     const extractedError = extractErrorMessage(error, 'Lỗi server');
     return {

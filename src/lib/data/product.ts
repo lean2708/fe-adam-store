@@ -237,10 +237,6 @@ export async function createProduct(
     productRequest: productData,
   });
 
-<<<<<<< HEAD
-=======
-
->>>>>>> develop
   if (response.data.code !== 200) {
     throw new Error(response.data.message || 'Failed to create product');
   }
