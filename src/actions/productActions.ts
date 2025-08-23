@@ -1,7 +1,6 @@
 'use server';
 
 import {
-  createProductApi,
   updateProductApi,
   deleteProductApi,
   fetchAllProductsApi,
@@ -17,10 +16,7 @@ import {
   fetchAllProductsTotalApi,
   searchAllProductApi,
 } from '@/lib/data/product';
-import {
-  productCreateSchema,
-  productUpdateSchema,
-} from '@/actions/schema/productSchema';
+import { productUpdateSchema } from '@/actions/schema/productSchema';
 import type { ActionResponse } from '@/lib/types/actions';
 import type {
   ProductResponse,

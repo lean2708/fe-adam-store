@@ -1,13 +1,14 @@
-"use server";
+'use server';
 
-import type { ActionResponse } from "@/lib/types/actions";
+import type { ActionResponse } from '@/lib/types/actions';
 import type {
   UserCreationRequest,
   UserUpdateRequest,
   PageResponseUserResponse,
-  PageResponseRoleResponse
-} from "@/api-client/models";
-import type { TUser } from "@/types";
+  PageResponseRoleResponse,
+  PageResponsePromotionResponse,
+} from '@/api-client/models';
+import type { TUser } from '@/types';
 import {
   fetchAllUsersForAdmin,
   searchUsersForAdmin,
@@ -17,10 +18,10 @@ import {
   restoreUser,
   fetchUserById,
   fetchAllRoles,
-} from "@/lib/data/user";
-import { extractErrorMessage } from "@/lib/utils";
-import { changePassword1, getMyInfoApi } from "@/lib/data/auth";
-
+  fetchPromotionsbyUser,
+} from '@/lib/data/user';
+import { extractErrorMessage } from '@/lib/utils';
+import { changePassword1, getMyInfoApi } from '@/lib/data/auth';
 
 /**
  * Fetch all users for admin
@@ -32,9 +33,9 @@ export async function fetchAllUsersAction(
 ): Promise<ActionResponse<TUser[]>> {
   try {
     const users = await fetchAllUsersForAdmin(page, size, sort);
-    return users;
+    return { success: true, data: users };
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi server");
+    const extractedError = extractErrorMessage(error, 'Lỗi server');
     return {
       success: false,
       message: extractedError.message,
@@ -56,7 +57,7 @@ export async function searchUsersAction(
     const users = await searchUsersForAdmin(page, size, sort, search);
     return users;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi tìm kiếm");
+    const extractedError = extractErrorMessage(error, 'Lỗi tìm kiếm');
     return {
       success: false,
       message: extractedError.message,
@@ -75,7 +76,7 @@ export async function createUserAction(
     const result = await createUser(userData);
     return result;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi server");
+    const extractedError = extractErrorMessage(error, 'Lỗi server');
     return {
       success: false,
       message: extractedError.message,
@@ -95,7 +96,7 @@ export async function updateUserAction(
     const result = await updateUser(id, userData);
     return result;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi server");
+    const extractedError = extractErrorMessage(error, 'Lỗi server');
     return {
       success: false,
       message: extractedError.message,
@@ -119,7 +120,7 @@ export async function deleteUserAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to delete user",
+      message: error instanceof Error ? error.message : 'Failed to delete user',
     };
   }
 }
@@ -134,7 +135,7 @@ export async function restoreUserAction(
     const result = await restoreUser(id);
     return result;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi server");
+    const extractedError = extractErrorMessage(error, 'Lỗi server');
     return {
       success: false,
       message: extractedError.message,
@@ -159,7 +160,28 @@ export async function fetchAllRolesAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch roles",
+      message: error instanceof Error ? error.message : 'Failed to fetch roles',
+    };
+  }
+}
+
+/**
+ * Fetch all roles
+ */
+export async function fetchPromotionsbyUserAction(
+  page: number = 0,
+  size: number = 10
+): Promise<ActionResponse<PageResponsePromotionResponse>> {
+  try {
+    const data = await fetchPromotionsbyUser(page, size);
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Failed to fetch roles',
     };
   }
 }
@@ -179,10 +201,11 @@ export async function fetchUserByIdAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch user",
+      message: error instanceof Error ? error.message : 'Failed to fetch user',
     };
   }
 }
+
 export async function getInfoUser() {
   try {
     const data = await getMyInfoApi();
@@ -193,14 +216,15 @@ export async function getInfoUser() {
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch user",
+      message: error instanceof Error ? error.message : 'Failed to fetch user',
     };
   }
 }
+
 export async function changePasswordAction(newPass: {
-  oldPassword: string,
-  newPassword: string,
-  confirmPassword: string
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 }) {
   try {
     const data = await changePassword1(newPass);
@@ -211,7 +235,7 @@ export async function changePasswordAction(newPass: {
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch user",
+      message: error instanceof Error ? error.message : 'Failed to fetch user',
     };
   }
 }

@@ -65,6 +65,64 @@
       "product_not_found": "The product you are looking for does not exist."
     }
   },
+  "Order": {
+    "title": "Order Confirmation",
+    "action": "Place Order",
+    "order_annouce": {
+      "order_code": "Order Code",
+      "success": {
+        "title": "Payment Successful",
+        "message": "You have successfully paid with VN pay. Please check your order in the 'My Orders' section."
+      },
+      "failure": {
+        "title": "Payment Failed",
+        "message": "Payment failed. Please check your order in the 'My Orders' section to try again."
+      },
+      "action": {
+        "close": "Close",
+        "go_to_orders": "Go to My Orders"
+      }
+    },
+    "delivery_info": {
+      "title": "Delivery Information",
+      "info_receiver": {
+        "name": "Full Name",
+        "address": "Shipping Address",
+        "phone": "Phone Number"
+      },
+      "no_address": "You don't have any saved addresses. Please add a new one.",
+      "action": {
+        "add_address": "Add Address",
+        "edit_address": "Edit"
+      }
+    },
+    "payment_display": {
+      "selected_discount": "Select a discount code",
+      "calcultating": "Calculating..."
+    },
+    "promotion": {
+      "title": "Promotion Code",
+      "placeholder": "Select a promotion code",
+      "no_promotion": "No promotion codes available"
+    },
+    "payment_section": {
+      "title": "Payment Method"
+    },
+    "payment_summary": {
+      "title": "Payment Details",
+      "sub_total": "Subtotal",
+      "shipping_fee": "Shipping Fee",
+      "promotion": "Promotion Code",
+      "total": "Total",
+      "calcultating": "Calculating..."
+    },
+    "product_list": {
+      "title": "Products",
+      "color": "Color",
+      "size": "Size",
+      "quanity": "Quantity"
+    }
+  },
   "Header": {
     "search": {
       "placeholder": "Search products...",
@@ -267,13 +325,40 @@
       "productsDescription": "Manage products including variants, colors, sizes, prices and inventory",
       "searchProducts": "Search products...",
       "addProduct": "Add Product",
+      "productNotFound": "Product not found",
+      "back": "Back",
+      "category": "Category",
+      "categoryShirt": "Shirt",
+      "reviews": "Reviews",
+      "noVariantsFound": "No variants found",
+      "itemsPerPage": "Items per page",
+      "showingResults": "Showing",
+      "of": "of",
+      "variants": "variants",
+      "noImagesAvailable": "No images available",
+      "refreshSuccess": "Data refreshed successfully",
+      "refreshError": "Failed to refresh data",
+      "variantsTitle": "Product Variants",
+      "refresh": "Refresh",
+      "addVariant": "Add Variant",
+      "productDetails": "Product Details",
+      "editProduct": "Edit Product",
+      "rating": "Rating",
+      "colors": "Colors",
+      "description": "Product Description",
+      "id": "ID",
+      "product": "Product",
+      "quantity": "Quantity",
+      "size": "Size",
+      "color": "Color",
+      "actions": "Actions",
+      "editVariant": "Edit Variant",
       "addProductTitle": "Add Product",
       "enterProductName": "Enter product name",
       "enterDescription": "Enter product description",
       "image": "Image",
       "uploadImage": "Upload image",
       "productCreated": "Product created successfully",
-      "category": "Category",
       "selectCategory": "Select category",
       "deleteProduct": "Delete Product"
     },

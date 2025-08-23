@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/carousel';
 import ProductCardIndex from '@/components/modules/ProductCardIndex';
 import { ProductCardWithColorsSkeleton } from '@/components/ui/skeleton';
-import Link from 'next/link';
 import useRecommendations from '@/hooks/(product_details)/useRecommendations';
 
 export default function Recommendations() {
@@ -44,9 +43,7 @@ export default function Recommendations() {
                 key={product.id}
                 className='basis-1/2 md:basis-1/3 lg:basis-1/5'
               >
-                <Link href={`${product.id}`}>
-                  <ProductCardIndex product={product} badgeText='Bán Chạy' />
-                </Link>
+                <ProductCardIndex product={product} badgeText='Bán Chạy' />
               </CarouselItem>
             ))}
           </CarouselContent>
