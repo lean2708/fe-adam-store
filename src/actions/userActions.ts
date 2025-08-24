@@ -130,7 +130,6 @@ export async function updateUserAction(
       gender: validatedData.gender as any,
     };
     console.log(userData);
-
     // Only include password if it's provided
     if (validatedData.password && validatedData.password.length > 0) {
       (userData as any).password = validatedData.password;
