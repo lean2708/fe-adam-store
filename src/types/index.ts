@@ -4,7 +4,7 @@ import { ORDER_STATUS } from '@/enums';
 import { PAYMENT_METHODS } from '@/enums';
 
 export type TCategory = {
-  id: string;
+  id: number;
   name: string;
   imageUrl: string;
   status?: string;
@@ -83,6 +83,7 @@ export type TProduct = {
   totalReviews?: number;
   status?: string;
   createdAt?: string;
+  category: TCategory;
   colors?: TColor[];
 };
 

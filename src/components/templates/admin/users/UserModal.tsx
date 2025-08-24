@@ -27,15 +27,10 @@ import {
   updateUserAction,
   fetchAllRolesAction,
 } from "@/actions/userActions";
-import {
-  userFormSchema,
-  type UserFormData
-} from "@/actions/schema/userSchema";
+import { userFormSchema, type UserFormData } from "@/actions/schema/userSchema";
 import type { TUser, TRole, TEntityBasic } from "@/types";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
-
-
 
 interface UserModalProps {
   open: boolean;
@@ -47,7 +42,6 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
   const [loading, setLoading] = useState(false);
   const [roles, setRoles] = useState<TRole[]>([]);
   const t = useTranslations("Admin.users");
-
 
   const isEditing = !!user;
 
@@ -75,6 +69,7 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
   // Reset form when user changes
   useEffect(() => {
     if (user) {
+
       form.reset({
         name: user.name || "",
         email: user.email || "",
@@ -84,9 +79,15 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
           ? Array.from(user.roles).map((role: TEntityBasic) => role.id)
           : [],
         dob: user.dob || "",
-        gender: user.gender || undefined,
+        gender: user.gender?.toUpperCase() as
+          | "MALE"
+          | "FEMALE"
+          | "OTHER"
+          | undefined,
         isEditing: true,
       });
+        console.log("gender =>", form.watch("gender"));
+        
       // setShowPasswordFields(false); // Hide password fields by default for editing
     } else {
       form.reset({
@@ -287,16 +288,28 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>{t("gender.title")}</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        key={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger className="bg-[#F0F0F0] rounded-xl">
-                            <SelectValue placeholder={t("gender.placeholder")} />
+                            <SelectValue
+                              placeholder={t("gender.placeholder")}
+                            />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="MALE">{t("gender.Male")}</SelectItem>
-                          <SelectItem value="FEMALE">{t("gender.Female")}</SelectItem>
-                          <SelectItem value="OTHER">{t("gender.Other")}</SelectItem>
+                          <SelectItem value="MALE">
+                            {t("gender.MALE")}
+                          </SelectItem>
+                          <SelectItem value="FEMALE">
+                            {t("gender.FEMALE")}
+                          </SelectItem>
+                          <SelectItem value="OTHER">
+                            {t("gender.Other")}
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -337,7 +350,8 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Nhập lại mật khẩu <span className="text-red-500">*</span>
+                        Nhập lại mật khẩu{" "}
+                        <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
                         <Input

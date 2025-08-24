@@ -158,7 +158,7 @@ export function transformUserFormToCreateRequest(data: UserFormData) {
     name: data.name,
     email: data.email,
     password: data.password!,
-    roleIds: new Set(data.roleIds),
+    roleIds: data.roleIds,
     dob: data.dob,
     gender: data.gender,
   };
@@ -167,7 +167,7 @@ export function transformUserFormToCreateRequest(data: UserFormData) {
 export function transformUserFormToUpdateRequest(data: UserFormData) {
   const updateData: any = {
     name: data.name,
-    roleIds: new Set(data.roleIds),
+    roleIds: data.roleIds,
     dob: data.dob,
     gender: data.gender,
   };

@@ -41,7 +41,7 @@ export default function SideCategory() {
   return (
     <aside>
       <h2 className="h-20 w-full text-4xl font-bold flex pl-8 items-center">
-        {categories.find((item) => item.id === paramCate)?.name}
+        {categories.find((item) => item.id + "" === paramCate)?.name}
         {!paramCate && "Sản phẩm"}
       </h2>
       <p
@@ -53,13 +53,17 @@ export default function SideCategory() {
           className={`transition-transform ${isOpen ? "rotate-90" : ""}`}
         />
       </p>
-      <nav className={`overflow-hidden transition-max-height duration-500 ${isOpen ? "max-h-screen" : "max-h-0"}`}>
+      <nav
+        className={`overflow-hidden transition-max-height duration-500 ${
+          isOpen ? "max-h-screen" : "max-h-0"
+        }`}
+      >
         <ul className="bg-[#cccccc4b]">
           {!loading &&
             categories.length > 0 &&
             categories.map((item: TCategory) => (
               <li
-                onClick={() => handleCheckboxChange(item.id)}
+                onClick={() => handleCheckboxChange(item.id + "")}
                 className="flex px-8 py-4 hover:bg-[#efefef] duration-500"
                 key={item.id}
               >
@@ -67,20 +71,20 @@ export default function SideCategory() {
                   className="hidden"
                   type="checkbox"
                   name="category"
-                  id={item.id}
-                  checked={item.id === paramCate}
-                  onChange={() => handleCheckboxChange(item.id)}
+                  id={item.id + ""}
+                  checked={item.id + "" === paramCate}
+                  onChange={() => handleCheckboxChange(item.id + "")}
                 />
                 <label
-                  htmlFor={item.id}
+                  htmlFor={item.id + ""}
                   className="flex items-center cursor-pointer"
                 >
                   <span
                     className={`relative inline-block w-5 h-5 mr-2 border-2 border-[#4b4b4b6e] rounded ${
-                      item.id === paramCate && "border-black"
+                      item.id + "" === paramCate && "border-black"
                     }`}
                   >
-                    {item.id === paramCate && (
+                    {item.id + "" === paramCate && (
                       <svg
                         className="absolute inset-0 w-full h-full bg-black text-white"
                         xmlns="http://www.w3.org/2000/svg"

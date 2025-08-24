@@ -7,7 +7,7 @@ import { ActionResponse } from "@/lib/types/actions";
  */
 export function transformCategoryResponseToTCategory(apiCategory: CategoryResponse): TCategory {
     return {
-        id: apiCategory.id?.toString() ?? "",
+        id: apiCategory.id ?? 0,
         name: apiCategory.name ?? "",
         imageUrl: apiCategory.imageUrl ?? "",
         status: apiCategory.status,

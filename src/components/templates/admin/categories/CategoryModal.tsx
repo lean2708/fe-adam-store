@@ -127,7 +127,7 @@ export function CategoryModal({ open, onClose, editingCategory }: CategoryModalP
         imageUrl: imageUrl,
       };
 
-      const result = await updateCategoryAction(parseInt(editingCategory.id), categoryData);
+      const result = await updateCategoryAction((editingCategory.id), categoryData);
       if (!result.success) {
         throw new Error(result.message || "Failed to update category");
       }

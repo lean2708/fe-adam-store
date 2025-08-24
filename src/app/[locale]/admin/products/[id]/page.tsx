@@ -236,7 +236,7 @@ export default function ProductVariantsPage() {
                 </div>
                 <div className="col-span-9">
                   <span className="text-sm text-gray-900">
-                    {t("categoryShirt") || "Shirt"}
+                    {product.category.name}
                   </span>
                 </div>
               </div>
