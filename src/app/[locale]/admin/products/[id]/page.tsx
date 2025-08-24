@@ -50,7 +50,6 @@ export default function ProductVariantsPage() {
       if (!result.success) {
         throw new Error(result.message || "Failed to load product");
       }
-      console.log(result);
       
       return transformProductResponseToTProduct(result.data || {});
     },
