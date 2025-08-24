@@ -88,7 +88,7 @@ export async function createUserAction(
       name: validatedData.name,
       email: validatedData.email,
       password: validatedData.password,
-      roleIds: validatedData.roleIds,
+      roleIds: Array.from(validatedData.roleIds) as unknown as Set<number>,
     };
 
     const result = await createUser(userData);
@@ -125,12 +125,11 @@ export async function updateUserAction(
     // Transform to API request format
     const userData: UserUpdateRequest = {
       name: validatedData.name,
-      roleIds: validatedData.roleIds,
+      roleIds: Array.from(validatedData.roleIds) as unknown as Set<number>,
       dob: validatedData.dob || "",
       gender: validatedData.gender as any,
     };
     console.log(userData);
-    
     // Only include password if it's provided
     if (validatedData.password && validatedData.password.length > 0) {
       (userData as any).password = validatedData.password;
@@ -148,9 +147,9 @@ export async function updateUserAction(
     }
 
     const extractedError = extractErrorMessage(error, "Lỗi server");
-  
+
     console.log(error);
-    
+
     return {
       success: false,
       message: extractedError.message,

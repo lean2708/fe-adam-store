@@ -41,8 +41,8 @@ interface UserTableProps {
   onRefresh: () => void;
   onCreateUser: () => void;
   onEditUser: (user: TUser) => void;
-  onDeleteUser: (id: number) => void;
-  onRestoreUser: (id: number) => void;
+  onDeleteUser: (id: string) => void;
+  onRestoreUser: (id: string) => void;
   // Pagination props
   currentPage: number;
   totalPages: number;
@@ -69,7 +69,6 @@ export function UserTable({
 }: UserTableProps) {
   const t = useTranslations("Admin");
   const locale = useLocale();
-
 
 
   // No client-side filtering needed since we're using server-side search
@@ -285,7 +284,7 @@ export function UserTable({
                           </DropdownMenuItem>
                           {user.status === "ACTIVE" ? (
                             <DropdownMenuItem
-                              onClick={() => onDeleteUser(user.id!)}
+                              onClick={() => onDeleteUser(user._id!)}
                               className="text-destructive"
                             >
                               <Trash2 className="mr-2 h-4 w-4" />
@@ -293,7 +292,7 @@ export function UserTable({
                             </DropdownMenuItem>
                           ) : (
                             <DropdownMenuItem
-                              onClick={() => onRestoreUser(user.id!)}
+                              onClick={() => onRestoreUser(user._id!)}
                             >
                               <RotateCcw className="mr-2 h-4 w-4" />
                               {t("common.restore")}

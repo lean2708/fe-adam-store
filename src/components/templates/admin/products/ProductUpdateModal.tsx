@@ -68,7 +68,7 @@ export function ProductUpdateModal({
       form.reset({
         name: product.name || product.title || "",
         description: product.description || "",
-        categoryId: 0, // Will be set when categories are loaded
+        categoryId: product.category.id, // Will be set when categories are loaded
       });
     }
   }, [product, open, form]);
@@ -159,11 +159,9 @@ export function ProductUpdateModal({
       closeOnClickOutside={!isDropdownOpen}
       showCloseButton={true}
     >
-
-
       <ModalBody className="p-8">
         <h2 className="text-xl font-semibold text-gray-900 mb-8">
-          Cập nhật sản phẩm
+          {t("updateProductTitle")}
         </h2>
 
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
@@ -192,6 +190,7 @@ export function ProductUpdateModal({
               <Label className="text-sm text-gray-700">Danh mục</Label>
               <Select
                 value={form.watch("categoryId")?.toString() || ""}
+                key={form.watch("categoryId")?.toString() || ""}
                 onValueChange={(value) =>
                   form.setValue("categoryId", parseInt(value))
                 }

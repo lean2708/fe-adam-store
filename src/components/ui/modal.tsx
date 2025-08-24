@@ -63,25 +63,21 @@ export function Modal({
     if (!closeOnClickOutside || !open) return
 
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element
+      const target = event.target as HTMLElement
 
-      // Don't close if clicking inside the modal
+      // If the click is inside the modal, do nothing.
       if (modalContentRef.current?.contains(target)) {
         return
       }
 
-      // Don't close if clicking on dropdown content (usually portaled to body)
-      if (target.closest('[data-radix-popper-content-wrapper]') ||
-          target.closest('[data-radix-select-content]') ||
-          target.closest('[data-radix-dropdown-menu-content]') ||
-          target.closest('[data-radix-portal]') ||
-          target.closest('.select-content') ||
-          target.closest('[role="listbox"]') ||
-          target.closest('[role="option"]') ||
-          target.closest('[data-state="open"]') ||
-          // Check if the target is inside any Radix portal
-          target.closest('div[data-radix-select-content]') ||
-          target.closest('div[data-radix-dropdown-menu-content]')) {
+      // This is the crucial part: check if the clicked element is a portaled element
+      // directly under the body, which is a common pattern for dropdowns/popovers.
+      if (target.parentElement === document.body && target.hasAttribute('data-radix-popper-content-wrapper')) {
+        return
+      }
+
+      // A more general check for any element that might be a popover or a dropdown menu.
+      if (target.closest('[data-radix-popper-content-wrapper]')) {
         return
       }
 

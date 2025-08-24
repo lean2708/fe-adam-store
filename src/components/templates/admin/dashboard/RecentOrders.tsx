@@ -56,10 +56,8 @@ export function RecentOrders({ dateRange }: RecentOrdersProps) {
           ["orderDate,desc"] // sort by creation date descending
         );
 
-        if (result.success && result.data?.items) {
-          console.log(result.data.items);
-
-          setOrders(result.data.items);
+        if (result.success && result.data) {
+          setOrders(result.data);
         }
       } catch (error) {
         console.error("Failed to fetch recent orders:", error);

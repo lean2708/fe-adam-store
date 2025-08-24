@@ -200,23 +200,33 @@ export function ProductVariantEditModal({
     >
       <div className="p-4 border-b">
         <h2 className="text-lg font-semibold">
-          {variant ? (t("editVariantTitle") || "Sửa biến thể sản phẩm") : (t("addVariantTitle") || "Thêm biến thể sản phẩm")}
+          {variant
+            ? t("editVariantTitle") || "Sửa biến thể sản phẩm"
+            : t("addVariantTitle") || "Thêm biến thể sản phẩm"}
         </h2>
       </div>
 
       <ModalBody>
-
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           {/* Size and Color Row */}
           <div className="grid grid-cols-2 gap-4">
             {/* Size */}
             <div className="space-y-2">
-              <Label className="text-sm font-medium">{t("size") || "Size"}</Label>
+              <Label className="text-sm font-medium">
+                {t("size") || "Size"}
+              </Label>
               <Select
                 value={form.watch("sizeId")?.toString() || ""}
-                onValueChange={(value) => form.setValue("sizeId", parseInt(value))}
+                onValueChange={(value) =>
+                  form.setValue("sizeId", parseInt(value))
+                }
+                key={form.watch("sizeId")?.toString() || ""}
               >
-                <SelectTrigger className={`bg-[#F0F0F0] rounded-xl h-10 ${form.formState.errors.sizeId ? "border-red-500" : ""}`}>
+                <SelectTrigger
+                  className={`bg-[#F0F0F0] rounded-xl h-10 ${
+                    form.formState.errors.sizeId ? "border-red-500" : ""
+                  }`}
+                >
                   <SelectValue placeholder="ALL" />
                 </SelectTrigger>
                 <SelectContent>
@@ -228,18 +238,29 @@ export function ProductVariantEditModal({
                 </SelectContent>
               </Select>
               {form.formState.errors.sizeId && (
-                <p className="text-xs text-red-500">{form.formState.errors.sizeId.message}</p>
+                <p className="text-xs text-red-500">
+                  {form.formState.errors.sizeId.message}
+                </p>
               )}
             </div>
 
             {/* Color */}
             <div className="space-y-2">
-              <Label className="text-sm font-medium">{t("color") || "Màu sắc"}</Label>
+              <Label className="text-sm font-medium">
+                {t("color") || "Màu sắc"}
+              </Label>
               <Select
                 value={form.watch("colorId")?.toString() || ""}
-                onValueChange={(value) => form.setValue("colorId", parseInt(value))}
+                onValueChange={(value) =>
+                  form.setValue("colorId", parseInt(value))
+                }
+                key={form.watch("colorId")?.toString()}
               >
-                <SelectTrigger className={`bg-[#F0F0F0] rounded-xl h-10 ${form.formState.errors.colorId ? "border-red-500" : ""}`}>
+                <SelectTrigger
+                  className={`bg-[#F0F0F0] rounded-xl h-10 ${
+                    form.formState.errors.colorId ? "border-red-500" : ""
+                  }`}
+                >
                   <SelectValue placeholder="Màu sắc" />
                 </SelectTrigger>
                 <SelectContent>
@@ -251,7 +272,9 @@ export function ProductVariantEditModal({
                 </SelectContent>
               </Select>
               {form.formState.errors.colorId && (
-                <p className="text-xs text-red-500">{form.formState.errors.colorId.message}</p>
+                <p className="text-xs text-red-500">
+                  {form.formState.errors.colorId.message}
+                </p>
               )}
             </div>
           </div>
@@ -260,7 +283,9 @@ export function ProductVariantEditModal({
           <div className="grid grid-cols-2 gap-4">
             {/* Price */}
             <div className="space-y-2">
-              <Label htmlFor="price" className="text-sm font-medium">{t("price") || "Giá"}</Label>
+              <Label htmlFor="price" className="text-sm font-medium">
+                {t("price") || "Giá"}
+              </Label>
               <div className="relative">
                 <Input
                   id="price"
@@ -268,26 +293,36 @@ export function ProductVariantEditModal({
                   step="0.01"
                   placeholder="Nhập giá"
                   {...form.register("price", { valueAsNumber: true })}
-                  className={`bg-[#F0F0F0] rounded-xl h-10 ${form.formState.errors.price ? "border-red-500" : ""}`}
+                  className={`bg-[#F0F0F0] rounded-xl h-10 ${
+                    form.formState.errors.price ? "border-red-500" : ""
+                  }`}
                 />
               </div>
               {form.formState.errors.price && (
-                <p className="text-xs text-red-500">{form.formState.errors.price.message}</p>
+                <p className="text-xs text-red-500">
+                  {form.formState.errors.price.message}
+                </p>
               )}
             </div>
 
             {/* Quantity */}
             <div className="space-y-2">
-              <Label htmlFor="quantity" className="text-sm font-medium">{t("quantity") || "Số lượng"}</Label>
+              <Label htmlFor="quantity" className="text-sm font-medium">
+                {t("quantity") || "Số lượng"}
+              </Label>
               <Input
                 id="quantity"
                 type="number"
                 placeholder="Số lượng"
                 {...form.register("quantity", { valueAsNumber: true })}
-                className={`bg-[#F0F0F0] rounded-xl h-10 ${form.formState.errors.quantity ? "border-red-500" : ""}`}
+                className={`bg-[#F0F0F0] rounded-xl h-10 ${
+                  form.formState.errors.quantity ? "border-red-500" : ""
+                }`}
               />
               {form.formState.errors.quantity && (
-                <p className="text-xs text-red-500">{form.formState.errors.quantity.message}</p>
+                <p className="text-xs text-red-500">
+                  {form.formState.errors.quantity.message}
+                </p>
               )}
             </div>
           </div>
@@ -304,14 +339,18 @@ export function ProductVariantEditModal({
             </Button>
             <Button
               type="submit"
-              disabled={variant ? updateMutation.isPending : createMutation.isPending}
+              disabled={
+                variant ? updateMutation.isPending : createMutation.isPending
+              }
               className="px-6 py-2 bg-black hover:bg-gray-800 text-white"
             >
-              {variant ? (
-                updateMutation.isPending ? (t("saving") || "Đang lưu...") : (t("confirm") || "Xác nhận")
-              ) : (
-                createMutation.isPending ? (t("saving") || "Đang lưu...") : (t("confirm") || "Xác nhận")
-              )}
+              {variant
+                ? updateMutation.isPending
+                  ? t("saving") || "Đang lưu..."
+                  : t("confirm") || "Xác nhận"
+                : createMutation.isPending
+                ? t("saving") || "Đang lưu..."
+                : t("confirm") || "Xác nhận"}
             </Button>
           </div>
         </form>

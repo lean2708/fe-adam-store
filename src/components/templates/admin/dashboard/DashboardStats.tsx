@@ -129,7 +129,7 @@ export function DashboardStats({ dateRange }: DashboardStatsProps) {
                           : "text-red-600"
                       }`}
                     >
-                      {stat.change}
+                      {/* {stat.change} */}
                     </span>
                     <div className={`rounded-full p-3 ${stat.bgColor}`}>
                       <Icon className={`h-6 w-6 ${stat.color}`} />

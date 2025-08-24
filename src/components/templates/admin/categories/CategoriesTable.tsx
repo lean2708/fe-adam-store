@@ -217,10 +217,10 @@ export function CategoriesTable({
                 </div>
                 <ActionDropdown
                   onEdit={() => onEdit(category)}
-                  onDelete={() => onDelete(parseInt(category.id))}
+                  onDelete={() => onDelete((category.id))}
                   onRestore={
                     category.status === "INACTIVE" && onRestore
-                      ? () => onRestore(parseInt(category.id))
+                      ? () => onRestore((category.id))
                       : undefined
                   }
                   showRestore={category.status === "INACTIVE" && !!onRestore}
@@ -335,10 +335,10 @@ export function CategoriesTable({
                     <TableCell className="text-right">
                       <ActionDropdown
                         onEdit={() => onEdit(category)}
-                        onDelete={() => onDelete(parseInt(category.id))}
+                        onDelete={() => onDelete((category.id))}
                         onRestore={
                           category.status === "INACTIVE" && onRestore
-                            ? () => onRestore(parseInt(category.id))
+                            ? () => onRestore((category.id))
                             : undefined
                         }
                         showRestore={
