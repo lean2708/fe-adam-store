@@ -258,7 +258,7 @@
       "overview": {
         "title": "Tổng quan",
         "description": "Doanh thu hàng tháng trong năm hiện tại",
- 
+
         "button": "Xuất doanh thu",
         "loading": "Đang xuất..."
       },
@@ -287,6 +287,8 @@
       "paymentHistory": "Lịch sử thanh toán"
     },
     "products": {
+      "productUpdated": "Sản phẩm đã được cập nhật thành công",
+
       "restorePayment": "Khôi phục",
       "updateProductTitle": "Cập nhật sản phẩm",
       "updateProduct": "Cập nhật sản phẩm",
@@ -825,7 +827,7 @@
       "refreshMessagesError": "Lỗi khi làm mới tin nhắn"
     },
     "common": {
-      "refresh":"Làm mới",
+      "refresh": "Làm mới",
       "add": "Thêm",
       "edit": "Sửa",
       "delete": "Xóa",

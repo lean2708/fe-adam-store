@@ -95,13 +95,27 @@ export function ProductVariantsTableComponent({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t("id") || "ID"}</TableHead>
-              <TableHead>{t("product") || "Product"}</TableHead>
-              <TableHead>{t("price") || "Price"}</TableHead>
-              <TableHead>{t("quantity") || "Quantity"}</TableHead>
-              <TableHead>{t("size") || "Size"}</TableHead>
-              <TableHead>{t("color") || "Color"}</TableHead>
-              <TableHead>{t("actions") || "Actions"}</TableHead>
+              <TableHead className="font-semibold text-gray-900  ">
+                {t("id") || "ID"}
+              </TableHead>
+              <TableHead className="font-semibold text-gray-900  ">
+                {t("product") || "Product"}
+              </TableHead>
+              <TableHead className="font-semibold text-gray-900  ">
+                {t("price") || "Price"}
+              </TableHead>
+              <TableHead className="font-semibold text-gray-900  ">
+                {t("quantity") || "Quantity"}
+              </TableHead>
+              <TableHead className="font-semibold text-gray-900  ">
+                {t("size") || "Size"}
+              </TableHead>
+              <TableHead className="font-semibold text-gray-900  ">
+                {t("color") || "Color"}
+              </TableHead>
+              <TableHead className="font-semibold text-gray-900  ">
+                {t("actions") || "Actions"}
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

@@ -246,6 +246,7 @@
       "paymentHistory": "Payment History"
     },
     "products": {
+      "productUpdated":"Product updated successfully",
       "restorePayment": "Restore",
       "updateProductTitle": "Update Product",
       "updateProduct": "Update Product",

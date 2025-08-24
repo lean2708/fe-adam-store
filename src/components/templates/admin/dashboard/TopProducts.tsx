@@ -54,11 +54,11 @@ export function TopProducts({ dateRange }: TopProductsProps) {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
-                <TableHead className="font-medium">Tên sản phẩm</TableHead>
-                <TableHead className="font-medium text-center">
+                <TableHead className="text-gray-900  font-medium">Tên sản phẩm</TableHead>
+                <TableHead className="text-gray-900  font-medium text-center">
                   Đã bán
                 </TableHead>
-                <TableHead className="font-medium text-right">
+                <TableHead className="text-gray-900  font-medium text-right">
                   Tổng doanh thu
                 </TableHead>
               </TableRow>
@@ -143,9 +143,9 @@ export function TopProducts({ dateRange }: TopProductsProps) {
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/50">
-              <TableHead className="font-medium">Tên sản phẩm</TableHead>
-              <TableHead className="font-medium text-center">Đã bán</TableHead>
-              <TableHead className="font-medium text-right">Doanh thu</TableHead>
+              <TableHead className="text-gray-900  font-medium">Tên sản phẩm</TableHead>
+              <TableHead className="text-gray-900  font-medium text-center">Đã bán</TableHead>
+              <TableHead className="text-gray-900  font-medium text-right">Doanh thu</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

@@ -141,7 +141,7 @@ export async function deleteUser(id: number): Promise<void> {
   const controller = await ControllerFactory.getUserController();
   const response = await controller.delete2({ id });
 
-  if (response.data.code !== 200) {
+  if (response.data.code !== 204) {
     throw new Error(response.data.message || 'Failed to delete user');
   }
 }
@@ -155,9 +155,9 @@ export async function restoreUser(
   try {
     const controller = await ControllerFactory.getUserController();
     const response = await controller.restore({ id });
-
+    
     return {
-      success: response.data.code === 200,
+      success: response.data.code === 204,
       message: response.data.message,
       data: transformUserResponseToTUser(response.data?.result || {}),
       code: response.data.code,

@@ -228,7 +228,7 @@ export default function ProductVariantsPage() {
 
             {/* Product Details in Table Format */}
             <div className="space-y-0">
-              <div className="grid grid-cols-12 gap-4 py-3 border-b border-gray-100">
+              {/* <div className="grid grid-cols-12 gap-4 py-3 border-b border-gray-100">
                 <div className="col-span-3">
                   <span className="text-sm font-medium text-gray-600">
                     {t("category") || "Category"} :
@@ -239,7 +239,7 @@ export default function ProductVariantsPage() {
                     {product.category.name}
                   </span>
                 </div>
-              </div>
+              </div> */}
 
               <div className="grid grid-cols-12 gap-4 py-3 border-b border-gray-100">
                 <div className="col-span-3">

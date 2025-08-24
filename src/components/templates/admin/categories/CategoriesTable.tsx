@@ -58,17 +58,17 @@ export function CategoriesTable({
           <Table className="min-w-[800px]">
             <TableHeader>
               <TableRow>
-                <TableHead className="min-w-[60px]">ID</TableHead>
-                <TableHead className="min-w-[80px]">Ảnh</TableHead>
-                <TableHead className="min-w-[180px]">Tên</TableHead>
-                <TableHead className="min-w-[120px] hidden md:table-cell">
+                <TableHead className="font-semibold text-gray-900  min-w-[60px]">ID</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[80px]">Ảnh</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[180px]">Tên</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden md:table-cell">
                   Người tạo
                 </TableHead>
-                <TableHead className="min-w-[120px] hidden lg:table-cell">
+                <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden lg:table-cell">
                   Ngày tạo
                 </TableHead>
-                <TableHead className="min-w-[100px]">Trạng thái</TableHead>
-                <TableHead className="text-right min-w-[100px]">
+                <TableHead className="font-semibold text-gray-900  min-w-[100px]">Trạng thái</TableHead>
+                <TableHead className="font-semibold text-gray-900  text-right min-w-[100px]">
                   Hành động
                 </TableHead>
               </TableRow>
@@ -113,17 +113,17 @@ export function CategoriesTable({
           <Table className="min-w-[800px]">
             <TableHeader>
               <TableRow>
-                <TableHead className="min-w-[60px]">ID</TableHead>
-                <TableHead className="min-w-[80px]">Ảnh</TableHead>
-                <TableHead className="min-w-[180px]">Tên</TableHead>
-                <TableHead className="min-w-[120px] hidden md:table-cell">
+                <TableHead className="font-semibold text-gray-900  min-w-[60px]">ID</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[80px]">Ảnh</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[180px]">Tên</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden md:table-cell">
                   Người tạo
                 </TableHead>
-                <TableHead className="min-w-[120px] hidden lg:table-cell">
+                <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden lg:table-cell">
                   Ngày tạo
                 </TableHead>
-                <TableHead className="min-w-[100px]">Trạng thái</TableHead>
-                <TableHead className="text-right min-w-[100px]">
+                <TableHead className="font-semibold text-gray-900  min-w-[100px]">Trạng thái</TableHead>
+                <TableHead className="font-semibold text-gray-900  text-right min-w-[100px]">
                   Hành động
                 </TableHead>
               </TableRow>
@@ -254,17 +254,17 @@ export function CategoriesTable({
             <Table className="min-w-[800px]">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="min-w-[60px]">ID</TableHead>
-                  <TableHead className="min-w-[80px]">Ảnh</TableHead>
-                  <TableHead className="min-w-[180px]">Tên</TableHead>
-                  <TableHead className="min-w-[120px] hidden md:table-cell">
+                  <TableHead className="font-semibold text-gray-900  min-w-[60px]">ID</TableHead>
+                  <TableHead className="font-semibold text-gray-900  min-w-[80px]">Ảnh</TableHead>
+                  <TableHead className="font-semibold text-gray-900  min-w-[180px]">Tên</TableHead>
+                  <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden md:table-cell">
                     Người tạo
                   </TableHead>
-                  <TableHead className="min-w-[120px] hidden lg:table-cell">
+                  <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden lg:table-cell">
                     Ngày tạo
                   </TableHead>
-                  <TableHead className="min-w-[100px]">Trạng thái</TableHead>
-                  <TableHead className="text-right min-w-[100px]">
+                  <TableHead className="font-semibold text-gray-900  min-w-[100px]">Trạng thái</TableHead>
+                  <TableHead className="font-semibold text-gray-900  text-right min-w-[100px]">
                     Hành động
                   </TableHead>
                 </TableRow>
