@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { CircleX } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { AddressItem } from '@/types';
-import Link from 'next/link';
+import { TAddressItem } from '@/types';
 import { toast } from 'sonner';
 import ConfirmDialogModule from '@/components/modules/ConfirmDialogModule';
 import { Card, CardTitle } from '@/components/ui/card';
@@ -12,10 +11,10 @@ import { Button } from '@/components/ui/button';
 
 export default function AddressSectionModal(props: {
   visible: boolean;
-  addressList: AddressItem[];
+  addressList: TAddressItem[];
   currentAddressId?: number;
   onClose: () => void;
-  onSelectAddress: (address: AddressItem) => void;
+  onSelectAddress: (address: TAddressItem) => void;
   onAddNewAddress: () => void;
 }) {
   const {
@@ -103,7 +102,7 @@ export default function AddressSectionModal(props: {
             {addressList.length === 0 ? (
               <div className='text-center py-4'>Bạn chưa có địa chỉ nào.</div>
             ) : (
-              addressList.map((item: AddressItem) => (
+              addressList.map((item: TAddressItem) => (
                 <div
                   key={item.id}
                   className={cn(

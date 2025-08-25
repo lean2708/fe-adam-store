@@ -4,7 +4,7 @@ import { ORDER_STATUS } from '@/enums';
 import { PAYMENT_METHODS } from '@/enums';
 
 export type TCategory = {
-  izd: number;
+  id: number;
   name: string;
   imageUrl: string;
   status?: string;
@@ -15,7 +15,7 @@ export type TCategory = {
 };
 
 export type TOrder = {
-  OrderItems: TOrderItem[];
+  orderItems: TOrderItem[];
 } & {
   id: number;
   createdAt: Date;
@@ -160,7 +160,6 @@ export type TVariant = {
   status?: string;
   size?: TEntityBasic;
 };
-
 
 export type TColor = {
   id: number;

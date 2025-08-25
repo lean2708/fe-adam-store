@@ -44,5 +44,11 @@ export interface ProductUpdateRequest {
      * @memberof ProductUpdateRequest
      */
     'imageIds'?: Array<number>;
+    /**
+     *
+     * @type {Array<number>}
+     * @memberof ProductUpdateRequest
+     */
+    'deleteImageIds'?: Array<number>;
 }
 
