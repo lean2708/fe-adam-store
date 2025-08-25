@@ -258,7 +258,6 @@
       "overview": {
         "title": "Tổng quan",
         "description": "Doanh thu hàng tháng trong năm hiện tại",
- 
         "button": "Xuất doanh thu",
         "loading": "Đang xuất..."
       },
@@ -287,6 +286,8 @@
       "paymentHistory": "Lịch sử thanh toán"
     },
     "products": {
+      "productUpdated": "Sản phẩm đã được cập nhật thành công",
+
       "restorePayment": "Khôi phục",
       "updateProductTitle": "Cập nhật sản phẩm",
       "updateProduct": "Cập nhật sản phẩm",
@@ -369,9 +370,9 @@
       "refreshError": "Không thể làm mới dữ liệu",
       "variantsTitle": "Biến thể sản phẩm",
       "refresh": "Làm mới",
-      "addVariant": "Thêm biến thể",
+      "addVariant": "Thêm ",
       "productDetails": "Chi tiết sản phẩm",
-      "editProduct": "Chỉnh sửa sản phẩm",
+      "editProduct": "Chỉnh sửa",
       "rating": "Đánh giá",
       "colors": "Màu sắc",
       "description": "Mô tả sản phẩm",
@@ -825,7 +826,7 @@
       "refreshMessagesError": "Lỗi khi làm mới tin nhắn"
     },
     "common": {
-      "refresh":"Làm mới",
+      "refresh": "Làm mới",
       "add": "Thêm",
       "edit": "Sửa",
       "delete": "Xóa",

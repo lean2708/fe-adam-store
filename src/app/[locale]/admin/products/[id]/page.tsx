@@ -50,8 +50,6 @@ export default function ProductVariantsPage() {
       if (!result.success) {
         throw new Error(result.message || "Failed to load product");
       }
-      console.log(result);
-      
       return transformProductResponseToTProduct(result.data || {});
     },
     enabled: !!productId,
@@ -153,7 +151,6 @@ export default function ProductVariantsPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-          
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
                 {product.name}
@@ -185,10 +182,22 @@ export default function ProductVariantsPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-gray-500 hover:text-gray-700 bg-[#E8E8E8]"
+                className="text-gray-500 hover:text-gray-700 bg-[#E8E8E8] flex items-center space-x-2"
                 onClick={handleOpenUpdateModal}
               >
-                {t("editProduct") || "Edit Product"} ✏️
+                <span>{t("editProduct") || "Edit Product"}</span>
+                <svg
+                  width="19"
+                  height="19"
+                  viewBox="0 0 19 19"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18.3113 4.87846L14.1216 0.689705C13.9823 0.550381 13.8169 0.439861 13.6349 0.364458C13.4529 0.289054 13.2578 0.250244 13.0608 0.250244C12.8638 0.250244 12.6687 0.289054 12.4867 0.364458C12.3047 0.439861 12.1393 0.550381 12 0.689705L0.439695 12.25C0.299801 12.3888 0.188889 12.554 0.113407 12.736C0.0379245 12.9181 -0.000621974 13.1133 7.58901e-06 13.3103V17.5C7.58901e-06 17.8978 0.158043 18.2794 0.439347 18.5607C0.720652 18.842 1.10218 19 1.50001 19H17.25C17.4489 19 17.6397 18.921 17.7803 18.7803C17.921 18.6397 18 18.4489 18 18.25C18 18.0511 17.921 17.8603 17.7803 17.7197C17.6397 17.579 17.4489 17.5 17.25 17.5H7.81126L18.3113 7.00002C18.4506 6.86073 18.5611 6.69535 18.6365 6.51334C18.7119 6.33133 18.7507 6.13625 18.7507 5.93924C18.7507 5.74222 18.7119 5.54714 18.6365 5.36513C18.5611 5.18312 18.4506 5.01775 18.3113 4.87846ZM5.68969 17.5H1.50001V13.3103L9.75001 5.06033L13.9397 9.25002L5.68969 17.5ZM15 8.18971L10.8113 4.00002L13.0613 1.75002L17.25 5.93971L15 8.18971Z"
+                    fill="currentColor"
+                  />
+                </svg>
               </Button>
             </div>
             {/* Product Images Carousel */}
@@ -228,7 +237,7 @@ export default function ProductVariantsPage() {
 
             {/* Product Details in Table Format */}
             <div className="space-y-0">
-              <div className="grid grid-cols-12 gap-4 py-3 border-b border-gray-100">
+              {/* <div className="grid grid-cols-12 gap-4 py-3 border-b border-gray-100">
                 <div className="col-span-3">
                   <span className="text-sm font-medium text-gray-600">
                     {t("category") || "Category"} :
@@ -239,7 +248,7 @@ export default function ProductVariantsPage() {
                     {product.category.name}
                   </span>
                 </div>
-              </div>
+              </div> */}
 
               <div className="grid grid-cols-12 gap-4 py-3 border-b border-gray-100">
                 <div className="col-span-3">

@@ -6,33 +6,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Upload } from "lucide-react";
 import { z } from "zod";
-import { fetchAllColorsAction } from "@/actions/colorActions";
-import { fetchAllSizesAction } from "@/actions/sizeActions";
 import { fetchAllCategoriesForAdminAction } from "@/actions/categoryActions";
 import { uploadImagesAction } from "@/actions/fileActions";
-import type { TColor, TSize, TCategory, TProduct } from "@/types";
+import type { TCategory, TProduct } from "@/types";
 import { updateProductAdminAction } from "@/actions/productActions";
 import type { ProductUpdateRequest } from "@/api-client/models";
+import { MultiImageUpload } from "@/components/ui/MultiImageUpload";
 
 // Schema for product update
 const productUpdateSchema = z.object({
   name: z.string().min(1, "Product name is required"),
   description: z.string().min(1, "Description is required"),
-  categoryId: z.number().min(1, "Please select a category"),
 });
 
 type ProductUpdateFormData = z.infer<typeof productUpdateSchema>;
@@ -50,7 +40,8 @@ export function ProductUpdateModal({
 }: ProductUpdateModalProps) {
   const t = useTranslations("Admin.products");
   const queryClient = useQueryClient();
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [imagesToDelete, setImagesToDelete] = useState<number[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const form = useForm<ProductUpdateFormData>({
@@ -58,7 +49,7 @@ export function ProductUpdateModal({
     defaultValues: {
       name: "",
       description: "",
-      categoryId: 0,
+      // categoryId: 0,
     },
   });
 
@@ -68,7 +59,7 @@ export function ProductUpdateModal({
       form.reset({
         name: product.name || product.title || "",
         description: product.description || "",
-        categoryId: product.category.id, // Will be set when categories are loaded
+        // categoryId: product.category.id, // Will be set when categories are loaded
       });
     }
   }, [product, open, form]);
@@ -89,17 +80,17 @@ export function ProductUpdateModal({
     mutationFn: async (data: ProductUpdateFormData) => {
       if (!product) throw new Error("No product to update");
 
-      let imageIds: number[] = [];
+      let newImageIds: number[] = [];
 
-      // Upload image if selected
-      if (selectedImage) {
+      // Upload new images if any
+      if (selectedImages.length > 0) {
         try {
-          const uploadResult = await uploadImagesAction([selectedImage]);
+          const uploadResult = await uploadImagesAction(selectedImages);
           if (uploadResult.success && uploadResult.data) {
-            imageIds = uploadResult.data.map((file: any) => file.id);
+            newImageIds = uploadResult.data.map((file: any) => file.id);
           }
         } catch (error) {
-          console.warn("Image upload failed, continuing without image:", error);
+          console.warn("Image upload failed, proceeding without new images:", error);
         }
       }
 
@@ -107,8 +98,8 @@ export function ProductUpdateModal({
       const productUpdateRequest: ProductUpdateRequest = {
         name: data.name,
         description: data.description,
-        categoryId: data.categoryId,
-        ...(imageIds.length > 0 && { imageIds }),
+        imageIds: newImageIds,
+        deleteImageIds: imagesToDelete,
       };
 
       const result = await updateProductAdminAction(
@@ -130,21 +121,19 @@ export function ProductUpdateModal({
     },
   });
 
-  const handleSubmit = (data: ProductUpdateFormData) => {
+  const onSubmit = (data: ProductUpdateFormData) => {
     updateMutation.mutate(data);
   };
 
   const handleClose = () => {
     form.reset();
-    setSelectedImage(null);
+    setSelectedImages([]);
+    setImagesToDelete([]);
     onClose();
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedImage(file);
-    }
+  const handleRemoveInitialImage = (id: number) => {
+    setImagesToDelete((prev) => [...prev, id]);
   };
 
   if (!product) return null;
@@ -164,9 +153,9 @@ export function ProductUpdateModal({
           {t("updateProductTitle")}
         </h2>
 
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           {/* Product Name and Category Row */}
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6">
             <div className="space-y-2">
               <Label htmlFor="name" className="text-sm text-gray-700">
                 Tên sản phẩm
@@ -186,7 +175,7 @@ export function ProductUpdateModal({
               )}
             </div>
 
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label className="text-sm text-gray-700">Danh mục</Label>
               <Select
                 value={form.watch("categoryId")?.toString() || ""}
@@ -219,7 +208,7 @@ export function ProductUpdateModal({
                   {form.formState.errors.categoryId.message}
                 </p>
               )}
-            </div>
+            </div> */}
           </div>
 
           {/* Description */}
@@ -244,35 +233,16 @@ export function ProductUpdateModal({
 
           {/* Image Section */}
           <div className="space-y-2">
-            <Label className="text-sm text-gray-700">Hình ảnh (tùy chọn)</Label>
-            <div className="bg-gray-100 border-0 rounded-lg p-8 text-center h-38 flex flex-col justify-center">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="hidden"
-                id="image-upload"
-              />
-              <label htmlFor="image-upload" className="cursor-pointer">
-                {selectedImage ? (
-                  <div className="relative">
-                    <img
-                      src={URL.createObjectURL(selectedImage)}
-                      alt="Preview"
-                      className="w-full h-32 object-cover rounded-lg"
-                    />
-                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg opacity-0 hover:opacity-100 transition-opacity">
-                      <p className="text-white text-sm">Thay đổi hình ảnh</p>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-500">Tải hình ảnh lên</p>
-                  </>
-                )}
-              </label>
-            </div>
+            <Label className="text-sm text-gray-700">Hình ảnh</Label>
+            <MultiImageUpload
+              onChange={setSelectedImages}
+              initialImageUrls={product?.images
+                ?.filter((img): img is { id: number; imageUrl?: string } =>
+                  typeof img.id === 'number' && !imagesToDelete.includes(img.id)
+                )
+                .map(img => ({ id: img.id, url: img.imageUrl || '' })) || []}
+              onRemoveInitialImage={handleRemoveInitialImage}
+            />
           </div>
 
           {/* Buttons */}
@@ -289,6 +259,7 @@ export function ProductUpdateModal({
               type="submit"
               disabled={updateMutation.isPending}
               className="px-8 py-3 bg-black hover:bg-gray-800 text-white rounded-lg"
+              onClick={() => console.log("CLICK SUBMIT")}
             >
               {updateMutation.isPending ? "Đang cập nhật..." : "Cập nhật"}
             </Button>

@@ -34,7 +34,7 @@ function transformProductVariantResponseToTProductVariant(
     status: response.status as 'ACTIVE' | 'INACTIVE',
     size: response.size,
     color: response.color,
-    // Note: ProductVariantResponse doesn't include product info, so we'll need to handle this separately
+    label: ""
   };
 }
 
@@ -132,7 +132,7 @@ export async function createProductVariantApi(variantData: {
       },
     });
 
-    if (response.data.code !== 200) {
+    if (response.data.code !== 201) {
       return {
         success: false,
         message: response.data.message || 'Failed to create product variant',
@@ -180,7 +180,8 @@ export async function updateProductVariantApi(
         quantity: variantData.quantity,
       },
     });
-
+    console.log(response.data.code);
+    
     if (response.data.code !== 200) {
       return {
         success: false,

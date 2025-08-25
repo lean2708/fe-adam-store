@@ -21,7 +21,6 @@ import {
   AddressControllerApi,
   AuthControllerApi,
   ReviewControllerApi,
-  ProductVariantControllerApi,
 } from '@/api-client';
 import { getAuthenticatedAxiosInstance } from '@/lib/auth/axios-config';
 import { AxiosInstance } from 'axios';
