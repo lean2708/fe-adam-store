@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import useAddress from '@/hooks/(order)/useAddress';
 import { useAuth } from '@/hooks/useAuth';
-import { AddressItem } from '@/types';
+import { TAddressItem } from '@/types';
 import Link from 'next/link';
 import { useState } from 'react';
 import AddressSectionModal from './Address/AddressSectionModal';
@@ -105,7 +105,7 @@ export function DeliveryInfo() {
         addressList={listAddress}
         currentAddressId={currentAddress.id}
         onClose={() => setIsVisible(false)}
-        onSelectAddress={(address: AddressItem) => {
+        onSelectAddress={(address: TAddressItem) => {
           setCurrentAddress(address);
         }}
         onAddNewAddress={() => setIsAddModalVisible(true)}
