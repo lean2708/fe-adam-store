@@ -20,11 +20,11 @@ import { ActionResponse } from "@/lib/types/actions";
  * Transforms API ProductVariantBasic to a simplified product object for TOrderItem.
  * This function likely needs to fetch full product details.
  */
-async function transformProductVariantBasicToProduct(variant: ProductVariantBasic): Promise<TOrderItem['Product']> {
+async function transformProductVariantBasicToProduct(orderItemResponse: OrderItemResponse): Promise<TOrderItem['Product']> {
     return {
-        id: variant?.product?.id?.toString() ?? "",
-        title: variant?.product?.name ?? "Unknown Product",
-        price: "0",
+        id: orderItemResponse?.productVariant?.product?.id?.toString() ?? "",
+        title: orderItemResponse?.productVariant?.product?.name ?? "Unknown Product",
+        price: orderItemResponse?.unitPrice ?? 0,
         description: "",
         colors: [],
         sizes: [],
@@ -43,13 +43,12 @@ async function transformProductVariantBasicToProduct(variant: ProductVariantBasi
  */
 export async function transformOrderItemResponseToTOrderItem(apiOrderItem: OrderItemResponse): Promise<TOrderItem> {
     const productVariant = apiOrderItem.productVariant;
-    const productData = productVariant ? await transformProductVariantBasicToProduct(productVariant) : null;
-
+    const productData = productVariant ? await transformProductVariantBasicToProduct(apiOrderItem) : null;
     return {
         id: apiOrderItem.id ?? 0,
         orderId: "", // This will be set when transforming the full order
         quantity: apiOrderItem.quantity ?? 0,
-        // unitPrice: apiOrderItem.unitPrice ?? 0,
+        unitPrice: apiOrderItem.unitPrice ?? 0,
         color: productVariant?.color?.name ?? "N/A",
         size: productVariant?.size?.id ?? 0,
         productId: productData?.id ?? "",
@@ -57,7 +56,7 @@ export async function transformOrderItemResponseToTOrderItem(apiOrderItem: Order
         Product: productData || {
             id: "",
             title: "N/A",
-            price: "0",
+            price: 0,
             description: "",
             colors: [],
             sizes: [],
@@ -70,6 +69,19 @@ export async function transformOrderItemResponseToTOrderItem(apiOrderItem: Order
             updatedAt: new Date(0),
         },
     };
+}
+
+/**
+ * Safely transforms the API order status string to the ORDER_STATUS enum.
+ * @param apiStatus The status from the API.
+ * @returns A valid ORDER_STATUS or a default value.
+ */
+function transformApiStatusToOrderStatus(apiStatus?: OrderResponse['orderStatus']): ORDER_STATUS {
+    // Using `any` for the includes check as TypeScript struggles with enum value types here.
+    if (apiStatus && Object.values(ORDER_STATUS).includes(apiStatus as any)) {
+        return apiStatus as any;
+    }
+    return ORDER_STATUS.PROCESSING; // Default status if status is unknown or not provided
 }
 
 /**
@@ -88,12 +100,12 @@ export async function transformOrderResponseToTOrder(apiOrder: OrderResponse): P
 
     return {
         OrderItems: transformedOrderItems,
-        id: apiOrder.id?.toString() ?? "",
+        id: apiOrder.id || 0,
+        customerPhone: apiOrder.address?.phone,
         createdAt: apiOrder.orderDate ? new Date(apiOrder.orderDate) : new Date(),
         updatedAt: apiOrder.orderDate ? new Date(apiOrder.orderDate) : new Date(),
-        status: apiOrder.orderStatus ? (apiOrder.orderStatus as unknown as ORDER_STATUS) : ORDER_STATUS.PROGRESS, // Cast to your enum, provide default
+        status: transformApiStatusToOrderStatus(apiOrder.orderStatus),
         userName: apiOrder.customerName ?? "Guest",
-        // customerName: apiOrder.customerName ?? "Guest",
         address: [
             address?.streetDetail,
             address?.ward?.name,
@@ -118,17 +130,18 @@ export async function transformOrderArrayToTOrderArray(apiOrders: OrderResponse[
  */
 export async function transformPageResponseOrderToActionResponse(
     apiResponse: PageResponseOrderResponse
-): Promise<ActionResponse<{ items: TOrder[], totalItems: number, totalPages: number }>> {
+): Promise<ActionResponse<TOrder[]>> {
     try {
         const transformedOrders = await transformOrderArrayToTOrderArray(apiResponse.items ?? []);
 
         return {
             success: true,
-            data: {
-                items: transformedOrders,
-                totalItems: apiResponse.totalItems ?? 0,
-                totalPages: apiResponse.totalPages ?? 0
-            }
+            actionSizeResponse: {
+                size: apiResponse.size ?? 0,
+                totalPages: apiResponse.totalPages ?? 0,
+                totalItems: apiResponse.totalItems ?? 0// For
+            },
+            data: transformedOrders
         };
     } catch (error) {
         return {

@@ -6,9 +6,9 @@ import type {
   UserUpdateRequest,
   PageResponseUserResponse,
   PageResponseRoleResponse,
-  PageResponsePromotionResponse,
-} from '@/api-client/models';
-import type { TUser } from '@/types';
+  PageResponsePromotionResponse
+} from "@/api-client/models";
+import type { TUser } from "@/types";
 import {
   fetchAllUsersForAdmin,
   searchUsersForAdmin,
@@ -17,11 +17,18 @@ import {
   deleteUser,
   restoreUser,
   fetchUserById,
-  fetchAllRoles,
   fetchPromotionsbyUser,
-} from '@/lib/data/user';
-import { extractErrorMessage } from '@/lib/utils';
-import { changePassword1, getMyInfoApi } from '@/lib/data/auth';
+  fetchAllRoles,
+} from "@/lib/data/user";
+import { extractErrorMessage } from "@/lib/utils";
+import { changePassword1, getMyInfoApi } from "@/lib/data/auth";
+import {
+  userCreateSchema,
+  UserUpdateFormData,
+  userUpdateSchema,
+  type UserCreateFormData,
+} from "@/actions/schema/userSchema";
+
 
 /**
  * Fetch all users for admin
@@ -33,7 +40,7 @@ export async function fetchAllUsersAction(
 ): Promise<ActionResponse<TUser[]>> {
   try {
     const users = await fetchAllUsersForAdmin(page, size, sort);
-    return { success: true, data: users };
+    return users;
   } catch (error) {
     const extractedError = extractErrorMessage(error, 'Lỗi server');
     return {
@@ -67,16 +74,35 @@ export async function searchUsersAction(
 }
 
 /**
- * Create a new user
+ * Create a new user with validation
  */
 export async function createUserAction(
-  userData: UserCreationRequest
+  formData: UserCreateFormData
 ): Promise<ActionResponse<TUser>> {
   try {
+    // Validate the form data
+    const validatedData = userCreateSchema.parse(formData);
+
+    // Transform to API request format
+    const userData: UserCreationRequest = {
+      name: validatedData.name,
+      email: validatedData.email,
+      password: validatedData.password,
+      roleIds: Array.from(validatedData.roleIds) as unknown as Set<number>,
+    };
+
     const result = await createUser(userData);
     return result;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, 'Lỗi server');
+    // Handle validation errors
+    if (error instanceof Error && error.name === 'ZodError') {
+      return {
+        success: false,
+        message: "Dữ liệu không hợp lệ",
+      };
+    }
+
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
       message: extractedError.message,
@@ -86,17 +112,44 @@ export async function createUserAction(
 }
 
 /**
- * Update a user
+ * Update a user with validation
  */
 export async function updateUserAction(
   id: number,
-  userData: UserUpdateRequest
+  formData: UserUpdateFormData
 ): Promise<ActionResponse<TUser>> {
   try {
+    // Validate the form data
+    const validatedData = userUpdateSchema.parse(formData);
+
+    // Transform to API request format
+    const userData: UserUpdateRequest = {
+      name: validatedData.name,
+      roleIds: Array.from(validatedData.roleIds) as unknown as Set<number>,
+      dob: validatedData.dob || "",
+      gender: validatedData.gender as any,
+    };
+    console.log(userData);
+    // Only include password if it's provided
+    if (validatedData.password && validatedData.password.length > 0) {
+      (userData as any).password = validatedData.password;
+    }
+
     const result = await updateUser(id, userData);
     return result;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, 'Lỗi server');
+    // Handle validation errors
+    if (error instanceof Error && error.name === 'ZodError') {
+      return {
+        success: false,
+        message: "Dữ liệu không hợp lệ",
+      };
+    }
+
+    const extractedError = extractErrorMessage(error, "Lỗi server");
+
+    console.log(error);
+
     return {
       success: false,
       message: extractedError.message,
@@ -205,8 +258,7 @@ export async function fetchUserByIdAction(
     };
   }
 }
-
-export async function getInfoUser() {
+export async function getInfoUser(): Promise<ActionResponse<TUser>> {
   try {
     const data = await getMyInfoApi();
     return {
@@ -214,18 +266,20 @@ export async function getInfoUser() {
       data,
     };
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi lấy thông tin người dùng");
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Failed to fetch user',
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }
 
 export async function changePasswordAction(newPass: {
-  oldPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-}) {
+  oldPassword: string,
+  newPassword: string,
+  confirmPassword: string
+}): Promise<ActionResponse<any>> {
   try {
     const data = await changePassword1(newPass);
     return {
@@ -233,9 +287,11 @@ export async function changePasswordAction(newPass: {
       data,
     };
   } catch (error) {
+    const extractedError = extractErrorMessage(error, "Lỗi đổi mật khẩu");
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Failed to fetch user',
+      message: extractedError.message,
+      apiError: extractedError,
     };
   }
 }

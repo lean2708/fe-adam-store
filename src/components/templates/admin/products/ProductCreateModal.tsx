@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Modal, ModalHeader, ModalBody } from "@/components/ui/modal";
+import { Modal, ModalBody } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,7 +12,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Upload, X } from "lucide-react";
 import { z } from "zod";
 import { fetchAllColorsAction } from "@/actions/colorActions";
 import { fetchAllSizesAction } from "@/actions/sizeActions";
@@ -20,6 +19,7 @@ import { fetchAllCategoriesForAdminAction } from "@/actions/categoryActions";
 import { uploadImagesAction } from "@/actions/fileActions";
 import type { TColor, TSize, TCategory, TProductRequest, TVariantRequest } from "@/types";
 import { createProductAdminAction } from "@/actions/productActions";
+import { MultiImageUpload } from "@/components/ui/MultiImageUpload";
 
 // Schema for product creation
 const productCreateSchema = z.object({
@@ -42,7 +42,7 @@ interface ProductCreateModalProps {
 export function ProductCreateModal({ open, onClose }: ProductCreateModalProps) {
   const t = useTranslations("Admin.products");
   const queryClient = useQueryClient();
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const form = useForm<ProductCreateFormData>({
@@ -94,10 +94,10 @@ export function ProductCreateModal({ open, onClose }: ProductCreateModalProps) {
     mutationFn: async (data: ProductCreateFormData) => {
       let imageIds: number[] = [];
 
-      // Upload image if selected
-      if (selectedImage) {
+      // Upload images if selected
+      if (selectedImages.length > 0) {
         try {
-          const uploadResult = await uploadImagesAction([selectedImage]);
+          const uploadResult = await uploadImagesAction(selectedImages);
           if (uploadResult.success && uploadResult.data) {
             imageIds = uploadResult.data.map((file: any) => file.id);
           }
@@ -135,6 +135,7 @@ export function ProductCreateModal({ open, onClose }: ProductCreateModalProps) {
       handleClose();
     },
     onError: (error: Error) => {
+      
       toast.error(error.message);
     },
   });
@@ -145,16 +146,11 @@ export function ProductCreateModal({ open, onClose }: ProductCreateModalProps) {
 
   const handleClose = () => {
     form.reset();
-    setSelectedImage(null);
+    setSelectedImages([]);
     onClose();
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedImage(file);
-    }
-  };
+  
 
   return (
     <Modal
@@ -164,22 +160,9 @@ export function ProductCreateModal({ open, onClose }: ProductCreateModalProps) {
       size="xl"
       showOverlay={true}
       closeOnClickOutside={!isDropdownOpen}
+      showCloseButton={true}
     >
-      <ModalHeader>
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">
-            {t("addProductTitle") || "Thêm sản phẩm"}
-          </h2>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleClose}
-            className="h-8 w-8 p-0"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      </ModalHeader>
+
 
       <ModalBody className="p-8">
         <h2 className="text-xl font-semibold text-gray-900 mb-8">
@@ -359,38 +342,9 @@ export function ProductCreateModal({ open, onClose }: ProductCreateModalProps) {
             </div>
 
             {/* Right Column: Image */}
-            <div className="space-y-2">
+            <div className="space-y-2 col-span-2">
               <Label className="text-sm text-gray-700">Hình ảnh</Label>
-              <div className="bg-gray-100 border-0 rounded-lg p-8 text-center h-38 flex flex-col justify-center">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="hidden"
-                  id="image-upload"
-                />
-                <label htmlFor="image-upload" className="cursor-pointer">
-                  {selectedImage ? (
-                    <div className="relative">
-                      <img 
-                        src={URL.createObjectURL(selectedImage)} 
-                        alt="Preview" 
-                        className="w-full h-32 object-cover rounded-lg"
-                      />
-                      <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg opacity-0 hover:opacity-100 transition-opacity">
-                        <p className="text-white text-sm">Thay đổi hình ảnh</p>
-                      </div>
-                    </div>
-                  ) : (
-                    <>
-                      <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
-                      <p className="text-sm text-gray-500">
-                        Tải hình ảnh lên
-                      </p>
-                    </>
-                  )}
-                </label>
-              </div>
+              <MultiImageUpload onChange={setSelectedImages} />
             </div>
           </div>
 

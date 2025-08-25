@@ -16,7 +16,7 @@ export default function ReviewModule(props: {
   returnRivew: () => void;
   orderItem: TOrderItem;
   onClose: () => void;
-  isReview: boolean;
+  isReview?: boolean;
 }) {
   const { onClose, isReview, orderItem, visible, returnRivew } = props;
   const [state, setState] = useState<{
@@ -161,7 +161,7 @@ export default function ReviewModule(props: {
           <div className="border border-black dark:border-white p-3 rounded-lg flex">
             <img
               className="w-24 h-24"
-              src={orderItem.image.imageUrl}
+              src={orderItem?.image.imageUrl}
               alt={String(orderItem.image.id)}
             />
             <div className="ml-7 h-24 justify-between flex flex-col">

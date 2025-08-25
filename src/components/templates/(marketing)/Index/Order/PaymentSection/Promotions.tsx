@@ -52,7 +52,7 @@ const Promotions = ({
           )}
           {promotionList.map((promo) => (
             <SelectItem key={promo.id} value={promo.id?.toString()!}>
-              {promo.description}
+              {promo.code} - {promo.description}
             </SelectItem>
           ))}
         </SelectContent>

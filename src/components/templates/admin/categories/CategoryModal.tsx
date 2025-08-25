@@ -127,7 +127,7 @@ export function CategoryModal({ open, onClose, editingCategory }: CategoryModalP
         imageUrl: imageUrl,
       };
 
-      const result = await updateCategoryAction(parseInt(editingCategory.id), categoryData);
+      const result = await updateCategoryAction((editingCategory.id), categoryData);
       if (!result.success) {
         throw new Error(result.message || "Failed to update category");
       }
@@ -174,6 +174,7 @@ export function CategoryModal({ open, onClose, editingCategory }: CategoryModalP
       size="md"
       showOverlay={true}
       closeOnClickOutside={false}
+      showCloseButton={true}
       className="bg-white rounded-2xl shadow-xl max-w-md mx-auto"
     >
       <ModalBody className="p-6">

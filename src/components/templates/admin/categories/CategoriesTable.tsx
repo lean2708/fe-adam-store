@@ -17,6 +17,7 @@ import { AdminPagination } from "@/components/ui/pagination";
 import { FolderTree, RefreshCw, Plus } from "lucide-react";
 import Image from "next/image";
 import type { TCategory } from "@/types";
+import { getStatusColor } from "@/lib/utils";
 
 interface CategoriesTableProps {
   categories: TCategory[];
@@ -48,16 +49,7 @@ export function CategoriesTable({
 }: CategoriesTableProps) {
   const t = useTranslations("Admin.categories");
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "ACTIVE":
-        return "bg-green-100 text-green-800 border-green-200";
-      case "INACTIVE":
-        return "bg-red-100 text-red-800 border-red-200";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
-    }
-  };
+
 
   if (loading) {
     return (
@@ -66,17 +58,17 @@ export function CategoriesTable({
           <Table className="min-w-[800px]">
             <TableHeader>
               <TableRow>
-                <TableHead className="min-w-[60px]">ID</TableHead>
-                <TableHead className="min-w-[80px]">Ảnh</TableHead>
-                <TableHead className="min-w-[180px]">Tên</TableHead>
-                <TableHead className="min-w-[120px] hidden md:table-cell">
+                <TableHead className="font-semibold text-gray-900  min-w-[60px]">ID</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[80px]">Ảnh</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[180px]">Tên</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden md:table-cell">
                   Người tạo
                 </TableHead>
-                <TableHead className="min-w-[120px] hidden lg:table-cell">
+                <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden lg:table-cell">
                   Ngày tạo
                 </TableHead>
-                <TableHead className="min-w-[100px]">Trạng thái</TableHead>
-                <TableHead className="text-right min-w-[100px]">
+                <TableHead className="font-semibold text-gray-900  min-w-[100px]">Trạng thái</TableHead>
+                <TableHead className="font-semibold text-gray-900  text-right min-w-[100px]">
                   Hành động
                 </TableHead>
               </TableRow>
@@ -121,17 +113,17 @@ export function CategoriesTable({
           <Table className="min-w-[800px]">
             <TableHeader>
               <TableRow>
-                <TableHead className="min-w-[60px]">ID</TableHead>
-                <TableHead className="min-w-[80px]">Ảnh</TableHead>
-                <TableHead className="min-w-[180px]">Tên</TableHead>
-                <TableHead className="min-w-[120px] hidden md:table-cell">
+                <TableHead className="font-semibold text-gray-900  min-w-[60px]">ID</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[80px]">Ảnh</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[180px]">Tên</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden md:table-cell">
                   Người tạo
                 </TableHead>
-                <TableHead className="min-w-[120px] hidden lg:table-cell">
+                <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden lg:table-cell">
                   Ngày tạo
                 </TableHead>
-                <TableHead className="min-w-[100px]">Trạng thái</TableHead>
-                <TableHead className="text-right min-w-[100px]">
+                <TableHead className="font-semibold text-gray-900  min-w-[100px]">Trạng thái</TableHead>
+                <TableHead className="font-semibold text-gray-900  text-right min-w-[100px]">
                   Hành động
                 </TableHead>
               </TableRow>
@@ -225,10 +217,10 @@ export function CategoriesTable({
                 </div>
                 <ActionDropdown
                   onEdit={() => onEdit(category)}
-                  onDelete={() => onDelete(parseInt(category.id))}
+                  onDelete={() => onDelete((category.id))}
                   onRestore={
                     category.status === "INACTIVE" && onRestore
-                      ? () => onRestore(parseInt(category.id))
+                      ? () => onRestore((category.id))
                       : undefined
                   }
                   showRestore={category.status === "INACTIVE" && !!onRestore}
@@ -240,7 +232,7 @@ export function CategoriesTable({
               <div className="flex items-center justify-between text-xs">
                 <Badge
                   variant="secondary"
-                  className={getStatusColor(category.status || "INACTIVE")}
+                  className={getStatusColor(category.status || "INACTIVE", "general")}
                 >
                   {t(category.status || "INACTIVE") ||
                     category.status ||
@@ -262,17 +254,17 @@ export function CategoriesTable({
             <Table className="min-w-[800px]">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="min-w-[60px]">ID</TableHead>
-                  <TableHead className="min-w-[80px]">Ảnh</TableHead>
-                  <TableHead className="min-w-[180px]">Tên</TableHead>
-                  <TableHead className="min-w-[120px] hidden md:table-cell">
+                  <TableHead className="font-semibold text-gray-900  min-w-[60px]">ID</TableHead>
+                  <TableHead className="font-semibold text-gray-900  min-w-[80px]">Ảnh</TableHead>
+                  <TableHead className="font-semibold text-gray-900  min-w-[180px]">Tên</TableHead>
+                  <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden md:table-cell">
                     Người tạo
                   </TableHead>
-                  <TableHead className="min-w-[120px] hidden lg:table-cell">
+                  <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden lg:table-cell">
                     Ngày tạo
                   </TableHead>
-                  <TableHead className="min-w-[100px]">Trạng thái</TableHead>
-                  <TableHead className="text-right min-w-[100px]">
+                  <TableHead className="font-semibold text-gray-900  min-w-[100px]">Trạng thái</TableHead>
+                  <TableHead className="font-semibold text-gray-900  text-right min-w-[100px]">
                     Hành động
                   </TableHead>
                 </TableRow>
@@ -329,7 +321,8 @@ export function CategoriesTable({
                       <Badge
                         variant="secondary"
                         className={getStatusColor(
-                          category.status || "INACTIVE"
+                          category.status || "INACTIVE",
+                          "general"
                         )}
                       >
                         {t(category.status || "INACTIVE") ||
@@ -342,10 +335,10 @@ export function CategoriesTable({
                     <TableCell className="text-right">
                       <ActionDropdown
                         onEdit={() => onEdit(category)}
-                        onDelete={() => onDelete(parseInt(category.id))}
+                        onDelete={() => onDelete((category.id))}
                         onRestore={
                           category.status === "INACTIVE" && onRestore
-                            ? () => onRestore(parseInt(category.id))
+                            ? () => onRestore((category.id))
                             : undefined
                         }
                         showRestore={

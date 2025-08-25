@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslations, useLocale } from "next-intl";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getStatusColor } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -54,17 +54,7 @@ interface PromotionTableProps {
   onPageChange: (page: number) => void;
 }
 
-// Helper function to get status color
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case "ACTIVE":
-      return "bg-green-100 text-green-800 hover:bg-green-100";
-    case "INACTIVE":
-      return "bg-red-100 text-red-800 hover:bg-red-100";
-    default:
-      return "bg-gray-100 text-gray-800 hover:bg-gray-100";
-  }
-};
+
 
 // Helper function to format period
 const formatPeriod = (
@@ -151,13 +141,13 @@ export function PromotionTable({
         <p className="text-sm text-gray-600 mb-4">{t("description")}</p>
         {/* Search and Filters */}
         <div className="flex items-center space-x-4">
-          <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <div className="relative flex-1 max-w-sm rounded-lg border-2 focus-within:border-blue-500 overflow-hidden">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />{" "}
             <Input
               placeholder={t("searchPromotions")}
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="pl-10"
+              className="pl-10 border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none rounded-none"
             />
           </div>
           <Select
@@ -267,7 +257,8 @@ export function PromotionTable({
                       <Badge
                         variant="secondary"
                         className={getStatusColor(
-                          promotion.status || "INACTIVE"
+                          promotion.status || "INACTIVE",
+                          "general"
                         )}
                       >
                         {getStatusText(promotion.status || "INACTIVE")}

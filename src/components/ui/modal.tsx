@@ -1,5 +1,6 @@
-import React, { ReactNode, useEffect } from "react"
-import { cn } from "@/lib/utils"
+import React, { ReactNode, useEffect } from "react";
+import { cn } from "@/lib/utils";
+import { X } from "lucide-react";
 
 export interface ModalProps {
   open: boolean
@@ -12,6 +13,7 @@ export interface ModalProps {
   position?: "top-right" | "top-left" | "bottom-right" | "bottom-left" | "center" | "left" | "right"
   showOverlay?: boolean
   closeOnClickOutside?: boolean
+  showCloseButton?: boolean
 }
 
 const variantStyles = {
@@ -51,6 +53,7 @@ export function Modal({
   position = "top-right",
   showOverlay = false,
   closeOnClickOutside = true,
+  showCloseButton = false,
   ...props
 }: ModalProps) {
   // Custom click outside handler that ignores dropdown portals
@@ -60,25 +63,21 @@ export function Modal({
     if (!closeOnClickOutside || !open) return
 
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element
+      const target = event.target as HTMLElement
 
-      // Don't close if clicking inside the modal
+      // If the click is inside the modal, do nothing.
       if (modalContentRef.current?.contains(target)) {
         return
       }
 
-      // Don't close if clicking on dropdown content (usually portaled to body)
-      if (target.closest('[data-radix-popper-content-wrapper]') ||
-          target.closest('[data-radix-select-content]') ||
-          target.closest('[data-radix-dropdown-menu-content]') ||
-          target.closest('[data-radix-portal]') ||
-          target.closest('.select-content') ||
-          target.closest('[role="listbox"]') ||
-          target.closest('[role="option"]') ||
-          target.closest('[data-state="open"]') ||
-          // Check if the target is inside any Radix portal
-          target.closest('div[data-radix-select-content]') ||
-          target.closest('div[data-radix-dropdown-menu-content]')) {
+      // This is the crucial part: check if the clicked element is a portaled element
+      // directly under the body, which is a common pattern for dropdowns/popovers.
+      if (target.parentElement === document.body && target.hasAttribute('data-radix-popper-content-wrapper')) {
+        return
+      }
+
+      // A more general check for any element that might be a popover or a dropdown menu.
+      if (target.closest('[data-radix-popper-content-wrapper]')) {
         return
       }
 
@@ -132,6 +131,14 @@ export function Modal({
             }}
             {...props}
           >
+            {showCloseButton && (
+              <button
+                onClick={onClose}
+                className="absolute top-2 right-2 p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 z-10"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            )}
             {children}
           </div>
         </div>
@@ -185,6 +192,14 @@ export function Modal({
           }}
           {...props}
         >
+          {showCloseButton && (
+            <button
+              onClick={onClose}
+              className="absolute top-2 right-2 p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 z-10"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          )}
           {children}
         </div>
       </>
@@ -213,6 +228,14 @@ export function Modal({
         }}
         {...props}
       >
+        {showCloseButton && (
+          <button
+            onClick={onClose}
+            className="absolute top-2 right-2 p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 z-10"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        )}
         {children}
       </div>
     </>

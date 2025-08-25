@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations, useLocale } from "next-intl";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getStatusColor } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -27,6 +27,7 @@ import {
   Edit,
   Trash2,
   RotateCcw,
+  RefreshCw,
   Users,
 } from "lucide-react";
 import type { TUser } from "@/types";
@@ -37,10 +38,11 @@ interface UserTableProps {
   loading: boolean;
   searchTerm: string;
   onSearchChange: (value: string) => void;
+  onRefresh: () => void;
   onCreateUser: () => void;
   onEditUser: (user: TUser) => void;
-  onDeleteUser: (id: number) => void;
-  onRestoreUser: (id: number) => void;
+  onDeleteUser: (id: string) => void;
+  onRestoreUser: (id: string) => void;
   // Pagination props
   currentPage: number;
   totalPages: number;
@@ -54,6 +56,7 @@ export function UserTable({
   loading,
   searchTerm,
   onSearchChange,
+  onRefresh,
   onCreateUser,
   onEditUser,
   onDeleteUser,
@@ -66,6 +69,7 @@ export function UserTable({
 }: UserTableProps) {
   const t = useTranslations("Admin");
   const locale = useLocale();
+
 
   // No client-side filtering needed since we're using server-side search
   const filteredUsers = users;
@@ -82,6 +86,10 @@ export function UserTable({
           <p className="text-sm text-gray-600 mt-1">{t("users.description")}</p>
         </div>
         <div className="flex gap-3">
+          <Button onClick={onRefresh} variant="outline" size="sm">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            {t("common.refresh") || "Làm mới"}
+          </Button>
           <Button onClick={onCreateUser} size="sm">
             <Plus className="mr-2 h-4 w-4" />
             {t("users.addUser")}
@@ -91,13 +99,13 @@ export function UserTable({
 
       {/* Search */}
       <div className="flex items-center space-x-2">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+        <div className="relative flex-1 max-w-sm rounded-lg border-2 focus-within:border-blue-500 overflow-hidden">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
             placeholder={t("users.searchPlaceholder")}
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-10"
+            className="pl-10 border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none rounded-none"
           />
         </div>
       </div>
@@ -108,15 +116,33 @@ export function UserTable({
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>ID</TableHead>
-                <TableHead>Avatar</TableHead>
-                <TableHead>Tên</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Giới tính</TableHead>
-                <TableHead>Sinh nhật</TableHead>
-                <TableHead>Vai trò</TableHead>
-                <TableHead>Trạng thái</TableHead>
-                <TableHead className="text-right">Hành động</TableHead>
+                <TableHead className="font-semibold text-gray-900  ">
+                  ID
+                </TableHead>
+                <TableHead className="font-semibold text-gray-900  ">
+                  Avatar
+                </TableHead>
+                <TableHead className="font-semibold text-gray-900  ">
+                  Tên
+                </TableHead>
+                <TableHead className="font-semibold text-gray-900  ">
+                  Email
+                </TableHead>
+                <TableHead className="font-semibold text-gray-900  ">
+                  Giới tính
+                </TableHead>
+                <TableHead className="font-semibold text-gray-900  ">
+                  Sinh nhật
+                </TableHead>
+                <TableHead className="font-semibold text-gray-900  ">
+                  Vai trò
+                </TableHead>
+                <TableHead className="font-semibold text-gray-900  ">
+                  Trạng thái
+                </TableHead>
+                <TableHead className="font-semibold text-gray-900 text-right whitespace-nowrap">
+                  Hành động
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -202,7 +228,9 @@ export function UserTable({
 
                     {/* Giới tính */}
                     <TableCell>
-                      <div className="text-sm">{user.gender || "N/A"}</div>
+                      <div className="text-sm">
+                        {t(`users.gender.${user.gender || "Other"}`)}
+                      </div>
                     </TableCell>
 
                     {/* Sinh nhật */}
@@ -241,18 +269,19 @@ export function UserTable({
 
                     {/* Trạng thái */}
                     <TableCell>
+                      
                       <Badge
-                        variant={
-                          user.status === "ACTIVE" ? "default" : "secondary"
-                        }
-                        className={
-                          user.status === "ACTIVE"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }
+                        variant="secondary"
+                        className={getStatusColor(
+                          user.status || "INACTIVE",
+                          "general"
+                        )}
                       >
-                        {user.status || "INACTIVE"}
+                        {t(user.status || "INACTIVE") ||
+                          user.status ||
+                          "INACTIVE"}
                       </Badge>
+        
                     </TableCell>
 
                     {/* Hành động */}
@@ -260,7 +289,9 @@ export function UserTable({
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">{t("users.openMenu")}</span>
+                            <span className="sr-only">
+                              {t("users.openMenu")}
+                            </span>
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -271,7 +302,7 @@ export function UserTable({
                           </DropdownMenuItem>
                           {user.status === "ACTIVE" ? (
                             <DropdownMenuItem
-                              onClick={() => onDeleteUser(user.id!)}
+                              onClick={() => onDeleteUser(user.id + "")}
                               className="text-destructive"
                             >
                               <Trash2 className="mr-2 h-4 w-4" />
@@ -279,7 +310,7 @@ export function UserTable({
                             </DropdownMenuItem>
                           ) : (
                             <DropdownMenuItem
-                              onClick={() => onRestoreUser(user.id!)}
+                              onClick={() => onRestoreUser(user.id + "")}
                             >
                               <RotateCcw className="mr-2 h-4 w-4" />
                               {t("common.restore")}

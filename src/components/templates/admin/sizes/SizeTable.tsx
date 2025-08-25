@@ -77,14 +77,18 @@ export function SizeTable({
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>{t("id")}</TableHead>
-                  <TableHead>{t("name")}</TableHead>
+                  <TableHead className="font-semibold text-gray-900  ">
+                    {t("id")}
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-900  ">
+                    {t("name")}
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {sizes.map((size) => (
                   <TableRow key={size.id}>
-                    <TableCell className="font-medium">{size.id}</TableCell>
+                    <TableCell className="">{size.id}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <Badge variant="outline" className="font-mono">

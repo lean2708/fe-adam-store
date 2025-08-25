@@ -62,6 +62,9 @@ const AnnouncementVnPayModal = () => {
     };
 
     fetchPayCallBack();
+
+    // *Hide URL parameters after processing
+    router.replace('/');
   }, [searchParams]);
 
   const handleClose = () => {
@@ -93,7 +96,7 @@ const AnnouncementVnPayModal = () => {
             </div>
 
             {/* Title */}
-            <AlertDialogTitle className='text-lg font-semibold mb-2'>
+            <AlertDialogTitle className='text-2xl font-semibold mb-2'>
               {orderStatus?.isSuccess ? t('success.title') : t('failure.title')}
             </AlertDialogTitle>
           </div>

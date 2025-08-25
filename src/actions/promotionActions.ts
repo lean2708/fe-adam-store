@@ -60,23 +60,7 @@ export async function searchPromotionsAction(
   }
 }
 
-/**
- * Fetch promotion by ID
- */
-export async function fetchPromotionByIdAction(id: number): Promise<ActionResponse<TPromotion>> {
-  try {
-    const data = await fetchPromotionById(id);
-    return {
-      success: true,
-      data: transformPromotionResponse(data),
-    };
-  } catch (error) {
-    return {
-      success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch promotion",
-    };
-  }
-}
+
 
 /**
  * Create a new promotion

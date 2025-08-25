@@ -144,12 +144,6 @@ export function ColorsTable({
                     {t("color")}
                   </TableHead>
                   <TableHead className="font-semibold text-gray-900">
-                    {t("status")}
-                  </TableHead>
-                  <TableHead className="font-semibold text-gray-900">
-                    {t("creator")}
-                  </TableHead>
-                  <TableHead className="font-semibold text-gray-900">
                     {t("actions")}
                   </TableHead>
                 </TableRow>
@@ -187,15 +181,6 @@ export function ColorsTable({
                         </span>
                       </div>
                     </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="default"
-                        className="bg-green-100 text-green-800 hover:bg-green-100"
-                      >
-                        ACTIVE
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-gray-600">System</TableCell>
                     <TableCell>
                       <ActionDropdown
                         onEdit={() => onEdit(color)}

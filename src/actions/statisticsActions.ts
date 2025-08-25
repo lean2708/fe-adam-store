@@ -7,10 +7,13 @@ import type {
 } from "@/api-client/models";
 import type { TRevenueByMonth } from "@/types";
 import {
+  exportOrderRevenueToExcel,
   fetchMonthlyRevenue,
   fetchOrderRevenueSummary,
-  fetchTopSellingProducts
+  fetchTopSellingProducts,
 } from "@/lib/data/statistics";
+import { extractErrorMessage } from "@/lib/utils";
+import { log } from "console";
 
 
 /**
@@ -73,5 +76,23 @@ export async function getTopSellingProductsAction(
       success: false,
       message: error instanceof Error ? error.message : "Failed to fetch top selling products",
     };
+  }
+}
+
+/**
+ * Get top selling products
+ */
+export async function getexportOrderRevenueToExcel(
+  startDate: string,
+  endDate: string
+): Promise<ActionResponse<{ base64: string; filename: string; contentType: string }>> {
+  try {
+    const data = await exportOrderRevenueToExcel(startDate, endDate);
+    
+    return { success: true, data };
+  } catch (error) {
+    const extractedError = extractErrorMessage(error, "Xóa chi nhánh thất bại");
+    console.error("Export failed:", error);
+    return { success: false, message: extractedError.message };
   }
 }

@@ -46,11 +46,10 @@ export function transformProductResponseToTProduct(
   return {
     title: apiProduct.name ?? "",
     mainImage,
-    images:
-      apiProduct.images?.map((img) => ({
-        imageUrl: img.imageUrl ?? "",
-        id: img.id ?? 0,
-      })) ?? [],
+    images: apiProduct.images?.map((img) => ({
+      imageUrl: img.imageUrl ?? "",
+      id: img.id ?? 0,
+    })) ?? [],
     id: apiProduct.id ?? 0,
     minPrice,
     maxPrice,
@@ -63,5 +62,15 @@ export function transformProductResponseToTProduct(
     status: apiProduct.status ?? "INACTIVE",
     createdAt: apiProduct.createdAt ?? "",
     colors: Object.values(groupedByColor),
+    category: {
+      id: 0,
+      name: "",
+      imageUrl: '',
+      status: undefined,
+      createdBy: undefined,
+      updatedBy: undefined,
+      createdAt: undefined,
+      updatedAt: undefined
+    }
   };
 }

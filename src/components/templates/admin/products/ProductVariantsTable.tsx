@@ -23,6 +23,7 @@ import {
 import { Package } from "lucide-react";
 import Image from "next/image";
 import type { TProduct } from "@/types";
+import { getStatusColor } from "@/lib/utils";
 
 interface ProductVariantsTableProps {
   variants: TProduct[];
@@ -58,16 +59,7 @@ export function ProductVariantsTable({
 }: ProductVariantsTableProps) {
   const t = useTranslations("Admin.products");
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "ACTIVE":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
-      case "INACTIVE":
-        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
-      default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300";
-    }
-  };
+
 
   if (loading) {
     return (
@@ -248,7 +240,7 @@ export function ProductVariantsTable({
               </div>
               <ActionDropdown
                 onEdit={() => onEdit(product)}
-                onUpdate={onUpdate ? () => onUpdate(product) : undefined}
+                // onUpdate={onUpdate ? () => onUpdate(product) : undefined}
                 onDelete={() => onDelete(product.id)}
                 onRestore={
                   product.status === "INACTIVE" && onRestore
@@ -277,7 +269,7 @@ export function ProductVariantsTable({
               <div className="text-right">
                 <Badge
                   variant="secondary"
-                  className={getStatusColor(product.status || "INACTIVE")}
+                  className={getStatusColor(product.status || "INACTIVE", "general")}
                 >
                   {t(product.status || "INACTIVE") ||
                     product.status ||
@@ -416,7 +408,7 @@ export function ProductVariantsTable({
                   <TableCell>
                     <Badge
                       variant="secondary"
-                      className={getStatusColor(product.status || "INACTIVE")}
+                      className={getStatusColor(product.status || "INACTIVE", "general")}
                     >
                       {t(product.status || "INACTIVE") ||
                         product.status ||
@@ -428,7 +420,7 @@ export function ProductVariantsTable({
                   <TableCell className="text-right">
                     <ActionDropdown
                       onEdit={undefined}
-                      onUpdate={onUpdate ? () => onUpdate(product) : undefined}
+                      // onUpdate={onUpdate ? () => onUpdate(product) : undefined}
                       onDelete={() => onDelete(product.id)}
                       onRestore={
                         product.status === "INACTIVE" && onRestore
@@ -441,7 +433,9 @@ export function ProductVariantsTable({
                       }
                       translationNamespace="Admin.products"
                       customEditLabel={t("editProduct") || "Edit Product"}
-                      customUpdateLabel={t("updateProduct") || "Cập nhật sản phẩm"}
+                      customUpdateLabel={
+                        t("updateProduct") || "Cập nhật sản phẩm"
+                      }
                     />
                   </TableCell>
                 </TableRow>

@@ -236,9 +236,8 @@ export async function createProduct(
   const response = await controller.create6({
     productRequest: productData,
   });
-
-
-  if (response.data.code !== 200) {
+  
+  if (response.data.code !== 201) {
     throw new Error(response.data.message || 'Failed to create product');
   }
 
@@ -297,7 +296,6 @@ export async function restoreProduct(id: number): Promise<ProductResponse> {
 export async function fetchProductById(id: number): Promise<ProductResponse> {
   const controller = await ControllerFactory.getProductController();
   const response = await controller.fetchDetailById({ id });
-
   if (response.data.code !== 200) {
     throw new Error(response.data.message || 'Failed to fetch product');
   }

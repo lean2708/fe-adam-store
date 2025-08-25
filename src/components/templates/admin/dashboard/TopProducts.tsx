@@ -33,13 +33,11 @@ export function TopProducts({ dateRange }: TopProductsProps) {
     error,
     refetch,
     isFetching,
-    hasProducts
+    hasProducts,
   } = useTopProducts({
     dateRange,
-    limit: 10
+    limit: 10,
   });
-
-
 
   // Loading state
   if (isLoading) {
@@ -56,9 +54,13 @@ export function TopProducts({ dateRange }: TopProductsProps) {
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
-                <TableHead className="font-medium">Tên sản phẩm</TableHead>
-                <TableHead className="font-medium text-center">Đã bán</TableHead>
-                <TableHead className="font-medium text-right">Giá</TableHead>
+                <TableHead className="text-gray-900  font-medium">Tên sản phẩm</TableHead>
+                <TableHead className="text-gray-900  font-medium text-center">
+                  Đã bán
+                </TableHead>
+                <TableHead className="text-gray-900  font-medium text-right">
+                  Tổng doanh thu
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -97,7 +99,9 @@ export function TopProducts({ dateRange }: TopProductsProps) {
             onClick={() => refetch()}
             disabled={isFetching}
           >
-            <RefreshCw className={`w-4 h-4 mr-2 ${isFetching ? 'animate-spin' : ''}`} />
+            <RefreshCw
+              className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`}
+            />
             Thử lại
           </Button>
         </div>
@@ -108,7 +112,8 @@ export function TopProducts({ dateRange }: TopProductsProps) {
             <div>
               <p className="text-sm font-medium">Không thể tải dữ liệu</p>
               <p className="text-xs text-muted-foreground">
-                {error?.message || "Đã xảy ra lỗi khi tải danh sách sản phẩm bán chạy"}
+                {error?.message ||
+                  "Đã xảy ra lỗi khi tải danh sách sản phẩm bán chạy"}
               </p>
             </div>
           </div>
@@ -123,7 +128,9 @@ export function TopProducts({ dateRange }: TopProductsProps) {
       <div className="border rounded-lg p-8">
         <div className="text-center py-8 text-muted-foreground">
           <p>Không có dữ liệu sản phẩm bán chạy</p>
-          <p className="text-xs mt-1">Thử thay đổi khoảng thời gian để xem dữ liệu</p>
+          <p className="text-xs mt-1">
+            Thử thay đổi khoảng thời gian để xem dữ liệu
+          </p>
         </div>
       </div>
     );
@@ -136,9 +143,9 @@ export function TopProducts({ dateRange }: TopProductsProps) {
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/50">
-              <TableHead className="font-medium">Tên sản phẩm</TableHead>
-              <TableHead className="font-medium text-center">Đã bán</TableHead>
-              <TableHead className="font-medium text-right">Giá</TableHead>
+              <TableHead className="text-gray-900  font-medium">Tên sản phẩm</TableHead>
+              <TableHead className="text-gray-900  font-medium text-center">Đã bán</TableHead>
+              <TableHead className="text-gray-900  font-medium text-right">Doanh thu</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -146,13 +153,20 @@ export function TopProducts({ dateRange }: TopProductsProps) {
               <TableRow key={product.productId} className="hover:bg-muted/50">
                 <TableCell>
                   <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center">
-                      <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center shadow-sm">
-                        <span className="text-xs font-medium text-blue-600">
-                          {product.productName?.charAt(0)?.toUpperCase() || 'P'}
+                    <div className="w-20 h-25 bg-white rounded-xl flex items-center justify-center shadow-sm overflow-hidden">
+                      {product.imageUrl ? (
+                        <img
+                          src={product.imageUrl}
+                          alt={product.productName || "Product"}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-sm font-medium text-blue-600">
+                          {product.productName?.charAt(0)?.toUpperCase() || "P"}
                         </span>
-                      </div>
+                      )}
                     </div>
+
                     <div>
                       <div className="font-medium text-sm">
                         {product.productName || `Product #${product.productId}`}
@@ -162,7 +176,7 @@ export function TopProducts({ dateRange }: TopProductsProps) {
                 </TableCell>
                 <TableCell className="text-center">
                   <div className="font-medium">
-                    {(product.soldQuantity || 0).toLocaleString('vi-VN')}
+                    {(product.soldQuantity || 0).toLocaleString("vi-VN")}
                   </div>
                 </TableCell>
                 <TableCell className="text-right">

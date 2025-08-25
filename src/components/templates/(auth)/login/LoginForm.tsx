@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@/hooks/useAuth';
 import { Input } from '@/components/ui/input';
-import { Lock, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { toast } from 'sonner';
+import { PasswordInput } from '@/components/modules/PasswordInput';
 
 const formSchema = z.object({
   email: z.email('Email không hợp lệ').min(1, 'Email là bắt buộc'),
@@ -105,18 +106,14 @@ function LoginFormContent() {
           render={({ field }) => (
             <FormItem className='relative'>
               <FormControl>
-                <Input
+                <PasswordInput
                   {...field}
                   id='password'
-                  type='password'
                   placeholder='Mật khẩu'
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none'
                 />
               </FormControl>
-              <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-                <Lock className='text-gray-500 size-5' />
-              </span>
               <FormMessage />
             </FormItem>
           )}
@@ -128,7 +125,7 @@ function LoginFormContent() {
             disabled={isSubmitting || isLoading}
             className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 rounded-md font-medium'
           >
-            {(isSubmitting || isLoading) ? 'Đang đăng nhập...' : 'Đăng nhập'}
+            {isSubmitting || isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
           </Button>
 
           <div className='text-center'>

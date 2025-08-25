@@ -4,12 +4,16 @@ export enum USER_ROLE {
 }
 
 export enum ORDER_STATUS {
-  CANCELED = 'Canceled',
-  PROGRESS = 'In progress',
-  REJECTED = 'Rejected',
-  SENDING = 'Sending',
-  COMPLETED = 'Completed',
+  PENDING = 'PENDING',
+  PROCESSING = 'PROCESSING',
+  SHIPPED = 'SHIPPED',
+  DELIVERED = 'DELIVERED',
+  CANCELED = 'CANCELED',
+  REJECTED = 'REJECTED',
+  COMPLETED = 'COMPLETED',
 }
+
+
 
 export enum PAYMENT_METHODS {
   CASH = 'CASH',

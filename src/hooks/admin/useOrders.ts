@@ -12,7 +12,7 @@ import {
 import { SearchOrdersForAdminOrderStatusEnum } from "@/types";
 
 export function useOrders(
-  page: number = 0, 
+  page: number = 0,
   size: number = 10,
   statusFilter: SearchOrdersForAdminOrderStatusEnum | "ALL" = "ALL"
 ) {
@@ -47,7 +47,7 @@ export function useOrders(
       if (!result.success) {
         throw new Error(result.message || "Failed to load orders");
       }
-      return result.data || { items: [], totalItems: 0, totalPages: 0 };
+      return result || { items: [], totalItems: 0, totalPages: 0 };
     },
   });
 
@@ -111,9 +111,9 @@ export function useOrders(
   };
 
   return {
-    orders: orderData?.items || [],
-    totalElements: orderData?.totalItems || 0,
-    totalPages: orderData?.totalPages || 0,
+    orders: orderData?.data || [],
+    totalElements: orderData?.actionSizeResponse?.totalItems || 0,
+    totalPages: orderData?.actionSizeResponse?.totalPages || 0,
     loading,
     handleDelete,
     handleCancel,
