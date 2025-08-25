@@ -15,7 +15,7 @@ export type TCategory = {
 };
 
 export type TOrder = {
-  OrderItems: TOrderItem[];
+  orderItems: TOrderItem[];
 } & {
   id: number;
   createdAt: Date;
@@ -160,6 +160,7 @@ export type TVariant = {
   status?: string;
   size?: TEntityBasic;
 };
+
 
 export type TColor = {
   id: number;

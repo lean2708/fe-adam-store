@@ -1,14 +1,18 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { useChat } from "@/hooks/admin/useChat";
 import { useAuth } from "@/hooks/useAuth";
 import { ChatHeader } from "./ChatHeader";
 import { ConversationsList } from "./ConversationsList";
 import { ChatMessages } from "./ChatMessages";
 import { ChatInput } from "./ChatInput";
+import { MultiImageUpload } from "@/components/ui/MultiImageUpload";
 
 export function ChatLayout() {
   const { user: currentUser } = useAuth();
+  const [showUploader, setShowUploader] = useState(false);
+
 
   const {
     // Data
@@ -39,8 +43,6 @@ export function ChatLayout() {
     handleRefreshMessages,
   } = useChat();
 
-
-
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="admin-page-container space-y-6">
@@ -53,13 +55,13 @@ export function ChatLayout() {
             isWebSocketConnected={isWebSocketConnected}
             conversationsCount={conversations.length}
             loading={conversationsLoading}
-            onCreateConversation={() => handleCreateConversation([2], 'DIRECT')}
+            onCreateConversation={() => handleCreateConversation([2], "DIRECT")}
           />
         </div>
 
         {/* Main Chat Interface */}
         <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
-          <div className="flex h-[600px]">
+          <div className={`flex ${showUploader ? "h-[700px]" : "h-[600px]"}`}>
             {/* Conversations Sidebar */}
             <div className="w-80 border-r bg-gray-50">
               <ConversationsList
@@ -84,6 +86,7 @@ export function ChatLayout() {
                 error={messagesError}
                 onRefresh={handleRefreshMessages}
                 currentUser={currentUser}
+                showUploader={showUploader}
               />
 
               <ChatInput
@@ -91,6 +94,8 @@ export function ChatLayout() {
                 onSendMessage={handleSendMessage}
                 disabled={messagesLoading}
                 isWebSocketConnected={isWebSocketConnected}
+                showUploader={showUploader}
+                setShowUploader={setShowUploader}
               />
             </div>
           </div>
