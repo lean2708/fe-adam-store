@@ -6,8 +6,6 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { resetPasswordAction } from '@/actions/nextAuthActions';
-import { Input } from '@/components/ui/input';
-import { Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
@@ -18,6 +16,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { toast } from 'sonner';
+import { PasswordInput } from '@/components/modules/PasswordInput';
 
 const formSchema = z
   .object({
@@ -81,18 +80,14 @@ export default function ResetPasswordForm() {
           render={({ field }) => (
             <FormItem className='relative'>
               <FormControl>
-                <Input
+                <PasswordInput
                   {...field}
                   id='password'
-                  type='password'
                   placeholder='Mật khẩu'
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none'
                 />
               </FormControl>
-              <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-                <Lock className='text-gray-500 size-5' />
-              </span>
               <FormMessage />
             </FormItem>
           )}
@@ -104,18 +99,14 @@ export default function ResetPasswordForm() {
           render={({ field }) => (
             <FormItem className='relative'>
               <FormControl>
-                <Input
+                <PasswordInput
                   {...field}
                   id='confirmPassword'
-                  type='password'
                   placeholder='Nhập mật khẩu mới của bạn'
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none'
                 />
               </FormControl>
-              <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-                <Lock className='text-gray-500 size-5' />
-              </span>
               <FormMessage />
             </FormItem>
           )}

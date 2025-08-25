@@ -21,7 +21,6 @@ import {
   AddressControllerApi,
   AuthControllerApi,
   ReviewControllerApi,
-  ProductVariantControllerApi,
 } from '@/api-client';
 import { getAuthenticatedAxiosInstance } from '@/lib/auth/axios-config';
 import { AxiosInstance } from 'axios';
@@ -76,11 +75,6 @@ export class ControllerFactory {
   static async getProductController(): Promise<ProductControllerApi> {
     const axiosInstance = await this.getAxiosInstance();
     return new ProductControllerApi(undefined, undefined, axiosInstance);
-  }
-
-  static async getProductVariantController(): Promise<ProductVariantControllerApi> {
-    const axiosInstance = await this.getAxiosInstance();
-    return new ProductVariantControllerApi(undefined, undefined, axiosInstance);
   }
 
   /**

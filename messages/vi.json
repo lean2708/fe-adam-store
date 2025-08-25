@@ -258,7 +258,6 @@
       "overview": {
         "title": "Tổng quan",
         "description": "Doanh thu hàng tháng trong năm hiện tại",
-
         "button": "Xuất doanh thu",
         "loading": "Đang xuất..."
       },

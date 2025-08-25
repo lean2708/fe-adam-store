@@ -4,7 +4,7 @@ import {
   getAllOrderUserAction,
   retryPaymentviaVnPayAction,
 } from '@/actions/orderActions';
-import { AddressItem, TOrder, TOrderItem } from '@/types';
+import { TAddressItem, TOrder, TOrderItem } from '@/types';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
@@ -252,7 +252,7 @@ export function ContentOrder() {
         visible={state.isVisible}
         orderItem={state.itemOnModule}
         onClose={() => setState((pstate) => ({ ...pstate, isVisible: false }))}
-        onSuccess={(address: AddressItem) => {
+        onSuccess={(address: TAddressItem) => {
           if (state.listOrders.length && address && state.itemOnModule) {
             const foundIndex = state.listOrders.findIndex(
               (item) => item.id === state.itemOnModule?.id

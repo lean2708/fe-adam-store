@@ -269,6 +269,7 @@ export function UserTable({
 
                     {/* Trạng thái */}
                     <TableCell>
+                      
                       <Badge
                         variant="secondary"
                         className={getStatusColor(
@@ -280,6 +281,7 @@ export function UserTable({
                           user.status ||
                           "INACTIVE"}
                       </Badge>
+        
                     </TableCell>
 
                     {/* Hành động */}
