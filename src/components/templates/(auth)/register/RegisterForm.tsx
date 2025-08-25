@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
-import { Lock, Mail, User } from 'lucide-react';
+import { Mail, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/form';
 import { toast } from 'sonner';
 import { signUpAction } from '@/actions/nextAuthActions';
+import { PasswordInput } from '@/components/modules/PasswordInput';
 
 // Schema validation
 const formSchema = z
@@ -141,18 +142,14 @@ export default function RegisterForm() {
           render={({ field }) => (
             <FormItem className='relative'>
               <FormControl>
-                <Input
+                <PasswordInput
                   {...field}
                   id='password'
-                  type='password'
                   placeholder='Mật khẩu'
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none'
                 />
               </FormControl>
-              <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-                <Lock className='text-gray-500 size-5' />
-              </span>
               <FormMessage />
             </FormItem>
           )}
@@ -164,18 +161,14 @@ export default function RegisterForm() {
           render={({ field }) => (
             <FormItem className='relative'>
               <FormControl>
-                <Input
+                <PasswordInput
                   {...field}
                   id='confirmPassword'
-                  type='password'
                   placeholder='Nhập lại mật khẩu'
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none'
                 />
               </FormControl>
-              <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-                <Lock className='text-gray-500 size-5' />
-              </span>
               <FormMessage />
             </FormItem>
           )}
