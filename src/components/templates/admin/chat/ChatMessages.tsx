@@ -10,6 +10,7 @@ import { useLocale } from "next-intl";
 import { MessageCircle, Trash2, MoreVertical } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import type { TConversation, TChatMessage, TUser } from "@/types";
+import { ChatMessageContent } from "./ChatMessageContent";
 
 interface ChatMessagesProps {
   conversation: TConversation | null;
@@ -19,6 +20,7 @@ interface ChatMessagesProps {
   error?: Error | null;
   onRefresh?: () => void;
   currentUser?: TUser | null;
+  showUploader?: boolean;
 }
 
 export function ChatMessages({
@@ -28,7 +30,8 @@ export function ChatMessages({
   onDeleteMessage,
   error,
   onRefresh,
-  currentUser
+  currentUser,
+  showUploader,
 }: ChatMessagesProps) {
   const t = useTranslations("Admin.chat");
   const locale = useLocale();
@@ -37,7 +40,7 @@ export function ChatMessages({
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, showUploader]);
 
   if (!conversation) {
     return (
@@ -48,7 +51,8 @@ export function ChatMessages({
             {t("selectConversation") || "Chọn một cuộc trò chuyện"}
           </p>
           <p className="text-sm">
-            {t("selectConversationDescription") || "Chọn cuộc trò chuyện từ danh sách bên trái để bắt đầu"}
+            {t("selectConversationDescription") ||
+              "Chọn cuộc trò chuyện từ danh sách bên trái để bắt đầu"}
           </p>
         </div>
       </div>
@@ -56,8 +60,11 @@ export function ChatMessages({
   }
 
   // Find the other participant (not the current user)
-  const otherParticipant = conversation.participants?.find(p => Number(p.userId) !== Number(currentUser?.id));
-  const otherParticipantName = otherParticipant?.name || t("unknownCustomer") || "Khách hàng không rõ";
+  const otherParticipant = conversation.participants?.find(
+    (p) => Number(p.userId) !== Number(currentUser?.id)
+  );
+  const otherParticipantName =
+    otherParticipant?.name || t("unknownCustomer") || "Khách hàng không rõ";
 
   if (loading) {
     return (
@@ -76,8 +83,15 @@ export function ChatMessages({
         {/* Loading Messages */}
         <div className="flex-1 p-4 space-y-4">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className={`flex ${i % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-              {i % 2 === 0 && <Skeleton className="h-8 w-8 rounded-full mr-2" />}
+            <div
+              key={i}
+              className={`flex ${
+                i % 2 === 0 ? "justify-start" : "justify-end"
+              }`}
+            >
+              {i % 2 === 0 && (
+                <Skeleton className="h-8 w-8 rounded-full mr-2" />
+              )}
               <div className="flex-1 max-w-xs">
                 <Skeleton className="h-16 w-full rounded-lg" />
                 <Skeleton className="h-3 w-20 mt-1" />
@@ -97,9 +111,7 @@ export function ChatMessages({
           <p className="text-lg font-medium">
             {t("messagesLoadError") || "Lỗi khi tải tin nhắn"}
           </p>
-          <p className="text-sm text-gray-500 mt-1">
-            {error.message}
-          </p>
+          <p className="text-sm text-gray-500 mt-1">{error.message}</p>
           {onRefresh && (
             <Button onClick={onRefresh} size="sm" className="mt-3">
               {t("refresh") || "Thử lại"}
@@ -118,7 +130,9 @@ export function ChatMessages({
           <div className="flex items-center space-x-3">
             <Avatar className="h-10 w-10">
               <AvatarImage
-                src={otherParticipant?.avatarUrl || conversation.conversationAvatar}
+                src={
+                  otherParticipant?.avatarUrl || conversation.conversationAvatar
+                }
                 alt={otherParticipantName}
               />
               <AvatarFallback className="bg-gray-200 text-gray-600">
@@ -126,7 +140,9 @@ export function ChatMessages({
               </AvatarFallback>
             </Avatar>
             <div>
-              <h3 className="font-medium text-gray-900">{otherParticipantName}</h3>
+              <h3 className="font-medium text-gray-900">
+                {otherParticipantName}
+              </h3>
               <div className="flex items-center space-x-2">
                 {/* <div className="w-2 h-2 bg-green-400 rounded-full"></div> */}
                 <p className="text-sm text-gray-500">
@@ -162,7 +178,8 @@ export function ChatMessages({
                 {t("noMessages") || "Chưa có tin nhắn nào"}
               </p>
               <p className="text-xs mt-1">
-                {t("noMessagesDescription") || "Bắt đầu cuộc trò chuyện bằng cách gửi tin nhắn đầu tiên"}
+                {t("noMessagesDescription") ||
+                  "Bắt đầu cuộc trò chuyện bằng cách gửi tin nhắn đầu tiên"}
               </p>
             </div>
           ) : (
@@ -174,25 +191,37 @@ export function ChatMessages({
                 return (
                   <div
                     key={message.id}
-                    className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'}`}
+                    className={`flex ${
+                      isCurrentUser ? "justify-end" : "justify-start"
+                    }`}
                   >
                     {!isCurrentUser && (
                       <Avatar className="h-8 w-8 mr-2 mt-1">
-                        <AvatarImage src={otherParticipant?.avatarUrl} alt={otherParticipant?.name || "User"} />
+                        <AvatarImage
+                          src={otherParticipant?.avatarUrl}
+                          alt={otherParticipant?.name || "User"}
+                        />
                         <AvatarFallback className="bg-gray-300 text-gray-600 text-xs">
-                          {(otherParticipant?.name || "U").charAt(0).toUpperCase()}
+                          {(otherParticipant?.name || "U")
+                            .charAt(0)
+                            .toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
                     )}
 
-                    <div className={`max-w-xs lg:max-w-md ${isCurrentUser ? 'ml-12' : 'mr-12'}`}>
+                    <div
+                      className={`max-w-xs lg:max-w-md ${
+                        isCurrentUser ? "ml-12" : "mr-12"
+                      }`}
+                    >
                       <div
-                        className={`px-4 py-3 rounded-2xl relative group ${isCurrentUser
-                            ? 'bg-blue-500 text-white rounded-br-md'
-                            : 'bg-gray-200 text-gray-900 rounded-bl-md'
-                          }`}
+                        className={`px-4 py-3 rounded-2xl relative group ${
+                          isCurrentUser
+                            ? "bg-blue-500 text-white rounded-br-md"
+                            : "bg-gray-200 text-gray-900 rounded-bl-md"
+                        }`}
                       >
-                        <p className="text-sm leading-relaxed">{message.message}</p>
+                        <ChatMessageContent content={message.message} />
 
                         {/* Delete button for current user messages */}
                         {isCurrentUser && (
@@ -206,7 +235,11 @@ export function ChatMessages({
                         )}
                       </div>
 
-                      <div className={`flex items-center mt-1 space-x-1 ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
+                      <div
+                        className={`flex items-center mt-1 space-x-1 ${
+                          isCurrentUser ? "justify-end" : "justify-start"
+                        }`}
+                      >
                         <p className="text-xs text-gray-500">
                           {formatDate(message.createdDate, locale)}
                         </p>
@@ -222,7 +255,10 @@ export function ChatMessages({
                     {isCurrentUser && (
                       <Avatar className="h-8 w-8 ml-2 mt-1">
                         <AvatarImage
-                          src={currentUser?.avatarUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"}
+                          src={
+                            currentUser?.avatarUrl ||
+                            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+                          }
                           alt={currentUser?.name || "Current User"}
                         />
                         <AvatarFallback className="bg-blue-100 text-blue-600 text-xs">
@@ -238,6 +274,7 @@ export function ChatMessages({
           )}
         </div>
       </ScrollArea>
+     
     </div>
   );
 }
