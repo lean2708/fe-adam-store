@@ -146,7 +146,6 @@ export interface TSize {
   name: string;
 }
 
-
 export type TEntityBasic = {
   id?: number;
   name?: string;
@@ -161,7 +160,6 @@ export type TVariant = {
   status?: string;
   size?: TEntityBasic;
 };
-
 
 export type TColor = {
   id: number;
@@ -189,8 +187,6 @@ export type TPaymentHistory = {
   paymentStatus?: 'PAID' | 'PENDING' | 'REFUNDED' | 'CANCELED' | 'FAILED';
   paymentTime?: string;
 };
-
-
 
 // Additional types for admin functionality
 export type TUser = {
@@ -339,4 +335,12 @@ export type TProductVariant = {
   color?: TEntityBasic;
 };
 
-
+// !type for Payment Method Option from Order
+export type TPaymentMethodOption = {
+  id: string;
+  value: PAYMENT_METHODS;
+  label: string;
+  icon?: React.ComponentType<{ className?: string }>;
+  image?: string;
+  isAvailable?: boolean;
+};
