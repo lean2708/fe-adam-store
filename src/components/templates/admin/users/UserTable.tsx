@@ -99,13 +99,13 @@ export function UserTable({
 
       {/* Search */}
       <div className="flex items-center space-x-2">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+        <div className="relative flex-1 max-w-sm rounded-lg border-2 focus-within:border-blue-500 overflow-hidden">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
             placeholder={t("users.searchPlaceholder")}
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-10"
+            className="pl-10 border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none rounded-none"
           />
         </div>
       </div>
@@ -300,7 +300,7 @@ export function UserTable({
                           </DropdownMenuItem>
                           {user.status === "ACTIVE" ? (
                             <DropdownMenuItem
-                              onClick={() => onDeleteUser(user.id+"")}
+                              onClick={() => onDeleteUser(user.id + "")}
                               className="text-destructive"
                             >
                               <Trash2 className="mr-2 h-4 w-4" />
@@ -308,7 +308,7 @@ export function UserTable({
                             </DropdownMenuItem>
                           ) : (
                             <DropdownMenuItem
-                              onClick={() => onRestoreUser(user.id+"")}
+                              onClick={() => onRestoreUser(user.id + "")}
                             >
                               <RotateCcw className="mr-2 h-4 w-4" />
                               {t("common.restore")}
