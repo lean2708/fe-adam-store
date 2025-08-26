@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import MainBannerSwiper from "./MainBanner/MainBannerSwiper";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, useRef } from "react";
+import { useChatWidgetStore } from "@/stores/chatWidgetStore";
+import { useAuth } from "@/hooks/useAuth";
 
 // List of banner image filenames in public/imgs/banner
 const bannerImages = [
@@ -20,8 +22,19 @@ const heroSlides = bannerImages.map((filename, idx) => ({
 
 export default function MainBanner() {
     const t = useTranslations("Languages");
+    const { isAuthenticated } = useAuth();
+    const { openWidget } = useChatWidgetStore();
     const [isSticky, setIsSticky] = useState(false);
     const buttonRef = useRef<HTMLDivElement>(null);
+
+    const handleChatClick = () => {
+        if (isAuthenticated) {
+            openWidget();
+        } else {
+            // Redirect to login if not authenticated
+            window.location.href = "/login";
+        }
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -44,7 +57,10 @@ export default function MainBanner() {
             </div>
             <div className="py-8 px-8" ref={buttonRef}>
                 <div className="flex justify-end">
-                    <Button className="bg-black hover:bg-gray-800 text-white rounded-full px-6 py-3 shadow-lg">
+                    <Button
+                        onClick={handleChatClick}
+                        className="bg-black hover:bg-gray-800 text-white rounded-full px-6 py-3 shadow-lg"
+                    >
                         {t("chatwithus")}
                     </Button>
                 </div>
@@ -52,7 +68,10 @@ export default function MainBanner() {
 
             {/* Sticky button that appears after scrolling past original */}
             {isSticky && (
-                <Button className="fixed bottom-6 right-6 z-50 bg-black hover:bg-gray-800 text-white rounded-full px-6 py-3 shadow-lg animate-in slide-in-from-bottom-4 fade-in duration-300">
+                <Button
+                    onClick={handleChatClick}
+                    className="fixed bottom-6 right-6 z-50 bg-black hover:bg-gray-800 text-white rounded-full px-6 py-3 shadow-lg animate-in slide-in-from-bottom-4 fade-in duration-300"
+                >
                     {t("chatwithus")}
                 </Button>
             )}
