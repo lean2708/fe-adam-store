@@ -113,7 +113,6 @@ export default function OrderItem(props: {
       setLoading(true);
       if (items[selectedIndex].id) {
         const res = await cancelOrderAction(String(id));
-        console.log(res);
         if (res.status === 200) {
           setIsDeleted(false);
           onDeleted(id);
@@ -125,7 +124,6 @@ export default function OrderItem(props: {
       setLoading(false);
     }
   };
-  console.log(items);
   return (
     <>
       {!dropList && <ItemProductOrder item={items[0]} active={activeStatus} />}
@@ -177,39 +175,35 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
     }
   };
   return (
-    <div className='border-b-1 border-dashed py-2 w-full flex justify-between min-h-25 items-center'>
-      <div className='flex '>
+    <div className="border-b-1 border-dashed py-2 w-full flex justify-between min-h-25 items-center">
+      <div className="flex ">
         <img
-          className='h-25 rounded-sm'
-          src={item.image?.imageUrl}
-          alt={'' + item.image?.id}
+          className="h-25 rounded-sm"
+          src={item.imageUrl}
+          alt={"" + item.image?.id}
         />
-        <div className='h-full flex flex-col justify-between ml-3'>
-          <h4 className='font-bold'>{item.productVariant?.product?.name}</h4>
-          <p className='text-[#888888]'>
-            Màu sắc: {item.productVariant?.color?.name}
-          </p>
-          <p className='text-[#888888]'>
-            Kích cỡ: {item.productVariant?.size?.name}
-          </p>
-          <p className='text-[#888888]'>×{item.quantity}</p>
+        <div className="h-full flex flex-col justify-between ml-3">
+          <h4 className="font-bold">{item.Product?.title}</h4>
+          <p className="text-[#888888]">Màu sắc: {item.color}</p>
+          <p className="text-[#888888]">Kích cỡ: {item.size}</p>
+          <p className="text-[#888888]">×{item.quantity}</p>
         </div>
       </div>
       <p
         className={cn(
-          active === 'DELIVERED' &&
-            'h-25 flex flex-col justify-between items-end'
+          active === "DELIVERED" &&
+            "h-25 flex flex-col justify-between items-end"
         )}
       >
-        <span className='font-bold'>
+        <span className="font-bold">
           {formatCurrency(Number(item.unitPrice))}
         </span>
-        {active === 'DELIVERED' && (
+        {active === "DELIVERED" && (
           <button
             onClick={() => setIsReview(true)}
-            className='px-4 py-2 bg-black rounded-md text-white'
+            className="px-4 py-2 bg-black rounded-md text-white"
           >
-            {reviewed ? 'Xem đánh giá' : 'Đánh giá'}
+            {reviewed ? "Xem đánh giá" : "Đánh giá"}
           </button>
         )}
       </p>

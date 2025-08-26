@@ -3,6 +3,7 @@ import type {
     OrderItemResponse,
     ProductVariantBasic,
     PageResponseOrderResponse,
+    ApiResponseListOrderResponse,
 } from "@/api-client/models";
 
 import { ORDER_STATUS } from "@/enums";
@@ -97,15 +98,17 @@ export async function transformOrderResponseToTOrder(apiOrder: OrderResponse): P
     });
 
     const address = apiOrder.address;
-
+    console.log(address);
+    
     return {
-        OrderItems: transformedOrderItems,
+        orderItems: transformedOrderItems,
         id: apiOrder.id || 0,
         customerPhone: apiOrder.address?.phone,
         createdAt: apiOrder.orderDate ? new Date(apiOrder.orderDate) : new Date(),
         updatedAt: apiOrder.orderDate ? new Date(apiOrder.orderDate) : new Date(),
         status: transformApiStatusToOrderStatus(apiOrder.orderStatus),
         userName: apiOrder.customerName ?? "Guest",
+        addressId:address?.id,
         address: [
             address?.streetDetail,
             address?.ward?.name,
@@ -141,6 +144,24 @@ export async function transformPageResponseOrderToActionResponse(
                 totalPages: apiResponse.totalPages ?? 0,
                 totalItems: apiResponse.totalItems ?? 0// For
             },
+            data: transformedOrders
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error instanceof Error ? error.message : "Failed to transform orders",
+        };
+    }
+}
+export async function transformApiResponseListOrderResponseToActionResponse(
+    apiResponse: ApiResponseListOrderResponse
+): Promise<ActionResponse<TOrder[]>> {
+    try {
+        const transformedOrders = await transformOrderArrayToTOrderArray(apiResponse.result ?? []);
+
+        return {
+            message: apiResponse.message,
+            success: apiResponse.code == 200,
             data: transformedOrders
         };
     } catch (error) {

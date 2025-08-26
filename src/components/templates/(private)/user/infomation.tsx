@@ -47,9 +47,12 @@ export default function Infomation() {
         const newInfo = {
           name: infoUser.name,
           dob: infoUser.dob,
-          gender: String(infoUser.gender) || "OTHER",
-          roleIds: [1, 2]
-        }
+          gender:
+            (infoUser.gender?.toUpperCase() as "FEMALE" | "MALE" | "OTHER") ||
+            "OTHER",
+          roleIds: [1, 2],
+          email: infoUser.email || "",
+        };
         const res = await updateUserAction(infoUser.id, newInfo);
         if (res.success) { toast.success('Cập nhật thành công!') } else { toast.warning('Cập nhật không thành công!') }
       }

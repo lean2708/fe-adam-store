@@ -60,6 +60,7 @@ export default function useProductVariant() {
 
           // Trả về object với đầy đủ thông tin cần thiết
           return {
+            label:"",
             id: selectedVariant.id,
             name: item.Product.name,
             // title: item.Product.title,
