@@ -48,7 +48,8 @@ export default function ReviewModule(props: {
               reviewId: res.reviews.id || 0,
               rating: res.reviews.rating || 0,
               isUpdate: true,
-              listImg: res.reviews.imageUrls || [],
+              listImg: (res.reviews.imageUrls as string[]) || [],
+              loading: false,
             }));
           }
         }
@@ -97,53 +98,43 @@ export default function ReviewModule(props: {
   };
 
   const handleSubmit = async () => {
-    if (state.isUpdate && state.reviewId) {
-      try {
-        const res = await updateProductReviewsAction(
-          state.rating,
-          state.comment,
-          state.listImg,
-          state.reviewId
-        );
-        if (res.status) {
-          CloseMoule();
-          toast.success("Chỉnh sửa đánh giá sản phẩm thành công");
-        }
-      } catch (error: any) {
-        console.log(error);
-      }
-    } else {
-      try {
-        const res = await createProductReviewsAction(
-          state.rating,
-          state.comment,
-          state.listImg,
-          orderItem.id
-        );
-        if (res.status) {
-          returnRivew();
-          CloseMoule();
-          toast.success("Đánh giá sản phẩm thành công");
-        }
-      } catch (error: any) {
-        console.log(error);
-      }
+    if (!state.rating || !state.comment) return;
+
+    setState((ps) => ({ ...ps, loading: true }));
+
+    try {
+      const reviewData = {
+        rating: state.rating,
+        comment: state.comment,
+        imageUrls: state.listImg,
+        orderItemId: orderItem.id,
+      };
+
+
+      CloseMoule();
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    } finally {
+      setState((ps) => ({ ...ps, loading: false }));
     }
   };
   if (!visible) return null;
-  if (visible && state.loading) return <>
-   <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
-      onClick={CloseMoule}
-    >
-      <Card
-        className="relative w-full text-center max-w-3xl bg-white dark:bg-gray-700 !p-6 rounded-lg shadow-lg"
-        onClick={stopPropagation}
-      >
-        Loading . . .
-      </Card>
-      </div>
-  </>
+  if (visible && state.loading)
+    return (
+      <>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+          onClick={CloseMoule}
+        >
+          <Card
+            className="relative w-full text-center max-w-3xl bg-white dark:bg-gray-700 !p-6 rounded-lg shadow-lg"
+            onClick={stopPropagation}
+          >
+            Loading . . .
+          </Card>
+        </div>
+      </>
+    );
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
@@ -161,13 +152,11 @@ export default function ReviewModule(props: {
           <div className="border border-black dark:border-white p-3 rounded-lg flex">
             <img
               className="w-24 h-24"
-              src={orderItem?.image.imageUrl}
-              alt={String(orderItem.image.id)}
+              src={orderItem?.imageUrl}
+              alt={String(orderItem.id)}
             />
             <div className="ml-7 h-24 justify-between flex flex-col">
-              <p className="text-xl font-bold">
-                {orderItem.productVariant.product.name}
-              </p>
+              <p className="text-xl font-bold">{orderItem.Product?.title}</p>
               <span>
                 Màu {orderItem?.productVariant?.color?.name}, Size{" "}
                 {orderItem?.productVariant?.size?.name}

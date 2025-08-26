@@ -226,6 +226,7 @@ export function ContentOrder() {
                           }
                         }}
                         id={+item.id}
+                        key={item.id}
                         items={item.orderItems as TOrderItem[]}
                         totalPrice={+item.totalPrice}
                         activeStatus={state.activeStatus}
