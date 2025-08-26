@@ -9,7 +9,7 @@ import {
 import { SearchOrdersForAdminOrderStatusEnum } from '@/api-client/apis/order-controller-api';
 import { ControllerFactory } from './factory-api-client';
 import { PaymentCallbackRequest } from '@/api-client/models/payment-callback-request';
-import { transformPageResponseOrderToActionResponse } from './transform/order';
+import { transformApiResponseListOrderResponseToActionResponse, transformOrderArrayToTOrderArray, transformPageResponseOrderToActionResponse } from './transform/order';
 import { ActionResponse } from '../types/actions';
 import { TOrder } from '@/types';
 
@@ -70,10 +70,10 @@ export async function deleteOrderApi(id: number) {
 
 export async function fetchAllOrdersUserApi(
   status: GetOrdersForUserOrderStatusEnum
-) {
+): Promise<ActionResponse<TOrder[]>> {
   const api = await getOrderController();
   const response = await api.getOrdersForUser({ orderStatus: status });
-  return response.data.result;
+  return transformApiResponseListOrderResponseToActionResponse(response.data);
 }
 /**
  * Fetch order detail by ID.

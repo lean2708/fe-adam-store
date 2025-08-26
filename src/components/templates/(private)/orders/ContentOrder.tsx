@@ -3,17 +3,17 @@
 import {
   getAllOrderUserAction,
   retryPaymentviaVnPayAction,
-} from '@/actions/orderActions';
-import { TAddressItem, TOrder, TOrderItem } from '@/types';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/hooks/useAuth';
-import ChooseAddress from '@/components/modules/ChooseAddress';
-import OrderItem from '@/components/ui/order-item';
-import { Skeleton } from '@/components/ui/skeleton';
-import { cn } from '@/lib/utils';
-import { checkReviewAction } from '@/actions/reviewActions';
-import { toast } from 'sonner';
+} from "@/actions/orderActions";
+import { TAddressItem, TOrder, TOrderItem } from "@/types";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
+import ChooseAddress from "@/components/modules/ChooseAddress";
+import OrderItem from "@/components/ui/order-item";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
+import { checkReviewAction } from "@/actions/reviewActions";
+import { toast } from "sonner";
 
 type TabStatus =
   | 'PENDING'
@@ -68,16 +68,12 @@ export function ContentOrder() {
     try {
       setState((prev) => ({ ...prev, isLoading: true }));
       const res = await getAllOrderUserAction(state.activeStatus);
-      if (res.status === 200 && res.orders) {
+      if (res.success) {
         // Transform OrderResponse[] to TOrder[] to match expected structure
-        const transformedOrders: TOrder[] = res.orders.map((order: any) => ({
-          ...order,
-          orderItems: order.OrderItems || order.orderItems || [],
-        }));
 
         setState((prevState) => ({
           ...prevState,
-          listOrders: transformedOrders,
+          listOrders: res.data || [],
         }));
       }
     } catch (error) {
@@ -132,11 +128,11 @@ export function ContentOrder() {
       if (res.success && res.data?.paymentUrl) {
         router.push(res.data.paymentUrl);
       } else {
-        toast.error('Không thể tạo liên kết thanh toán. Vui lòng thử lại.');
+        toast.error("Không thể tạo liên kết thanh toán. Vui lòng thử lại.");
       }
     } catch (error) {
-      console.error('Failed to retry payment:', error);
-      toast.error('Có lỗi xảy ra khi tạo liên kết thanh toán.');
+      console.error("Failed to retry payment:", error);
+      toast.error("Có lỗi xảy ra khi tạo liên kết thanh toán.");
     }
   };
 

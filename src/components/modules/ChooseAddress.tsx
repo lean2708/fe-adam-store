@@ -51,12 +51,10 @@ export default function ChooseAddress(props: {
     getAddress();
   }, [visible]);
   useEffect(() => {
-    if (listAddress.length && orderItem?.id && orderItem.address) {
-      const foundIndex = listAddress.findIndex((item) => {
-        const addressString = `${item.streetDetail}, ${item.ward?.name}, ${item.district?.name}, ${item.province?.name}`;
-        return addressString === orderItem.address;
-      });
-      console.log(orderItem.address, 'Index' + foundIndex);
+    if (listAddress.length && orderItem?.id) {
+      const foundIndex = listAddress.findIndex(
+        (item) => item.id === orderItem.addressId
+      );
       if (foundIndex !== -1) {
         setSelectedIndex(foundIndex);
       }
@@ -69,10 +67,9 @@ export default function ChooseAddress(props: {
       if (orderItem) {
         setIsSubmit(true);
         const res = await updateAddressForOrderByID(
-          +orderItem.id,
-          listAddress[selectedIndex].id!
+          orderItem.id,
+          listAddress[selectedIndex].id || 0
         );
-        console.log(res);
         if (res.status === 200) {
           onSuccess(listAddress[selectedIndex]);
           onClose();
@@ -113,8 +110,8 @@ export default function ChooseAddress(props: {
             <CircleX size={30} />
           </button>
         </div>
-        <ul className='pb-6 px-6'>
-          {loading && <Skeleton className='h-18 w-full' />}
+        <ul className="pb-6 px-6">
+          {loading && <Skeleton className="h-18 w-full" />}
 
           {!loading &&
             listAddress.length !== 0 &&
@@ -137,10 +134,10 @@ export default function ChooseAddress(props: {
 
                   <div className='text-left ml-2'>
                     <p
-                      className={cn(selectedIndex !== index && 'text-gray-400')}
+                      className={cn(selectedIndex !== index && "text-gray-400")}
                     >
                       {(() => {
-                        const phoneNumber = item.phone?.startsWith('0')
+                        const phoneNumber = item.phone?.startsWith("0")
                           ? item.phone.slice(1)
                           : item.phone;
 
@@ -158,7 +155,7 @@ export default function ChooseAddress(props: {
                         selectedIndex !== index && 'text-gray-400'
                       )}
                     >
-                      {item.streetDetail}, {item.ward?.name},{' '}
+                      {item.streetDetail}, {item.ward?.name},{" "}
                       {item.district?.name}, {item.province?.name}
                     </p>
                     {item.isDefault && (

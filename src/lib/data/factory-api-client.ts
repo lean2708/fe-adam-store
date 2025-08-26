@@ -77,6 +77,7 @@ export class ControllerFactory {
     return new ProductControllerApi(undefined, undefined, axiosInstance);
   }
 
+
   /**
    * Get ProductVariant Controller
    */

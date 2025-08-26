@@ -117,9 +117,9 @@ export function RecentOrders({ dateRange }: RecentOrdersProps) {
         const orderID = order.id;
         const customerName = order.userName;
         const customerPhone = order.customerPhone || "";
-        const customerAvatar = order.OrderItems[0].imageUrl; // No avatar in OrderResponse
+        const customerAvatar = order.orderItems[0].imageUrl; // No avatar in OrderResponse
         const orderTotalQuantities =
-          (order.OrderItems?.length || 0) + " sản phẩm";
+          (order.orderItems?.length || 0) + " sản phẩm";
 
         return (
           <div key={order.id} className="flex items-center space-x-4">

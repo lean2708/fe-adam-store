@@ -44,21 +44,18 @@ export async function cancelOrderAction(orderId: string) {
     return { status: 500, message: 'Server error! Try later', error };
   }
 }
-export async function getAllOrderUserAction(status: string) {
+export async function getAllOrderUserAction(status: string): Promise<ActionResponse<TOrder[]>> {
   try {
     const orders = await fetchAllOrdersUserApi(
       status as GetOrdersForUserOrderStatusEnum
     );
-    console.log(orders);
-    return {
-      status: 200,
-      orders,
-    };
+    return orders;
   } catch (error) {
+    const extracted = extractErrorMessage(error);
     return {
-      status: 500,
-      message: 'server error',
-      error,
+      success: false,
+      message: extracted.message,
+      apiError: extracted,
     };
   }
 }
