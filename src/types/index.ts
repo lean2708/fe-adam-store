@@ -15,7 +15,7 @@ export type TCategory = {
 };
 
 export type TOrder = {
-  OrderItems: TOrderItem[];
+  orderItems: TOrderItem[];
 } & {
   id: number;
   createdAt: Date;
