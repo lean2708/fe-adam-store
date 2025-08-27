@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
 import { useCartStore } from '@/stores/cartStore';
+import Link from 'next/link';
 
 export default function UserModal({
   open,
@@ -146,18 +147,26 @@ export default function UserModal({
         </div>
       )}
 
-      <div className=' px-3 py-1 flex items-center h-16 rounded-xl gap-3 hover:bg-gray-50 transition cursor-pointer'>
+      <Link
+        href={'/user'}
+        className=' px-3 py-1 flex items-center h-16 rounded-xl gap-3 hover:bg-gray-50 transition cursor-pointer'
+      >
         <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center'>
           <User className='h-6 w-6 text-gray-400' />
         </div>
         <span className='text-lg font-medium'>{t('user.profile')}</span>
-      </div>
-      <div className='px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer'>
+      </Link>
+
+      <Link
+        href={'/orders'}
+        className='px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer'
+      >
         <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center '>
           <ShoppingBag className='h-6 w-6 text-gray-400' />
         </div>
         <span className='text-lg font-medium'>Đơn hàng của tôi</span>
-      </div>
+      </Link>
+
       <div
         className='px-3 py-1 flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer'
         onClick={handleLogout}
