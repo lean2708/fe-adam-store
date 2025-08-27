@@ -4,7 +4,7 @@ import {
   getAllOrderUserAction,
   retryPaymentviaVnPayAction,
 } from '@/actions/orderActions';
-import { AddressItem, TOrder, TOrderItem } from '@/types';
+import { TabStatus, TAddressItem, TOrder, TOrderItem } from '@/types';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
@@ -15,12 +15,6 @@ import { cn } from '@/lib/utils';
 import { checkReviewAction } from '@/actions/reviewActions';
 import { toast } from 'sonner';
 
-type TabStatus =
-  | 'PENDING'
-  | 'PROCESSING'
-  | 'SHIPPED'
-  | 'DELIVERED'
-  | 'CANCELLED';
 interface TabItem {
   key: TabStatus;
   label: string;
@@ -69,16 +63,26 @@ export function ContentOrder() {
       setState((prev) => ({ ...prev, isLoading: true }));
       const res = await getAllOrderUserAction(state.activeStatus);
       if (res.status === 200 && res.orders) {
-        // Transform OrderResponse[] to TOrder[] to match expected structure
         const transformedOrders: TOrder[] = res.orders.map((order: any) => ({
           ...order,
           orderItems: order.OrderItems || order.orderItems || [],
         }));
 
-        setState((prevState) => ({
-          ...prevState,
-          listOrders: transformedOrders,
-        }));
+        // Only check reviews if we're on DELIVERED tab
+        if (state.activeStatus === 'DELIVERED') {
+          const ordersWithReviews = await checkReviewsForOrders(
+            transformedOrders
+          );
+          setState((prevState) => ({
+            ...prevState,
+            listOrders: ordersWithReviews,
+          }));
+        } else {
+          setState((prevState) => ({
+            ...prevState,
+            listOrders: transformedOrders,
+          }));
+        }
       }
     } catch (error) {
       console.error('Failed to fetch orders:', error);
@@ -86,6 +90,68 @@ export function ContentOrder() {
       setState((prev) => ({ ...prev, isLoading: false }));
     }
   };
+
+  const checkReviewsForOrders = async (orders: TOrder[]): Promise<TOrder[]> => {
+    if (orders.length === 0) return orders;
+
+    try {
+      // Create a batch of all order item IDs
+      const allOrderItemIds = orders.flatMap((order) =>
+        order.orderItems.map((item) => item.id)
+      );
+
+      // Batch check reviews for all items at once
+      const reviewStatuses = await checkBatchReviews(allOrderItemIds);
+
+      // Update orders with review status
+      return orders.map((order) => ({
+        ...order,
+        orderItems: order.orderItems.map((item) => ({
+          ...item,
+          isReview: reviewStatuses[item.id] || false,
+        })),
+      }));
+    } catch (error) {
+      console.error('Failed to check reviews:', error);
+      return orders;
+    }
+  };
+
+  const checkBatchReviews = async (
+    orderItemIds: number[]
+  ): Promise<Record<number, boolean>> => {
+    try {
+      // This should be implemented as a batch API endpoint on your backend
+      // For now, we'll use Promise.all but limit concurrency
+      const BATCH_SIZE = 5;
+      const results: Record<number, boolean> = {};
+
+      for (let i = 0; i < orderItemIds.length; i += BATCH_SIZE) {
+        const batch = orderItemIds.slice(i, i + BATCH_SIZE);
+        const batchResults = await Promise.all(
+          batch.map(async (id) => {
+            try {
+              const res = await checkReviewAction(id);
+              return { id, reviewed: res.status && res.review };
+            } catch (error) {
+              console.error(`Failed to check review for item ${id}:`, error);
+              return { id, reviewed: false };
+            }
+          })
+        );
+
+        batchResults.forEach(({ id, reviewed }) => {
+          results[id] = reviewed!;
+        });
+      }
+
+      return results;
+    } catch (error) {
+      console.error('Batch review check failed:', error);
+      return {};
+    }
+  };
+
   const checkAllProductReview = async () => {
     if (state.listOrders.length === 0) {
       return;
@@ -252,7 +318,7 @@ export function ContentOrder() {
         visible={state.isVisible}
         orderItem={state.itemOnModule}
         onClose={() => setState((pstate) => ({ ...pstate, isVisible: false }))}
-        onSuccess={(address: AddressItem) => {
+        onSuccess={(address: TAddressItem) => {
           if (state.listOrders.length && address && state.itemOnModule) {
             const foundIndex = state.listOrders.findIndex(
               (item) => item.id === state.itemOnModule?.id

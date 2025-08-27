@@ -161,7 +161,6 @@ export type TVariant = {
   size?: TEntityBasic;
 };
 
-
 export type TColor = {
   id: number;
   name: string;
@@ -345,3 +344,10 @@ export type TPaymentMethodOption = {
   image?: string;
   isAvailable?: boolean;
 };
+
+export type TabStatus =
+  | 'PENDING'
+  | 'PROCESSING'
+  | 'SHIPPED'
+  | 'DELIVERED'
+  | 'CANCELLED';
