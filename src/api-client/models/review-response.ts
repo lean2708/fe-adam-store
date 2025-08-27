@@ -55,7 +55,7 @@ export interface ReviewResponse {
      * @type {object}
      * @memberof ReviewResponse
      */
-    'imageUrls'?: object;
+    'imageUrls'?: string[];
     /**
      * 
      * @type {string}

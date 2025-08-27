@@ -77,6 +77,10 @@ export class ControllerFactory {
     return new ProductControllerApi(undefined, undefined, axiosInstance);
   }
 
+  static async getProductVariantController(): Promise<ProductVariantControllerApi> {
+    const axiosInstance = await this.getAxiosInstance();
+    return new ProductVariantControllerApi(undefined, undefined, axiosInstance);
+  }
 
   /**
    * Get ProductVariant Controller

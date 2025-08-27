@@ -10,7 +10,10 @@ const priceOptions = [
   { id: 2, name: "500,000 - 1,000,000" },
   { id: 3, name: "Trên 1,000,000" },
 ];
-export function SideSearch() {
+export function SideSearch(props: {
+  result: number
+}) {
+  const {result} = props
   const router = useRouter();
   const searchParams = useSearchParams();
   const [state, setState] = useState<{
@@ -72,7 +75,7 @@ export function SideSearch() {
     <div className="w-[15%]">
       <div className="h-14 flex w-full justify-between items-center px-8">
         <p>Bộ lọc</p>
-        <span className="text-[#888888]">190 kết quả</span>
+        <span className="text-[#888888]">{result} kết quả</span>
       </div>
       <details open={!state.loading} className="group w-full bg-white">
         <summary className="h-14 w-full px-8 border-b border-t border-[#dddddd] outline-none cursor-pointer list-none flex justify-between items-center">
@@ -80,7 +83,7 @@ export function SideSearch() {
           <ChevronRight className="transition-transform group-open:rotate-90" />
         </summary>
 
-        <ul className="w-full px-8 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 py-2 bg-[#F5F5F5]">
+        <ul className="w-full px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 py-2 bg-[#F5F5F5]">
           {state.listColor.length !== 0 &&
             !state.loading &&
             state.listColor.map((color: TColor) => (
@@ -93,16 +96,16 @@ export function SideSearch() {
                 }}
                 key={color.id}
                 className={cn(
-                  "flex flex-col items-center px-2 py-2 rounded-md border-1 border-[#00000000]",
+                  "flex flex-col items-center px-4 xl:px-6 py-1 xl:py-2 rounded-md border-1 border-[#00000000]",
                   state.colorSort === color.id &&
                     "border-1 border-[#a0a0a07a] bg-[#acacac31]"
                 )}
               >
                 <button
-                  className="px-6 py-3 rounded-full border-1 border-[#888888]"
+                  className="px-3 xl:px-4 2xl:px-5 py-3 rounded-full border-1 border-[#888888]"
                   style={{ backgroundColor: color.name }}
                 ></button>
-                <span className="select-none mt-1 text-center">
+                <span className="hidden xl:block select-none mt-1 text-center">
                   {color.name}
                 </span>
               </li>

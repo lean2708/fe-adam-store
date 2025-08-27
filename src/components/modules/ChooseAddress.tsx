@@ -5,7 +5,7 @@ import { Skeleton } from '../ui/skeleton';
 import { cn } from '@/lib/utils';
 import { updateAddressForOrderByID } from '@/actions/orderActions';
 import { getAllAddressUser } from '@/actions/addressActions';
-import { AddressItem, TOrder } from '@/types';
+import { TAddressItem, TOrder } from '@/types';
 import ConfirmDialogModule from './ConfirmDialogModule';
 import { toast } from 'sonner';
 
@@ -13,7 +13,6 @@ export default function ChooseAddress(props: {
   visible: boolean;
   onSuccess: (address: TAddressItem) => void;
   orderItem?: TOrder;
-  onSuccess: (id: AddressItem) => void;
   onClose: () => void;
 }) {
   const { visible, onClose, orderItem, onSuccess } = props;
@@ -21,10 +20,10 @@ export default function ChooseAddress(props: {
   const [isSubmit, setIsSubmit] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  const [listAddress, setListAddress] = useState<AddressItem[]>([]);
+  const [listAddress, setListAddress] = useState<TAddressItem[]>([]);
 
   useEffect(() => {
-    const defaultIndex = listAddress.findIndex((addr) => addr.isDefault);
+    const defaultIndex = listAddress.findIndex((addr)=> addr.id === orderItem?.address.id);
     setSelectedIndex(defaultIndex >= 0 ? defaultIndex : 0);
 
     const handleEsc = (e: KeyboardEvent) => {
@@ -40,7 +39,7 @@ export default function ChooseAddress(props: {
         const res = await getAllAddressUser();
         console.log(res);
         if (res.status === 200 && res.address?.items) {
-          setListAddress(res.address.items as AddressItem[]);
+          setListAddress(res.address.items as TAddressItem[]);
         }
       } catch (error) {
         console.error('Failed to fetch address:', error);
@@ -118,7 +117,7 @@ export default function ChooseAddress(props: {
 
           {!loading &&
             listAddress.length !== 0 &&
-            listAddress.map((item: AddressItem, index) => (
+            listAddress.map((item: TAddressItem, index) => (
               <li key={index}>
                 <label
                   onClick={() => setConfirm(true)}

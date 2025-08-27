@@ -9,13 +9,14 @@ import Link from "next/link";
 import ProductCardIndex from "@/components/modules/ProductCardIndex";
 import { useTranslations } from "next-intl";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SideSearch } from "./SideSearch";
 const priceFilters = [
   [`minPrice<500000`],
   [`minPrice>500000`, `minPrice<1000000`],
   [`minPrice>1000000`],
 ];
 export default function ContentSearch() {
-    const t = useTranslations("Marketing");
+  const t = useTranslations("Marketing");
   const searchParams = useSearchParams();
   const query = searchParams.get("query");
   const decoded = query ? decodeURIComponent(query) : "";
@@ -82,7 +83,7 @@ export default function ContentSearch() {
             ...ps,
             totalPage: res.data?.totalPages || 0,
             totalProduct: res.data?.totalItems || 0,
-            listProducts: res.data?.items ||[]
+            listProducts: res.data?.items || [],
           }));
         }
       } catch (error) {
@@ -94,11 +95,13 @@ export default function ContentSearch() {
     if (query) searchProduct();
   }, [state.page, state.minPrice, state.color, state.sort, query]);
   return (
-    <>
-    <Carousel className="w-full">
+    <div className="w-full flex">
+      <SideSearch result={state.totalProduct} />
+      <div className="w-[85%]">
+        <Carousel className="w-full">
           <div className="flex flex-wrap">
-              {state.loading &&
-              [1, 2, 3, 4,5].map((product) => (
+            {state.loading &&
+              [1, 2, 3, 4, 5].map((product) => (
                 <CarouselItem
                   key={product}
                   className="basis-1/2 md:basis-1/3 lg:basis-1/5 mb-2"
@@ -121,30 +124,35 @@ export default function ContentSearch() {
                   <Skeleton className="h-6 w-[45%]"></Skeleton>
                 </CarouselItem>
               ))}
-                {!state.loading && state.listProducts.length === 0 && <div className="w-full">
-                  <p className="w-full text-center">Không có sản phẩm phù hợp nào cả</p>
-                  </div>}
-            {!state.loading && state.listProducts.length !== 0 && state.listProducts.map((product) => (
-              <CarouselItem
-                key={product.id}
-                className="basis-1/2 md:basis-1/3 lg:basis-1/5 mb-2"
-              >
-                <Link href={`product/${product.id}`}>
+            {!state.loading && state.listProducts.length === 0 && (
+              <div className="w-full">
+                <p className="w-full text-center">
+                  Không có sản phẩm phù hợp nào cả
+                </p>
+              </div>
+            )}
+            {!state.loading &&
+              state.listProducts.length !== 0 &&
+              state.listProducts.map((product) => (
+                <CarouselItem
+                  key={product.id}
+                  className="basis-1/2 md:basis-1/3 lg:basis-1/5 mb-2"
+                >
                   <ProductCardIndex
                     product={product}
                     badgeText={t("bestSellers.badgeText")}
                   />
-                </Link>
-              </CarouselItem>
-            ))}
+                </CarouselItem>
+              ))}
           </div>
         </Carousel>
-      <Pagination
-        totalPage={state.totalPage}
-        page={state.page}
-        totalProduct={state.totalProduct}
-        onChangePage={(val) => setState((ps) => ({ ...ps, page: val - 1 }))}
-      />
-    </>
+        <Pagination
+          totalPage={state.totalPage}
+          page={state.page}
+          totalProduct={state.totalProduct}
+          onChangePage={(val) => setState((ps) => ({ ...ps, page: val - 1 }))}
+        />
+      </div>
+    </div>
   );
 }

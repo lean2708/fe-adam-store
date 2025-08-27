@@ -125,10 +125,9 @@ export default function OrderItem(props: {
       setLoading(false);
     }
   };
-  console.log(items);
   return (
     <>
-      {!dropList && <ItemProductOrder item={items[0]} active={activeStatus} />}
+      {!dropList && <ItemProductOrder key={items[0].id} item={items[0]} active={activeStatus} />}
       {dropList &&
         items.map((item: TOrderItem) => (
           <ItemProductOrder item={item} active={activeStatus} />
@@ -164,18 +163,7 @@ export default function OrderItem(props: {
 function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
   const { item, active } = props;
   const [isReview, setIsReview] = useState(false);
-  const [reviewed, setReviewed] = useState(false);
-  useEffect(() => {
-    if (item.id) checkReview();
-  }, []);
-  const checkReview = async () => {
-    try {
-      const res = await checkReviewAction(item.id);
-      if (res.status && res.review) setReviewed(true);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    const [review, setReview] = useState(item.isReview);
   return (
     <div className='border-b-1 border-dashed py-2 w-full flex justify-between min-h-25 items-center'>
       <div className='flex '>
@@ -185,7 +173,7 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
           alt={'' + item.image?.id}
         />
         <div className='h-full flex flex-col justify-between ml-3'>
-          <h4 className='font-bold'>{item.productVariant?.product?.name}</h4>
+          <h4 className='font-bold'>{item.productVariant?.name}</h4>
           <p className='text-[#888888]'>
             Màu sắc: {item.productVariant?.color?.name}
           </p>
@@ -209,7 +197,7 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
             onClick={() => setIsReview(true)}
             className='px-4 py-2 bg-black rounded-md text-white'
           >
-            {reviewed ? 'Xem đánh giá' : 'Đánh giá'}
+            {review  ? 'Xem đánh giá' : 'Đánh giá'}
           </button>
         )}
       </p>
@@ -217,8 +205,8 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
         visible={isReview}
         orderItem={item}
         onClose={() => setIsReview(false)}
-        returnRivew={function (): void {
-          throw new Error("Function not implemented.");
+        returnRiview={ ()=>{
+          setReview(true);
         }}
       />
     </div>

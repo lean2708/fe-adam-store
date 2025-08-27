@@ -13,12 +13,11 @@ import { toast } from "sonner";
 
 export default function ReviewModule(props: {
   visible: boolean;
-  returnRivew: () => void;
+  returnRiview: () => void;
   orderItem: TOrderItem;
   onClose: () => void;
-  isReview?: boolean;
 }) {
-  const { onClose, isReview, orderItem, visible, returnRivew } = props;
+  const { onClose, orderItem, visible, returnRiview } = props;
   const [state, setState] = useState<{
     loading: boolean;
     rating: number;
@@ -45,7 +44,7 @@ export default function ReviewModule(props: {
             setState((ps) => ({
               ...ps,
               comment: res.reviews.comment || "",
-              reviewId: res.reviews.id || 0,
+              reviewId: res.reviews.id,
               rating: res.reviews.rating || 0,
               isUpdate: true,
               listImg: res.reviews.imageUrls || [],
@@ -58,7 +57,7 @@ export default function ReviewModule(props: {
         setState((ps) => ({ ...ps, loading: false }));
       }
     };
-    if (visible && isReview) getReviewById();
+    if (visible && orderItem.isReview) getReviewById();
   }, [orderItem?.id, visible]);
 
   const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
@@ -121,7 +120,7 @@ export default function ReviewModule(props: {
           orderItem.id
         );
         if (res.status) {
-          returnRivew();
+          returnRiview();
           CloseMoule();
           toast.success("Đánh giá sản phẩm thành công");
         }
@@ -161,12 +160,12 @@ export default function ReviewModule(props: {
           <div className="border border-black dark:border-white p-3 rounded-lg flex">
             <img
               className="w-24 h-24"
-              src={orderItem?.image.imageUrl}
-              alt={String(orderItem.image.id)}
+              src={orderItem.image?.imageUrl}
+              alt={String(orderItem.image?.id)}
             />
             <div className="ml-7 h-24 justify-between flex flex-col">
               <p className="text-xl font-bold">
-                {orderItem.productVariant.product.name}
+                {orderItem.productVariant?.name}
               </p>
               <span>
                 Màu {orderItem?.productVariant?.color?.name}, Size{" "}
@@ -299,7 +298,7 @@ export default function ReviewModule(props: {
               (!state.rating || !state.comment) && "cursor-not-allowed"
             )}
           >
-            {state.isUpdate ? "Chỉnh sửa" : "Hoàn thành"}
+            {orderItem.isReview ? "Chỉnh sửa" : "Hoàn thành"}
           </button>
         </CardFooter>
       </Card>

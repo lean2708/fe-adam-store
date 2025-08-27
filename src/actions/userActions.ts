@@ -1,12 +1,12 @@
-'use server';
+"use server";
 
-import type { ActionResponse } from '@/lib/types/actions';
+import type { ActionResponse } from "@/lib/types/actions";
 import type {
   UserCreationRequest,
   UserUpdateRequest,
   PageResponseUserResponse,
   PageResponseRoleResponse,
-  PageResponsePromotionResponse
+  PageResponsePromotionResponse,
 } from "@/api-client/models";
 import type { TUser } from "@/types";
 import {
@@ -29,7 +29,6 @@ import {
   type UserCreateFormData,
 } from "@/actions/schema/userSchema";
 
-
 /**
  * Fetch all users for admin
  */
@@ -42,7 +41,7 @@ export async function fetchAllUsersAction(
     const users = await fetchAllUsersForAdmin(page, size, sort);
     return users;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, 'Lỗi server');
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
       message: extractedError.message,
@@ -64,7 +63,7 @@ export async function searchUsersAction(
     const users = await searchUsersForAdmin(page, size, sort, search);
     return users;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, 'Lỗi tìm kiếm');
+    const extractedError = extractErrorMessage(error, "Lỗi tìm kiếm");
     return {
       success: false,
       message: extractedError.message,
@@ -95,7 +94,7 @@ export async function createUserAction(
     return result;
   } catch (error) {
     // Handle validation errors
-    if (error instanceof Error && error.name === 'ZodError') {
+    if (error instanceof Error && error.name === "ZodError") {
       return {
         success: false,
         message: "Dữ liệu không hợp lệ",
@@ -116,30 +115,19 @@ export async function createUserAction(
  */
 export async function updateUserAction(
   id: number,
-  formData: UserUpdateFormData
+  formData: {
+    name: string;
+    dob: string;
+    gender: string;
+    roleIds?: Set<number>;
+  }
 ): Promise<ActionResponse<TUser>> {
   try {
-    // Validate the form data
-    const validatedData = userUpdateSchema.parse(formData);
-
-    // Transform to API request format
-    const userData: UserUpdateRequest = {
-      name: validatedData.name,
-      roleIds: Array.from(validatedData.roleIds) as unknown as Set<number>,
-      dob: validatedData.dob || "",
-      gender: validatedData.gender as any,
-    };
-    console.log(userData);
-    // Only include password if it's provided
-    if (validatedData.password && validatedData.password.length > 0) {
-      (userData as any).password = validatedData.password;
-    }
-
-    const result = await updateUser(id, userData);
+    const result = await updateUser(id, formData);
     return result;
   } catch (error) {
     // Handle validation errors
-    if (error instanceof Error && error.name === 'ZodError') {
+    if (error instanceof Error && error.name === "ZodError") {
       return {
         success: false,
         message: "Dữ liệu không hợp lệ",
@@ -173,7 +161,7 @@ export async function deleteUserAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Failed to delete user',
+      message: error instanceof Error ? error.message : "Failed to delete user",
     };
   }
 }
@@ -188,7 +176,7 @@ export async function restoreUserAction(
     const result = await restoreUser(id);
     return result;
   } catch (error) {
-    const extractedError = extractErrorMessage(error, 'Lỗi server');
+    const extractedError = extractErrorMessage(error, "Lỗi server");
     return {
       success: false,
       message: extractedError.message,
@@ -213,7 +201,7 @@ export async function fetchAllRolesAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Failed to fetch roles',
+      message: error instanceof Error ? error.message : "Failed to fetch roles",
     };
   }
 }
@@ -234,7 +222,7 @@ export async function fetchPromotionsbyUserAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Failed to fetch roles',
+      message: error instanceof Error ? error.message : "Failed to fetch roles",
     };
   }
 }
@@ -254,7 +242,7 @@ export async function fetchUserByIdAction(
   } catch (error) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Failed to fetch user',
+      message: error instanceof Error ? error.message : "Failed to fetch user",
     };
   }
 }
@@ -266,7 +254,10 @@ export async function getInfoUser(): Promise<ActionResponse<TUser>> {
       data,
     };
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi lấy thông tin người dùng");
+    const extractedError = extractErrorMessage(
+      error,
+      "Lỗi lấy thông tin người dùng"
+    );
     return {
       success: false,
       message: extractedError.message,
@@ -276,9 +267,9 @@ export async function getInfoUser(): Promise<ActionResponse<TUser>> {
 }
 
 export async function changePasswordAction(newPass: {
-  oldPassword: string,
-  newPassword: string,
-  confirmPassword: string
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 }): Promise<ActionResponse<any>> {
   try {
     const data = await changePassword1(newPass);

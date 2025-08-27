@@ -8,7 +8,7 @@ import {
 import { QUERY_KEY_ADDRESS } from '@/lib/constants';
 import { addressKeys } from '@/lib/query_key';
 import { useAddressStore } from '@/stores/addressStore';
-import { AddressItem, District, Province, Ward } from '@/types';
+import { TAddressItem, District, Province, Ward } from '@/types';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -17,14 +17,14 @@ import { useState } from 'react';
  */
 export default function useAddress() {
   const queryClient = useQueryClient();
-  // const [currentAddress, setCurrentAddress] = useState<AddressItem | null>(
+  // const [currentAddress, setCurrentAddress] = useState<TAddressItem | null>(
   //   null
   // );
 
   const { currentAddress, setCurrentAddress } = useAddressStore();
   // Lấy danh sách địa chỉ của user
   const { data: listAddress = [], isLoading: loading } = useQuery<
-    AddressItem[]
+    TAddressItem[]
   >({
     queryKey: [addressKeys.all],
     queryFn: async () => {

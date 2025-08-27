@@ -1,16 +1,19 @@
-import { ControllerFactory } from './factory-api-client';
+import { ControllerFactory } from "./factory-api-client";
 import type {
   UserResponse,
   UserCreationRequest,
   PageResponseUserResponse,
   PageResponseRoleResponse,
   UserUpdateRequest,
-  PageResponsePromotionResponse
+  PageResponsePromotionResponse,
 } from "@/api-client/models";
 import { ActionResponse } from "../types/actions";
 import { extractErrorMessage } from "../utils";
-import { transformUserResponseToTUser, transformApiResponsePageResponseUserToActionResponse } from "./transform/user";
-import { TUser } from '@/types';
+import {
+  transformUserResponseToTUser,
+  transformApiResponsePageResponseUserToActionResponse,
+} from "./transform/user";
+import { TUser } from "@/types";
 
 // Legacy function - keeping for backward compatibility
 export async function fetchAllAddressUserApi() {
@@ -25,7 +28,7 @@ export async function fetchAllAddressUserApi() {
 export async function fetchAllUsersForAdmin(
   page: number = 0,
   size: number = 10,
-  sort: string[] = ['id,desc']
+  sort: string[] = ["id,desc"]
 ): Promise<ActionResponse<TUser[]>> {
   const controller = await ControllerFactory.getUserController();
   const response = await controller.fetchAllForAdmin({
@@ -35,13 +38,11 @@ export async function fetchAllUsersForAdmin(
   });
 
   if (response.data.code !== 200) {
-    throw new Error(response.data.message || 'Failed to fetch users');
+    throw new Error(response.data.message || "Failed to fetch users");
   }
 
   return transformApiResponsePageResponseUserToActionResponse(response.data);
 }
-
-
 
 /**
  * Fetch all promotions available for user
@@ -58,7 +59,7 @@ export async function fetchPromotionsbyUser(
 
   if (response.data.code !== 200) {
     throw new Error(
-      response.data.message || 'Failed to fetch promotion by user'
+      response.data.message || "Failed to fetch promotion by user"
     );
   }
   return response.data.result!;
@@ -85,7 +86,7 @@ export async function createUser(
   } catch (error) {
     const extractedError = extractErrorMessage(
       error,
-      'Tạo người dùng thất bại'
+      "Tạo người dùng thất bại"
     );
     return {
       success: false,
@@ -99,13 +100,13 @@ export async function createUser(
  */
 export async function updateUser(
   id: number,
-  userData: UserUpdateRequest
+  userData: { name: string; dob: string; gender: string; roleIds?: Set<number> }
 ): Promise<ActionResponse<UserResponse>> {
   try {
     const controller = await ControllerFactory.getUserController();
     const response = await controller.update({
       id,
-      userUpdateRequest: userData,
+      userUpdateRequest: userData as UserUpdateRequest,
     });
 
     return {
@@ -117,7 +118,7 @@ export async function updateUser(
   } catch (error) {
     const extractedError = extractErrorMessage(
       error,
-      'Cập nhật người dùng thất bại'
+      "Cập nhật người dùng thất bại"
     );
     return {
       success: false,
@@ -142,7 +143,7 @@ export async function deleteUser(id: number): Promise<void> {
   const response = await controller.delete2({ id });
 
   if (response.data.code !== 204) {
-    throw new Error(response.data.message || 'Failed to delete user');
+    throw new Error(response.data.message || "Failed to delete user");
   }
 }
 
@@ -155,7 +156,7 @@ export async function restoreUser(
   try {
     const controller = await ControllerFactory.getUserController();
     const response = await controller.restore({ id });
-    
+
     return {
       success: response.data.code === 204,
       message: response.data.message,
@@ -165,7 +166,7 @@ export async function restoreUser(
   } catch (error) {
     const extractedError = extractErrorMessage(
       error,
-      'Khôi phục người dùng thất bại'
+      "Khôi phục người dùng thất bại"
     );
     return {
       success: false,
@@ -183,7 +184,7 @@ export async function fetchUserById(id: number): Promise<UserResponse> {
   const response = await controller.fetchById2({ id });
 
   if (response.data.code !== 200) {
-    throw new Error(response.data.message || 'Failed to fetch user');
+    throw new Error(response.data.message || "Failed to fetch user");
   }
 
   return response.data.result!;
@@ -200,7 +201,7 @@ export async function fetchUserById(id: number): Promise<UserResponse> {
 export async function searchUsersForAdmin(
   page: number = 0,
   size: number = 10,
-  sort: string[] = ['id,desc'],
+  sort: string[] = ["id,desc"],
   search: string[] = []
 ): Promise<ActionResponse<UserResponse[]>> {
   try {
@@ -214,11 +215,11 @@ export async function searchUsersForAdmin(
 
     return transformApiResponsePageResponseUserToActionResponse(response.data);
   } catch (error) {
-    console.error('Error searching users:', error);
+    console.error("Error searching users:", error);
     return {
       success: false,
       message:
-        error instanceof Error ? error.message : 'Failed to search users',
+        error instanceof Error ? error.message : "Failed to search users",
     };
   }
 }
@@ -237,7 +238,7 @@ export async function fetchAllRoles(
   });
 
   if (response.data.code !== 200) {
-    throw new Error(response.data.message || 'Failed to fetch roles');
+    throw new Error(response.data.message || "Failed to fetch roles");
   }
 
   return response.data.result!;

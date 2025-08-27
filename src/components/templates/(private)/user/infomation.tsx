@@ -10,9 +10,10 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 
 import { useRouter } from "next/navigation";
+import { TUser } from "@/types";
 
 export default function Infomation() {
-  const [infoUser, setInfoUser] = useState<UserResponse>();
+  const [infoUser, setInfoUser] = useState<TUser>();
   const [loading, setLoading] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
      const { isAuthenticated, isLoading, user } = useAuth();
@@ -46,11 +47,11 @@ export default function Infomation() {
       if (infoUser?.id && infoUser.name && infoUser.gender && infoUser.roles) {
         const newInfo = {
           name: infoUser.name,
-          dob: infoUser.dob,
+          dob: infoUser.dob || '',
           gender: String(infoUser.gender) || "OTHER",
-          roleIds: [1, 2]
         }
-        const res = await updateUserAction(infoUser.id, newInfo);
+        const res = await updateUserAction(infoUser.id,newInfo);
+        console.log(res)
         if (res.success) { toast.success('Cập nhật thành công!') } else { toast.warning('Cập nhật không thành công!') }
       }
 
