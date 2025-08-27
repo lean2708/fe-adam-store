@@ -62,32 +62,24 @@ async function getSearchData(searchParams: {
   }
 }
 
-function SearchLoading() {
+// Loading component chỉ cho ContentSearch area
+function ContentLoading() {
   return (
-    <div className='flex'>
-      <div className='w-[15%] p-4'>
-        <div className='animate-pulse space-y-4'>
-          <div className='h-4 bg-gray-200 rounded w-3/4'></div>
-          <div className='h-8 bg-gray-200 rounded'></div>
-          <div className='h-8 bg-gray-200 rounded'></div>
-        </div>
-      </div>
-      <div className='w-[85%] p-4'>
-        <div className='animate-pulse space-y-4'>
-          <div className='h-8 bg-gray-200 rounded w-1/2'></div>
-          <div className='grid grid-cols-5 gap-4'>
-            {[...Array(10)].map((_, i) => (
-              <div key={i} className='h-64 bg-gray-200 rounded'></div>
-            ))}
-          </div>
+    <div className='w-[85%] p-4'>
+      <div className='animate-pulse space-y-4'>
+        <div className='h-8 bg-gray-200 rounded w-1/2'></div>
+        <div className='grid grid-cols-5 gap-4'>
+          {[...Array(10)].map((_, i) => (
+            <div key={i} className='h-64 bg-gray-200 rounded'></div>
+          ))}
         </div>
       </div>
     </div>
   );
 }
 
-// Search content wrapper component
-async function SearchContent({
+// Separate component chỉ cho ContentSearch với loading riêng
+async function ContentSearchWrapper({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -96,25 +88,34 @@ async function SearchContent({
 
   if (!searchData.success) {
     return (
-      <div className='flex items-center justify-center h-64'>
-        <p className='text-red-500'>{'Có lỗi xảy ra khi tải dữ liệu'}</p>
+      <div className='w-[85%] flex items-center justify-center h-64'>
+        <p className='text-red-500'>Có lỗi xảy ra khi tải dữ liệu</p>
       </div>
     );
   }
 
   return (
-    <div className='flex'>
-      <SideSearch totalProducts={searchData.totalProducts} />
-      <div className='w-[85%]'>
-        <ContentSearch
-          initialProducts={searchData.products}
-          totalProducts={searchData.totalProducts}
-          totalPages={searchData.totalPages}
-          currentPage={searchData.currentPage}
-        />
-      </div>
+    <div className='w-[85%]'>
+      <ContentSearch
+        initialProducts={searchData.products}
+        totalProducts={searchData.totalProducts}
+        totalPages={searchData.totalPages}
+        currentPage={searchData.currentPage}
+      />
     </div>
   );
+}
+
+// Static component cho SideSearch - không cần re-fetch
+async function StaticSideSearch({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  // Fetch initial data để có totalProducts cho lần đầu
+  const initialData = await getSearchData(searchParams);
+
+  return <SideSearch totalProducts={initialData.totalProducts} />;
 }
 
 export default async function SearchPage({
@@ -124,14 +125,27 @@ export default async function SearchPage({
 }) {
   const resolvedSearchParams = await searchParams;
 
-  const searchKey = JSON.stringify(resolvedSearchParams);
+  // Tạo key riêng cho ContentSearch - chỉ phần này re-mount
+  const contentKey = JSON.stringify({
+    query: resolvedSearchParams.query,
+    color: resolvedSearchParams.color,
+    minPrice: resolvedSearchParams.minPrice,
+    sort: resolvedSearchParams.sort,
+    page: resolvedSearchParams.page,
+  });
 
   return (
     <>
       <HeaderSearch />
-      <Suspense key={searchKey} fallback={<SearchLoading />}>
-        <SearchContent searchParams={resolvedSearchParams} />
-      </Suspense>
+      <div className='flex'>
+        {/* SideSearch không bị re-mount, luôn hiển thị */}
+        <StaticSideSearch searchParams={resolvedSearchParams} />
+
+        {/* Chỉ ContentSearch bị loading khi filter thay đổi */}
+        <Suspense key={contentKey} fallback={<ContentLoading />}>
+          <ContentSearchWrapper searchParams={resolvedSearchParams} />
+        </Suspense>
+      </div>
     </>
   );
 }

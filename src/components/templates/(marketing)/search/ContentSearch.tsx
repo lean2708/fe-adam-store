@@ -115,30 +115,6 @@ export default function ContentSearch({
     <>
       <Carousel className='w-full'>
         <div className='flex flex-wrap'>
-          {!state.loading &&
-            [1, 2, 3, 4, 5].map((product) => (
-              <CarouselItem
-                key={product}
-                className='basis-1/2 md:basis-1/3 lg:basis-1/5 mb-2'
-              >
-                <Skeleton className='aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden mb-3'></Skeleton>
-                <div className='flex items-center gap-2 mb-3'>
-                  {[1, 2, 3].map((color) => (
-                    <Skeleton
-                      key={color}
-                      style={{
-                        width: '50px',
-                        height: '29px',
-                        borderRadius: '100px',
-                        opacity: 1,
-                      }}
-                    />
-                  ))}
-                </div>
-                <Skeleton className='h-6 w-full mb-3'></Skeleton>
-                <Skeleton className='h-6 w-[45%]'></Skeleton>
-              </CarouselItem>
-            ))}
           {state.loading && state.listProducts.length === 0 && (
             <div className='w-full'>
               <p className='w-full text-center'>
