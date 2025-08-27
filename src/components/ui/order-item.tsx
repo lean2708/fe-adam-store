@@ -1,12 +1,11 @@
 import { cn, formatCurrency } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ConfirmDialogModule from '../modules/ConfirmDialogModule';
 import { cancelOrderAction } from '@/actions/orderActions';
 import { TabStatus, TOrderItem } from '@/types';
 import { toast } from 'sonner';
 import ReviewModule from '../modules/ReviewModule';
-import { checkReviewAction } from '@/actions/reviewActions';
 
 export default function OrderItem(props: {
   onDeleted: (id: number) => void;

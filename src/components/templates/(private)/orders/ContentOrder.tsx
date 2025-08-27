@@ -52,12 +52,6 @@ export function ContentOrder() {
     getData();
   }, [state.activeStatus]);
 
-  useEffect(() => {
-    if (state.activeStatus === 'DELIVERED') {
-      checkAllProductReview();
-    }
-  }, [state.activeStatus, state.listOrders]);
-
   const getData = async () => {
     try {
       setState((prev) => ({ ...prev, isLoading: true }));
@@ -121,8 +115,6 @@ export function ContentOrder() {
     orderItemIds: number[]
   ): Promise<Record<number, boolean>> => {
     try {
-      // This should be implemented as a batch API endpoint on your backend
-      // For now, we'll use Promise.all but limit concurrency
       const BATCH_SIZE = 5;
       const results: Record<number, boolean> = {};
 
@@ -149,36 +141,6 @@ export function ContentOrder() {
     } catch (error) {
       console.error('Batch review check failed:', error);
       return {};
-    }
-  };
-
-  const checkAllProductReview = async () => {
-    if (state.listOrders.length === 0) {
-      return;
-    }
-    setState((prev) => ({ ...prev, isLoading: true }));
-    const arrayMap: TOrder[] = state.listOrders;
-    for (let i = 0; i < arrayMap.length; i++) {
-      for (let y = 0; y < arrayMap[i].orderItems.length; y++) {
-        const res = await checkReview(arrayMap[i].orderItems[y].id);
-        arrayMap[i].orderItems[y].isReview = res;
-      }
-    }
-    setState((prevState) => ({
-      ...prevState,
-      listOrders: arrayMap,
-      isLoading: false,
-    }));
-  };
-  const checkReview = async (id: number) => {
-    try {
-      const res = await checkReviewAction(id);
-      if (res.status && res.review) {
-        return true;
-      }
-      return false;
-    } catch (error) {
-      console.log(error);
     }
   };
 
