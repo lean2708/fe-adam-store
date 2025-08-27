@@ -7,7 +7,6 @@ import { ChatHeader } from "./ChatHeader";
 import { ConversationsList } from "./ConversationsList";
 import { ChatMessages } from "./ChatMessages";
 import { ChatInput } from "./ChatInput";
-import { MultiImageUpload } from "@/components/ui/MultiImageUpload";
 
 export function ChatLayout() {
   const { user: currentUser } = useAuth();

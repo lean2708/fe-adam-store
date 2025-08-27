@@ -67,14 +67,14 @@ export default function MainBanner() {
             </div>
 
             {/* Sticky button that appears after scrolling past original */}
-            {isSticky && (
+            {/* {isSticky && (
                 <Button
                     onClick={handleChatClick}
                     className="fixed bottom-6 right-6 z-50 bg-black hover:bg-gray-800 text-white rounded-full px-6 py-3 shadow-lg animate-in slide-in-from-bottom-4 fade-in duration-300"
                 >
                     {t("chatwithus")}
                 </Button>
-            )}
+            )} */}
         </section>
     );
 }

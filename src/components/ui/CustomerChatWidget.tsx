@@ -2,7 +2,14 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { X, MessageCircle, Send, Minus, Maximize2 } from "lucide-react";
+import {
+  X,
+  MessageCircle,
+  Send,
+  Minus,
+  Maximize2,
+  Paperclip,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -11,6 +18,11 @@ import { useCustomerChat } from "@/hooks/useCustomerChat";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import type { ChatMessageResponse } from "@/api-client/models";
+import { ChatMessageContent } from "../templates/admin/chat/ChatMessageContent";
+import { MultiImageUpload } from "./MultiImageUpload";
+import { uploadImagesAction } from "@/actions/fileActions";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 interface ChatMessageProps {
   message: ChatMessageResponse;
@@ -19,17 +31,19 @@ interface ChatMessageProps {
 
 function ChatMessage({ message, isCurrentUser }: ChatMessageProps) {
   const formatTime = (dateString: string) => {
-    return new Date(dateString).toLocaleTimeString([], { 
-      hour: '2-digit', 
-      minute: '2-digit' 
+    return new Date(dateString).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
   return (
-    <div className={cn(
-      "flex gap-2 mb-4",
-      isCurrentUser ? "justify-end" : "justify-start"
-    )}>
+    <div
+      className={cn(
+        "flex gap-2 mb-4",
+        isCurrentUser ? "justify-end" : "justify-start"
+      )}
+    >
       {!isCurrentUser && (
         <Avatar className="w-8 h-8 flex-shrink-0">
           <AvatarImage src={message.sender?.avatarUrl} />
@@ -38,24 +52,28 @@ function ChatMessage({ message, isCurrentUser }: ChatMessageProps) {
           </AvatarFallback>
         </Avatar>
       )}
-      
-      <div className={cn(
-        "max-w-[80%] rounded-lg px-3 py-2 text-sm",
-        isCurrentUser 
-          ? "bg-blue-500 text-white rounded-br-sm" 
-          : "bg-gray-200 text-gray-800 rounded-bl-sm"
-      )}>
-        <p className="whitespace-pre-wrap break-words">{message.message}</p>
+
+      <div
+        className={cn(
+          "max-w-[80%] rounded-lg px-3 py-2 text-sm",
+          isCurrentUser
+            ? "bg-blue-500 text-white rounded-br-sm"
+            : "bg-gray-200 text-gray-800 rounded-bl-sm"
+        )}
+      >
+        <ChatMessageContent content={message.message} />
         {message.createdDate && (
-          <p className={cn(
-            "text-xs mt-1 opacity-70",
-            isCurrentUser ? "text-blue-100" : "text-gray-500"
-          )}>
+          <p
+            className={cn(
+              "text-xs mt-1 opacity-70",
+              isCurrentUser ? "text-blue-100" : "text-gray-500"
+            )}
+          >
             {formatTime(message.createdDate)}
           </p>
         )}
       </div>
-      
+
       {isCurrentUser && (
         <Avatar className="w-8 h-8 flex-shrink-0">
           <AvatarImage src={message.sender?.avatarUrl} />
@@ -101,7 +119,7 @@ export function CustomerChatWidget() {
     closeWidget,
     minimizeWidget,
     maximizeWidget,
-    resetUnreadCount
+    resetUnreadCount,
   } = useChatWidgetStore();
 
   const {
@@ -111,12 +129,15 @@ export function CustomerChatWidget() {
     isWebSocketConnected,
     error,
     sendMessage,
-    messagesEndRef
+    messagesEndRef,
   } = useCustomerChat();
 
-  const [messageInput, setMessageInput] = useState("");
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [isSending, setIsSending] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [showUploader, setShowUploader] = useState(false);
+
+  // Use ref instead of state for message input
+  const messageInputRef = useRef<HTMLInputElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   // Scroll to bottom function
@@ -126,18 +147,57 @@ export function CustomerChatWidget() {
     }
     // Fallback: scroll the container to bottom
     if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
     }
   };
 
+  const uploadAndSendMutation = useMutation({
+    mutationFn: async () => {
+      if (selectedImages.length > 0) {
+        const uploadResult = await uploadImagesAction(selectedImages);
+        if (uploadResult.success && uploadResult.data) {
+          return uploadResult.data;
+        }
+        throw new Error(uploadResult.message || "File upload failed");
+      }
+      return [];
+    },
+    onSuccess: (uploadedFiles: any[]) => {
+      const messageInput = messageInputRef.current?.value || "";
+      const fileUrls = uploadedFiles
+        .map((file) => file.imageUrl)
+        .filter((url) => url);
+      const newMessage = messageInput + "\n" + fileUrls.join("  ");
+      console.log(messageInput + "phungkovip");
+
+      if (newMessage.trim()) {
+        sendMessage(newMessage.trim());
+      }
+
+      // Clear the input using ref
+      if (messageInputRef.current) {
+        messageInputRef.current.value = "";
+      }
+      setSelectedImages([]);
+      setShowUploader(false);
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+  });
+
   // Handle sending message
   const handleSendMessage = async () => {
-    if (!messageInput.trim() || isSending) return;
+    const messageInput = messageInputRef.current?.value.trim() || "";
+
+    if ((!messageInput && selectedImages.length === 0) || isSending) return;
 
     setIsSending(true);
     try {
-      await sendMessage(messageInput);
-      setMessageInput("");
+      console.log(messageInput + "phungvip");
+
+      uploadAndSendMutation.mutate();
       resetUnreadCount();
       // Scroll to bottom after sending
       setTimeout(scrollToBottom, 100);
@@ -156,24 +216,21 @@ export function CustomerChatWidget() {
     }
   };
 
+  // Check if message input has content (for button state)
+  const hasMessageContent = () => {
+    return (messageInputRef.current?.value.trim() || "").length > 0;
+  };
+
   // Focus input and scroll when widget opens
   useEffect(() => {
     if (isOpen && !isMinimized) {
-      if (inputRef.current) {
-        setTimeout(() => inputRef.current?.focus(), 100);
+      if (messageInputRef.current) {
+        setTimeout(() => messageInputRef.current?.focus(), 100);
       }
       // Scroll to bottom when opening
       setTimeout(scrollToBottom, 200);
     }
-  }, [isOpen, isMinimized, scrollToBottom]);
-
-  // Auto scroll to bottom when new messages arrive
-  useEffect(() => {
-    if (messages.length > 0) {
-      console.log("Messages updated, count:", messages.length);
-      setTimeout(scrollToBottom, 100);
-    }
-  }, [messages, scrollToBottom]);
+  }, [isOpen, isMinimized]);
 
   // Reset unread count when widget is opened
   useEffect(() => {
@@ -193,10 +250,14 @@ export function CustomerChatWidget() {
   }
 
   return (
-    <div className={cn(
-      "fixed bottom-4 right-4 z-50 bg-white rounded-lg shadow-2xl border transition-all duration-300",
-      isMinimized ? "w-80 h-14" : "w-96 h-[500px]"
-    )}>
+    <div
+      className={cn(
+        "fixed bottom-4 right-4 z-50 bg-white rounded-lg shadow-2xl border transition-all duration-300",
+        isMinimized
+          ? "w-80 h-14"
+          : `w-96 ${showUploader ? "h-[600px]" : "h-[500px]"}`
+      )}
+    >
       {/* Header */}
       <div className="flex items-center justify-between p-4 bg-black text-white rounded-t-lg">
         <div className="flex items-center gap-3">
@@ -208,15 +269,21 @@ export function CustomerChatWidget() {
           <div>
             <h3 className="font-semibold text-sm">Adam Store</h3>
             <p className="text-xs opacity-80 flex items-center gap-1">
-              <span className={cn(
-                "w-2 h-2 rounded-full",
-                isWebSocketConnected ? "bg-green-400" : "bg-red-400"
-              )} />
-              {isConnecting ? "Connecting..." : isWebSocketConnected ? t("Admin.chat.realTime") : t("Admin.chat.offline")}
+              <span
+                className={cn(
+                  "w-2 h-2 rounded-full",
+                  isWebSocketConnected ? "bg-green-400" : "bg-red-400"
+                )}
+              />
+              {isConnecting
+                ? "Connecting..."
+                : isWebSocketConnected
+                ? t("Admin.chat.realTime")
+                : t("Admin.chat.offline")}
             </p>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-1">
           {!isMinimized && (
             <Button
@@ -228,7 +295,7 @@ export function CustomerChatWidget() {
               <Minus className="h-4 w-4" />
             </Button>
           )}
-          
+
           {isMinimized && (
             <Button
               variant="ghost"
@@ -239,7 +306,7 @@ export function CustomerChatWidget() {
               <Maximize2 className="h-4 w-4" />
             </Button>
           )}
-          
+
           <Button
             variant="ghost"
             size="sm"
@@ -305,12 +372,19 @@ export function CustomerChatWidget() {
           </div>
 
           {/* Input Area */}
+          {showUploader && <MultiImageUpload onChange={setSelectedImages} />}
           <div className="p-4 border-t bg-white rounded-b-lg">
             <div className="flex gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-gray-500 hover:text-gray-700"
+                onClick={() => setShowUploader(!showUploader)}
+              >
+                <Paperclip className="h-4 w-4" />
+              </Button>
               <Input
-                ref={inputRef}
-                value={messageInput}
-                onChange={(e) => setMessageInput(e.target.value)}
+                ref={messageInputRef}
                 onKeyDown={handleKeyDown}
                 placeholder={t("Admin.chat.messagePlaceholder")}
                 disabled={isSending || !isWebSocketConnected}
@@ -318,11 +392,19 @@ export function CustomerChatWidget() {
               />
               <Button
                 onClick={handleSendMessage}
-                disabled={!messageInput.trim() || isSending || !isWebSocketConnected}
+                disabled={
+                  isSending ||
+                  uploadAndSendMutation.isPending ||
+                  !isWebSocketConnected
+                }
                 size="sm"
                 className="bg-black hover:bg-gray-800"
               >
-                <Send className="h-4 w-4" />
+                {uploadAndSendMutation.isPending ? (
+                  "..."
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
               </Button>
             </div>
           </div>
