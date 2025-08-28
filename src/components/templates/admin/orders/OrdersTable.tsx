@@ -202,7 +202,7 @@ export function OrdersTable({
                     </TableCell>
                     <TableCell className="text-gray-600">
                       {t("itemsCount", {
-                        count: order.OrderItems?.length || 0,
+                        count: order.orderItems?.length || 0,
                       })}
                     </TableCell>
                     <TableCell className="text-gray-600">
