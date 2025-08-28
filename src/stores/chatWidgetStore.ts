@@ -29,7 +29,7 @@ export const useChatWidgetStore = create<ChatWidgetState>()(
     (set, get) => ({
       // Initial state
       isOpen: false,
-      isMinimized: false,
+      isMinimized: true,
       currentConversationId: null,
       unreadCount: 0,
 
