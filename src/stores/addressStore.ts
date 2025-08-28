@@ -1,11 +1,11 @@
 'use client';
 
-import { TAddressItem } from '@/types';
+import { AddressItem } from '@/types';
 import { create } from 'zustand';
 
 type AddressState = {
-  currentAddress: TAddressItem | null;
-  setCurrentAddress: (Address: TAddressItem | null) => void;
+  currentAddress: AddressItem | null;
+  setCurrentAddress: (Address: AddressItem | null) => void;
 };
 
 export const useAddressStore = create<AddressState>((set) => ({

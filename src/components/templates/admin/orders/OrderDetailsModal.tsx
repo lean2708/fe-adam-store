@@ -158,7 +158,8 @@ export function OrderDetailsModal({
                 <div className="text-right">
                   <p className="font-medium text-gray-900">
                     {formatCurrency(
-                      parseFloat(item.Product?.price + "" || "0") * item.quantity,
+                      parseFloat(item.Product?.price + "" || "0") *
+                        item.quantity,
                       locale
                     )}
                   </p>

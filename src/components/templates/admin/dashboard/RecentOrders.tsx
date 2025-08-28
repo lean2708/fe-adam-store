@@ -117,16 +117,14 @@ export function RecentOrders({ dateRange }: RecentOrdersProps) {
         const orderID = order.id;
         const customerName = order.userName;
         const customerPhone = order.customerPhone || "";
-        const customerAvatar = order.orderItems[0].imageUrl; // No avatar in OrderResponse
         const orderTotalQuantities =
           (order.orderItems?.length || 0) + " sản phẩm";
 
         return (
           <div key={order.id} className="flex items-center space-x-4">
-            <div className="flex items-center justify-center h-8 w-8 rounded-full  text-sm font-medium text-gray-700">
+            <div className="flex items-center justify-center h-10 w-10 rounded-full text-m font-bold text-gray-700 bg-gray-100 overflow-hidden text-ellipsis">
               #{orderID}
             </div>
-
             <div className="min-w-0 flex-1">
               <div className="flex items-center justify-between">
                 <div>

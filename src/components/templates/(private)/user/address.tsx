@@ -1,6 +1,7 @@
 import { deteleAddressById, getAllAddressUser } from '@/actions/addressActions';
 import { AddressResponse } from '@/api-client';
 import ConfirmDialogModule from '@/components/modules/ConfirmDialogModule';
+import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks/useAuth';
 import { SquarePen, Trash } from 'lucide-react';
@@ -99,40 +100,52 @@ export default function Address() {
           Thêm địa chỉ mới
         </Link>
       </div>
-      <ul className='mt-5 overflow-y-auto max-h-80'>
+      <ul className='mt-5 overflow-y-auto max-h-80 scroll-smooth scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100'>
         {listAddress &&
-          listAddress.map((address) => (
+          listAddress.map((address, index) => (
             <li
-              className='w-full bg-gray-100 mt-3 py-9 px-6 flex items-center justify-between shadow'
+              className='max-w-full rounded-md bg-accent m-3 py-9 px-6 flex items-center justify-between shadow transform transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-lg hover:bg-accent/80 animate-fade-in '
               key={address.id}
+              style={{
+                animationDelay: `${index * 100}ms`,
+                animationFillMode: 'forwards',
+              }}
             >
               <div className='flex flex-col justify-between h-full relative'>
                 {address.isDefault && (
-                  <span className='border border-black text-xs text-center py-1 rounded-md w-20 absolute -top-7'>
+                  <Badge
+                    variant={'outline'}
+                    className='border-black dark:border-white my-1 absolute -top-7 '
+                  >
                     Mặc định
-                  </span>
+                  </Badge>
                 )}
-                <p className='mt-1'>
+                <p className='mt-1 transition-colors duration-200 group-hover:text-gray-700'>
                   Địa chỉ: {address.streetDetail} - {address.ward?.name} -{' '}
                   {address.district?.name} - {address.province?.name}
                 </p>
-                <p className='pt-2'>Số điện thoại: {address.phone}</p>
+                <p className='pt-2 transition-colors duration-200 group-hover:text-gray-700'>
+                  Số điện thoại: {address.phone}
+                </p>
               </div>
-              <div className='flex'>
+              <div className='flex space-x-1'>
                 <Link
-                  className='mr-2 p-2'
+                  className='p-2 rounded-lg transition-all duration-200 hover:bg-blue-100 hover:scale-110 hover:shadow-md active:scale-95'
                   href={`/address?idAddress=${address.id}`}
                 >
-                  <SquarePen />
+                  <SquarePen className='transition-colors duration-200 hover:text-blue-600' />
                 </Link>
                 <button
-                  className='p-2'
+                  className='p-2 rounded-lg transition-all duration-200 hover:bg-red-100 hover:scale-110 hover:shadow-md active:scale-95'
                   onClick={() => {
                     setSelectAddressId(address.id);
                     setVisible(true);
                   }}
                 >
-                  <Trash color='red' />
+                  <Trash
+                    color='red'
+                    className='transition-colors duration-200 hover:text-red-700'
+                  />
                 </button>
               </div>
             </li>
