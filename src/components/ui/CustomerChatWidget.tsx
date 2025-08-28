@@ -145,7 +145,15 @@ export function CustomerChatWidget() {
   const { isAuthenticated } = useAuth();
   const { isOpen, isMinimized, minimizeWidget, resetUnreadCount } =
     useChatWidgetStore();
+  const { openWidget } = useChatWidgetStore();
 
+  const handleChatClick = () => {
+    if (isAuthenticated) {
+      openWidget();
+    } else {
+      window.location.href = "/login";
+    }
+  };
   const {
     messages,
     isLoading,
@@ -271,7 +279,7 @@ export function CustomerChatWidget() {
   // Early returns
   if (!isAuthenticated) return null;
 
-  if (!isMinimized) {
+  if (isAuthenticated && isOpen && !isMinimized) {
     return (
       <div
         className={cn(
@@ -387,5 +395,16 @@ export function CustomerChatWidget() {
     );
   }
 
-  return null;
+  return (
+    <Button
+      onClick={handleChatClick}
+      className="fixed bottom-6 right-6 z-50 bg-black hover:bg-gray-800 text-white rounded-full px-6 py-3 shadow-lg animate-in slide-in-from-bottom-4 fade-in duration-300 flex items-center gap-2"
+    >
+      <MessageCircle
+        className="h-8 w-8"
+        style={{ width: "25px", height: "25px" }}
+      />
+      {t("chatwithus")}
+    </Button>
+  );
 }

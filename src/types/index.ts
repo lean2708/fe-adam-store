@@ -4,7 +4,7 @@ import { ORDER_STATUS } from '@/enums';
 import { PAYMENT_METHODS } from '@/enums';
 
 export type TCategory = {
-  izd: number;
+  id: number;
   name: string;
   imageUrl: string;
   status?: string;

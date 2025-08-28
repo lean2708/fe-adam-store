@@ -21,6 +21,7 @@ export default async function authLayout({
 
       {/* Customer Chat Widget */}
       <CustomerChatWidget />
+      
     </div>
   );
 }

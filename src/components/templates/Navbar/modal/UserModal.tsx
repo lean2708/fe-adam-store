@@ -158,7 +158,7 @@ export default function UserModal({
         <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center ">
           <ShoppingBag className="h-6 w-6 text-gray-400" />
         </div>
-        <span className="text-lg font-medium">Đơn hàng của tôi</span>
+        <span className="text-lg font-medium">{t("user.myorder")}</span>
       </Link>
       {isAdmin && (
         <>
@@ -169,7 +169,9 @@ export default function UserModal({
             <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center ">
               <Shield className="h-6 w-6 text-gray-400" />{" "}
             </div>
-            <span className="text-lg font-medium">Quản trị hệ thống</span>
+            <span className="text-lg font-medium">
+              {t("user.adminDashboard")}
+            </span>
           </Link>
         </>
       )}

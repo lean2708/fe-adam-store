@@ -22,9 +22,9 @@ export default function CategoryItem({
         <Link href={`./detail?category=${id}`}>
             <Card
                 className={cn()}>
-                <CardContent className={cn("p-0 pb-6")}>
+                <CardContent className={cn("p-0 ")}>
                     <div
-                        className={cn("aspect-[3/4] adam-store-bg-light rounded-lg overflow-hidden mb-2 relative flex items-center justify-center")}>
+                        className={cn("aspect-[3/4] adam-store-bg-light rounded-lg overflow-hidden  relative flex items-center justify-center")}>
                         <AspectRatio ratio={3 / 4}>
                             <Image
                                 className={cn("w-full h-full object-cover rounded-lg")}
@@ -34,7 +34,6 @@ export default function CategoryItem({
                                 height={400}
                                 onError={() => setImageError(true)}
                             />
-                            {/* Center bottom button */}
                             <div className="absolute bottom-5 left-1/2 -translate-x-1/2">
                                 <button className="bg-white text-black text-base font-medium rounded-full px-6 py-2 shadow">
                                     {title}

@@ -57,12 +57,14 @@ export default function Categories() {
 
   return (
     <section>
-      <div className="grid grid-cols-2 md:grid-cols-6 gap-4 px-8">
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-4 px-8 mt-12">
         {categories.map((category) => (
           <CategoryItem
             key={category.id}
             title={category.name}
-            imageSrc={category.imageUrl} id={category.id}          />
+            imageSrc={category.imageUrl}
+            id={category.id + ""}
+          />
         ))}
       </div>
     </section>
