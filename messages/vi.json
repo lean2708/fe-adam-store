@@ -1,4 +1,26 @@
 {
+  "dateRangePicker": {
+    "presets": {
+      "today": "Hôm nay",
+      "yesterday": "Hôm qua",
+      "last7Days": "7 ngày qua",
+      "last14Days": "14 ngày qua",
+      "last30Days": "30 ngày qua",
+      "thisWeek": "Tuần này",
+      "lastWeek": "Tuần trước",
+      "thisMonth": "Tháng này",
+      "lastMonth": "Tháng trước"
+    },
+    "compare": {
+      "label": "So sánh",
+      "vs": "với"
+    },
+    "actions": {
+      "cancel": "Hủy",
+      "update": "Cập nhật"
+    },
+    "selectPlaceholder": "Chọn..."
+  },
   "Locale": {
     "key": "vi",
     "name": "Tiếng Việt",

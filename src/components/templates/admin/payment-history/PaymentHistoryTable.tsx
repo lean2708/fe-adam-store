@@ -4,7 +4,14 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useTranslations, useLocale } from "next-intl";
 import { formatDate, formatCurrency, getStatusColor } from "@/lib/utils";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Select,
   SelectContent,
@@ -16,12 +23,7 @@ import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ActionDropdown } from "@/components/ui/action-dropdown";
 import { AdminPagination } from "@/components/ui/pagination";
-import {
-  CreditCard,
-  CheckCircle,
-  XCircle,
-  Search
-} from "lucide-react";
+import { CreditCard, CheckCircle, XCircle, Search } from "lucide-react";
 import type { TPaymentHistory } from "@/types";
 
 interface PaymentHistoryTableProps {
@@ -37,13 +39,16 @@ interface PaymentHistoryTableProps {
   // Search and filter props
   searchTerm: string;
   onSearchChange: (value: string) => void;
-  statusFilter: 'PAID' | 'PENDING' | 'REFUNDED' | 'CANCELED' | 'FAILED' | "ALL";
-  onStatusFilterChange: (value: 'PAID' | 'PENDING' | 'REFUNDED' | 'CANCELED' | 'FAILED' | "ALL") => void;
+  statusFilter: "PAID" | "PENDING" | "REFUNDED" | "CANCELED" | "FAILED" | "ALL";
+  onStatusFilterChange: (
+    value: "PAID" | "PENDING" | "REFUNDED" | "CANCELED" | "FAILED" | "ALL"
+  ) => void;
   // Date range props
-  onDateRangeUpdate?: (values: { range: { from: Date; to: Date | undefined }; rangeCompare?: { from: Date; to: Date | undefined } }) => void;
+  onDateRangeUpdate?: (values: {
+    range: { from: Date; to: Date | undefined };
+    rangeCompare?: { from: Date; to: Date | undefined };
+  }) => void;
 }
-
-
 
 export function PaymentHistoryTable({
   payments,
@@ -58,23 +63,23 @@ export function PaymentHistoryTable({
   onSearchChange,
   statusFilter,
   onStatusFilterChange,
-  onDateRangeUpdate
+  onDateRangeUpdate,
 }: PaymentHistoryTableProps) {
   const t = useTranslations("Admin.paymentHistory");
   const locale = useLocale();
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'PAID':
-        return t('paid');
-      case 'PENDING':
-        return t('pending');
-      case 'REFUNDED':
-        return t('refunded');
-      case 'CANCELED':
-        return t('canceled');
-      case 'FAILED':
-        return t('failed');
+      case "PAID":
+        return t("paid");
+      case "PENDING":
+        return t("pending");
+      case "REFUNDED":
+        return t("refunded");
+      case "CANCELED":
+        return t("canceled");
+      case "FAILED":
+        return t("failed");
       default:
         return status;
     }
@@ -104,6 +109,7 @@ export function PaymentHistoryTable({
               onUpdate={onDateRangeUpdate}
               align="end"
               locale={locale}
+              t={useTranslations("")}
               showCompare={false}
             />
             <span className="text-sm text-gray-600">

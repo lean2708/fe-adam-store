@@ -117,10 +117,10 @@ export function OrderDetailsModal({
         <div>
           <h3 className="flex items-center gap-2 font-medium text-gray-900 mb-4">
             <Package className="h-4 w-4" />
-            {t("orderItems")} ({order.OrderItems?.length || 0} {t("items")})
+            {t("orderItems")} ({order.orderItems?.length || 0} {t("items")})
           </h3>
           <div className="space-y-3">
-            {order.OrderItems?.map((item, index) => (
+            {order.orderItems?.map((item, index) => (
               <div
                 key={index}
                 className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg"
@@ -158,7 +158,8 @@ export function OrderDetailsModal({
                 <div className="text-right">
                   <p className="font-medium text-gray-900">
                     {formatCurrency(
-                      parseFloat(item.Product?.price + "" || "0") * item.quantity,
+                      parseFloat(item.Product?.price + "" || "0") *
+                        item.quantity,
                       locale
                     )}
                   </p>
