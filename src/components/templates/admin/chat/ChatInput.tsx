@@ -31,7 +31,6 @@ export function ChatInput({
   const t = useTranslations("Admin.chat");
   const [message, setMessage] = useState("");
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  
 
   const uploadAndSendMutation = useMutation({
     mutationFn: async () => {

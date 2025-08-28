@@ -27,7 +27,9 @@ export function DashboardTopProducts({ className }: DashboardTopProductsProps) {
   };
 
   return (
-    <Card className={`bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm ${className}`}>
+    <Card
+      className={`bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm ${className}`}
+    >
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle>{t("dashboard.topProducts.title")}</CardTitle>
@@ -42,6 +44,7 @@ export function DashboardTopProducts({ className }: DashboardTopProductsProps) {
             initialDateTo={dateRange.to}
             align="end"
             locale={locale}
+            t={useTranslations("")}
             showCompare={false}
           />
           <Button
