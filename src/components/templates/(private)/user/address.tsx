@@ -2,6 +2,7 @@ import { deteleAddressById, getAllAddressUser } from '@/actions/addressActions';
 import { AddressResponse } from '@/api-client';
 import ConfirmDialogModule from '@/components/modules/ConfirmDialogModule';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks/useAuth';
 import { SquarePen, Trash } from 'lucide-react';
@@ -58,15 +59,16 @@ export default function Address() {
       <div className='mt-8 w-full h-90'>
         <div className='flex w-full justify-between'>
           <h5 className='font-bold text-3xl'>Địa chỉ của tôi</h5>
-          <Link
-            href={'/address'}
-            className='py-2 px-8 bg-black rounded-lg text-white'
+          <Button
+            onClick={() => router.push('/address')}
+            className='py-6 px-8 font-medium rounded-xl'
           >
             Thêm địa chỉ mới
-          </Link>
+          </Button>
         </div>
         <ul className='mt-5'>
-          <Skeleton className='w-full bg-gray-100 mt-3 py-9 px-6 flex items-center justify-between shadow' />
+          <Skeleton className='w-full  mt-3 py-9 px-6 flex items-center justify-between shadow' />
+          <Skeleton className='w-full  mt-3 py-9 px-6 flex items-center justify-between shadow' />
         </ul>
       </div>
     );
@@ -75,12 +77,12 @@ export default function Address() {
       <div className='mt-8 w-full h-90'>
         <div className='flex w-full justify-between'>
           <h5 className='font-bold text-3xl'>Địa chỉ của tôi</h5>
-          <Link
-            href={'/address'}
-            className='py-2 px-8 bg-black rounded-lg text-white'
+          <Button
+            onClick={() => router.push('/address')}
+            className='py-6 px-8 font-medium rounded-xl'
           >
             Thêm địa chỉ mới
-          </Link>
+          </Button>
         </div>
         <ul className='mt-5'>
           <div className='w-full bg-gray-100 mt-3 py-9 px-6 flex items-center justify-center shadow'>
@@ -93,18 +95,18 @@ export default function Address() {
     <div className='mt-8 w-full h-90'>
       <div className='flex w-full justify-between'>
         <h5 className='font-bold text-3xl'>Địa chỉ của tôi</h5>
-        <Link
-          href={'/address'}
-          className='py-2 px-8 bg-black rounded-lg text-white'
+        <Button
+          onClick={() => router.push('/address')}
+          className='py-6 px-8 font-medium rounded-xl'
         >
           Thêm địa chỉ mới
-        </Link>
+        </Button>
       </div>
       <ul className='mt-5 overflow-y-auto max-h-80 scroll-smooth scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100'>
         {listAddress &&
           listAddress.map((address, index) => (
             <li
-              className='max-w-full rounded-md bg-accent m-3 py-9 px-6 flex items-center justify-between shadow transform transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-lg hover:bg-accent/80 animate-fade-in '
+              className='adam-store-bg max-w-full rounded-md m-3 py-9 px-6 flex items-center justify-between shadow transform transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-lg hover:bg-accent/80 animate-fade-in '
               key={address.id}
               style={{
                 animationDelay: `${index * 100}ms`,
@@ -130,13 +132,13 @@ export default function Address() {
               </div>
               <div className='flex space-x-1'>
                 <Link
-                  className='p-2 rounded-lg transition-all duration-200 hover:bg-blue-100 hover:scale-110 hover:shadow-md active:scale-95'
+                  className='p-2 rounded-lg group transition-all duration-200 hover:bg-blue-100 hover:scale-110 hover:shadow-md active:scale-95'
                   href={`/address?idAddress=${address.id}`}
                 >
-                  <SquarePen className='transition-colors duration-200 hover:text-blue-600' />
+                  <SquarePen className='transition-colors duration-200 group-hover:text-blue-600' />
                 </Link>
                 <button
-                  className='p-2 rounded-lg transition-all duration-200 hover:bg-red-100 hover:scale-110 hover:shadow-md active:scale-95'
+                  className='p-2 cursor-pointer rounded-lg transition-all duration-200 hover:bg-red-100 hover:scale-110 hover:shadow-md active:scale-95'
                   onClick={() => {
                     setSelectAddressId(address.id);
                     setVisible(true);

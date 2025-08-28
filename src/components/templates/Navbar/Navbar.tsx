@@ -62,9 +62,7 @@ export default function Navbar() {
             <Menu className='h-5 w-5' />
           </Button>
         </div>
-
-        {/* `Logo */}`
-        {/* Centered Logo - Hidden on mobile */}
+        {/* `Logo */}`{/* Centered Logo - Hidden on mobile */}
         <div className='hidden sm:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10'>
           <Logo />
         </div>
@@ -90,7 +88,7 @@ export default function Navbar() {
               >
                 <ShoppingBag className='h-5 w-5' />
                 {cartItemCount > 0 && (
-                  <span className='absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center'>
+                  <span className='absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center'>
                     {cartItemCount}
                   </span>
                 )}

@@ -64,7 +64,9 @@ export default function VerifyForm({ email }: { email: string }) {
           toast.success('Đăng nhập thành công!');
           router.push('/');
         } else {
-          toast.error('Xác thực thành công nhưng đăng nhập thất bại. Vui lòng đăng nhập thủ công.');
+          toast.error(
+            'Xác thực thành công nhưng đăng nhập thất bại. Vui lòng đăng nhập thủ công.'
+          );
           router.push('/login?message=verification_success');
         }
       } else {
@@ -100,7 +102,7 @@ export default function VerifyForm({ email }: { email: string }) {
                   type='text'
                   placeholder='Nhập mã xác thực'
                   disabled={isSubmitting}
-                  className='w-full -px-3 py-8 rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none'
+                  className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none'
                 />
               </FormControl>
               <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>

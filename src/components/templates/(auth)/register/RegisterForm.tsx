@@ -102,7 +102,7 @@ export default function RegisterForm() {
                   type='text'
                   placeholder='Tên tài khoản'
                   disabled={isSubmitting}
-                  className='w-full -px-3 py-8 rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none'
+                  className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:ring-offset-0 focus-visible:shadow-none'
                 />
               </FormControl>
               <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
@@ -125,7 +125,7 @@ export default function RegisterForm() {
                   type='email'
                   placeholder='Địa chỉ Email'
                   disabled={isSubmitting}
-                  className='w-full -px-3 py-8 rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none'
+                  className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:ring-offset-0 focus-visible:shadow-none'
                 />
               </FormControl>
               <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
@@ -147,7 +147,7 @@ export default function RegisterForm() {
                   id='password'
                   placeholder='Mật khẩu'
                   disabled={isSubmitting}
-                  className='w-full -px-3 py-8 rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none'
+                  className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:ring-offset-0 focus-visible:shadow-none'
                 />
               </FormControl>
               <FormMessage />
@@ -166,7 +166,7 @@ export default function RegisterForm() {
                   id='confirmPassword'
                   placeholder='Nhập lại mật khẩu'
                   disabled={isSubmitting}
-                  className='w-full -px-3 py-8 rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none'
+                  className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:ring-offset-0 focus-visible:shadow-none'
                 />
               </FormControl>
               <FormMessage />

@@ -135,7 +135,7 @@ export default async function SearchPage({
   });
 
   return (
-    <>
+    <div className='adam-store-bg-light'>
       <HeaderSearch />
       <div className='flex'>
         {/* SideSearch không bị re-mount, luôn hiển thị */}
@@ -146,6 +146,6 @@ export default async function SearchPage({
           <ContentSearchWrapper searchParams={resolvedSearchParams} />
         </Suspense>
       </div>
-    </>
+    </div>
   );
 }

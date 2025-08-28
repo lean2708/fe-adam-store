@@ -83,30 +83,29 @@ export default function UserModal({
           borderRadius: '8px',
           padding: '16px',
           zIndex: 9999,
-          background: '#fff',
           boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
           display: 'flex',
           flexDirection: 'column',
           maxHeight: '80vh',
           overflowY: 'auto',
         }}
-        className='border border-gray-200'
+        className='border border-border bg-primary-foreground'
       >
         <div
-          className='flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer'
+          className='flex items-center h-16 rounded-2xl gap-3 hover:bg-secondary/80 transition cursor-pointer'
           onClick={() => handleNavigation('/login')}
         >
-          <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center'>
-            <LogIn className='h-6 w-6 text-gray-400' />
+          <div className='bg-accent rounded-full p-3 flex items-center justify-center'>
+            <LogIn className='h-6 w-6 text-muted-foreground' />
           </div>
           <span className='text-lg font-medium'>{t('user.login')}</span>
         </div>
         <div
-          className='flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer'
+          className='flex items-center h-16 rounded-2xl gap-3 hover:bg-secondary/80 transition cursor-pointer'
           onClick={() => handleNavigation('/register')}
         >
-          <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center'>
-            <UserPlus className='h-6 w-6 text-gray-400' />
+          <div className='bg-accent rounded-full p-3 flex items-center justify-center'>
+            <UserPlus className='h-6 w-6 text-muted-foreground' />
           </div>
           <span className='text-lg font-medium'>{t('user.register')}</span>
         </div>
@@ -130,45 +129,46 @@ export default function UserModal({
         borderRadius: '8px',
         padding: '16px',
         zIndex: 9999,
-        background: '#fff',
         boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
         display: 'flex',
         flexDirection: 'column',
         maxHeight: '80vh',
         overflowY: 'auto',
       }}
-      className='border border-gray-200'
+      className='border border-border bg-primary-foreground'
     >
       {/* Welcome message for logged-in users */}
       {user?.name && (
-        <div className='mb-2 p-3 bg-gray-50 rounded-lg'>
-          <p className='text-sm text-gray-600'>Xin chào,</p>
-          <p className='font-medium text-gray-900'>{user.name}</p>
+        <div className='mb-2 p-3 bg-gradient-to-r from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700'>
+          <p className='text-sm text-gray-600 dark:text-gray-400'>Xin chào,</p>
+          <p className='font-medium text-gray-900 dark:text-white'>
+            {user.name}
+          </p>
         </div>
       )}
 
       <Link
         href={'/user'}
-        className=' px-3 py-1 flex items-center h-16 rounded-xl gap-3 hover:bg-gray-50 transition cursor-pointer'
+        className=' px-3 py-1 flex items-center h-16 rounded-xl gap-3 hover:bg-secondary/80 transition cursor-pointer'
       >
         <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center'>
-          <User className='h-6 w-6 text-gray-400' />
+          <User className='h-6 w-6 text-muted-foreground' />
         </div>
         <span className='text-lg font-medium'>{t('user.profile')}</span>
       </Link>
 
       <Link
         href={'/orders'}
-        className='px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer'
+        className='px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-secondary/80 transition cursor-pointer'
       >
         <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center '>
-          <ShoppingBag className='h-6 w-6 text-gray-400' />
+          <ShoppingBag className='h-6 w-6 text-muted-foreground' />
         </div>
         <span className='text-lg font-medium'>Đơn hàng của tôi</span>
       </Link>
 
       <div
-        className='px-3 py-1 flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer'
+        className='px-3 py-1 flex items-center h-16 rounded-2xl gap-3 hover:bg-secondary/80 transition cursor-pointer'
         onClick={handleLogout}
       >
         <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center'>
@@ -178,7 +178,7 @@ export default function UserModal({
             fill='none'
             stroke='currentColor'
             strokeWidth='2'
-            className='h-6 w-6 text-gray-400'
+            className='h-6 w-6 text-muted-foreground'
             viewBox='0 0 24 24'
           >
             <path d='M9 16l-4-4m0 0l4-4m-4 4h12'></path>

@@ -93,7 +93,10 @@ export default function CartModal({
           showOverlay={true}
         >
           <ModalBody
-            className={cn('bg-background max-h-[70vh]', manrope.className)}
+            className={cn(
+              'adam-store-bg-light max-h-[70vh]',
+              manrope.className
+            )}
           >
             <EmptyCart className='my-6 py-0 border-none' />
           </ModalBody>
@@ -106,9 +109,13 @@ export default function CartModal({
           size='md'
           position='top-right'
           showOverlay={true}
+          className='border-border border'
         >
           <ModalBody
-            className={cn('bg-background max-h-[70vh]', manrope.className)}
+            className={cn(
+              'adam-store-bg-light max-h-[70vh]',
+              manrope.className
+            )}
           >
             {/* Cart Header */}
             <div className='flex justify-between items-center mb-4'>

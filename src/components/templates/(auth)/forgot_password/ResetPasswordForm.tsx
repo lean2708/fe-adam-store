@@ -85,7 +85,7 @@ export default function ResetPasswordForm() {
                   id='password'
                   placeholder='Mật khẩu'
                   disabled={isSubmitting}
-                  className='w-full -px-3 py-8 rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none'
+                  className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:ring-offset-0 focus-visible:shadow-none'
                 />
               </FormControl>
               <FormMessage />
@@ -104,7 +104,7 @@ export default function ResetPasswordForm() {
                   id='confirmPassword'
                   placeholder='Nhập mật khẩu mới của bạn'
                   disabled={isSubmitting}
-                  className='w-full -px-3 py-8 rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none'
+                  className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:ring-offset-0 focus-visible:shadow-none'
                 />
               </FormControl>
               <FormMessage />

@@ -6,6 +6,7 @@ import { cancelOrderAction } from '@/actions/orderActions';
 import { TabStatus, TOrderItem } from '@/types';
 import { toast } from 'sonner';
 import ReviewModule from '../modules/ReviewModule';
+import { Button } from './button';
 
 export default function OrderItem(props: {
   onDeleted: (id: number) => void;
@@ -187,12 +188,12 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
           {formatCurrency(Number(item.unitPrice))}
         </span>
         {active === 'DELIVERED' && (
-          <button
+          <Button
             onClick={() => setIsReview(true)}
-            className='px-4 py-2 bg-black rounded-md text-white min-w-[100px] flex items-center justify-center transition-all duration-200'
+            className='px-4 py-2  min-w-[100px] flex items-center justify-center '
           >
             {item.isReview ? 'Xem đánh giá' : 'Đánh giá'}
-          </button>
+          </Button>
         )}
       </p>
       <ReviewModule

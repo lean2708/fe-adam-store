@@ -26,7 +26,7 @@ export default function CartModalSkeleton({
       showOverlay={true}
     >
       <ModalBody
-        className={cn('bg-background max-h-[70vh]', manrope.className)}
+        className={cn('adam-store-bg max-h-[70vh]', manrope.className)}
       >
         {/* Cart Header */}
         <div className='flex justify-between items-center mb-4'>

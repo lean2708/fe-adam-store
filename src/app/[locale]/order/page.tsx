@@ -10,14 +10,14 @@ async function OrderPage() {
   const t = await getTranslations('Order');
 
   return (
-    <div className='adam-store-bg'>
+    <div className='adam-store-bg-light'>
       {/* Main Content */}
       <main className='max-w-7xl mx-auto py-8'>
         <h1 className=' text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl font-semibold text-primary text-center mb-12'>
           {t('title')}
         </h1>
 
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-12 mb-32'>
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 mb-32'>
           {/* Left Column - Order Details */}
           <div className='space-y-6 col-span-2'>
             <DeliveryInfo />
@@ -28,8 +28,11 @@ async function OrderPage() {
             <Separator />
           </div>
 
-          {/* Right Column - Products */}
-          <ProductList />
+          <div className='flex gap-4'>
+            <Separator orientation={'vertical'} className='m-0 p-0' />
+            {/* Right Column - Products */}
+            <ProductList />
+          </div>
         </div>
       </main>
 

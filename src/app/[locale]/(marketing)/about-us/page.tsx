@@ -6,7 +6,7 @@ import React from 'react';
 
 const page = () => {
   return (
-    <section className={cn('bg-background', manrope.className)}>
+    <section className={cn('adam-store-bg-light py-1', manrope.className)}>
       <article>
         <h1 className='text-3xl md:text-4xl xl:text-5xl font-semibold text-primary text-center my-12'>
           Câu chuyện về Adam Store

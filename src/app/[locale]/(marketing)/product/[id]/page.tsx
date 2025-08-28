@@ -39,7 +39,7 @@ const page = async ({ params }: Props) => {
   // console.log(productResponse);
 
   return (
-    <div className='min-h-screen bg-background'>
+    <div className='min-h-screen adam-store-bg-light pb-1'>
       <main className={cn(`max-w-7xl mx-auto px-4 py-8`, manrope.className)}>
         {/* Product Section */}
         <div className='grid lg:grid-cols-2 gap-12 mb-16'>

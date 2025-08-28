@@ -35,8 +35,8 @@ export default function AuthTemplate({
   );
 
   return (
-    <div className='bg-background flex items-center justify-center'>
-      <div className='w-full bg-background overflow-hidden'>
+    <div className='adam-store-bg-light flex items-center justify-center'>
+      <div className='w-full adam-store-bg overflow-hidden'>
         <div className='flex flex-col lg:flex-row min-h-screen '>
           {reverseOrder ? (
             <>

@@ -31,7 +31,7 @@ export function CheckOut() {
   if (cartItems.length === 0) return null;
 
   return (
-    <Card className='sticky top-4 rounded-xl border border-border bg-background text-primary shadow '>
+    <Card className='sticky top-4 rounded-xl border border-border adam-store-bg-light text-primary shadow '>
       <CardContent className='p-6 '>
         <h2 className='font-bold text-lg text-primary mb-4'>
           {t('cart.checkOut.title', { count: selectedCount })}

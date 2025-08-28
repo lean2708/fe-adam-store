@@ -38,7 +38,7 @@ const Promotions = ({
       <p className=' text-primary font-bold mb-3'>{t('title')}</p>
 
       <Select value={currentValue} onValueChange={handleValueChange}>
-        <SelectTrigger className='w-full h-16 p-3 border border-border rounded-2xl bg-background text-muted-foreground font-medium justify-between'>
+        <SelectTrigger className='w-full h-16 p-3 border border-border rounded-2xl adam-store-bg text-muted-foreground font-medium justify-between'>
           <div className='flex items-center gap-2'>
             <BadgePercent className='size-6' />
             <SelectValue placeholder={t('placeholder')} />

@@ -219,7 +219,7 @@ export function ContentOrder() {
                     }
                   </h3>
                   <div className='py-3 flex w-full justify-between h-24 items-center'>
-                    <p className='bg-gray-100 rounded-md py-3 flex w-full h-16 items-center justify-center'>
+                    <p className='bg-gray-100 text-black rounded-md py-3 flex w-full h-16 items-center justify-center'>
                       Bạn chưa có đơn hàng nào cả
                     </p>
                   </div>
@@ -231,9 +231,11 @@ export function ContentOrder() {
                   return (
                     <div
                       key={item.id}
-                      className={cn('rounded-md mb-2 bg-gray-100 px-5')}
+                      className={cn(
+                        'rounded-md mb-2 bg-secondary dark:bg-secondary/30 px-5'
+                      )}
                     >
-                      <h3 className='border-b-1 h-11 flex items-center justify-end border-gray-600 border-dashed font-semibold uppercase'>
+                      <h3 className='border-b-1 h-11 flex items-center justify-end border-primary border-dashed font-semibold uppercase'>
                         {
                           tabList.find((tab) => tab.key === state.activeStatus)
                             ?.label
