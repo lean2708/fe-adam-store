@@ -77,6 +77,7 @@ export function DashboardOverview({ className }: DashboardOverviewProps) {
             initialDateTo={dateRange.to}
             align="start"
             locale={locale}
+            t={useTranslations("")}
             showCompare={false}
           />
         </CardHeader>

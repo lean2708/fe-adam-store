@@ -4,7 +4,7 @@ import { ORDER_STATUS } from '@/enums';
 import { PAYMENT_METHODS } from '@/enums';
 
 export type TCategory = {
-  id: number;
+  izd: number;
   name: string;
   imageUrl: string;
   status?: string;
@@ -345,3 +345,10 @@ export type TPaymentMethodOption = {
   image?: string;
   isAvailable?: boolean;
 };
+
+export type TabStatus =
+  | 'PENDING'
+  | 'PROCESSING'
+  | 'SHIPPED'
+  | 'DELIVERED'
+  | 'CANCELLED';

@@ -13,8 +13,6 @@ export enum ORDER_STATUS {
   COMPLETED = 'COMPLETED',
 }
 
-
-
 export enum PAYMENT_METHODS {
   CASH = 'CASH',
   VNPAY = 'VNPAY',

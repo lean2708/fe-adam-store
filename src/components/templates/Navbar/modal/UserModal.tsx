@@ -1,10 +1,12 @@
-import { User, ShoppingBag, LogIn, UserPlus } from "lucide-react"
-import { Modal } from "@/components/ui/modal"
-import { logoutAction } from "@/actions/nextAuthActions"
-import { signOut, useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
-import { useTranslations } from "next-intl"
+import { User, ShoppingBag, LogIn, UserPlus } from 'lucide-react';
+import { Modal } from '@/components/ui/modal';
+import { logoutAction } from '@/actions/nextAuthActions';
+import { signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
+import { useCartStore } from '@/stores/cartStore';
+import Link from 'next/link';
 
 export default function UserModal({ open, onClose }: { open: boolean, onClose: () => void }) {
   const { data: session, status, } = useSession()
@@ -135,21 +137,26 @@ export default function UserModal({ open, onClose }: { open: boolean, onClose: (
         </div>
       )}
 
-      <div onClick={()=>{router.push('/user');onClose()}} className=" px-3 py-1 flex items-center h-16 rounded-xl gap-3 hover:bg-gray-50 transition cursor-pointer">
-        <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center">
-          <User className="h-6 w-6 text-gray-400" />
-
+      <Link
+        href={'/user'}
+        className=' px-3 py-1 flex items-center h-16 rounded-xl gap-3 hover:bg-gray-50 transition cursor-pointer'
+      >
+        <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center'>
+          <User className='h-6 w-6 text-gray-400' />
         </div>
-        <span className="text-lg font-medium">{t("user.profile")}</span>
-      </div>
+        <span className='text-lg font-medium'>{t('user.profile')}</span>
+      </Link>
 
-      <div onClick={()=>{router.push('/orders');onClose()}} className="px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer">
-        <div className="bg-gray-100 rounded-full p-3 flex items-center justify-center ">
-          <ShoppingBag className="h-6 w-6 text-gray-400" />
-
+      <Link
+        href={'/orders'}
+        className='px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer'
+      >
+        <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center '>
+          <ShoppingBag className='h-6 w-6 text-gray-400' />
         </div>
         <span className='text-lg font-medium'>Đơn hàng của tôi</span>
-      </div>
+      </Link>
+
       <div
         className='px-3 py-1 flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer'
         onClick={handleLogout}

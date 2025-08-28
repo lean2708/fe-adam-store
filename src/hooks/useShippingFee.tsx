@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { calculateShippingFeeAction } from '@/actions/orderActions';
 import type { TProductVariant } from '@/types';
-import type { TAddressItem } from '@/types';
+import type { AddressItem } from '@/types';
 import { QUERY_KEY_ORDER_FEE } from '@/lib/constants';
 import { oderCalculationKeys } from '@/lib/query_key';
 
 export default function useShippingFee(
-  currentAddress: TAddressItem | null,
+  currentAddress: AddressItem | null,
   orderItems: TProductVariant[] | undefined
 ) {
   const {

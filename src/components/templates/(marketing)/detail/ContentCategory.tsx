@@ -107,18 +107,17 @@ export function ContentCategory() {
                   <Skeleton className='h-6 w-[45%]'></Skeleton>
                 </CarouselItem>
               ))}
-            {!state.loading &&
-              state.listProducts.map((product) => (
-                <CarouselItem
-                  key={product.id}
-                  className='basis-1/2 md:basis-1/3 lg:basis-1/4 mb-2'
-                >
+            {!state.loading && state.listProducts.map((product) => (
+              <CarouselItem
+                key={product.id}
+                className="basis-1/2 md:basis-1/3 lg:basis-1/4 mb-2"
+              >
                   <ProductCardIndex
                     product={product}
                     badgeText={t('bestSellers.badgeText')}
                   />
-                </CarouselItem>
-              ))}
+              </CarouselItem>
+            ))}
           </div>
         </Carousel>
       </div>

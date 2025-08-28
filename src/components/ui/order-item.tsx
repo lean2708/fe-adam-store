@@ -1,18 +1,11 @@
 import { cn, formatCurrency } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ConfirmDialogModule from '../modules/ConfirmDialogModule';
 import { cancelOrderAction } from '@/actions/orderActions';
-import { TOrderItem } from '@/types';
+import { TabStatus, TOrderItem } from '@/types';
 import { toast } from 'sonner';
 import ReviewModule from '../modules/ReviewModule';
-import { checkReviewAction } from '@/actions/reviewActions';
-type TabStatus =
-  | 'PENDING'
-  | 'PROCESSING'
-  | 'SHIPPED'
-  | 'DELIVERED'
-  | 'CANCELLED';
 
 export default function OrderItem(props: {
   onDeleted: (id: number) => void;
@@ -129,7 +122,7 @@ export default function OrderItem(props: {
       {!dropList && <ItemProductOrder item={items[0]} active={activeStatus} />}
       {dropList &&
         items.map((item: TOrderItem) => (
-          <ItemProductOrder item={item} active={activeStatus} />
+          <ItemProductOrder key={item.id} item={item} active={activeStatus} />
         ))}
       {!dropList && items.length > 1 && (
         <button
@@ -162,18 +155,7 @@ export default function OrderItem(props: {
 function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
   const { item, active } = props;
   const [isReview, setIsReview] = useState(false);
-  const [reviewed, setReviewed] = useState(false);
-  useEffect(() => {
-    if (item.id) checkReview();
-  }, []);
-  const checkReview = async () => {
-    try {
-      const res = await checkReviewAction(item.id);
-      if (res.status && res.review) setReviewed(true);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   return (
     <div className="border-b-1 border-dashed py-2 w-full flex justify-between min-h-25 items-center">
       <div className="flex ">
@@ -201,9 +183,9 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
         {active === "DELIVERED" && (
           <button
             onClick={() => setIsReview(true)}
-            className="px-4 py-2 bg-black rounded-md text-white"
+            className='px-4 py-2 bg-black rounded-md text-white min-w-[100px] flex items-center justify-center transition-all duration-200'
           >
-            {reviewed ? "Xem đánh giá" : "Đánh giá"}
+            {item.isReview ? 'Xem đánh giá' : 'Đánh giá'}
           </button>
         )}
       </p>
@@ -212,7 +194,7 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
         orderItem={item}
         onClose={() => setIsReview(false)}
         returnRivew={function (): void {
-          throw new Error("Function not implemented.");
+          throw new Error('Function not implemented.');
         }}
       />
     </div>
