@@ -79,11 +79,11 @@ export default function ProductCardIndex({
         </Link>
 
         {/* Hover Panel */}
-        <div className='absolute bottom-0 left-0 right-0 translate-y-full transform bg-white/95 p-4 backdrop-blur-sm transition-transform duration-300 ease-out group-hover:-translate-y-0 rounded-t-xl border-t border-gray-100 shadow-xl'>
+        <div className='absolute bottom-0 left-0 right-0 translate-y-full transform adam-store-bg-light p-4 backdrop-blur-sm transition-transform duration-300 ease-out group-hover:-translate-y-0 rounded-t-xl border-t border-secondary shadow-xl'>
           {/* Add to Cart Button */}
           <Button
             onClick={handleAddToCartClick}
-            className='mb-3 w-full rounded-lg bg-black py-3 text-sm font-medium text-white transition-colors hover:bg-gray-800 focus:ring-2 focus:ring-black focus:ring-offset-2'
+            className='mb-3 w-full  py-3 text-sm font-medium'
           >
             Thêm vào giỏ hàng +
           </Button>
@@ -101,7 +101,6 @@ export default function ProductCardIndex({
                 return (
                   <Button
                     key={size.key}
-                    variant='outline'
                     size='sm'
                     disabled={!isAvailable}
                     onClick={() =>
@@ -110,10 +109,10 @@ export default function ProductCardIndex({
                     className={cn(
                       'h-8 min-w-[2.5rem] rounded-full border px-3 text-xs font-medium transition-all',
                       isSelected
-                        ? 'border-black bg-black text-white'
+                        ? 'border-primary bg-primary text-primary-foreground '
                         : isAvailable
-                        ? 'border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:bg-gray-50'
-                        : 'border-gray-200 bg-gray-100 text-gray-400 line-through opacity-60'
+                        ? 'border-border adam-store-bg text-muted-foreground hover:border-secondary hover:bg-accent hover:scale-110'
+                        : 'border-border bg-muted-foreground text-muted line-through opacity-60 cursor-not-allowed'
                     )}
                   >
                     {size.name}

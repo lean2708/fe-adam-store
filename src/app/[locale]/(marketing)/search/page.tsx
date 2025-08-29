@@ -3,6 +3,7 @@ import ContentSearch from '@/components/templates/(marketing)/search/ContentSear
 import { HeaderSearch } from '@/components/templates/(marketing)/search/HeaderSearch';
 import { SideSearch } from '@/components/templates/(marketing)/search/SideSearch';
 import { searchAllProductsAction } from '@/actions/productActions';
+import { ProductCardWithColorsSkeleton } from '@/components/ui/skeleton';
 
 // Price filter constants
 const PRICE_FILTERS = [
@@ -67,10 +68,14 @@ function ContentLoading() {
   return (
     <div className='w-[85%] p-4'>
       <div className='animate-pulse space-y-4'>
-        <div className='h-8 bg-gray-200 rounded w-1/2'></div>
-        <div className='grid grid-cols-5 gap-4'>
-          {[...Array(10)].map((_, i) => (
-            <div key={i} className='h-64 bg-gray-200 rounded'></div>
+        <div className='flex flex-wrap'>
+          {Array.from({ length: 15 }, (_, i) => (
+            <div
+              key={i}
+              className='basis-1/2 md:basis-1/3 lg:basis-1/5 mb-2 p-2'
+            >
+              <ProductCardWithColorsSkeleton />
+            </div>
           ))}
         </div>
       </div>

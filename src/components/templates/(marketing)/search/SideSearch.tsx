@@ -83,7 +83,7 @@ export function SideSearch({ totalProducts }: { totalProducts: number }) {
           <ChevronRight className='transition-transform group-open:rotate-90' />
         </summary>
 
-        <ul className='w-full px-8 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 py-2 bg-secondary'>
+        <ul className='w-full px-8 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 py-2 adam-store-bg'>
           {state.listColor.length !== 0 &&
             !state.loading &&
             state.listColor.map((color: TColor) => (
@@ -125,7 +125,7 @@ export function SideSearch({ totalProducts }: { totalProducts: number }) {
           Giá
           <ChevronRight className='transition-transform group-open:rotate-90' />
         </summary>
-        <ul className=' bg-secondary text-muted-foreground font-bold opacity-0 transition-all duration-500 group-open:min-h-40 group-open:opacity-100'>
+        <ul className=' adam-store-bg text-muted-foreground font-bold opacity-0 transition-all duration-500 group-open:min-h-40 group-open:opacity-100'>
           {priceOptions.map((item) => (
             <li
               onClick={() => {
