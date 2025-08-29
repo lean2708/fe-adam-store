@@ -107,7 +107,6 @@ export default function OrderItem(props: {
       setLoading(true);
       if (items[selectedIndex].id) {
         const res = await cancelOrderAction(String(id));
-        console.log(res);
         if (res.status === 200) {
           setIsDeleted(false);
           onDeleted(id);
@@ -119,7 +118,6 @@ export default function OrderItem(props: {
       setLoading(false);
     }
   };
-  console.log(items);
   return (
     <>
       {!dropList && <ItemProductOrder item={items[0]} active={activeStatus} />}
@@ -164,17 +162,13 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
       <div className='flex '>
         <img
           className='h-25 rounded-sm'
-          src={item.image?.imageUrl}
+          src={item.imageUrl}
           alt={'' + item.image?.id}
         />
         <div className='h-full flex flex-col justify-between ml-3'>
-          <h4 className='font-bold'>{item.productVariant?.product?.name}</h4>
-          <p className='text-[#888888]'>
-            Màu sắc: {item.productVariant?.color?.name}
-          </p>
-          <p className='text-[#888888]'>
-            Kích cỡ: {item.productVariant?.size?.name}
-          </p>
+          <h4 className='font-bold'>{item.Product?.title}</h4>
+          <p className='text-[#888888]'>Màu sắc: {item.color}</p>
+          <p className='text-[#888888]'>Kích cỡ: {item.size}</p>
           <p className='text-[#888888]'>×{item.quantity}</p>
         </div>
       </div>

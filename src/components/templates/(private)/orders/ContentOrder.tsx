@@ -56,8 +56,8 @@ export function ContentOrder() {
     try {
       setState((prev) => ({ ...prev, isLoading: true }));
       const res = await getAllOrderUserAction(state.activeStatus);
-      if (res.status === 200 && res.orders) {
-        const transformedOrders: TOrder[] = res.orders.map((order: any) => ({
+      if (res.success) {
+        const transformedOrders: TOrder[] = res.data!.map((order: any) => ({
           ...order,
           orderItems: order.OrderItems || order.orderItems || [],
         }));
@@ -260,6 +260,7 @@ export function ContentOrder() {
                           }
                         }}
                         id={+item.id}
+                        key={item.id}
                         items={item.orderItems as TOrderItem[]}
                         totalPrice={+item.totalPrice}
                         activeStatus={state.activeStatus}

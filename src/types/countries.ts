@@ -9,7 +9,7 @@ interface Country {
 const recordCountries: Record<Locale, Country> = {
   en: {
     title: "English",
-    flag: "en",
+    flag: "us",
     word: "Hello",
   },
   vi: {

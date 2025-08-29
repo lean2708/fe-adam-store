@@ -1,12 +1,35 @@
 {
+  "dateRangePicker": {
+    "presets": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "last7Days": "Last 7 days",
+      "last14Days": "Last 14 days",
+      "last30Days": "Last 30 days",
+      "thisWeek": "This week",
+      "lastWeek": "Last week",
+      "thisMonth": "This month",
+      "lastMonth": "Last month"
+    },
+    "compare": {
+      "label": "Compare",
+      "vs": "vs"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "update": "Update"
+    },
+    "selectPlaceholder": "Select..."
+  },
+
   "Locale": {
     "key": "en",
     "name": "English",
     "siteLanguage": "Site language"
   },
-  "Languages": {
-    "chatwithus": "Chat with us"
-  },
+
+  "chatwithus": "Chat with us",
+
   "Auth": {
     "unauthenticated": {
       "title": "You haven't logged in yet",
@@ -160,7 +183,9 @@
       "login": "Login",
       "register": "Register",
       "profile": "Profile",
-      "logout": "Logout"
+      "logout": "Logout",
+      "myorder": "My Orders",
+      "adminDashboard": "Admin Dashboard"
     }
   },
   "Footer": {
@@ -246,7 +271,7 @@
       "paymentHistory": "Payment History"
     },
     "products": {
-      "productUpdated":"Product updated successfully",
+      "productUpdated": "Product updated successfully",
       "restorePayment": "Restore",
       "updateProductTitle": "Update Product",
       "updateProduct": "Update Product",
@@ -352,7 +377,7 @@
       "deleteProduct": "Delete Product"
     },
     "categories": {
-      "deletePayment":"Delete",
+      "deletePayment": "Delete",
       "categoriesTitle": "Category Management",
       "categoriesDescription": "Manage product categories and classifications",
       "addCategory": "Add Category",
@@ -388,7 +413,6 @@
       "INACTIVE": "Inactive"
     },
     "users": {
-      
       "title": "Users Management",
       "description": "Manage system users",
       "addUser": "Add User",
@@ -419,7 +443,6 @@
       }
     },
     "branches": {
-      
       "ACTIVE": "Active",
       "INACTIVE": "Inactive",
       "title": "Branch Management",
@@ -812,7 +835,7 @@
       "next": "Next",
       "first": "First",
       "last": "Last",
-      "refresh":"Refresh"
+      "refresh": "Refresh"
     },
     "messages": {
       "deleteConfirm": "Are you sure you want to delete this item?",

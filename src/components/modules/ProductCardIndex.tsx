@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 import { TProduct } from '@/types';
 import { cn, formatCurrency } from '@/lib/utils';
@@ -28,7 +28,7 @@ export default function ProductCardIndex({
   const [sizeSelected, setSizeSelected] = useState<number | undefined>(
     undefined
   );
-
+  const t = useTranslations('Marketing.product_details');
   const { onChangeColor, onChangeSize, handleAddToCart, selectedColor } =
     useProductDetails(product);
 
@@ -85,7 +85,7 @@ export default function ProductCardIndex({
             onClick={handleAddToCartClick}
             className='mb-3 w-full  py-3 text-sm font-medium'
           >
-            Thêm vào giỏ hàng +
+            {t('product_infor.product_actions.add_to_cart')} +
           </Button>
 
           {/* Size Selection */}

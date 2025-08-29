@@ -44,16 +44,6 @@ export default function MainBanner() {
       >
         <MainBannerSwiper heroSlides={heroSlides} />
       </div>
-      {/* <div className="py-8 px-8" ref={buttonRef}>
-          <div className="flex justify-end">
-            <Button
-              onClick={handleChatClick}
-              className="bg-black hover:bg-gray-800 text-white rounded-full px-6 py-3 shadow-lg"
-            >
-              {t("chatwithus")}
-            </Button>
-          </div>
-        </div> */}
 
       {/* Sticky button that appears after scrolling past original */}
       <Button

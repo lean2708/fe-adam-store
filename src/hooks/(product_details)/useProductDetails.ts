@@ -157,6 +157,7 @@ export default function useProductDetails(product: TProduct) {
           color: variantDetails.product.color,
           size: variantDetails.product.size,
           isAvailable: variantDetails.product.isAvailable,
+          label: ''
         };
 
         clearBuyNowItems();

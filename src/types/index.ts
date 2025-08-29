@@ -22,6 +22,7 @@ export type TOrder = {
   updatedAt: Date;
   status: ORDER_STATUS | string;
   address: string;
+  addressId?: number;
   totalPrice: string;
   userId: string;
   userName: string;
@@ -40,7 +41,7 @@ export type TOrderItem = {
   productVariant?: TProductVariant;
   unitPrice: number;
   isReview?: boolean;
-  Product: {
+  Product?: {
     id: string;
     title: string;
     price: number;

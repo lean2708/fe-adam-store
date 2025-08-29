@@ -12,12 +12,11 @@ import ThemeToggle from '@/components/modules/ThemeToggle';
 import Logo from '@/components/modules/Logo';
 import SearchComponent from './components/SearchComponent';
 import NavigationLocaleSwitcherPublic from './components/NavigationLocaleSwitcherPublic';
-import { useTranslations } from 'next-intl';
 import { useCartStore } from '@/stores/cartStore';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function Navbar() {
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   const cartItems = useCartStore((state) => state.cartItems);
   // Only manage modal open/close triggers here
@@ -62,7 +61,8 @@ export default function Navbar() {
             <Menu className='h-5 w-5' />
           </Button>
         </div>
-        {/* `Logo */}`{/* Centered Logo - Hidden on mobile */}
+        {/* `Logo */}
+        {/* Centered Logo - Hidden on mobile */}
         <div className='hidden sm:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10'>
           <Logo />
         </div>
@@ -87,8 +87,8 @@ export default function Navbar() {
                 className='relative'
               >
                 <ShoppingBag className='h-5 w-5' />
-                {cartItemCount > 0 && (
-                  <span className='absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center'>
+                {cartItemCount > 0 && isAuthenticated && (
+                  <span className='absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center'>
                     {cartItemCount}
                   </span>
                 )}
@@ -98,9 +98,8 @@ export default function Navbar() {
           </div>
         </div>
       </>
-      <div className='z-1 flex w-full items-center justify-between gap-2 px-2 sm:px-8'>
-        <div className='flex flex-1 items-center justify-start'>
-          <div className='sm:hidden'>{/* <LinkNav /> */}</div>
+      <div className='px-15'>
+        <div className=' items-center justify-start'>
           <NavigationLocaleSwitcherPublic />
         </div>
       </div>

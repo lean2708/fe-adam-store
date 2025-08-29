@@ -171,7 +171,7 @@ export default function ReviewModule(props: {
             />
             <div className='ml-7 h-24 justify-between flex flex-col'>
               <p className='text-xl font-bold'>
-                {orderItem.productVariant?.product.name}
+                {orderItem.productVariant?.label}
               </p>
               <span>
                 Màu {orderItem?.productVariant?.color?.name}, Size{' '}

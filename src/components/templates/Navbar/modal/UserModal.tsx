@@ -1,12 +1,12 @@
-import { User, ShoppingBag, LogIn, UserPlus } from 'lucide-react';
+import { User, ShoppingBag, LogIn, UserPlus, Shield } from 'lucide-react';
 import { Modal } from '@/components/ui/modal';
 import { logoutAction } from '@/actions/nextAuthActions';
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
-import { useCartStore } from '@/stores/cartStore';
 import Link from 'next/link';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function UserModal({
   open,
@@ -20,10 +20,7 @@ export default function UserModal({
   const t = useTranslations('Header');
 
   const isLogin = status === 'authenticated' && !!session?.user;
-  const user = session?.user;
-
-  const clearCart = useCartStore((s) => s.clearCart);
-
+  const { user, isAdmin } = useAuth();
   const handleLogout = async () => {
     try {
       // First call the API to invalidate the token on the server
@@ -35,8 +32,6 @@ export default function UserModal({
         redirect: false,
         callbackUrl: '/',
       });
-
-      clearCart();
 
       // Close the modal
       onClose();
@@ -149,26 +144,40 @@ export default function UserModal({
 
       <Link
         href={'/user'}
-        className=' px-3 py-1 flex items-center h-16 rounded-xl gap-3 hover:bg-secondary/80 transition cursor-pointer'
+        className=' px-3 py-1 flex items-center h-16 rounded-xl gap-3 hover:bg-gray-50 transition cursor-pointer'
       >
         <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center'>
-          <User className='h-6 w-6 text-muted-foreground' />
+          <User className='h-6 w-6 text-gray-400' />
         </div>
         <span className='text-lg font-medium'>{t('user.profile')}</span>
       </Link>
-
       <Link
         href={'/orders'}
-        className='px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-secondary/80 transition cursor-pointer'
+        className='px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer'
       >
         <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center '>
-          <ShoppingBag className='h-6 w-6 text-muted-foreground' />
+          <ShoppingBag className='h-6 w-6 text-gray-400' />
         </div>
-        <span className='text-lg font-medium'>Đơn hàng của tôi</span>
+        <span className='text-lg font-medium'>{t('user.myorder')}</span>
       </Link>
+      {isAdmin && (
+        <>
+          <Link
+            href={'/admin'}
+            className='px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer'
+          >
+            <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center '>
+              <Shield className='h-6 w-6 text-gray-400' />{' '}
+            </div>
+            <span className='text-lg font-medium'>
+              {t('user.adminDashboard')}
+            </span>
+          </Link>
+        </>
+      )}
 
       <div
-        className='px-3 py-1 flex items-center h-16 rounded-2xl gap-3 hover:bg-secondary/80 transition cursor-pointer'
+        className='px-3 py-1 flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer'
         onClick={handleLogout}
       >
         <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center'>
