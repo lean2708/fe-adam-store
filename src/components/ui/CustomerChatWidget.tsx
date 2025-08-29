@@ -275,19 +275,19 @@ export function CustomerChatWidget() {
     return (
       <div
         className={cn(
-          "fixed bottom-4 right-4 z-50 bg-white rounded-lg shadow-2xl border transition-all duration-300 flex flex-col",
-          // Mobile styles (default)
-          "w-[calc(100vw-2rem)] max-w-[280px] max-h-[40vh]",
-          // Tablet styles
-          "sm:w-64 sm:max-h-[280px]",
-          // Desktop styles
-          "md:w-72 md:max-h-[320px]",
+          "fixed bottom-0 right-0 z-50 bg-white rounded-lg shadow-2xl border transition-all duration-300 flex flex-col",
+          // Mobile
+          "w-[calc(100vw-2rem)] max-w-[360px] max-h-[60vh]",
+          // Tablet
+          "sm:w-50 sm:max-h-[250px]",
+          // Desktop
+          "md:w-96 md:max-h-[400px]",
           // Large desktop
-          "lg:w-80 lg:max-h-[350px]"
+          "lg:w-[28rem] lg:max-h-[430px]" // ~448px wide
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 bg-black text-white rounded-t-lg shrink-0">
+        <div className="flex items-center justify-between p-2 bg-black text-white rounded-t-lg shrink-0">
           <div className="flex items-center gap-3 min-w-0">
             <Avatar className="w-8 h-8 shrink-0">
               <AvatarFallback className="bg-white text-black text-xs font-semibold">
