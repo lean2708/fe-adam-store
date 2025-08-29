@@ -21,7 +21,7 @@ export function PaymentBar() {
   const { handlePlaceOrder, isProcessing } = useOrderAction();
 
   return (
-    <div className='fixed bottom-0 left-0 right-0 border-t-2 border-border bg-background'>
+    <div className='fixed bottom-0 left-0 right-0 border-t-2 border-border adam-store-bg'>
       <div className='max-w-screen flex items-center justify-between h-[10vh]'>
         <div className='flex items-center justify-center px-4 h-full w-1/4'>
           {selectedMethodDetails?.image && (

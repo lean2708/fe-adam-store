@@ -52,7 +52,7 @@ export default function Reviews({ productId }: { productId: string }) {
           {[...Array(pageSize)].map((_, index) => (
             <div
               key={index}
-              className='border-border animate-pulse p-6 rounded-lg bg-gray-50'
+              className=' animate-pulse p-6 rounded-lg space-y-4'
             >
               <div className='flex justify-between gap-2 mb-4'>
                 <div className='flex flex-row gap-6 items-center'>

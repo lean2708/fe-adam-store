@@ -35,7 +35,7 @@ function CartItemModal({
     <div
       key={cartItem.id}
       className={cn(
-        'flex items-start space-x-3 hover:bg-accent p-2 rounded-sm transition-colors'
+        'flex items-start space-x-3 hover:bg-accent/40 p-2 rounded-sm transition-colors'
       )}
     >
       <div className='flex-shrink-0'>

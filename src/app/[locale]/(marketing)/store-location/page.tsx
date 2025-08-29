@@ -11,7 +11,7 @@ const page = async () => {
   const branches = res.data;
 
   return (
-    <section className={cn('bg-background', manrope.className)}>
+    <section className={cn('adam-store-bg-light pb-1', manrope.className)}>
       <article className='px-6'>
         <div className='flex flex-col justify-between items-center mb-8'>
           <h1 className='text-3xl md:text-4xl xl:text-5xl font-semibold text-primary text-center my-12'>

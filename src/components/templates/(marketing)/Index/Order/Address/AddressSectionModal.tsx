@@ -79,13 +79,15 @@ export default function AddressSectionModal(props: {
       onClick={onClose}
     >
       <Card
-        className='relative w-full max-w-xl bg-white dark:bg-neutral-950 rounded-xl shadow-lg'
+        className='relative w-full max-w-xl adam-store-bg-light rounded-xl shadow-lg'
         onClick={stopPropagation}
       >
         <div className='!flex w-full justify-center items-center h-20 mt-2'>
           <div className='h-14 w-full flex flex-col items-center justify-between'>
             <CardTitle className='!text-2xl !font-bold'>Chọn địa chỉ</CardTitle>
-            <p className='text-gray-400'>Chọn 1 trong các địa chỉ bạn đã lưu</p>
+            <p className='text-muted-foreground'>
+              Chọn 1 trong các địa chỉ bạn đã lưu
+            </p>
           </div>
           <button
             onClick={onClose}
@@ -149,7 +151,7 @@ export default function AddressSectionModal(props: {
                         {item.district?.name}, {item.province?.name}
                       </p>
                       {item.isDefault && (
-                        <span className='absolute -top-3 left-5 px-2 py-0.5 bg-white z-50'>
+                        <span className='absolute -top-3 left-5 px-2 py-0.5 adam-store-bg-light z-50'>
                           Mặc định
                         </span>
                       )}

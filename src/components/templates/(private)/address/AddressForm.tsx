@@ -14,6 +14,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { District, Province, Ward } from '@/types';
+import { Button } from '@/components/ui/button';
 
 export default function AddressForm() {
   const router = useRouter();
@@ -156,7 +157,7 @@ export default function AddressForm() {
         <h3 className='font-bold text-3xl w-full text-center'>
           {id ? 'Chỉnh sửa' : 'Thêm'} địa chỉ mới
         </h3>
-        <div className='mt-5 w-full p-5 min-h-110 border-2 border-black rounded-lg shadow'>
+        <div className='mt-5 w-full p-5 min-h-110 border-2 border-black rounded-lg shadow adam-store-bg'>
           <div className='w-full flex mt-5 h-10 items-center'>
             <span className='w-70'>Tỉnh/Thành phố:</span>
             <Skeleton className='h-9 rounded-lg w-full border p-2 outline-none'></Skeleton>
@@ -201,7 +202,7 @@ export default function AddressForm() {
       <h3 className='font-bold text-3xl w-full text-center'>
         {id ? 'Chỉnh sửa' : 'Thêm'} địa chỉ mới
       </h3>
-      <div className='mt-5 w-full p-5 min-h-110 border-2 border-black rounded-lg shadow'>
+      <div className='mt-5 w-full p-5 min-h-110 border-2 border-primary rounded-lg shadow adam-store-bg'>
         <div className='w-full flex mt-5 h-10 items-center'>
           <span className='w-70'>Tỉnh/Thành phố:</span>
           <select
@@ -302,12 +303,12 @@ export default function AddressForm() {
           </label>
         </div>
         <div className='w-full text-center pt-4'>
-          <button
-            className='py-2 px-6 bg-black text-white rounded-lg'
+          <Button
+            className='py-6 px-8 font-medium rounded-xl'
             onClick={handleSaveChanges}
           >
             {id ? 'Lưu địa chỉ' : 'Thêm địa chỉ'}
-          </button>
+          </Button>
         </div>
       </div>
     </main>

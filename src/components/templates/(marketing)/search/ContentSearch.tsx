@@ -7,7 +7,10 @@ import { TProduct } from '@/types';
 import { Carousel, CarouselItem } from '@/components/ui/carousel';
 import ProductCardIndex from '@/components/modules/ProductCardIndex';
 import { useTranslations } from 'next-intl';
-import { Skeleton } from '@/components/ui/skeleton';
+import {
+  ProductCardWithColorsSkeleton,
+  Skeleton,
+} from '@/components/ui/skeleton';
 const priceFilters = [
   [`minPrice<500000`],
   [`minPrice>500000`, `minPrice<1000000`],
@@ -37,8 +40,9 @@ export default function ContentSearch({
     totalPage: number;
     totalProduct: number;
     listProducts: TProduct[];
+    isInitialLoad: boolean;
   }>({
-    loading: false, // Bắt đầu với false vì đã có dữ liệu từ server
+    loading: false,
     minPrice: searchParams.get('minPrice')
       ? Number(searchParams.get('minPrice'))
       : undefined,
@@ -50,7 +54,10 @@ export default function ContentSearch({
     totalPage: initialTotalPages,
     totalProduct: initialTotalProducts,
     listProducts: initialProducts,
+    isInitialLoad: true,
   });
+
+  // Update filters when search params change
   useEffect(() => {
     const color = searchParams.get('color')
       ? Number(searchParams.get('color'))
@@ -62,87 +69,144 @@ export default function ContentSearch({
 
     setState((ps) => ({
       ...ps,
-      loading: true,
       color,
       minPrice,
       sort,
+      page: 0, // Reset to first page when filters change
+      isInitialLoad: false,
     }));
   }, [searchParams]);
 
-  // useEffect(() => {
-  //   const searchProduct = async () => {
-  //     try {
-  //       setState((ps) => ({ ...ps, loading: true }));
-  //       const filters: string[] = [];
-  //       if (state.color) filters.push(`colorId=${state.color}`);
-  //       if (state.minPrice) filters.push(...priceFilters[state.minPrice - 1]);
+  // Search products when filters or page changes
+  useEffect(() => {
+    const searchProduct = async () => {
+      try {
+        setState((ps) => ({ ...ps, loading: true }));
 
-  //       const res = await searchAllProductsAction(
-  //         state.page,
-  //         15,
-  //         [`minPrice,${state.sort}`],
-  //         [`name~${query}`, ...filters]
-  //       );
+        const filters: string[] = [];
+        if (state.color) filters.push(`colorId=${state.color}`);
+        if (state.minPrice) filters.push(...priceFilters[state.minPrice - 1]);
 
-  //       if (res.status === 200) {
-  //         setState((ps) => ({
-  //           ...ps,
-  //           totalPage: res.data?.totalPages || 0,
-  //           totalProduct: res.data?.totalItems || 0,
-  //           listProducts: res.data?.items || [],
-  //         }));
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       setState((ps) => ({ ...ps, loading: false }));
-  //     }
-  //   };
+        const searchFilters = query ? [`name~${query}`, ...filters] : filters;
 
-  //   // Chỉ fetch nếu có query và không phải là dữ liệu ban đầu
-  //   if (query && state.page !== initialCurrentPage) {
-  //     searchProduct();
-  //   }
-  // }, [
-  //   state.page,
-  //   state.minPrice,
-  //   state.color,
-  //   state.sort,
-  //   query,
-  //   initialCurrentPage,
-  // ]);
+        const res = await searchAllProductsAction(
+          state.page,
+          15,
+          [`minPrice,${state.sort}`],
+          searchFilters
+        );
+
+        if (res.status === 200) {
+          setState((ps) => ({
+            ...ps,
+            totalPage: res.data?.totalPages || 0,
+            totalProduct: res.data?.totalItems || 0,
+            listProducts: res.data?.items || [],
+          }));
+        }
+      } catch (error) {
+        console.log('Search error:', error);
+        setState((ps) => ({
+          ...ps,
+          listProducts: [],
+          totalPage: 0,
+          totalProduct: 0,
+        }));
+      } finally {
+        setState((ps) => ({ ...ps, loading: false }));
+      }
+    };
+
+    // Skip initial load if we have initial data, otherwise search
+    if (
+      !state.isInitialLoad ||
+      (state.isInitialLoad && initialProducts.length === 0)
+    ) {
+      searchProduct();
+    }
+  }, [
+    state.page,
+    state.minPrice,
+    state.color,
+    state.sort,
+    state.isInitialLoad,
+    query,
+    initialProducts.length,
+  ]);
+
+  // Handle page change
+  const handlePageChange = (newPage: number) => {
+    setState((ps) => ({
+      ...ps,
+      page: newPage - 1, // Convert to 0-based index
+      isInitialLoad: false,
+    }));
+
+    // Scroll to top when page changes
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Loading skeleton component
+  const LoadingSkeleton = () => (
+    <div className='flex flex-wrap'>
+      {Array.from({ length: 15 }, (_, i) => (
+        <div key={i} className='basis-1/2 md:basis-1/3 lg:basis-1/5 mb-2 p-2'>
+          <ProductCardWithColorsSkeleton />
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <>
       <Carousel className='w-full'>
-        <div className='flex flex-wrap'>
-          {state.loading && state.listProducts.length === 0 && (
-            <div className='w-full'>
-              <p className='w-full text-center'>
-                Không có sản phẩm phù hợp nào cả
-              </p>
+        <div className='flex flex-wrap min-h-[400px]'>
+          {state.loading ? (
+            <LoadingSkeleton />
+          ) : state.listProducts.length === 0 ? (
+            <div className='w-full flex items-center justify-center py-16'>
+              <div className='text-center space-y-4'>
+                <div className='text-6xl'>🔍</div>
+                <h3 className='text-xl font-semibold text-gray-900 dark:text-gray-100'>
+                  {t('noProductsFound') || 'Không tìm thấy sản phẩm'}
+                </h3>
+                <p className='text-gray-500 dark:text-gray-400'>
+                  {query
+                    ? `Không có sản phẩm nào phù hợp với "${query}"`
+                    : 'Thử thay đổi bộ lọc để xem thêm sản phẩm'}
+                </p>
+              </div>
             </div>
-          )}
-          {state.loading &&
-            state.listProducts.length !== 0 &&
-            state.listProducts.map((product) => (
+          ) : (
+            state.listProducts.map((product, index) => (
               <CarouselItem
                 key={product.id}
                 className='basis-1/2 md:basis-1/3 lg:basis-1/5 mb-2'
+                style={{
+                  animationDelay: `${index * 50}ms`,
+                }}
               >
-                <ProductCardIndex
-                  product={product}
-                  badgeText={t('bestSellers.badgeText')}
-                />
+                <div className='animate-in fade-in slide-in-from-bottom-4 duration-500'>
+                  <ProductCardIndex
+                    product={product}
+                    badgeText={t('bestSellers.badgeText')}
+                  />
+                </div>
               </CarouselItem>
-            ))}
+            ))
+          )}
         </div>
       </Carousel>
-      <Pagination
-        totalPage={state.totalPage}
-        page={state.page}
-        totalProduct={state.totalProduct}
-        onChangePage={(val) => setState((ps) => ({ ...ps, page: val - 1 }))}
-      />
+
+      {/* Only show pagination if there are products and more than 1 page */}
+      {state.listProducts.length > 0 && state.totalPage > 1 && (
+        <Pagination
+          totalPage={state.totalPage}
+          page={state.page}
+          totalProduct={state.totalProduct}
+          onChangePage={handlePageChange}
+        />
+      )}
     </>
   );
 }

@@ -6,6 +6,7 @@ import { cancelOrderAction } from '@/actions/orderActions';
 import { TabStatus, TOrderItem } from '@/types';
 import { toast } from 'sonner';
 import ReviewModule from '../modules/ReviewModule';
+import { Button } from './button';
 
 export default function OrderItem(props: {
   onDeleted: (id: number) => void;
@@ -157,36 +158,36 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
   const [isReview, setIsReview] = useState(false);
 
   return (
-    <div className="border-b-1 border-dashed py-2 w-full flex justify-between min-h-25 items-center">
-      <div className="flex ">
+    <div className='border-b-1 border-dashed py-2 w-full flex justify-between min-h-25 items-center'>
+      <div className='flex '>
         <img
-          className="h-25 rounded-sm"
+          className='h-25 rounded-sm'
           src={item.imageUrl}
-          alt={"" + item.image?.id}
+          alt={'' + item.image?.id}
         />
-        <div className="h-full flex flex-col justify-between ml-3">
-          <h4 className="font-bold">{item.Product?.title}</h4>
-          <p className="text-[#888888]">Màu sắc: {item.color}</p>
-          <p className="text-[#888888]">Kích cỡ: {item.size}</p>
-          <p className="text-[#888888]">×{item.quantity}</p>
+        <div className='h-full flex flex-col justify-between ml-3'>
+          <h4 className='font-bold'>{item.Product?.title}</h4>
+          <p className='text-[#888888]'>Màu sắc: {item.color}</p>
+          <p className='text-[#888888]'>Kích cỡ: {item.size}</p>
+          <p className='text-[#888888]'>×{item.quantity}</p>
         </div>
       </div>
       <p
         className={cn(
-          active === "DELIVERED" &&
-            "h-25 flex flex-col justify-between items-end"
+          active === 'DELIVERED' &&
+            'h-25 flex flex-col justify-between items-end'
         )}
       >
-        <span className="font-bold">
+        <span className='font-bold'>
           {formatCurrency(Number(item.unitPrice))}
         </span>
-        {active === "DELIVERED" && (
-          <button
+        {active === 'DELIVERED' && (
+          <Button
             onClick={() => setIsReview(true)}
-            className='px-4 py-2 bg-black rounded-md text-white min-w-[100px] flex items-center justify-center transition-all duration-200'
+            className='px-4 py-2  min-w-[100px] flex items-center justify-center '
           >
             {item.isReview ? 'Xem đánh giá' : 'Đánh giá'}
-          </button>
+          </Button>
         )}
       </p>
       <ReviewModule

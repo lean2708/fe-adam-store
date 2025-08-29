@@ -69,18 +69,21 @@ export function SideSearch({ totalProducts }: { totalProducts: number }) {
   };
 
   return (
-    <div className='w-[15%]'>
+    <div className='w-[15%] adam-store-bg-light'>
       <div className='h-14 flex w-full justify-between items-center px-8'>
         <p>Bộ lọc</p>
         <span className='text-[#888888]'>{totalProducts} kết quả</span>
       </div>
-      <details open={!state.loading} className='group w-full bg-white'>
+      <details
+        open={!state.loading}
+        className='group w-full adam-store-bg-light'
+      >
         <summary className='h-14 w-full px-8 border-b border-t border-[#dddddd] outline-none cursor-pointer list-none flex justify-between items-center'>
           Màu
           <ChevronRight className='transition-transform group-open:rotate-90' />
         </summary>
 
-        <ul className='w-full px-8 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 py-2 bg-[#F5F5F5]'>
+        <ul className='w-full px-8 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 py-2 adam-store-bg'>
           {state.listColor.length !== 0 &&
             !state.loading &&
             state.listColor.map((color: TColor) => (
@@ -107,7 +110,7 @@ export function SideSearch({ totalProducts }: { totalProducts: number }) {
                     'select-none mt-1 text-center text-sm transition-all duration-200',
                     state.colorSort === color.id
                       ? 'font-semibold text-accent-foreground'
-                      : 'text-muted-foreground hover:text-gray-800'
+                      : 'text-muted-foreground hover:text-accent-foreground'
                   )}
                 >
                   {color.name}
@@ -117,12 +120,12 @@ export function SideSearch({ totalProducts }: { totalProducts: number }) {
         </ul>
       </details>
 
-      <details open className='group w-full bg-white'>
+      <details open className='group w-full adam-store-bg-light'>
         <summary className='h-14 w-full px-8 border-b border-t border-[#dddddd] outline-none cursor-pointer flex justify-between items-center'>
           Giá
           <ChevronRight className='transition-transform group-open:rotate-90' />
         </summary>
-        <ul className=' bg-[#F5F5F5] text-[#888888] font-bold opacity-0 transition-all duration-500 group-open:min-h-40 group-open:opacity-100'>
+        <ul className=' adam-store-bg text-muted-foreground font-bold opacity-0 transition-all duration-500 group-open:min-h-40 group-open:opacity-100'>
           {priceOptions.map((item) => (
             <li
               onClick={() => {
@@ -131,7 +134,7 @@ export function SideSearch({ totalProducts }: { totalProducts: number }) {
                 setState((ps) => ({ ...ps, minPrice: newValue }));
                 updateQuery('minPrice', newValue);
               }}
-              className='flex px-8 py-4 hover:bg-[#ffffffa7] duration-500'
+              className='flex px-8 py-4 hover:opacity-45 duration-500'
               key={item.id}
             >
               <input

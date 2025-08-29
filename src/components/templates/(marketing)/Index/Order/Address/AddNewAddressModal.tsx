@@ -146,9 +146,9 @@ export function AddNewAddressModal({
 
   return (
     <Dialog open={open} onOpenChange={onclose}>
-      <DialogContent className='sm:max-w-md bg-white rounded-2xl p-6'>
+      <DialogContent className='sm:max-w-md adam-store-bg-light rounded-2xl p-6'>
         <DialogHeader className='relative'>
-          <DialogTitle className='text-center text-lg font-medium text-[#000000]'>
+          <DialogTitle className='text-center text-lg font-medium text-primary'>
             Thêm địa chỉ mới
           </DialogTitle>
           <p className='text-center text-sm text-muted-foreground mt-1'>
@@ -182,7 +182,7 @@ export function AddNewAddressModal({
                 <Label
                   htmlFor='city'
                   className={cn(
-                    'text-sm text-muted-foreground bg-background mb-2 absolute -top-3 left-5 px-2 py-0.5 ',
+                    'text-sm text-muted-foreground adam-store-bg-light mb-2 absolute -top-3 left-5 px-2 py-0.5 ',
                     errors.city && 'text-red-500'
                   )}
                 >
@@ -219,7 +219,7 @@ export function AddNewAddressModal({
                 <Label
                   htmlFor='district'
                   className={cn(
-                    'text-sm text-muted-foreground bg-background mb-2 absolute -top-3 left-5 px-2 py-0.5 ',
+                    'text-sm text-muted-foreground adam-store-bg-light mb-2 absolute -top-3 left-5 px-2 py-0.5 ',
                     errors.district && 'text-red-500'
                   )}
                 >
@@ -258,7 +258,7 @@ export function AddNewAddressModal({
                 <Label
                   htmlFor='ward'
                   className={cn(
-                    'text-sm text-muted-foreground bg-background mb-2 absolute -top-3 left-5 px-2 py-0.5 ',
+                    'text-sm text-muted-foreground adam-store-bg-light mb-2 absolute -top-3 left-5 px-2 py-0.5 ',
                     errors.ward && 'text-red-500'
                   )}
                 >
@@ -280,7 +280,7 @@ export function AddNewAddressModal({
             <Label
               htmlFor='address'
               className={cn(
-                'text-sm text-muted-foreground bg-background mb-2 absolute -top-3 left-5 px-2 py-0.5 ',
+                'text-sm text-muted-foreground adam-store-bg-light mb-2 absolute -top-3 left-5 px-2 py-0.5 ',
                 errors.address && 'text-red-500'
               )}
             >
@@ -290,7 +290,7 @@ export function AddNewAddressModal({
               id='address'
               {...register('address')}
               className={cn(
-                'border-border border rounded-md py-6 text-sm',
+                'border-border border rounded-md py-6 text-sm adam-store-bg-light',
                 errors.address && 'border-red-500'
               )}
               autoComplete='off'
@@ -304,7 +304,7 @@ export function AddNewAddressModal({
             <Label
               htmlFor='phone'
               className={cn(
-                'text-sm text-muted-foreground bg-background mb-2 absolute -top-3 left-5 px-2 py-0.5 ',
+                'text-sm text-muted-foreground adam-store-bg-light mb-2 absolute -top-3 left-5 px-2 py-0.5 ',
                 errors.phone && 'text-red-500'
               )}
             >
@@ -314,7 +314,7 @@ export function AddNewAddressModal({
               id='phone'
               {...register('phone')}
               className={cn(
-                'border-border border rounded-md py-6 text-sm ',
+                'border-border border rounded-md py-6 text-sm adam-store-bg-light',
                 errors.phone && 'border-red-500'
               )}
               autoComplete='off'
@@ -340,7 +340,7 @@ export function AddNewAddressModal({
 
           <Button
             type='submit'
-            className='w-full mt-6 py-3 bg-[#000000] text-white hover:bg-[#333333] rounded-lg'
+            className='w-full mt-6 py-3'
             disabled={isSubmitting}
           >
             {isSubmitting ? 'Đang lưu...' : 'Lưu thay đổi'}

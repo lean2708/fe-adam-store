@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
 
 export default function QuantitySelector({
@@ -17,19 +18,23 @@ export default function QuantitySelector({
         {t('product_infor.quantity')}:
       </label>
       <div className='flex items-center gap-2'>
-        <button
+        <Button
+          size={'icon'}
+          variant={'outline'}
           onClick={onDecrease}
-          className='w-8 h-8 border border-border rounded flex items-center justify-center hover:bg-[#e8e8e8]'
+          className='flex items-center justify-center cursor-pointer'
         >
           -
-        </button>
+        </Button>
         <span className='w-12 text-center'>{quantity}</span>
-        <button
+        <Button
+          size={'icon'}
+          variant={'outline'}
           onClick={onIncrease}
-          className='w-8 h-8 border border-border rounded flex items-center justify-center hover:bg-[#e8e8e8]'
+          className='flex items-center justify-center cursor-pointer'
         >
           +
-        </button>
+        </Button>
       </div>
     </div>
   );

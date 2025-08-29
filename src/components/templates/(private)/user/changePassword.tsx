@@ -1,4 +1,5 @@
 import { changePasswordAction } from '@/actions/userActions';
+import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { Eye, EyeOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -56,7 +57,7 @@ export default function ChangePassword() {
     }
   };
   return (
-    <div className='mt-8 w-full h-90 border-2 border-black rounded-lg shadow'>
+    <div className='adam-store-bg mt-8 w-full h-90 border-2 border-primary rounded-lg shadow'>
       <ul className='w-full px-15'>
         <li className='w-full flex justify-between mt-8 items-center h-13 relative'>
           <p className='font-semibold'>Mật khẩu hiện tại:</p>
@@ -116,12 +117,12 @@ export default function ChangePassword() {
         </li>
       </ul>
       <div className='w-full text-center mt-7'>
-        <button
-          className='px-9 py-3 bg-black text-white rounded-lg'
+        <Button
+          className='py-6 px-8 font-medium rounded-xl'
           onClick={submitChangePassword}
         >
           Lưu thay đổi
-        </button>
+        </Button>
       </div>
     </div>
   );
