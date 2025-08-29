@@ -16,7 +16,7 @@ import { useCartStore } from "@/stores/cartStore";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Navbar() {
-  const { user } = useAuth();
+  const { user,isAuthenticated } = useAuth();
 
   const cartItems = useCartStore((state) => state.cartItems);
   // Only manage modal open/close triggers here
@@ -86,7 +86,7 @@ export default function Navbar() {
                 className="relative"
               >
                 <ShoppingBag className="h-5 w-5" />
-                {cartItemCount > 0 && (
+                {cartItemCount > 0 && isAuthenticated && (
                   <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                     {cartItemCount}
                   </span>
