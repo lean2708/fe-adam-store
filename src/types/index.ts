@@ -340,7 +340,7 @@ export type TProductVariant = {
 export type TPaymentMethodOption = {
   id: string;
   value: PAYMENT_METHODS;
-  label: string;
+  label?: string;
   icon?: React.ComponentType<{ className?: string }>;
   image?: string;
   isAvailable?: boolean;
