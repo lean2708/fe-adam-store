@@ -1,7 +1,10 @@
 import AuthTemplate from '@/components/templates/(auth)/AuthTemplate';
 import RegisterForm from '@/components/templates/(auth)/register/RegisterForm';
+import { getTranslations } from 'next-intl/server';
 
-export default function RegisterPage() {
+export default async function RegisterPage() {
+  const t = await getTranslations('Register');
+
   return (
     <AuthTemplate
       reverseOrder
@@ -14,11 +17,9 @@ export default function RegisterPage() {
             Adam Store
           </h1>
           <h2 className='text-lg md:text-2xl lg:text-3xl font-medium adam-store-text'>
-            Đăng ký
+            {t('title')}
           </h2>
-          <p className='text-xs md:text-sm '>
-            Tạo một tài khoản miễn phí và tận hưởng nó
-          </p>
+          <p className='text-xs md:text-sm '>{t('sub_title')}</p>
         </div>
 
         <RegisterForm />

@@ -19,15 +19,20 @@ import {
 } from '@/components/ui/form';
 import { toast } from 'sonner';
 import { PasswordInput } from '@/components/modules/PasswordInput';
-
-const formSchema = z.object({
-  email: z.email('Email không hợp lệ').min(1, 'Email là bắt buộc'),
-  password: z.string().min(1, 'Mật khẩu là bắt buộc'),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+import { useTranslations } from 'next-intl';
 
 function LoginFormContent() {
+  const t = useTranslations('Login');
+
+  const formSchema = z.object({
+    email: z
+      .email(t('email.validation.invalid'))
+      .min(1, t('email.validation.required')),
+    password: z.string().min(1, t('password.validation.required')),
+  });
+
+  type FormValues = z.infer<typeof formSchema>;
+
   const { signIn, isLoading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -59,10 +64,14 @@ function LoginFormContent() {
       const success = await signIn(values.email, values.password);
 
       if (success) {
-        toast.success('Đăng nhập thành công!');
+        toast.success(t('success.title'), {
+          description: t('success.message'),
+        });
         router.push('/');
       } else {
-        toast.error('Email hoặc mật khẩu không đúng');
+        toast.error(t('failed.title'), {
+          description: t('failed.message'),
+        });
         setError('email', {
           type: 'server',
           message: 'Email hoặc mật khẩu không đúng',
@@ -87,7 +96,7 @@ function LoginFormContent() {
                   {...field}
                   id='email'
                   type='email'
-                  placeholder='Địa chỉ Email'
+                  placeholder={t('email.placeholder')}
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:shadow-none focus-visible:ring-offset-0'
                 />
@@ -109,7 +118,7 @@ function LoginFormContent() {
                 <PasswordInput
                   {...field}
                   id='password'
-                  placeholder='Mật khẩu'
+                  placeholder={t('password.placeholder')}
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:ring-offset-0 focus-visible:shadow-none'
                 />
@@ -125,7 +134,7 @@ function LoginFormContent() {
             disabled={isSubmitting || isLoading}
             className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 rounded-md font-medium'
           >
-            {isSubmitting || isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+            {isSubmitting ? t('action.loading') : t('action.login')}
           </Button>
 
           <div className='text-center'>
@@ -133,7 +142,7 @@ function LoginFormContent() {
               href='/forgot_password'
               className='text-sm text-primary hover:underline'
             >
-              Quên mật khẩu ?
+              {t('forgotPassword')}
             </Link>
           </div>
         </div>

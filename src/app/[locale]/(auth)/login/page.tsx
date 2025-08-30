@@ -1,8 +1,11 @@
 import LoginForm from '@/components/templates/(auth)/login/LoginForm';
 import AuthTemplate from '@/components/templates/(auth)/AuthTemplate';
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const t = await getTranslations('Login');
+
   return (
     <AuthTemplate
       imageSrc='landing-login-img.png'
@@ -14,22 +17,20 @@ export default function LoginPage() {
             Adam Store
           </h1>
           <h2 className='text-lg md:text-2xl lg:text-3xl font-medium adam-store-text'>
-            Đăng nhập
+            {t('title')}
           </h2>
-          <p className='text-xs md:text-sm '>
-            Đăng nhập với tài khoản đã đăng ký với chúng tôi
-          </p>
+          <p className='text-xs md:text-sm '>{t('sub_title')}</p>
         </div>
 
         <LoginForm />
 
         <div className='text-sm text-primary px-3'>
-          Bạn chưa có tài khoản ?
+          {t('noAccount')}
           <Link
             href='/register'
             className='text-primary font-medium hover:underline ml-1'
           >
-            Tạo tài khoản ngay
+            {t('register')}
           </Link>
         </div>
       </div>

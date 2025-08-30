@@ -1,7 +1,9 @@
 import AuthTemplate from '@/components/templates/(auth)/AuthTemplate';
 import ForgotPasswordForm from '@/components/templates/(auth)/forgot_password/ForgotPasswordForm';
+import { getTranslations } from 'next-intl/server';
 
-export default function RegisterPage() {
+export default async function RegisterPage() {
+  const t = await getTranslations('Forgot_password');
   return (
     <AuthTemplate
       imageSrc='landing-forgot-password-img.jpg'
@@ -13,9 +15,9 @@ export default function RegisterPage() {
             Adam Store
           </h1>
           <h2 className='text-lg md:text-2xl lg:text-3xl font-medium adam-store-text'>
-            Quên mật khẩu
+            {t('title')}
           </h2>
-          <p className='text-xs md:text-sm '>Khôi phục mật khẩu của bạn</p>
+          <p className='text-xs md:text-sm '>{t('sub_title')}</p>
         </div>
 
         <ForgotPasswordForm />

@@ -19,24 +19,30 @@ import {
 import { toast } from 'sonner';
 import { signUpAction } from '@/actions/nextAuthActions';
 import { PasswordInput } from '@/components/modules/PasswordInput';
-
-// Schema validation
-const formSchema = z
-  .object({
-    name: z.string().min(1, 'Tên tài khoản là bắt buộc'),
-    email: z.email('Email không hợp lệ').min(1, 'Email là bắt buộc'),
-    password: z.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
-    confirmPassword: z.string().min(1, 'Vui lòng xác nhận mật khẩu'),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Mật khẩu xác nhận không khớp',
-    path: ['confirmPassword'],
-  });
-
-type FormValues = z.infer<typeof formSchema>;
+import { useTranslations } from 'next-intl';
 
 export default function RegisterForm() {
+  const t = useTranslations('Register');
   const router = useRouter();
+
+  // Schema validation
+  const formSchema = z
+    .object({
+      name: z.string().min(1, t('name.validation.required')),
+      email: z
+        .email(t('email.validation.invalid'))
+        .min(1, t('email.validation.required')),
+      password: z
+        .string()
+        .min(6, t('password.validation.minLength', { length: 6 })),
+      confirmPassword: z.string().min(1, 'Vui lòng xác nhận mật khẩu'),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t('confirmPassword.validation.mismatch'),
+      path: ['confirmPassword'],
+    });
+
+  type FormValues = z.infer<typeof formSchema>;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -83,7 +89,9 @@ export default function RegisterForm() {
           });
         });
       }
-      toast.error(res.message || 'Đăng ký thất bại');
+      toast.error(res.message || t('failed.title'), {
+        description: t('failed.message'),
+      });
     }
   };
 
@@ -100,7 +108,7 @@ export default function RegisterForm() {
                   {...field}
                   id='name'
                   type='text'
-                  placeholder='Tên tài khoản'
+                  placeholder={t('name.placeholder')}
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:ring-offset-0 focus-visible:shadow-none'
                 />
@@ -123,7 +131,7 @@ export default function RegisterForm() {
                   {...field}
                   id='email'
                   type='email'
-                  placeholder='Địa chỉ Email'
+                  placeholder={t('email.placeholder')}
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:ring-offset-0 focus-visible:shadow-none'
                 />
@@ -145,7 +153,7 @@ export default function RegisterForm() {
                 <PasswordInput
                   {...field}
                   id='password'
-                  placeholder='Mật khẩu'
+                  placeholder={t('password.placeholder')}
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:ring-offset-0 focus-visible:shadow-none'
                 />
@@ -164,7 +172,7 @@ export default function RegisterForm() {
                 <PasswordInput
                   {...field}
                   id='confirmPassword'
-                  placeholder='Nhập lại mật khẩu'
+                  placeholder={t('confirmPassword.placeholder')}
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:ring-offset-0 focus-visible:shadow-none'
                 />
@@ -180,16 +188,16 @@ export default function RegisterForm() {
             disabled={isSubmitting || !isDirty}
             className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 mb-4 rounded-md font-medium'
           >
-            {isSubmitting ? 'Đang đăng ký...' : 'Đăng ký'}
+            {isSubmitting ? t('action.loading') : t('action.register')}
           </Button>
 
           <div className='text-center'>
-            Bạn đã có tài khoản?{' '}
+            {t('haveAccount')}{' '}
             <Link
               href='/login'
               className='text-sm text-primary hover:underline'
             >
-              Đăng nhập
+              {t('login')}
             </Link>
           </div>
         </div>

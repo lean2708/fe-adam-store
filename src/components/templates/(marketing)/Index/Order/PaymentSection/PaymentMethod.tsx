@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import PaymentMethodItem from './PaymentMethodItem';
 import { PAYMENT_METHODS } from '@/enums';
 import { TPaymentMethodOption } from '@/types';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   onPaymentMethodChange: (value: PAYMENT_METHODS) => void;
@@ -19,11 +20,10 @@ function PaymentMethod({
   availableMethods,
   className,
 }: Props) {
+  const t = useTranslations('Order.payment_methods');
   return (
     <div className={cn('mb-6', className)}>
-      <h3 className='text-primary font-bold mb-4 text-lg'>
-        Phương thức thanh toán
-      </h3>
+      <h3 className='text-primary font-bold mb-4 text-lg'>{t('title')}</h3>
 
       <RadioGroup
         value={!selectedMethod ? defaultValue : selectedMethod}

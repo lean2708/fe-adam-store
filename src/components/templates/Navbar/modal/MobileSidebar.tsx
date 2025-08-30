@@ -4,6 +4,7 @@ import { getAllCategoriesAction } from '@/actions/categoryActions';
 import { TCategory } from '@/types';
 import { useState, useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useTranslations } from 'next-intl';
 
 export default function MobileSidebar({
   open,
@@ -12,6 +13,8 @@ export default function MobileSidebar({
   open: boolean;
   onClose: () => void;
 }) {
+  const t = useTranslations('Sidebar');
+
   const [categories, setCategories] = useState<TCategory[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -46,7 +49,9 @@ export default function MobileSidebar({
       <div className='p-4'>
         {/* Close Button */}
         <div className='flex justify-between items-center mb-6'>
-          <h2 className='text-lg font-medium text-primary'>Danh mục</h2>
+          <h2 className='text-lg font-medium text-primary'>
+            {t('categories')}
+          </h2>
           <div className='w-10'></div>
         </div>
 
@@ -67,14 +72,14 @@ export default function MobileSidebar({
                 className='block py-4 px-2 text-primary font-medium border-b border-border hover:bg-secondary/50 rounded-t-xl'
                 onClick={onClose}
               >
-                Bán chạy nhất
+                {t('best_seller')}
               </Link>
               <Link
                 href='/news'
                 className='block py-4 px-2 text-primary font-medium border-b border-border hover:bg-secondary/50 rounded-t-xl'
                 onClick={onClose}
               >
-                Sản phẩm mới
+                {t('new_product')}
               </Link>
               {categories.map((category) => (
                 <Link
@@ -98,7 +103,7 @@ export default function MobileSidebar({
               className='block py-2 px-2 text-muted-foreground text-sm hover:text-gray-700 dark:hover:text-gray-100'
               onClick={onClose}
             >
-              Về chúng tôi
+              {t('about_us')}
             </Link>
 
             <Link
@@ -106,7 +111,7 @@ export default function MobileSidebar({
               className='block py-2 px-2 text-muted-foreground text-sm hover:text-gray-700 dark:hover:text-gray-100'
               onClick={onClose}
             >
-              Cửa hàng
+              {t('store_location')}
             </Link>
           </nav>
         </div>

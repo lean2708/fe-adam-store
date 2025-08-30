@@ -18,15 +18,19 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { toast } from 'sonner';
-
-const formSchema = z.object({
-  email: z.email('Email không hợp lệ').min(1, 'Email là bắt buộc'),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+import { useTranslations } from 'next-intl';
 
 export default function ForgotPasswordForm() {
+  const t = useTranslations('Forgot_password');
   const router = useRouter();
+
+  const formSchema = z.object({
+    email: z
+      .email(t('email.validation.invalid'))
+      .min(1, t('email.validation.required')),
+  });
+
+  type FormValues = z.infer<typeof formSchema>;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -78,7 +82,7 @@ export default function ForgotPasswordForm() {
                   {...field}
                   id='email'
                   type='email'
-                  placeholder='Địa chỉ Email'
+                  placeholder={t('email.placeholder')}
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:ring-offset-0 focus-visible:shadow-none'
                 />
@@ -97,7 +101,7 @@ export default function ForgotPasswordForm() {
             disabled={isSubmitting}
             className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 rounded-md font-medium'
           >
-            {isSubmitting ? 'Đang gửi mã...' : 'Gửi mã'}
+            {isSubmitting ? t('action.email.loading') : t('action.email.send')}
           </Button>
 
           <div className='text-center'>
@@ -105,7 +109,7 @@ export default function ForgotPasswordForm() {
               href='/login'
               className='text-sm text-primary hover:underline'
             >
-              Trờ về đăng nhập
+              {t('backToLogin')}
             </Link>
           </div>
         </div>

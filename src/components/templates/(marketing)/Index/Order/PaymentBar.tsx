@@ -14,27 +14,28 @@ export function PaymentBar() {
   const t = useTranslations('Order');
   const locale = useLocale();
 
-  const { selectedMethodDetails } = usePaymentMethod();
+  const { getTranslatedSelectedMethodDetails } = usePaymentMethod();
   const { total, isCalculatingTotal } = useCalculateTotal();
   const { selectedPromotion } = usePromotions();
 
   const { handlePlaceOrder, isProcessing } = useOrderAction();
 
+  const translateMethodPayment = getTranslatedSelectedMethodDetails(t);
   return (
     <div className='fixed bottom-0 left-0 right-0 border-t-2 border-border adam-store-bg'>
       <div className='max-w-screen flex items-center justify-between h-[10vh]'>
         <div className='flex items-center justify-center px-4 h-full w-1/4'>
-          {selectedMethodDetails?.image && (
+          {translateMethodPayment?.image && (
             <Image
-              src={selectedMethodDetails.image}
-              alt={selectedMethodDetails.label || 'Payment method'}
+              src={translateMethodPayment.image}
+              alt={translateMethodPayment.label || 'Payment method'}
               className='object-contain h-6'
               width={32}
               height={32}
             />
           )}
           <p className='text-lg font-bold text-primary'>
-            {selectedMethodDetails?.label}
+            {translateMethodPayment?.label}
           </p>
         </div>
 

@@ -18,15 +18,17 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { toast } from 'sonner';
-
-const formSchema = z.object({
-  verificationCode: z.string().min(1, 'Mã xác thực là bắt buộc'),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+import { useTranslations } from 'next-intl';
 
 export default function VerifyCodeForm() {
+  const t = useTranslations('Forgot_password');
   const router = useRouter();
+
+  const formSchema = z.object({
+    verificationCode: z.string().min(1, t('code.validation.required')),
+  });
+
+  type FormValues = z.infer<typeof formSchema>;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -77,7 +79,7 @@ export default function VerifyCodeForm() {
                   {...field}
                   id='verificationCode'
                   type='text'
-                  placeholder='Nhập mã xác thực'
+                  placeholder={t('code.placeholder')}
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:ring-offset-0 focus-visible:shadow-none'
                 />
@@ -96,7 +98,7 @@ export default function VerifyCodeForm() {
             disabled={isSubmitting}
             className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 rounded-md font-medium'
           >
-            {isSubmitting ? 'Đang xác thực...' : 'Xác thực'}
+            {isSubmitting ? t('action.code.loading') : t('action.code.send')}
           </Button>
 
           <div className='text-center'>
@@ -104,7 +106,7 @@ export default function VerifyCodeForm() {
               href='/login'
               className='text-sm text-primary hover:underline'
             >
-              Trờ về đăng nhập
+              {t('backToLogin')}
             </Link>
           </div>
         </div>

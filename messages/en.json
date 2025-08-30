@@ -29,13 +29,187 @@
   },
 
   "chatwithus": "Chat with us",
-
+  "Login": {
+    "title": "Log In",
+    "sub_title": "Log in with the account you have registered with us",
+    "email": {
+      "label": "Email",
+      "placeholder": "Email Address",
+      "validation": {
+        "invalid": "Invalid email",
+        "required": "Email is required"
+      }
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Password",
+      "validation": {
+        "required": "Password is required"
+      }
+    },
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "register": "Create an account now",
+    "login": "Log In",
+    "invalidCredentials": "Invalid login credentials",
+    "accountBlocked": "Your account has been blocked. Please contact support.",
+    "success": {
+      "title": "Login successful",
+      "message": "Welcome back! You have successfully logged in."
+    },
+    "failed": {
+      "title": "Login failed",
+      "message": "An error occurred during login. Please try again."
+    },
+    "action": {
+      "login": "Log In",
+      "loading": "Logging in..."
+    }
+  },
+  "Register": {
+    "title": "Register",
+    "sub_title": "Create a free account and enjoy it",
+    "name": {
+      "label": "Name",
+      "placeholder": "Account Name",
+      "validation": {
+        "required": "Name is required"
+      }
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Email Address",
+      "validation": {
+        "invalid": "Invalid email",
+        "required": "Email is required"
+      }
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Password",
+      "validation": {
+        "minLength": "Password must be at least {length} characters long",
+        "required": "Password is required"
+      }
+    },
+    "confirmPassword": {
+      "label": "Confirm Password",
+      "placeholder": "Re-enter Password",
+      "validation": {
+        "mismatch": "Passwords do not match",
+        "required": "Please confirm your password"
+      }
+    },
+    "haveAccount": "Already have an account?",
+    "login": "Log In",
+    "register": "Create Account",
+    "emailExists": "Email already in use. Please log in or use another email.",
+    "success": {
+      "title": "Registration successful",
+      "message": "Welcome to Adam Store! Your account has been created successfully."
+    },
+    "failed": {
+      "title": "Registration failed",
+      "message": "An error occurred during registration. Please try again."
+    },
+    "action": {
+      "register": "Register",
+      "loading": "Registering..."
+    },
+    "verify": {
+      "title": "Verify Email",
+      "sub_title": "We've sent a verification email to {email}. Please check your inbox.",
+      "resend": "Resend verification email",
+      "haveAccount": "Already have an account?",
+      "login": "Log In",
+      "placeholder": "Enter verification code",
+      "backToLogin": "Back to login",
+      "validation": {
+        "required": "Verification code is required"
+      },
+      "no_email": {
+        "title": "No verification info found or session has expired.",
+        "message": "Go back to the registration page"
+      },
+      "success": {
+        "title": "Verification email sent",
+        "message": "We have resent the verification email to {email}. Please check your inbox."
+      },
+      "failed": {
+        "title": "Resending verification email failed",
+        "message": "An error occurred while resending the verification email. Please try again."
+      },
+      "action": {
+        "resend": "Resend",
+        "loading": "Sending..."
+      }
+    }
+  },
+  "Forgot_password": {
+    "title": "Forgot Password",
+    "sub_title": "Reset your password",
+    "email": {
+      "label": "Email",
+      "placeholder": "Email Address",
+      "validation": {
+        "invalid": "Invalid email",
+        "required": "Email is required"
+      }
+    },
+    "code": {
+      "label": "Verification Code",
+      "placeholder": "Enter verification code",
+      "validation": {
+        "required": "Verification code is required"
+      }
+    },
+    "new_password": {
+      "label": "New Password",
+      "placeholder": "New Password",
+      "validation": {
+        "minLength": "Password must be at least {length} characters long",
+        "required": "New password is required"
+      }
+    },
+    "confirm_new_password": {
+      "label": "Confirm New Password",
+      "placeholder": "Re-enter new password",
+      "validation": {
+        "mismatch": "Passwords do not match",
+        "required": "Please confirm your new password"
+      }
+    },
+    "backToLogin": "Back to login",
+    "emailNotFound": "Email not found. Please check and try again.",
+    "action": {
+      "code": {
+        "loading": "Verifying...",
+        "send": "Verify"
+      },
+      "email": {
+        "loading": "Sending code...",
+        "send": "Send code"
+      },
+      "reset": {
+        "loading": "Confirming...",
+        "reset": "Confirm"
+      }
+    }
+  },
   "Auth": {
     "unauthenticated": {
       "title": "You haven't logged in yet",
       "message": "Please log in to continue.",
-      "login": "Đăng nhập"
+      "login": "Login"
     }
+  },
+  "Sidebar": {
+    "title": "Dashboard",
+    "categories": "Categories",
+    "best_seller": "Best Seller",
+    "new_product": "New Products",
+    "about_us": "About Us",
+    "store_location": "Store Locations"
   },
   "Marketing": {
     "categories": {
@@ -128,8 +302,11 @@
       "placeholder": "Select a promotion code",
       "no_promotion": "No promotion codes available"
     },
-    "payment_section": {
-      "title": "Payment Method"
+    "payment_methods": {
+      "header": "Pay",
+      "title": "Payment Method",
+      "cash": "Cash on Delivery",
+      "vnpay": "Payment via VNPAY"
     },
     "payment_summary": {
       "title": "Payment Details",
@@ -180,6 +357,7 @@
       "deleteAll": "Delete All"
     },
     "user": {
+      "welcome": "Welcome",
       "login": "Login",
       "register": "Register",
       "profile": "Profile",

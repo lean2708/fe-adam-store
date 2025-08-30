@@ -135,7 +135,9 @@ export default function UserModal({
       {/* Welcome message for logged-in users */}
       {user?.name && (
         <div className='mb-2 p-3 bg-gradient-to-r from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-lg shadow-lg border border-gray-100 dark:border-gray-700'>
-          <p className='text-sm text-gray-600 dark:text-gray-400'>Xin chào,</p>
+          <p className='text-sm text-gray-600 dark:text-gray-400'>
+            {t('user.welcome')},
+          </p>
           <p className='font-medium text-gray-900 dark:text-white'>
             {user.name}
           </p>
