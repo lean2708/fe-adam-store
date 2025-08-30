@@ -144,19 +144,19 @@ export default function UserModal({
 
       <Link
         href={'/user'}
-        className=' px-3 py-1 flex items-center h-16 rounded-xl gap-3 hover:bg-gray-50 transition cursor-pointer'
+        className=' px-3 py-1 flex items-center h-16 rounded-xl gap-3 hover:bg-accent transition cursor-pointer'
       >
         <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center'>
-          <User className='h-6 w-6 text-gray-400' />
+          <User className='h-6 w-6 text-gray-400 dark:text-gray-600 dark:text-gray-600' />
         </div>
         <span className='text-lg font-medium'>{t('user.profile')}</span>
       </Link>
       <Link
         href={'/orders'}
-        className='px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer'
+        className='px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-accent transition cursor-pointer'
       >
         <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center '>
-          <ShoppingBag className='h-6 w-6 text-gray-400' />
+          <ShoppingBag className='h-6 w-6 text-gray-400 dark:text-gray-600' />
         </div>
         <span className='text-lg font-medium'>{t('user.myorder')}</span>
       </Link>
@@ -164,10 +164,10 @@ export default function UserModal({
         <>
           <Link
             href={'/admin'}
-            className='px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer'
+            className='px-3 py-1  flex items-center h-16 rounded-2xl gap-3 hover:bg-accent transition cursor-pointer'
           >
             <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center '>
-              <Shield className='h-6 w-6 text-gray-400' />{' '}
+              <Shield className='h-6 w-6 text-gray-400 dark:text-gray-600' />{' '}
             </div>
             <span className='text-lg font-medium'>
               {t('user.adminDashboard')}
@@ -177,7 +177,7 @@ export default function UserModal({
       )}
 
       <div
-        className='px-3 py-1 flex items-center h-16 rounded-2xl gap-3 hover:bg-gray-50 transition cursor-pointer'
+        className='px-3 py-1 flex items-center h-16 rounded-2xl gap-3 hover:bg-accent transition cursor-pointer'
         onClick={handleLogout}
       >
         <div className='bg-gray-100 rounded-full p-3 flex items-center justify-center'>
@@ -187,7 +187,7 @@ export default function UserModal({
             fill='none'
             stroke='currentColor'
             strokeWidth='2'
-            className='h-6 w-6 text-muted-foreground'
+            className='h-6 w-6 text-muted-foreground dark:text-gray-600'
             viewBox='0 0 24 24'
           >
             <path d='M9 16l-4-4m0 0l4-4m-4 4h12'></path>
