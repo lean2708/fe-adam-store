@@ -46,7 +46,7 @@ export default function MainBanner() {
       </div>
 
       {/* Sticky button that appears after scrolling past original */}
-      <Button
+      {/* <Button
         onClick={handleChatClick}
         className='fixed bottom-6 right-6 z-50 group
           bg-gradient-to-r from-gray-600 to-gray-700 
@@ -72,7 +72,7 @@ export default function MainBanner() {
 
         <div className='absolute inset-0 rounded-full border-2 border-gray-400/50 animate-ping opacity-75'></div>
         <div className='absolute inset-0 rounded-full border border-gray-300/30 animate-pulse'></div>
-      </Button>
+      </Button> */}
     </section>
   );
 }
