@@ -7,6 +7,7 @@ import { TabStatus, TOrderItem } from '@/types';
 import { toast } from 'sonner';
 import ReviewModule from '../modules/ReviewModule';
 import { Button } from './button';
+import { useTranslations } from 'next-intl';
 
 export default function OrderItem(props: {
   onDeleted: (id: number) => void;
@@ -17,6 +18,8 @@ export default function OrderItem(props: {
   items?: TOrderItem[];
   openModule: () => void;
 }) {
+  const t = useTranslations('Profile.my_orders');
+
   const btnByStatus: Record<TabStatus, React.ReactNode> = {
     PENDING: (
       <>
@@ -24,13 +27,13 @@ export default function OrderItem(props: {
           onClick={() => onRetryPay()}
           className='w-52 px-4 mr-4 py-2 rounded-md border border-[#888888] text-sm'
         >
-          Thanh toán lại
+          {t('actions.retry_payment')}
         </button>
         <button
           onClick={() => openModule()}
           className='w-52 px-4 mr-4 py-2 rounded-md border border-[#888888] text-sm'
         >
-          Thay đổi địa chỉ nhận hàng
+          {t('actions.change_address')}
         </button>
         <button
           onClick={() => {
@@ -38,20 +41,20 @@ export default function OrderItem(props: {
           }}
           className='w-40 px-4 py-2 border-[#888888] border text-black rounded-md text-sm'
         >
-          Huỷ đơn hàng
+          {t('actions.cancel_order')}
         </button>
       </>
     ),
     PROCESSING: (
       <>
         <button className='w-40 px-4 py-2 mr-4 rounded-md border border-[#C5C4C2] text-sm text-[#C5C4C2] bg-[#E5E4E1]'>
-          Chờ
+          {t('actions.wait')}
         </button>
         <button
           onClick={() => openModule()}
           className='w-52 px-4 mr-4 py-2 rounded-md border border-[#888888] text-sm'
         >
-          Thay đổi địa chỉ nhận hàng
+          {t('actions.change_address')}
         </button>
         <button
           onClick={() => {
@@ -59,35 +62,36 @@ export default function OrderItem(props: {
           }}
           className='w-40 px-4 py-2 border-[#888888] border text-black rounded-md text-sm'
         >
-          Huỷ đơn hàng
+          {t('actions.cancel_order')}
         </button>
       </>
     ),
     SHIPPED: (
       <>
         <button className='w-56 text-gray-400 px-4 py-2 rounded-md border border-gray-400 text-sm'>
-          Xác nhận đã nhận hàng
+          {t('actions.confirm_received')}
         </button>
       </>
     ),
     DELIVERED: (
       <>
         <button className='w-40 px-4 py-2 border border-[#888888] rounded-md text-sm mr-4'>
-          Liện hệ chúng tôi
+          {t('actions.contact_us')}
         </button>
         <button className='w-28 px-4 py-2 bg-black text-white rounded-md text-sm'>
-          Mua lại
+          {t('actions.buy_again')}
         </button>
       </>
     ),
     CANCELLED: (
       <>
         <button className='w-28 px-4 py-2 bg-black text-white rounded-md text-sm'>
-          Mua lại
+          {t('actions.buy_again')}
         </button>
       </>
     ),
   };
+
   const {
     onDeleted,
     onRetryPay,
@@ -101,7 +105,9 @@ export default function OrderItem(props: {
   const [isDeleted, setIsDeleted] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [loading, setLoading] = useState(false);
+
   if (!items) return null;
+
   const CloseOrder = async () => {
     try {
       setLoading(true);
@@ -110,7 +116,7 @@ export default function OrderItem(props: {
         if (res.status === 200) {
           setIsDeleted(false);
           onDeleted(id);
-          toast.success('Hủy đơn hàng thành công');
+          toast.success(t('messages.cancel_success'));
         }
       }
     } catch (error) {
@@ -118,6 +124,7 @@ export default function OrderItem(props: {
       setLoading(false);
     }
   };
+
   return (
     <>
       {!dropList && <ItemProductOrder item={items[0]} active={activeStatus} />}
@@ -130,12 +137,12 @@ export default function OrderItem(props: {
           onClick={() => setDropList(true)}
           className='outline-none w-full flex justify-center py-2 border-b-1 border-dashed'
         >
-          <p>Xem thêm</p>
+          <p>{t('actions.view_more')}</p>
           <ChevronDown className='ml-3' />
         </button>
       )}
       <div className='w-full text-end pt-2'>
-        Tổng số tiền ({items.length} sản phẩm) &nbsp;&nbsp;&nbsp;
+        {t('summary.total_amount', { count: items.length })} &nbsp;&nbsp;&nbsp;
         <span className='text-xl font-bold'>
           {totalPrice && formatCurrency(totalPrice)}
         </span>
@@ -144,7 +151,7 @@ export default function OrderItem(props: {
       <ConfirmDialogModule
         loading={loading}
         onClose={() => setIsDeleted(false)}
-        title='Bạn có chắc muốn huỷ đơn hàng ?'
+        title={t('confirm.cancel_order')}
         onSubmit={() => {
           CloseOrder();
         }}
@@ -153,9 +160,11 @@ export default function OrderItem(props: {
     </>
   );
 }
+
 function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
   const { item, active } = props;
   const [isReview, setIsReview] = useState(false);
+  const t = useTranslations('Profile.my_orders');
 
   return (
     <div className='border-b-1 border-dashed py-2 w-full flex justify-between min-h-25 items-center'>
@@ -167,8 +176,12 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
         />
         <div className='h-full flex flex-col justify-between ml-3'>
           <h4 className='font-bold'>{item.Product?.title}</h4>
-          <p className='text-[#888888]'>Màu sắc: {item.color}</p>
-          <p className='text-[#888888]'>Kích cỡ: {item.size}</p>
+          <p className='text-[#888888]'>
+            {t('order_details.product_list.color')}: {item.color}
+          </p>
+          <p className='text-[#888888]'>
+            {t('order_details.product_list.size')}: {item.size}
+          </p>
           <p className='text-[#888888]'>×{item.quantity}</p>
         </div>
       </div>
@@ -186,7 +199,7 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
             onClick={() => setIsReview(true)}
             className='px-4 py-2  min-w-[100px] flex items-center justify-center '
           >
-            {item.isReview ? 'Xem đánh giá' : 'Đánh giá'}
+            {item.isReview ? t('review.view_review') : t('review.write_review')}
           </Button>
         )}
       </p>

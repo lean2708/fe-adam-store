@@ -11,8 +11,11 @@ import { useAuth } from '@/hooks/useAuth';
 
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { useTranslations } from 'next-intl';
 
 export default function Infomation() {
+  const t = useTranslations('Profile.personal_info');
+
   const [infoUser, setInfoUser] = useState<UserResponse>();
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -54,9 +57,9 @@ export default function Infomation() {
         };
         const res = await updateUserAction(infoUser.id, newInfo);
         if (res.success) {
-          toast.success('Cập nhật thành công!');
+          toast.success(`${res.message || 'Cập nhật thành công!'}`);
         } else {
-          toast.warning('Cập nhật không thành công!');
+          toast.warning(`${res.message || 'Cập nhật không thành công!'}`);
         }
       }
     } catch (error) {
@@ -71,9 +74,9 @@ export default function Infomation() {
         const res = await changeAvatarAction(file);
         if (res.success && res.data) {
           setInfoUser(res.data);
-          toast.success('Cập nhật thành công!');
+          toast.success(`${res.message || 'Cập nhật thành công!'}`);
         } else {
-          toast.error('Cập nhật không thành công!');
+          toast.error(`${res.message || 'Cập nhật không thành công!'}`);
         }
       }
     } catch (error) {
@@ -104,7 +107,7 @@ export default function Infomation() {
             className='text-white py-2 px-5 bg-black rounded-lg cursor-wait'
             disabled
           >
-            Lưu thay đổi
+            {t('action.save')}
           </button>
         </div>
       </div>
@@ -136,7 +139,7 @@ export default function Infomation() {
                 className='flex outline-none justify-center items-center w-full px-2 pb-10 py-1 text-sm text-white absolute -bottom-7 left-0 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:bottom-2 duration-500'
               >
                 <SquarePen size={18} className='mr-1' />
-                Thay đổi avatar
+                {t('action.change_avatar')}
               </button>
             </>
           ) : (
@@ -153,7 +156,7 @@ export default function Infomation() {
                 className='flex outline-none justify-center items-center w-full px-2 pb-10 py-1 text-sm text-black absolute -bottom-7 left-0 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:bottom-2 duration-500'
               >
                 <SquarePen size={18} className='mr-1' />
-                Thay đổi avatar
+                {t('action.change_avatar')}
               </button>
             </>
           )}
@@ -161,7 +164,7 @@ export default function Infomation() {
       </div>
       <div className='pt-6'>
         <p className='w-full flex justify-between h-9'>
-          <span style={{ width: '30%' }}>Họ tên:</span>
+          <span style={{ width: '30%' }}>{t('name.label')}</span>
           <input
             className='border-b-1 border-gray-300 w-120 pl-0 outline-none'
             style={{ width: '70%' }}
@@ -172,7 +175,7 @@ export default function Infomation() {
           />
         </p>
         <div className='w-full flex mt-4 h-9'>
-          <span style={{ width: '30%' }}>Giới tính:</span>
+          <span style={{ width: '30%' }}>{t('sex.label')}:</span>
           <p
             onClick={() =>
               setInfoUser({ ...infoUser, gender: GenderEnum.Male })
@@ -187,7 +190,7 @@ export default function Infomation() {
                 setInfoUser({ ...infoUser, gender: GenderEnum.Male })
               }
             />
-            <label>Nam</label>
+            <label>{t('sex.male')}</label>
           </p>
           <p
             onClick={() =>
@@ -204,7 +207,7 @@ export default function Infomation() {
               }
               checked={infoUser.gender === 'FEMALE'}
             />
-            <label>Nữ</label>
+            <label>{t('sex.female')}</label>
           </p>
           <p
             onClick={() =>
@@ -220,11 +223,11 @@ export default function Infomation() {
               }
               checked={infoUser.gender === 'OTHER' || infoUser.gender == null}
             />
-            <label>Khác</label>
+            <label>{t('sex.other')}</label>
           </p>
         </div>
         <p className='mt-4 w-full flex justify-between h-9'>
-          <span style={{ width: '30%' }}>Ngày sinh:</span>
+          <span style={{ width: '30%' }}>{t('dob.label')}:</span>
           <input
             type='date'
             className='border-b-1 border-gray-300 w-120 pl-0 outline-none'
@@ -252,7 +255,7 @@ export default function Infomation() {
           className=' py-6 px-8 font-medium rounded-xl'
           onClick={saveInfoUser}
         >
-          Lưu thay đổi
+          {t('action.save')}
         </Button>
       </div>
       <input

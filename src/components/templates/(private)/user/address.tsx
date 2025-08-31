@@ -6,11 +6,14 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks/useAuth';
 import { SquarePen, Trash } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 export default function Address() {
+  const t = useTranslations('Profile.address');
+
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [listAddress, setListAddress] = useState<AddressResponse[]>();
@@ -43,13 +46,13 @@ export default function Address() {
         if (res.status === 200) {
           await getAddress();
           setVisible(false);
-          toast.success('Xóa địa chỉ thành công');
+          toast.success(res.message || t('success.message_delete'));
         } else {
-          toast.error('Lỗi khi xóa địa chỉ!');
+          toast.error(res.message || t('failed.message_delete'));
         }
       }
     } catch (error) {
-      toast.error('Lỗi khi xóa địa chỉ!');
+      toast.error(t('failed.message_delete'));
     } finally {
       setLoading(false);
     }
@@ -58,12 +61,12 @@ export default function Address() {
     return (
       <div className='mt-8 w-full h-90'>
         <div className='flex w-full justify-between'>
-          <h5 className='font-bold text-3xl'>Địa chỉ của tôi</h5>
+          <h5 className='font-bold text-3xl'>{t('title')}</h5>
           <Button
             onClick={() => router.push('/address')}
             className='py-6 px-8 font-medium rounded-xl'
           >
-            Thêm địa chỉ mới
+            {t('action.add')}
           </Button>
         </div>
         <ul className='mt-5'>
@@ -76,17 +79,17 @@ export default function Address() {
     return (
       <div className='mt-8 w-full h-90'>
         <div className='flex w-full justify-between'>
-          <h5 className='font-bold text-3xl'>Địa chỉ của tôi</h5>
+          <h5 className='font-bold text-3xl'>{t('title')}</h5>
           <Button
             onClick={() => router.push('/address')}
             className='py-6 px-8 font-medium rounded-xl'
           >
-            Thêm địa chỉ mới
+            {t('action.add')}
           </Button>
         </div>
         <ul className='mt-5'>
           <div className='w-full bg-gray-100 mt-3 py-9 px-6 flex items-center justify-center shadow'>
-            <p>Không có địa chỉ nào cả</p>
+            <p>{t('no_address')}</p>
           </div>
         </ul>
       </div>
@@ -94,12 +97,12 @@ export default function Address() {
   return (
     <div className='mt-8 w-full h-90'>
       <div className='flex w-full justify-between'>
-        <h5 className='font-bold text-3xl'>Địa chỉ của tôi</h5>
+        <h5 className='font-bold text-3xl'>{t('title')}</h5>
         <Button
           onClick={() => router.push('/address')}
           className='py-6 px-8 font-medium rounded-xl'
         >
-          Thêm địa chỉ mới
+          {t('action.add')}
         </Button>
       </div>
       <ul className='mt-5 overflow-y-auto max-h-80 scroll-smooth scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100'>
@@ -119,15 +122,15 @@ export default function Address() {
                     variant={'outline'}
                     className='border-black dark:border-white my-1 absolute -top-7 '
                   >
-                    Mặc định
+                    {t('set_default.title')}
                   </Badge>
                 )}
                 <p className='mt-1 transition-colors duration-200 group-hover:text-gray-700'>
-                  Địa chỉ: {address.streetDetail} - {address.ward?.name} -{' '}
-                  {address.district?.name} - {address.province?.name}
+                  {t('address')}: {address.streetDetail} - {address.ward?.name}{' '}
+                  - {address.district?.name} - {address.province?.name}
                 </p>
                 <p className='pt-2 transition-colors duration-200 group-hover:text-gray-700'>
-                  Số điện thoại: {address.phone}
+                  {t('phone.label')}: {address.phone}
                 </p>
               </div>
               <div className='flex space-x-1'>
@@ -154,7 +157,7 @@ export default function Address() {
           ))}
       </ul>
       <ConfirmDialogModule
-        title='Bạn có chắc muốn xóa địa chỉ này?'
+        title={t('action.confirm_delete')}
         onClose={() => {
           setVisible(false);
         }}

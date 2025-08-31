@@ -10,6 +10,7 @@ import {
   updateProductReviewsAction,
 } from '@/actions/reviewActions';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 export default function ReviewModule(props: {
   visible: boolean;
@@ -19,6 +20,8 @@ export default function ReviewModule(props: {
   isReview?: boolean;
 }) {
   const { onClose, isReview, orderItem, visible, returnRivew } = props;
+  const t = useTranslations('Profile.my_orders.review');
+
   const [state, setState] = useState<{
     loading: boolean;
     rating: number;
@@ -35,6 +38,7 @@ export default function ReviewModule(props: {
     reviewId: undefined,
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     const getReviewById = async () => {
       try {
@@ -65,6 +69,7 @@ export default function ReviewModule(props: {
 
   const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
   if (!visible) return null;
+
   const CloseMoule = () => {
     setState((ps) => ({
       ...ps,
@@ -76,6 +81,7 @@ export default function ReviewModule(props: {
 
     onClose();
   };
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
@@ -91,10 +97,10 @@ export default function ReviewModule(props: {
           }
         }
         setState((ps) => ({ ...ps, listImg: [...state.listImg, ...imgRes] }));
-        toast.success('Tải hình ảnh thành công');
+        toast.success(t('messages.upload_success'));
       }
     } catch (error) {
-      toast.error('Có lỗi xảy ra khi tải hình ảnh');
+      toast.error(t('messages.upload_error'));
     }
   };
 
@@ -109,7 +115,7 @@ export default function ReviewModule(props: {
         );
         if (res.status) {
           CloseMoule();
-          toast.success('Chỉnh sửa đánh giá sản phẩm thành công');
+          toast.success(t('messages.update_success'));
         }
       } catch (error: any) {
         console.log(error);
@@ -125,14 +131,16 @@ export default function ReviewModule(props: {
         if (res.status) {
           returnRivew();
           CloseMoule();
-          toast.success('Đánh giá sản phẩm thành công');
+          toast.success(t('messages.create_success'));
         }
       } catch (error: any) {
         console.log(error);
       }
     }
   };
+
   if (!visible) return null;
+
   if (visible && state.loading)
     return (
       <>
@@ -144,11 +152,12 @@ export default function ReviewModule(props: {
             className='relative w-full text-center max-w-3xl bg-white dark:bg-gray-700 !p-6 rounded-lg shadow-lg'
             onClick={stopPropagation}
           >
-            Loading . . .
+            {t('loading')}
           </Card>
         </div>
       </>
     );
+
   return (
     <div
       className='fixed inset-0 z-50 flex items-center justify-center bg-black/40'
@@ -159,30 +168,32 @@ export default function ReviewModule(props: {
         onClick={stopPropagation}
       >
         <CardHeader className='font-bold text-2xl !p-0'>
-          Đánh giá sản phẩm
+          {t('title')}
         </CardHeader>
         <div className='pt-4'>
           {/* Product preview */}
           <div className='border border-black dark:border-white p-3 rounded-lg flex'>
             <img
               className='w-24 h-24'
-              src={orderItem?.image?.imageUrl}
-              alt={String(orderItem.image?.id)}
+              src={orderItem?.imageUrl}
+              alt={String(orderItem?.id)}
             />
             <div className='ml-7 h-24 justify-between flex flex-col'>
               <p className='text-xl font-bold'>
                 {orderItem.productVariant?.label}
               </p>
               <span>
-                Màu {orderItem?.productVariant?.color?.name}, Size{' '}
-                {orderItem?.productVariant?.size?.name}
+                {t('product.color')} {orderItem?.productVariant?.color?.name},{' '}
+                {t('product.size')} {orderItem?.productVariant?.size?.name}
               </span>
-              <span>Số lượng: {orderItem?.quantity}</span>
+              <span>
+                {t('product.quantity')}: {orderItem?.quantity}
+              </span>
             </div>
           </div>
 
           <div className='flex mt-5 h-6'>
-            <p className='h-full items-center'>Chất lượng sản phẩm</p>
+            <p className='h-full items-center'>{t('rating.quality_label')}</p>
             <div className='rating ml-3 flex h-full'>
               <input
                 type='radio'
@@ -234,7 +245,7 @@ export default function ReviewModule(props: {
 
           {/* Add image button */}
           <div className='flex w-full justify-between h-auto items-center pt-4'>
-            <p>Nội dung đánh giá</p>
+            <p>{t('content.label')}</p>
             <button
               className='px-6 bg-black text-white py-1.5 rounded-lg flex items-center'
               onClick={() => fileInputRef.current?.click()}
@@ -248,7 +259,7 @@ export default function ReviewModule(props: {
               >
                 <path d='M5 21.2256C4.45 21.2256 3.97917 21.0298 3.5875 20.6381C3.19583 20.2464 3 19.7756 3 19.2256V5.22559C3 4.67559 3.19583 4.20475 3.5875 3.81309C3.97917 3.42142 4.45 3.22559 5 3.22559H13V5.22559H5V19.2256H19V12.2256H21V19.2256C21 19.7756 20.8042 20.2464 20.4125 20.6381C20.0208 21.0298 19.55 21.2256 19 21.2256H5ZM6 17.2256H18L14.25 12.2256L11.25 16.2256L9 13.2256L6 17.2256ZM18 10.2256V6.05059L16.4 7.62559L15 6.22559L19 2.22559L23 6.22559L21.6 7.62559L20 6.05059V10.2256H18Z' />
               </svg>
-              <span className='ml-2'>Thêm hình ảnh</span>
+              <span className='ml-2'>{t('images.add_button')}</span>
             </button>
             <input
               ref={fileInputRef}
@@ -268,7 +279,7 @@ export default function ReviewModule(props: {
             }
             className='p-2 border border-gray-300 mt-3 rounded-lg w-full'
             style={{ minHeight: '130px' }}
-            placeholder='Hãy chia sẻ trải nghiệm của bạn với những người mua khác nhé.'
+            placeholder={t('content.placeholder')}
           />
 
           {/* Image previews */}
@@ -294,7 +305,7 @@ export default function ReviewModule(props: {
             onClick={CloseMoule}
             className='px-4 py-1.5 border border-black dark:border-white rounded-lg'
           >
-            Hủy bỏ
+            {t('actions.cancel')}
           </button>
           <button
             onClick={handleSubmit}
@@ -304,7 +315,7 @@ export default function ReviewModule(props: {
               (!state.rating || !state.comment) && 'cursor-not-allowed'
             )}
           >
-            {state.isUpdate ? 'Chỉnh sửa' : 'Hoàn thành'}
+            {state.isUpdate ? t('actions.update') : t('actions.complete')}
           </button>
         </CardFooter>
       </Card>
