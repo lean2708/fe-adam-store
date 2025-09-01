@@ -88,7 +88,7 @@ export default function Navbar() {
               >
                 <ShoppingBag className='h-5 w-5' />
                 {cartItemCount > 0 && isAuthenticated && (
-                  <span className='absolute -top-1 -right-1 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center'>
+                  <span className='absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center'>
                     {cartItemCount}
                   </span>
                 )}
