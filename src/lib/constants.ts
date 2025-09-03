@@ -49,3 +49,6 @@ export const SIZE_LIST = [
   { name: 'XL', key: 'XL' },
   { name: 'XXL', key: 'XXL' },
 ];
+
+// *Conversion rate
+export const VND_TO_USD_RATE = 0.000038;
