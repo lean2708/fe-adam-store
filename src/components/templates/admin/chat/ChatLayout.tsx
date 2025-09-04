@@ -44,10 +44,10 @@ export function ChatLayout() {
   } = useChat();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="admin-page-container space-y-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="admin-page-container space-y-6 dark:bg-gray-900">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm border p-6">
+        <div className="bg-white rounded-lg shadow-sm border p-6 dark:bg-gray-900">
           <ChatHeader
             onRefresh={handleRefresh}
             searchTerm={searchTerm}
@@ -63,7 +63,7 @@ export function ChatLayout() {
         <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
           <div className={`flex ${showUploader ? "h-[700px]" : "h-[600px]"}`}>
             {/* Conversations Sidebar */}
-            <div className="w-80 border-r bg-gray-50">
+            <div className="w-80 border-r bg-gray-50  dark:bg-gray-900">
               <ConversationsList
                 conversations={conversations}
                 selectedConversation={selectedConversation}
@@ -77,7 +77,7 @@ export function ChatLayout() {
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col dark:bg-gray-900">
               <ChatMessages
                 conversation={selectedConversation}
                 messages={messages}

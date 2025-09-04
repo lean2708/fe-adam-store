@@ -6,7 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +21,10 @@ import { toast } from "sonner";
 import { Upload } from "lucide-react";
 import { z } from "zod";
 import { uploadImagesAction } from "@/actions/fileActions";
-import { createCategoryAction, updateCategoryAction } from "@/actions/categoryActions";
+import {
+  createCategoryAction,
+  updateCategoryAction,
+} from "@/actions/categoryActions";
 import type { TCategory } from "@/types";
 
 // Schema for category form
@@ -32,7 +41,11 @@ interface CategoryModalProps {
   editingCategory: TCategory | null;
 }
 
-export function CategoryModal({ open, onClose, editingCategory }: CategoryModalProps) {
+export function CategoryModal({
+  open,
+  onClose,
+  editingCategory,
+}: CategoryModalProps) {
   const t = useTranslations("Admin.categories");
   const queryClient = useQueryClient();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -67,25 +80,29 @@ export function CategoryModal({ open, onClose, editingCategory }: CategoryModalP
   const createMutation = useMutation({
     mutationFn: async (data: CategoryFormData) => {
       let imageUrl = "";
-      
+
       // Upload image if selected
       if (selectedImage) {
         try {
           const uploadResult = await uploadImagesAction([selectedImage]);
-          if (uploadResult.success && uploadResult.data && uploadResult.data.length > 0) {
+          if (
+            uploadResult.success &&
+            uploadResult.data &&
+            uploadResult.data.length > 0
+          ) {
             imageUrl = uploadResult.data[0].imageUrl || "";
           }
         } catch (error) {
           console.warn("Image upload failed, continuing without image:", error);
         }
       }
-      
+
       const categoryData = {
         name: data.name,
         status: data.status,
         imageUrl: imageUrl,
       };
-      
+
       const result = await createCategoryAction(categoryData);
       if (!result.success) {
         throw new Error(result.message || "Failed to create category");
@@ -94,7 +111,7 @@ export function CategoryModal({ open, onClose, editingCategory }: CategoryModalP
     },
     onSuccess: () => {
       toast.success(t("categoryCreated") || "Category created successfully");
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
       handleClose();
     },
     onError: (error: Error) => {
@@ -106,28 +123,35 @@ export function CategoryModal({ open, onClose, editingCategory }: CategoryModalP
   const updateMutation = useMutation({
     mutationFn: async (data: CategoryFormData) => {
       if (!editingCategory) throw new Error("No category to update");
-      
+
       let imageUrl = editingCategory.imageUrl || "";
-      
+
       // Upload new image if selected
       if (selectedImage) {
         try {
           const uploadResult = await uploadImagesAction([selectedImage]);
-          if (uploadResult.success && uploadResult.data && uploadResult.data.length > 0) {
+          if (
+            uploadResult.success &&
+            uploadResult.data &&
+            uploadResult.data.length > 0
+          ) {
             imageUrl = uploadResult.data[0].imageUrl || "";
           }
         } catch (error) {
           console.warn("Image upload failed, keeping existing image:", error);
         }
       }
-      
+
       const categoryData = {
         name: data.name,
         status: data.status,
         imageUrl: imageUrl,
       };
 
-      const result = await updateCategoryAction((editingCategory.id), categoryData);
+      const result = await updateCategoryAction(
+        editingCategory.id,
+        categoryData
+      );
       if (!result.success) {
         throw new Error(result.message || "Failed to update category");
       }
@@ -135,7 +159,7 @@ export function CategoryModal({ open, onClose, editingCategory }: CategoryModalP
     },
     onSuccess: () => {
       toast.success(t("categoryUpdated") || "Category updated successfully");
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
       handleClose();
     },
     onError: (error: Error) => {
@@ -178,21 +202,24 @@ export function CategoryModal({ open, onClose, editingCategory }: CategoryModalP
       className="bg-white rounded-2xl shadow-xl max-w-md mx-auto"
     >
       <ModalBody className="p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
           {editingCategory ? "Chỉnh sửa danh mục" : "Thêm danh mục"}
         </h2>
 
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 ">
           {/* Category Name */}
-          <div className="space-y-2">
-            <Label htmlFor="name" className="text-sm text-gray-700">
+          <div className="space-y-2 ">
+            <Label
+              htmlFor="name"
+              className="text-sm text-gray-700 dark:text-white"
+            >
               Tên danh mục:
             </Label>
             <Input
               id="name"
               placeholder="Nhập tên danh mục"
               {...form.register("name")}
-              className={`bg-[#F0F0F0] rounded-xl h-12 ${
+              className={`bg-[#F0F0F0] rounded-xl h-12 dark:text-black ${
                 form.formState.errors.name ? "border-red-500" : ""
               }`}
             />
@@ -228,7 +255,9 @@ export function CategoryModal({ open, onClose, editingCategory }: CategoryModalP
 
           {/* Image Upload */}
           <div className="space-y-2">
-            <Label className="text-sm text-gray-700">Hình ảnh</Label>
+            <Label className="text-sm text-gray-700 dark:text-white">
+              Hình ảnh
+            </Label>
             <div className="bg-[#F0F0F0] rounded-xl p-8 text-center">
               <input
                 type="file"

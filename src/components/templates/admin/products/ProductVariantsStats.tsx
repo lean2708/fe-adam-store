@@ -85,7 +85,10 @@ export function ProductVariantsStats({ variants, totalElements }: ProductVariant
       {stats.map((stat, index) => {
         const Icon = stat.icon;
         return (
-          <Card key={index} className="bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm">
+          <Card
+            key={index}
+            className="bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm"
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-gray-600">
                 {stat.title}
@@ -95,10 +98,10 @@ export function ProductVariantsStats({ variants, totalElements }: ProductVariant
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
-              <p className="text-xs text-gray-600 mt-1">
-                {stat.description}
-              </p>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                {stat.value}
+              </div>
+              <p className="text-xs text-gray-600 mt-1 ">{stat.description}</p>
             </CardContent>
           </Card>
         );

@@ -45,7 +45,7 @@ export function SizeTable({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
             <Ruler className="h-5 w-5" />
             {t("productSizes")}
           </h2>

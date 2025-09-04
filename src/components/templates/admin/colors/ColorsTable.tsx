@@ -96,11 +96,11 @@ export function ColorsTable({
 
   return (
     <div>
-      <div className="p-6 border-b bg-gray-50">
+      <div className="p-6 border-b bg-gray-50 dark:bg-gray-900">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Palette className="h-5 w-5 text-gray-700" />
-            <h2 className="text-lg font-semibold text-gray-900">
+            <Palette className="h-5 w-5 text-gray-700 dark:text-white" />
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {t("productColors")}
             </h2>
           </div>

@@ -10,7 +10,7 @@ import {
   Wifi,
   WifiOff,
   MessageCircle,
-  Plus
+  Plus,
 } from "lucide-react";
 
 interface ChatHeaderProps {
@@ -30,27 +30,28 @@ export function ChatHeader({
   isWebSocketConnected,
   conversationsCount,
   loading = false,
-  onCreateConversation
+  onCreateConversation,
 }: ChatHeaderProps) {
   const t = useTranslations("Admin.chat");
 
   const handleSearchKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
       // Search is handled by the parent component through onSearchChange
     }
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 dark:bg-gray-900">
       {/* Title and Actions */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between ">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
             {t("title") || "Quản lý Chat"}
           </h1>
           <p className="text-gray-600 mt-1">
-            {t("description") || "Quản lý cuộc trò chuyện và tin nhắn với khách hàng"}
+            {t("description") ||
+              "Quản lý cuộc trò chuyện và tin nhắn với khách hàng"}
           </p>
         </div>
         {/* <div className="flex gap-3">
@@ -80,7 +81,9 @@ export function ChatHeader({
         <div className="flex-1 max-w-md relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           <Input
-            placeholder={t("searchPlaceholder") || "Tìm kiếm cuộc trò chuyện..."}
+            placeholder={
+              t("searchPlaceholder") || "Tìm kiếm cuộc trò chuyện..."
+            }
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
             onKeyDown={handleSearchKeyDown}
@@ -92,9 +95,10 @@ export function ChatHeader({
           {/* Connection Status */}
           <Badge
             variant={isWebSocketConnected ? "default" : "secondary"}
-            className={isWebSocketConnected
-              ? "bg-green-100 text-green-800 border-green-200"
-              : "bg-gray-100 text-gray-800 border-gray-200"
+            className={
+              isWebSocketConnected
+                ? "bg-green-100 text-green-800 border-green-200"
+                : "bg-gray-100 text-gray-800 border-gray-200"
             }
           >
             {isWebSocketConnected ? (
@@ -111,7 +115,7 @@ export function ChatHeader({
           </Badge>
 
           {/* Conversations Count */}
-          <Badge variant="outline" className="bg-white">
+          <Badge variant="outline" className="bg-white  dark:bg-black">
             <MessageCircle className="h-3 w-3 mr-1" />
             {conversationsCount} {t("conversations") || "cuộc trò chuyện"}
           </Badge>

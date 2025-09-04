@@ -83,16 +83,16 @@ export function OrdersTable({
 
   return (
     <div>
-      <div className="p-6 border-b bg-gray-50">
+      <div className="p-6 border-b bg-gray-50 dark:bg-gray-900">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <ShoppingCart className="h-5 w-5 text-gray-700" />
-            <h2 className="text-lg font-semibold text-gray-900">
+            <ShoppingCart className="h-5 w-5 text-gray-700 dark:text-white" />
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {t("orderHistory")}
             </h2>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">
+          <div className="flex items-center gap-2 ">
+            <span className="text-sm text-gray-600  ">
               {t("filterByStatus")}:
             </span>
             <Select
@@ -103,10 +103,10 @@ export function OrdersTable({
                 )
               }
             >
-              <SelectTrigger className="w-[180px] bg-white border-gray-300">
+              <SelectTrigger className="w-[180px] bg-white border-gray-300 dark:text-black">
                 <SelectValue placeholder={t("filterByStatus")} />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-white ">
                 <SelectItem value="ALL">{t("allStatus")}</SelectItem>
                 <SelectItem value="PENDING">{t("pending")}</SelectItem>
                 <SelectItem value="PROCESSING">{t("processing")}</SelectItem>

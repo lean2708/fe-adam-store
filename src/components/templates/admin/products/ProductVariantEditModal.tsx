@@ -5,16 +5,24 @@ import { Modal, ModalBody } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-
 import { z } from "zod";
-import { updateProductVariantAction, addProductVariantAction } from "@/actions/productVariantActions";
+import {
+  updateProductVariantAction,
+  addProductVariantAction,
+} from "@/actions/productVariantActions";
 import { fetchAllColorsAction } from "@/actions/colorActions";
 import { fetchAllSizesAction } from "@/actions/sizeActions";
 import type { TColor, TSize } from "@/types";
@@ -26,8 +34,6 @@ const variantEditSchema = z.object({
   colorId: z.number().min(1, "Please select a color"),
   sizeId: z.number().min(1, "Please select a size"),
 });
-
-
 
 type VariantEditFormData = z.infer<typeof variantEditSchema>;
 
@@ -53,7 +59,7 @@ export function ProductVariantEditModal({
   onClose,
   variant,
   productId,
-  onSuccess
+  onSuccess,
 }: ProductVariantEditModalProps) {
   const t = useTranslations("Admin.products");
   const queryClient = useQueryClient();
@@ -70,7 +76,7 @@ export function ProductVariantEditModal({
 
   // Fetch colors
   const { data: colorsData } = useQuery({
-    queryKey: ['colors'],
+    queryKey: ["colors"],
     queryFn: async () => {
       const result = await fetchAllColorsAction();
       return result.success ? result.data : [];
@@ -79,7 +85,7 @@ export function ProductVariantEditModal({
 
   // Fetch sizes
   const { data: sizesData } = useQuery({
-    queryKey: ['sizes'],
+    queryKey: ["sizes"],
     queryFn: async () => {
       const result = await fetchAllSizesAction();
       return result.success ? result.data : [];
@@ -120,10 +126,10 @@ export function ProductVariantEditModal({
       if (!variant) throw new Error("No variant to update");
 
       const formData = new FormData();
-      formData.append('price', data.price.toString());
-      formData.append('quantity', data.quantity.toString());
-      formData.append('colorId', data.colorId.toString());
-      formData.append('sizeId', data.sizeId.toString());
+      formData.append("price", data.price.toString());
+      formData.append("quantity", data.quantity.toString());
+      formData.append("colorId", data.colorId.toString());
+      formData.append("sizeId", data.sizeId.toString());
 
       const result = await updateProductVariantAction(variant.id, formData);
       if (!result.success) {
@@ -133,7 +139,7 @@ export function ProductVariantEditModal({
     },
     onSuccess: () => {
       toast.success("Variant updated successfully");
-      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
       onSuccess?.(); // Call the success callback to refresh parent modal
       onClose();
     },
@@ -148,11 +154,11 @@ export function ProductVariantEditModal({
       if (!productId) throw new Error("Product ID is required");
 
       const formData = new FormData();
-      formData.append('productId', productId.toString());
-      formData.append('price', data.price.toString());
-      formData.append('quantity', data.quantity.toString());
-      formData.append('colorId', data.colorId.toString());
-      formData.append('sizeId', data.sizeId.toString());
+      formData.append("productId", productId.toString());
+      formData.append("price", data.price.toString());
+      formData.append("quantity", data.quantity.toString());
+      formData.append("colorId", data.colorId.toString());
+      formData.append("sizeId", data.sizeId.toString());
 
       const result = await addProductVariantAction(formData);
       if (!result.success) {
@@ -162,7 +168,7 @@ export function ProductVariantEditModal({
     },
     onSuccess: () => {
       toast.success("New variant created successfully");
-      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
       onSuccess?.(); // Call the success callback to refresh parent modal
       onClose();
     },
@@ -223,11 +229,11 @@ export function ProductVariantEditModal({
                 key={form.watch("sizeId")?.toString() || ""}
               >
                 <SelectTrigger
-                  className={`bg-[#F0F0F0] rounded-xl h-10 ${
+                  className={`bg-[#F0F0F0] rounded-xl h-10  dark:text-black ${
                     form.formState.errors.sizeId ? "border-red-500" : ""
                   }`}
                 >
-                  <SelectValue placeholder="ALL" />
+                  <SelectValue className="dark:text-black" placeholder="ALL" />
                 </SelectTrigger>
                 <SelectContent>
                   {sizes.map((size: TSize) => (
@@ -238,7 +244,7 @@ export function ProductVariantEditModal({
                 </SelectContent>
               </Select>
               {form.formState.errors.sizeId && (
-                <p className="text-xs text-red-500">
+                <p className="text-xs text-red-500 ">
                   {form.formState.errors.sizeId.message}
                 </p>
               )}
@@ -257,11 +263,14 @@ export function ProductVariantEditModal({
                 key={form.watch("colorId")?.toString()}
               >
                 <SelectTrigger
-                  className={`bg-[#F0F0F0] rounded-xl h-10 ${
+                  className={`bg-[#F0F0F0] rounded-xl h-10 dark:text-black ${
                     form.formState.errors.colorId ? "border-red-500" : ""
                   }`}
                 >
-                  <SelectValue placeholder="Màu sắc" />
+                  <SelectValue
+                    className="dark:text-black"
+                    placeholder="Màu sắc"
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {colors.map((color: TColor) => (
@@ -283,7 +292,7 @@ export function ProductVariantEditModal({
           <div className="grid grid-cols-2 gap-4">
             {/* Price */}
             <div className="space-y-2">
-              <Label htmlFor="price" className="text-sm font-medium">
+              <Label htmlFor="price" className="text-sm font-medium ">
                 {t("price") || "Giá"}
               </Label>
               <div className="relative">
@@ -293,7 +302,7 @@ export function ProductVariantEditModal({
                   step="0.01"
                   placeholder="Nhập giá"
                   {...form.register("price", { valueAsNumber: true })}
-                  className={`bg-[#F0F0F0] rounded-xl h-10 ${
+                  className={`bg-[#F0F0F0] rounded-xl h-10 dark:text-black ${
                     form.formState.errors.price ? "border-red-500" : ""
                   }`}
                 />
@@ -315,7 +324,7 @@ export function ProductVariantEditModal({
                 type="number"
                 placeholder="Số lượng"
                 {...form.register("quantity", { valueAsNumber: true })}
-                className={`bg-[#F0F0F0] rounded-xl h-10 ${
+                className={`bg-[#F0F0F0] rounded-xl h-10 dark:text-black ${
                   form.formState.errors.quantity ? "border-red-500" : ""
                 }`}
               />

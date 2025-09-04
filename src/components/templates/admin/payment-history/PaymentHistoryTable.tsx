@@ -4,14 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useTranslations, useLocale } from "next-intl";
 import { formatDate, formatCurrency, getStatusColor } from "@/lib/utils";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   Select,
   SelectContent,
@@ -87,11 +80,11 @@ export function PaymentHistoryTable({
 
   return (
     <div>
-      <div className="p-6 border-b bg-gray-50">
+      <div className="p-6 border-b bg-gray-50 dark:bg-gray-900">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <CreditCard className="h-5 w-5 text-gray-700" />
-            <h2 className="text-lg font-semibold text-gray-900">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {t("paymentTransactions")}
             </h2>
           </div>
@@ -130,7 +123,7 @@ export function PaymentHistoryTable({
                 )
               }
             >
-              <SelectTrigger className="w-[180px] bg-white border-gray-300">
+              <SelectTrigger className="w-[180px] bg-white border-gray-300 dark:text-black">
                 <SelectValue
                   placeholder={t("filterByStatus") || "Filter by status"}
                 />

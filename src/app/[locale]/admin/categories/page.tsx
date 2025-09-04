@@ -38,9 +38,9 @@ export default function CategoriesAdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="admin-page-container space-y-6 mt-4">
-        <div className="bg-white rounded-lg shadow-sm border">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="admin-page-container space-y-6 mt-4 dark:bg-gray-900">
+        <div className="bg-white rounded-lg shadow-sm border dark:bg-gray-900">
           <CategoriesTable
             categories={categories}
             loading={loading}

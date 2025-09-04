@@ -50,11 +50,11 @@ export function BranchesTable({
   const locale = useLocale();
   return (
     <div>
-      <div className="p-6 border-b bg-gray-50 ">
+      <div className="p-6 border-b bg-gray-50 dark:bg-gray-800 ">
         <div className="flex items-center gap-2 justify-between">
           <div className="flex gap-3">
-            <Building className="h-5 w-5 text-gray-700" />
-            <h2 className="text-lg font-semibold text-gray-900">
+            <Building className="h-5 w-5 " />
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {t("storeBranches")}
             </h2>
           </div>
@@ -87,10 +87,10 @@ export function BranchesTable({
             <p>{t("noBranchesFound")}</p>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-lg border border-gray-200">
+          <div className="overflow-hidden rounded-lg border border-gray-200 ">
             <Table>
               <TableHeader>
-                <TableRow className="bg-gray-50 hover:bg-gray-50">
+                <TableRow className="bg-gray-50 hover:bg-gray-50 ">
                   <TableHead className="font-semibold text-gray-900">
                     {t("id")}
                   </TableHead>
@@ -128,29 +128,30 @@ export function BranchesTable({
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <Building className="h-4 w-4 text-gray-500" />
-                        <span className="font-medium text-gray-900">
+                        <span className="font-medium text-gray-900 dark:text-white">
                           {branch.name}
                         </span>
                       </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2 text-sm">
-                        <Phone className="h-3 w-3 text-gray-500" />
-                        <span className="text-gray-700">{branch.phone}</span>
+                        <Phone className="h-3 w-3 text-gray-500 " />
+                        <span className="">{branch.phone}</span>
                       </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4 text-gray-500" />
-                        <span className="text-sm text-gray-700">
-                          {branch.location}
-                        </span>
+                        <span className="text-sm ">{branch.location}</span>
                       </div>
                     </TableCell>
                     <TableCell>
                       <Badge
                         variant="secondary"
-                        className={getStatusColor(branch.status || "INACTIVE", "general")}
+                        className={getStatusColor(
+                          branch.status || "INACTIVE",
+                          "general"
+                        )}
                       >
                         {t(branch.status || "INACTIVE") ||
                           branch.status ||

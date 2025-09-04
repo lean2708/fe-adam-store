@@ -54,8 +54,6 @@ interface PromotionTableProps {
   onPageChange: (page: number) => void;
 }
 
-
-
 // Helper function to format period
 const formatPeriod = (
   startDate?: string,
@@ -119,11 +117,11 @@ export function PromotionTable({
 
   return (
     <div>
-      <div className="p-6 border-b bg-gray-50">
+      <div className="p-6 border-b bg-gray-50 dark:bg-gray-900">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Tag className="h-5 w-5 text-gray-700" />
-            <h2 className="text-lg font-semibold text-gray-900">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {t("promotionList")}
             </h2>
           </div>
@@ -243,8 +241,8 @@ export function PromotionTable({
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4 text-gray-500" />
-                        <span className="text-gray-600 text-sm">
+                        <Calendar className="h-4 w-4 text-gray-500 " />
+                        <span className="text-gray-600  text-sm">
                           {formatPeriod(
                             promotion.startDate,
                             promotion.endDate,

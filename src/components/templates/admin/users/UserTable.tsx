@@ -75,11 +75,11 @@ export function UserTable({
   const filteredUsers = users;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 ">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
             <Users className="h-5 w-5" />
             {t("users.title")}
           </h2>
@@ -269,7 +269,6 @@ export function UserTable({
 
                     {/* Trạng thái */}
                     <TableCell>
-                      
                       <Badge
                         variant="secondary"
                         className={getStatusColor(
@@ -281,7 +280,6 @@ export function UserTable({
                           user.status ||
                           "INACTIVE"}
                       </Badge>
-        
                     </TableCell>
 
                     {/* Hành động */}

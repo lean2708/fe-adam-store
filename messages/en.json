@@ -21,13 +21,11 @@
     },
     "selectPlaceholder": "Select..."
   },
-
   "Locale": {
     "key": "en",
     "name": "English",
     "siteLanguage": "Site language"
   },
-
   "chatwithus": "Chat with us",
   "Login": {
     "title": "Log In",
@@ -702,7 +700,6 @@
       "phone": "Tel"
     }
   },
-
   "Admin": {
     "ACTIVE": "Active",
     "INACTIVE": "Inactive",
@@ -906,6 +903,8 @@
       "openMenu": "Open menu",
       "ACTIVE": "Active",
       "gender": {
+        "title": "Gender",
+        "placeholder": "Select gender",
         "MALE": "Male",
         "FEMALE": "Female",
         "Other": "Other"

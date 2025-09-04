@@ -12,7 +12,9 @@ export default function OrdersAdminPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedOrder, setSelectedOrder] = useState<TOrder | null>(null);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
-  const [statusFilter, setStatusFilter] = useState<SearchOrdersForAdminOrderStatusEnum | "ALL">("ALL");
+  const [statusFilter, setStatusFilter] = useState<
+    SearchOrdersForAdminOrderStatusEnum | "ALL"
+  >("ALL");
 
   const {
     orders,
@@ -22,7 +24,7 @@ export default function OrdersAdminPage() {
     handleDelete,
     handleCancel,
     handleRestore,
-    handleRefresh
+    handleRefresh,
   } = useOrders(currentPage, 10, statusFilter);
 
   const handlePageChange = (newPage: number) => {
@@ -41,22 +43,20 @@ export default function OrdersAdminPage() {
     setSelectedOrder(null);
   };
 
-  const handleStatusFilterChange = (value: SearchOrdersForAdminOrderStatusEnum | "ALL") => {
+  const handleStatusFilterChange = (
+    value: SearchOrdersForAdminOrderStatusEnum | "ALL"
+  ) => {
     setStatusFilter(value);
     setCurrentPage(0); // Reset to first page when changing filter
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="admin-page-container space-y-6 mt-4">
-        
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <OrdersStats
-            orders={orders}
-            totalElements={totalElements}
-          />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="admin-page-container space-y-6 mt-4 dark:bg-gray-900">
+        <div className="bg-white rounded-lg shadow-sm border p-6 dark:bg-gray-900">
+          <OrdersStats orders={orders} totalElements={totalElements} />
         </div>
-        <div className="bg-white rounded-lg shadow-sm border">
+        <div className="bg-white rounded-lg shadow-sm border dark:bg-gray-900">
           <OrdersTable
             orders={orders}
             loading={loading}

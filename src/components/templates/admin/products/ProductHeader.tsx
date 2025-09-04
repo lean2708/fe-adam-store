@@ -3,11 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslations } from "next-intl";
-import {
-  Plus,
-  RefreshCw,
-  Search
-} from "lucide-react";
+import { Plus, RefreshCw, Search } from "lucide-react";
 
 interface ProductHeaderProps {
   onRefresh: () => void;
@@ -20,7 +16,7 @@ export function ProductHeader({
   onRefresh,
   onCreateProduct,
   searchTerm,
-  onSearchChange
+  onSearchChange,
 }: ProductHeaderProps) {
   const t = useTranslations("Admin.products");
 
@@ -28,7 +24,7 @@ export function ProductHeader({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
             {t("productsTitle") || "Quản lý sản phẩm"}
           </h1>
           <p className="text-gray-600 mt-1">
@@ -45,10 +41,7 @@ export function ProductHeader({
             <RefreshCw className="h-4 w-4 mr-2" />
             {t("refresh") || "Refresh"}
           </Button>
-          <Button
-            onClick={onCreateProduct}
-            className="bg-black hover:bg-gray-800 text-white"
-          >
+          <Button onClick={onCreateProduct}>
             <Plus className="h-4 w-4 mr-2" />
             {t("addProduct") || "Thêm sản phẩm"}
           </Button>
