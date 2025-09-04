@@ -285,7 +285,7 @@ export function PromotionModal({
             <Button
               type="submit"
               disabled={isLoading}
-              className="px-8 py-3 bg-black hover:bg-gray-800 text-white rounded-lg"
+              className="px-8 py-3 bg-black hover:bg-gray-900 text-white rounded-lg"
             >
               {isLoading
                 ? "Đang lưu..."

@@ -221,7 +221,7 @@ export function ProductVariantsModal({
           <div className="flex justify-center pt-4 border-t">
             <Button
               onClick={handleOpenAddModal}
-              className="bg-black hover:bg-gray-800 text-white px-6 py-2"
+              className="bg-black hover:bg-gray-900 text-white px-6 py-2"
             >
               <Plus className="h-4 w-4 mr-2" />
               {t("addVariant") || "Thêm biến thể"}

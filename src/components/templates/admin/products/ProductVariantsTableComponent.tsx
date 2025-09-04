@@ -86,7 +86,7 @@ export function ProductVariantsTableComponent({
           </h3>
           <Button
             onClick={handleOpenAddModal}
-            className="w-30 bg-black hover:bg-gray-800 text-white flex items-center justify-center space-x-2 py-3"
+            className="w-30 bg-black hover:bg-gray-900 text-white flex items-center justify-center space-x-2 py-3"
           >
             <svg
               width="16"

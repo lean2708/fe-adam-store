@@ -73,7 +73,7 @@ export function SizeTable({
             <p>{t("noSizesFound")}</p>
           </div>
         ) : (
-          <div className="rounded-md border">
+          <div className="rounded-md border overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow>

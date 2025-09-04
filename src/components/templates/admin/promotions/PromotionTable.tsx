@@ -178,7 +178,7 @@ export function PromotionTable({
             <p>{t("noPromotionsFound")}</p>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-lg border border-gray-200">
+          <div className="overflow-hidden rounded-lg border ">
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-50 hover:bg-gray-50">

@@ -302,7 +302,7 @@ export function CategoryModal({
             <Button
               type="submit"
               disabled={isLoading}
-              className="flex-1 h-12 bg-black hover:bg-gray-800 text-white rounded-lg"
+              className="flex-1 h-12 bg-black hover:bg-gray-900 text-white rounded-lg"
             >
               {isLoading
                 ? "Đang lưu..."

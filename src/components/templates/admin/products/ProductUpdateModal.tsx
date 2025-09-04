@@ -273,7 +273,7 @@ export function ProductUpdateModal({
             <Button
               type="submit"
               disabled={updateMutation.isPending}
-              className="px-8 py-3 bg-black hover:bg-gray-800 text-white rounded-lg"
+              className="px-8 py-3 bg-black hover:bg-gray-900 text-white rounded-lg"
               onClick={() => console.log("CLICK SUBMIT")}
             >
               {updateMutation.isPending ? "Đang cập nhật..." : "Cập nhật"}

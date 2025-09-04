@@ -202,7 +202,7 @@ export function ColorModal({ open, onClose, editingColor }: ColorModalProps) {
                   updateMutation.isPending ||
                   form.formState.isSubmitting
                 }
-                className="bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200"
+                className="bg-black hover:bg-gray-900 dark:bg-white dark:hover:bg-gray-200"
               >
                 {editingColor ? t("update") : t("create")}
               </Button>

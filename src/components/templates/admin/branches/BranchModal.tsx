@@ -239,7 +239,7 @@ export function BranchModal({ open, onClose, editingBranch }: BranchModalProps) 
                   updateMutation.isPending ||
                   form.formState.isSubmitting
                 }
-                className="px-6 py-2 bg-black hover:bg-gray-800 text-white"
+                className="px-6 py-2 bg-black hover:bg-gray-900 text-white"
               >
                 {editingBranch ? t("update") : t("create")}
               </Button>

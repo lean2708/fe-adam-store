@@ -50,13 +50,13 @@ export function ProductHeader({
 
       {/* Search */}
       <div className="flex items-center space-x-4">
-        <div className="relative flex-1 max-w-sm border-2  rounded-lg focus-within:border-blue-500 ">
+        <div className="relative flex-1 max-w-sm rounded-lg border-2 focus-within:border-blue-500 overflow-hidden">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
             placeholder={t("searchProducts") || "Tìm kiếm sản phẩm..."}
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-10 bg-white border-0  rounded-lg"
+            className="pl-10  border-0  rounded-lg"
           />
         </div>
       </div>

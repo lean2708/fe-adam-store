@@ -361,7 +361,7 @@ export function ProductCreateModal({ open, onClose }: ProductCreateModalProps) {
             <Button 
               type="submit"
               disabled={createMutation.isPending}
-              className="px-8 py-3 bg-black hover:bg-gray-800 text-white rounded-lg"
+              className="px-8 py-3 bg-black hover:bg-gray-900 text-white rounded-lg"
             >
               {createMutation.isPending ? "Đang lưu..." : "Xác nhận"}
             </Button>

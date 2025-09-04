@@ -67,7 +67,7 @@ export function DashboardOverview({ className }: DashboardOverviewProps) {
   };
   return (
     <div className="space-y-6 col-span-7 h-full">
-      <Card className="bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm h-full flex flex-col">
+      <Card className="bg-white dark:bg-gray-900 border border-border rounded-lg shadow-sm h-full flex flex-col">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>{t("dashboard.overview.title")}</CardTitle>
 

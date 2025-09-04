@@ -299,7 +299,7 @@ export function ProductVariantsTable({
       </div>
 
       {/* Desktop Table View - Hidden on mobile */}
-      <div className="hidden sm:block rounded-md border">
+      <div className="hidden sm:block rounded-md border overflow-hidden">
         <div className="overflow-x-auto">
           <Table className="min-w-[800px]">
             <TableHeader>

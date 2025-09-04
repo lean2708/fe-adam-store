@@ -61,9 +61,9 @@ export default function PromotionsAdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 border  rounded-lg">
       <div className="admin-page-container space-y-6 mt-4 dark:bg-gray-900">
-        <div className="bg-white rounded-lg shadow-sm border dark:bg-gray-900">
+        <div className="bg-white  shadow-sm  dark:bg-gray-900">
           <PromotionTable
             promotions={promotions}
             loading={loading}

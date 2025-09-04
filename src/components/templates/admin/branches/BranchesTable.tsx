@@ -50,7 +50,7 @@ export function BranchesTable({
   const locale = useLocale();
   return (
     <div>
-      <div className="p-6 border-b bg-gray-50 dark:bg-gray-800 ">
+      <div className="p-6 border-b bg-gray-50 dark:bg-gray-900 ">
         <div className="flex items-center gap-2 justify-between">
           <div className="flex gap-3">
             <Building className="h-5 w-5 " />
@@ -65,7 +65,7 @@ export function BranchesTable({
             </Button>
             <Button
               onClick={onCreateBranch}
-              className="bg-black hover:bg-gray-800 text-white"
+              
             >
               <Plus className="h-4 w-4 mr-2" />
               {t("addBranch")}
@@ -87,7 +87,7 @@ export function BranchesTable({
             <p>{t("noBranchesFound")}</p>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-lg border border-gray-200 ">
+          <div className="overflow-hidden rounded-lg border ">
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-50 hover:bg-gray-50 ">

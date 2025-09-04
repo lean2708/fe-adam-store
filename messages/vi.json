@@ -705,6 +705,18 @@
     }
   },
   "Admin": {
+    "topsell": {
+      "title": "Các sản phẩm bán chạy",
+      "retry": "Thử lại",
+      "cannotLoad": "Không thể tải dữ liệu",
+      "cannotLoadDetail": "Đã xảy ra lỗi khi tải danh sách sản phẩm bán chạy",
+      "noData": "Không có dữ liệu sản phẩm bán chạy",
+      "tryChangeRange": "Thử thay đổi khoảng thời gian để xem dữ liệu",
+      "name": "Tên sản phẩm",
+      "sold": "Đã bán",
+      "revenue": "Doanh thu",
+      "viewAll": "Xem tất cả sản phẩm"
+    },
     "ACTIVE": "Hoạt động",
     "INACTIVE": "Không hoạt động",
     "dashboard": {
@@ -743,7 +755,6 @@
     },
     "products": {
       "productUpdated": "Sản phẩm đã được cập nhật thành công",
-
       "restorePayment": "Khôi phục",
       "updateProductTitle": "Cập nhật sản phẩm",
       "updateProduct": "Cập nhật sản phẩm",
@@ -884,8 +895,23 @@
       "INACTIVE": "Không hoạt động",
       "deletePayment": "Xóa"
     },
-
+    "status": {
+      "ACTIVE": "Hoạt động",
+      "INACTIVE": "Ngừng hoạt động",
+      "SUSPENDED": "Tạm khóa"
+    },
     "users": {
+      "headers": {
+        "id": "ID",
+        "avatar": "Avatar",
+        "name": "Tên",
+        "email": "Email",
+        "gender": "Giới tính",
+        "dob": "Sinh nhật",
+        "roles": "Vai trò",
+        "status": "Trạng thái",
+        "actions": "Hành động"
+      },
       "ACTIVE": "Hoạt động",
       "INACTIVE": "Không hoạt động",
       "title": "Quản lý người dùng",
@@ -977,7 +1003,6 @@
       "restoreBranch": "Khôi phục",
       "deleteBranchConfirm": "Bạn có chắc chắn muốn xóa chi nhánh này không?"
     },
-
     "sizes": {
       "ACTIVE": "Hoạt động",
       "INACTIVE": "Không hoạt động",
@@ -1282,6 +1307,7 @@
       "refreshMessagesError": "Lỗi khi làm mới tin nhắn"
     },
     "common": {
+      "na": "Không có",
       "refresh": "Làm mới",
       "add": "Thêm",
       "edit": "Sửa",

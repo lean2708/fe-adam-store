@@ -128,7 +128,7 @@ export function ConversationsList({
                     ? "opacity-50 cursor-not-allowed"
                     : isSelected
                     ? "bg-blue-50 border border-blue-200 cursor-pointer dark:bg-blue-900 dark:border-blue-700"
-                    : "hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-900 cursor-pointer"
                 }`}
                 onClick={() =>
                   isWebSocketConnected && onConversationSelect(conversation)

@@ -56,7 +56,7 @@ export default function OrdersAdminPage() {
         <div className="bg-white rounded-lg shadow-sm border p-6 dark:bg-gray-900">
           <OrdersStats orders={orders} totalElements={totalElements} />
         </div>
-        <div className="bg-white rounded-lg shadow-sm border dark:bg-gray-900">
+        <div className="bg-white overflow-hidden shadow-sm border rounded-lg dark:bg-gray-900">
           <OrdersTable
             orders={orders}
             loading={loading}

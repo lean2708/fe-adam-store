@@ -83,7 +83,7 @@ export function OrdersTable({
 
   return (
     <div>
-      <div className="p-6 border-b bg-gray-50 dark:bg-gray-900">
+      <div className=" p-6  bg-gray-50 dark:bg-gray-900">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <ShoppingCart className="h-5 w-5 text-gray-700 dark:text-white" />
@@ -135,7 +135,7 @@ export function OrdersTable({
             <p>{t("noOrdersFound")}</p>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-lg border border-gray-200">
+          <div className="overflow-hidden rounded-lg border ">
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-50 hover:bg-gray-50">

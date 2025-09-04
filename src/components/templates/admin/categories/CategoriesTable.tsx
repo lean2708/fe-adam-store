@@ -51,7 +51,7 @@ export function CategoriesTable({
 
   if (loading) {
     return (
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-hidden">
         <div className="overflow-x-auto">
           <Table className="min-w-[800px]">
             <TableHeader>
@@ -168,7 +168,7 @@ export function CategoriesTable({
   return (
     <div>
       {/* Header */}
-      <div className="p-6 border-b bg-gray-50 dark:bg-gray-900">
+      <div className="p-6 border-b bg-gray-50 dark:bg-gray-900 ">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2 ">
             <FolderTree className="h-5 w-5 text-gray-700 dark:text-white" />
@@ -177,11 +177,11 @@ export function CategoriesTable({
             </h2>
           </div>
           <div className="flex gap-3">
-            <Button onClick={onRefresh} variant="outline" size="sm">
+            <Button onClick={onRefresh} variant="outline" >
               <RefreshCw className="h-4 w-4 mr-2" />
               {t("refresh") || "Làm mới"}
             </Button>
-            <Button onClick={onCreateCategory} size="sm">
+            <Button onClick={onCreateCategory} >
               <Plus className="h-4 w-4 mr-2" />
               {t("addCategory") || "Thêm danh mục"}
             </Button>
@@ -266,7 +266,7 @@ export function CategoriesTable({
         </div>
 
         {/* Desktop Table View - Hidden on mobile */}
-        <div className="hidden sm:block rounded-md border">
+        <div className="hidden sm:block rounded-md border overflow-hidden">
           <div className="overflow-x-auto">
             <Table className="min-w-[800px]">
               <TableHeader>

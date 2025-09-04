@@ -62,7 +62,7 @@ export default function PaymentHistoryAdminPage() {
             totalElements={totalElements}
           />
         </div>
-        <div className="bg-white rounded-lg shadow-sm border dark:bg-gray-900">
+        <div className="bg-white overflow-hidden rounded-lg shadow-sm border dark:bg-gray-900">
           <PaymentHistoryTable
             payments={payments}
             loading={loading}

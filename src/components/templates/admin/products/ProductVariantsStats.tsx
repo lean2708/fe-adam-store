@@ -87,7 +87,7 @@ export function ProductVariantsStats({ variants, totalElements }: ProductVariant
         return (
           <Card
             key={index}
-            className="bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm"
+            className="bg-white dark:bg-gray-900 border border-border rounded-lg shadow-sm"
           >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-gray-600">

@@ -58,7 +58,7 @@ export function ChatHeader({
           {onCreateConversation && (
             <Button
               onClick={onCreateConversation}
-              className="bg-black hover:bg-gray-800 text-white"
+              className="bg-black hover:bg-gray-900 text-white"
             >
               <Plus className="h-4 w-4 mr-2" />
               {t("createConversation") || "Tạo cuộc trò chuyện"}
@@ -78,7 +78,7 @@ export function ChatHeader({
 
       {/* Search and Status */}
       <div className="flex items-center justify-between gap-4">
-        <div className="flex-1 max-w-md relative">
+        <div className="relative flex-1 max-w-sm rounded-lg border-2 focus-within:border-blue-500 overflow-hidden">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           <Input
             placeholder={
@@ -87,7 +87,7 @@ export function ChatHeader({
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
             onKeyDown={handleSearchKeyDown}
-            className="pl-10"
+            className="pl-10 rounded-lg"
           />
         </div>
 

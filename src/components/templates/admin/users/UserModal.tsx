@@ -448,7 +448,7 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
               <Button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2 bg-black text-white hover:bg-gray-800"
+                className="px-6 py-2 bg-black text-white hover:bg-gray-900"
               >
                 {loading ? "Đang lưu..." : isEditing ? "Cập nhật" : "Xác nhận"}
               </Button>

@@ -92,23 +92,21 @@ export default function ProductsPage() {
           />
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border">
-          <ProductVariantsTable
-            variants={products}
-            loading={loading}
-            onEdit={handleEditProduct}
-            onUpdate={handleUpdateProduct}
-            onDelete={handleDelete}
-            onRestore={handleRestore}
-            onViewDetails={handleViewDetails}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            totalElements={totalElements}
-            pageSize={pageSize}
-            onPageChange={handlePageChange}
-            onPageSizeChange={handlePageSizeChange}
-          />
-        </div>
+        <ProductVariantsTable
+          variants={products}
+          loading={loading}
+          onEdit={handleEditProduct}
+          onUpdate={handleUpdateProduct}
+          onDelete={handleDelete}
+          onRestore={handleRestore}
+          onViewDetails={handleViewDetails}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalElements={totalElements}
+          pageSize={pageSize}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+        />
 
         <ProductVariantModal
           open={isDialogOpen}

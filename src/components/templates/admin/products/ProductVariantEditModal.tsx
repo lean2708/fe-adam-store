@@ -351,7 +351,7 @@ export function ProductVariantEditModal({
               disabled={
                 variant ? updateMutation.isPending : createMutation.isPending
               }
-              className="px-6 py-2 bg-black hover:bg-gray-800 text-white"
+              className="px-6 py-2 bg-black hover:bg-gray-900 text-white"
             >
               {variant
                 ? updateMutation.isPending

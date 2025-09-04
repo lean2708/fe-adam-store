@@ -52,7 +52,7 @@ export default function ProductItem({
         {/* Hover Bottom Panel */}
         <div className="absolute bottom-0 left-2 right-2 bg-white/95 backdrop-blur-sm p-3 sm:p-4 md:p-5 transform translate-y-full group-hover:-translate-y-2 transition-transform duration-300 ease-out rounded-lg border border-gray-200 shadow-lg">
           {/* Add to Cart Button */}
-          <button className="w-full bg-black text-white py-2 sm:py-2.5 md:py-3 rounded-lg font-medium text-xs sm:text-sm mb-2 sm:mb-3 hover:bg-gray-800 transition-colors shadow-sm border border-black/10">
+          <button className="w-full bg-black text-white py-2 sm:py-2.5 md:py-3 rounded-lg font-medium text-xs sm:text-sm mb-2 sm:mb-3 hover:bg-gray-900 transition-colors shadow-sm border border-black/10">
             {t("product_infor.product_actions.add_to_cart")} +
           </button>
 

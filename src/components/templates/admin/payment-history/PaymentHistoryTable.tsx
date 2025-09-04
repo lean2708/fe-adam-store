@@ -4,7 +4,14 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useTranslations, useLocale } from "next-intl";
 import { formatDate, formatCurrency, getStatusColor } from "@/lib/utils";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Select,
   SelectContent,
@@ -80,7 +87,7 @@ export function PaymentHistoryTable({
 
   return (
     <div>
-      <div className="p-6 border-b bg-gray-50 dark:bg-gray-900">
+      <div className=" p-6 border-b bg-gray-50 dark:bg-gray-900">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <CreditCard className="h-5 w-5 text-gray-700" />
@@ -164,7 +171,7 @@ export function PaymentHistoryTable({
             <p>{t("noPaymentsFound")}</p>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-lg border border-gray-200">
+          <div className="overflow-hidden rounded-lg border ">
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-50 hover:bg-gray-50">
