@@ -67,7 +67,7 @@ export default function ProductVariantsPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
             {t("productNotFound") || "Product not found"}
           </h2>
           <Button onClick={() => router.back()} variant="outline">
@@ -147,12 +147,12 @@ export default function ProductVariantsPage() {
 
   return (
     <>
-      <div className="space-y-6">
+      <div className="space-y-6 dark:bg-gray-900">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                 {product.name}
               </h1>
             </div>
@@ -173,10 +173,10 @@ export default function ProductVariantsPage() {
         </div>
 
         {/* Product Information Section */}
-        <div className="bg-white rounded-lg shadow-sm border">
+        <div className="bg-white rounded-lg shadow-sm border dark:bg-gray-900">
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t("productDetails") || "Product Details"}
               </h2>
               <Button
@@ -244,7 +244,7 @@ export default function ProductVariantsPage() {
                   </span>
                 </div>
                 <div className="col-span-9">
-                  <span className="text-sm text-gray-900">
+                  <span className="text-sm text-gray-900 dark:text-white">
                     {product.category.name}
                   </span>
                 </div>
@@ -259,7 +259,7 @@ export default function ProductVariantsPage() {
                 <div className="col-span-9">
                   <div className="flex items-center">
                     <span className="text-yellow-400 mr-1">⭐</span>
-                    <span className="text-sm text-gray-900 font-medium">
+                    <span className="text-sm text-gray-900 dark:text-white font-medium">
                       {product.averageRating?.toFixed(1) || "0.0"}
                     </span>
                   </div>
@@ -273,7 +273,7 @@ export default function ProductVariantsPage() {
                   </span>
                 </div>
                 <div className="col-span-9">
-                  <span className="text-sm text-gray-900 font-semibold">
+                  <span className="text-sm text-gray-900 dark:text-white font-semibold">
                     {formatCurrency(product.minPrice || 0, locale)} -{" "}
                     {formatCurrency(product.maxPrice || 0, locale)}
                   </span>
@@ -291,7 +291,7 @@ export default function ProductVariantsPage() {
                     {product.colors?.map((color, index) => (
                       <span
                         key={color.id}
-                        className="inline-block text-sm text-gray-900"
+                        className="inline-block text-sm text-gray-900 dark:text-white"
                       >
                         {color.name}
                         {index < (product.colors?.length || 0) - 1 && ", "}
@@ -321,7 +321,7 @@ export default function ProductVariantsPage() {
                     ).map((size, index, array) => (
                       <span
                         key={size}
-                        className="inline-block text-sm text-gray-900"
+                        className="inline-block text-sm text-gray-900 dark:text-white"
                       >
                         {size}
                         {index < array.length - 1 && ", "}
@@ -335,7 +335,7 @@ export default function ProductVariantsPage() {
             {/* Product Description */}
             {product.description && (
               <div className="mt-6 pt-6 border-t">
-                <h3 className="text-sm font-bold text-black mb-3">
+                <h3 className="text-sm font-bold text-black mb-3 dark:text-white">
                   {t("description") || "Product Description"}
                 </h3>
                 <div className="text-sm text-gray-600 space-y-2">

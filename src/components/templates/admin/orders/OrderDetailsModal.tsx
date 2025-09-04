@@ -52,7 +52,7 @@ export function OrderDetailsModal({
       showOverlay={true}
       closeOnClickOutside={false}
       showCloseButton={true}
-      className="bg-white rounded-lg shadow-xl"
+      className="bg-white rounded-lg shadow-xl "
     >
       <div className="flex items-center justify-between p-6 border-b">
         {/* Left side: icon + text */}

@@ -16,8 +16,8 @@ interface SearchInputProps {
 
 const variantStyles = {
   default: "border-2 adam-store-border",
-  pill: "bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 shadow-lg hover:bg-gray-200 dark:hover:bg-gray-700 hover:scale-105",
-  expanded: "bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-3 shadow-lg border-2 border-gray-200 dark:border-gray-700 transform transition-all duration-500 ease-out scale-100 hover:scale-105 relative z-[9999]"
+  pill: "bg-gray-100 dark:bg-gray-900 rounded-full px-4 py-2 border-2 border-gray-200 dark:border-gray-700 shadow-lg hover:bg-gray-200 dark:hover:bg-gray-700 hover:scale-105",
+  expanded: "bg-gray-100 dark:bg-gray-900 rounded-full px-4 py-3 shadow-lg border-2 border-gray-200 dark:border-gray-700 transform transition-all duration-500 ease-out scale-100 hover:scale-105 relative z-[9999]"
 }
 
 export default function SearchInput({

@@ -90,7 +90,10 @@ export function ProductUpdateModal({
             newImageIds = uploadResult.data.map((file: any) => file.id);
           }
         } catch (error) {
-          console.warn("Image upload failed, proceeding without new images:", error);
+          console.warn(
+            "Image upload failed, proceeding without new images:",
+            error
+          );
         }
       }
 
@@ -157,14 +160,17 @@ export function ProductUpdateModal({
           {/* Product Name and Category Row */}
           <div className="grid grid-cols-1 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-sm text-gray-700">
+              <Label
+                htmlFor="name"
+                className="text-sm text-gray-700 dark:text-white"
+              >
                 Tên sản phẩm
               </Label>
               <Input
                 id="name"
                 placeholder="Nhập tên sản phẩm"
                 {...form.register("name")}
-                className={`bg-[#F0F0F0] rounded-xl h-12 ${
+                className={`bg-[#F0F0F0] rounded-xl h-12 dark:text-black ${
                   form.formState.errors.name ? "border-red-500" : ""
                 }`}
               />
@@ -213,14 +219,17 @@ export function ProductUpdateModal({
 
           {/* Description */}
           <div className="space-y-2">
-            <Label htmlFor="description" className="text-sm text-gray-700">
+            <Label
+              htmlFor="description"
+              className="text-sm text-gray-700 dark:text-white"
+            >
               Mô tả
             </Label>
             <Textarea
               id="description"
               placeholder="Nhập mô tả sản phẩm"
               {...form.register("description")}
-              className={`bg-[#F0F0F0] rounded-xl min-h-[80px] ${
+              className={`bg-[#F0F0F0] rounded-xl min-h-[80px] dark:text-black ${
                 form.formState.errors.description ? "border-red-500" : ""
               }`}
             />
@@ -233,14 +242,20 @@ export function ProductUpdateModal({
 
           {/* Image Section */}
           <div className="space-y-2">
-            <Label className="text-sm text-gray-700">Hình ảnh</Label>
+            <Label className="text-sm text-gray-700 dark:text-white">
+              Hình ảnh
+            </Label>
             <MultiImageUpload
               onChange={setSelectedImages}
-              initialImageUrls={product?.images
-                ?.filter((img): img is { id: number; imageUrl?: string } =>
-                  typeof img.id === 'number' && !imagesToDelete.includes(img.id)
-                )
-                .map(img => ({ id: img.id, url: img.imageUrl || '' })) || []}
+              initialImageUrls={
+                product?.images
+                  ?.filter(
+                    (img): img is { id: number; imageUrl?: string } =>
+                      typeof img.id === "number" &&
+                      !imagesToDelete.includes(img.id)
+                  )
+                  .map((img) => ({ id: img.id, url: img.imageUrl || "" })) || []
+              }
               onRemoveInitialImage={handleRemoveInitialImage}
             />
           </div>
@@ -258,7 +273,7 @@ export function ProductUpdateModal({
             <Button
               type="submit"
               disabled={updateMutation.isPending}
-              className="px-8 py-3 bg-black hover:bg-gray-800 text-white rounded-lg"
+              className="px-8 py-3 bg-black hover:bg-gray-900 text-white rounded-lg"
               onClick={() => console.log("CLICK SUBMIT")}
             >
               {updateMutation.isPending ? "Đang cập nhật..." : "Cập nhật"}

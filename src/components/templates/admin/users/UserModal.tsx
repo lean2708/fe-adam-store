@@ -176,8 +176,8 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
       showCloseButton={true}
       className="bg-white rounded-lg shadow-xl"
     >
-      <div className="p-6 border-b">
-        <h2 className="text-xl font-semibold text-gray-900">
+      <div className="p-6 border-b ">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           {isEditing ? "Chỉnh sửa người dùng" : "Thêm người dùng"}
         </h2>
         <p className="text-sm text-gray-600 mt-1">
@@ -200,7 +200,7 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
                     <FormLabel>Tên người dùng</FormLabel>
                     <FormControl>
                       <Input
-                        className="bg-[#F0F0F0] rounded-xl"
+                        className="bg-[#F0F0F0] rounded-xl "
                         placeholder="Nhập tên người dùng"
                         {...field}
                       />
@@ -448,7 +448,7 @@ export function UserModal({ open, onClose, user }: UserModalProps) {
               <Button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2 bg-black text-white hover:bg-gray-800"
+                className="px-6 py-2 bg-black text-white hover:bg-gray-900"
               >
                 {loading ? "Đang lưu..." : isEditing ? "Cập nhật" : "Xác nhận"}
               </Button>

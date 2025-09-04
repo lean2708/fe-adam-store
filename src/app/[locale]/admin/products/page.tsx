@@ -21,7 +21,15 @@ export default function ProductsPage() {
   const [pageSize, setPageSize] = useState(20);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { products, totalElements, totalPages, loading, handleDelete, handleRestore, handleRefresh } = useProducts(currentPage, pageSize, searchTerm);
+  const {
+    products,
+    totalElements,
+    totalPages,
+    loading,
+    handleDelete,
+    handleRestore,
+    handleRefresh,
+  } = useProducts(currentPage, pageSize, searchTerm);
 
   const handleCreateProduct = () => {
     setIsCreateModalOpen(true);
@@ -44,14 +52,10 @@ export default function ProductsPage() {
     router.push(`/admin/products/${product.id}`);
   };
 
-
-
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setEditingProduct(null);
   };
-
-
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 0 && newPage < totalPages) {
@@ -70,9 +74,9 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="admin-page-container space-y-6">
-        <div className="bg-white rounded-lg shadow-sm border p-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="admin-page-container space-y-6 dark:bg-gray-900">
+        <div className="bg-white rounded-lg shadow-sm border p-6 dark:bg-gray-900">
           <ProductHeader
             onRefresh={handleRefresh}
             onCreateProduct={handleCreateProduct}
@@ -81,30 +85,28 @@ export default function ProductsPage() {
           />
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border p-6">
+        <div className="bg-white rounded-lg shadow-sm border p-6 dark:bg-gray-900">
           <ProductVariantsStats
             variants={products}
             totalElements={totalElements}
           />
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border">
-          <ProductVariantsTable
-            variants={products}
-            loading={loading}
-            onEdit={handleEditProduct}
-            onUpdate={handleUpdateProduct}
-            onDelete={handleDelete}
-            onRestore={handleRestore}
-            onViewDetails={handleViewDetails}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            totalElements={totalElements}
-            pageSize={pageSize}
-            onPageChange={handlePageChange}
-            onPageSizeChange={handlePageSizeChange}
-          />
-        </div>
+        <ProductVariantsTable
+          variants={products}
+          loading={loading}
+          onEdit={handleEditProduct}
+          onUpdate={handleUpdateProduct}
+          onDelete={handleDelete}
+          onRestore={handleRestore}
+          onViewDetails={handleViewDetails}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalElements={totalElements}
+          pageSize={pageSize}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+        />
 
         <ProductVariantModal
           open={isDialogOpen}
@@ -112,14 +114,10 @@ export default function ProductsPage() {
           editingVariant={editingProduct}
         />
 
-
-
         <ProductCreateModal
           open={isCreateModalOpen}
           onClose={handleCloseCreateModal}
         />
-
-
       </div>
     </div>
   );

@@ -50,9 +50,9 @@ export default function SizesAdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="admin-page-container space-y-6 mt-4">
-        <div className="bg-white rounded-lg shadow-sm border p-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="admin-page-container space-y-6 mt-4 dark:bg-gray-900">
+        <div className="bg-white rounded-lg shadow-sm border p-6 dark:bg-gray-900">
           <SizeTable
             sizes={sizes}
             loading={loading}

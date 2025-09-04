@@ -28,7 +28,7 @@ export function DashboardTopProducts({ className }: DashboardTopProductsProps) {
 
   return (
     <Card
-      className={`bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm ${className}`}
+      className={`bg-white dark:bg-gray-900 border border-border rounded-lg shadow-sm ${className}`}
     >
       <CardHeader className="flex flex-row items-center justify-between">
         <div>

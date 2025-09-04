@@ -380,7 +380,7 @@ export function CustomerChatWidget() {
                 !isWebSocketConnected
               }
               size='sm'
-              className='adam-store-bg-dark hover:bg-gray-800 shrink-0'
+              className='adam-store-bg-dark hover:bg-gray-900 shrink-0'
               aria-label='Send message'
             >
               {uploadAndSendMutation.isPending ? (

@@ -36,7 +36,7 @@ export function CategoriesHeader({ onRefresh, onCreateCategory }: CategoriesHead
           <RefreshCw className="h-4 w-4 mr-2" />
           {t("refresh") || "Làm mới"}
         </Button>
-        <Button onClick={onCreateCategory} className="bg-black hover:bg-gray-800 text-white">
+        <Button onClick={onCreateCategory} className="bg-black hover:bg-gray-900 text-white">
           <Plus className="h-4 w-4 mr-2" />
           {t("addCategory") || "Thêm danh mục"}
         </Button>

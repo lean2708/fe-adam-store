@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { RefreshCw, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { formatCurrency } from "@/lib/utils";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useTopProducts } from "@/hooks/admin/useTopProducts";
 
 interface TopProductsProps {
@@ -24,8 +24,8 @@ interface TopProductsProps {
 
 export function TopProducts({ dateRange }: TopProductsProps) {
   const locale = useLocale();
+  const t = useTranslations("Admin.topsell");
 
-  // Use React Query hook for data fetching
   const {
     products,
     isLoading,
@@ -50,16 +50,18 @@ export function TopProducts({ dateRange }: TopProductsProps) {
         </div>
 
         {/* Table skeleton */}
-        <div className="border rounded-lg">
+        <div className="border rounded-lg overflow-hidden">
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
-                <TableHead className="text-gray-900  font-medium">Tên sản phẩm</TableHead>
-                <TableHead className="text-gray-900  font-medium text-center">
-                  Đã bán
+                <TableHead className="text-gray-900 font-medium">
+                  {t("name")}
                 </TableHead>
-                <TableHead className="text-gray-900  font-medium text-right">
-                  Tổng doanh thu
+                <TableHead className="text-gray-900 font-medium text-center">
+                  {t("sold")}
+                </TableHead>
+                <TableHead className="text-gray-900 font-medium text-right">
+                  {t("revenue")}
                 </TableHead>
               </TableRow>
             </TableHeader>
@@ -92,7 +94,7 @@ export function TopProducts({ dateRange }: TopProductsProps) {
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold">Các sản phẩm bán chạy</h3>
+          <h3 className="text-lg font-semibold">{t("title")}</h3>
           <Button
             variant="outline"
             size="sm"
@@ -102,7 +104,7 @@ export function TopProducts({ dateRange }: TopProductsProps) {
             <RefreshCw
               className={`w-4 h-4 mr-2 ${isFetching ? "animate-spin" : ""}`}
             />
-            Thử lại
+            {t("retry")}
           </Button>
         </div>
 
@@ -110,10 +112,9 @@ export function TopProducts({ dateRange }: TopProductsProps) {
           <div className="text-center space-y-3">
             <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto" />
             <div>
-              <p className="text-sm font-medium">Không thể tải dữ liệu</p>
+              <p className="text-sm font-medium">{t("cannotLoad")}</p>
               <p className="text-xs text-muted-foreground">
-                {error?.message ||
-                  "Đã xảy ra lỗi khi tải danh sách sản phẩm bán chạy"}
+                {error?.message || t("cannotLoadDetail")}
               </p>
             </div>
           </div>
@@ -127,10 +128,8 @@ export function TopProducts({ dateRange }: TopProductsProps) {
     return (
       <div className="border rounded-lg p-8">
         <div className="text-center py-8 text-muted-foreground">
-          <p>Không có dữ liệu sản phẩm bán chạy</p>
-          <p className="text-xs mt-1">
-            Thử thay đổi khoảng thời gian để xem dữ liệu
-          </p>
+          <p>{t("noData")}</p>
+          <p className="text-xs mt-1">{t("tryChangeRange")}</p>
         </div>
       </div>
     );
@@ -139,13 +138,19 @@ export function TopProducts({ dateRange }: TopProductsProps) {
   return (
     <div className="space-y-4">
       {/* Products Table */}
-      <div className="border rounded-lg">
+      <div className="border rounded-lg overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/50">
-              <TableHead className="text-gray-900  font-medium">Tên sản phẩm</TableHead>
-              <TableHead className="text-gray-900  font-medium text-center">Đã bán</TableHead>
-              <TableHead className="text-gray-900  font-medium text-right">Doanh thu</TableHead>
+              <TableHead className="text-gray-900 font-medium">
+                {t("name")}
+              </TableHead>
+              <TableHead className="text-gray-900 font-medium text-center">
+                {t("sold")}
+              </TableHead>
+              <TableHead className="text-gray-900 font-medium text-right">
+                {t("revenue")}
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -153,7 +158,8 @@ export function TopProducts({ dateRange }: TopProductsProps) {
               <TableRow key={product.productId} className="hover:bg-muted/50">
                 <TableCell>
                   <div className="flex items-center space-x-3">
-                    <div className="w-20 h-25 bg-white rounded-xl flex items-center justify-center shadow-sm overflow-hidden">
+                    {/* Note: Tailwind doesn't have h-25; use arbitrary or a standard size */}
+                    <div className="w-20 h-[100px] bg-white rounded-xl flex items-center justify-center shadow-sm overflow-hidden">
                       {product.imageUrl ? (
                         <img
                           src={product.imageUrl}
@@ -195,7 +201,7 @@ export function TopProducts({ dateRange }: TopProductsProps) {
           href="/admin/products"
           className="text-sm text-primary hover:underline"
         >
-          Xem tất cả sản phẩm →
+          {t("viewAll")} →
         </Link>
       </div>
     </div>

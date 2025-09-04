@@ -18,10 +18,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  addColorAction,
-  updateColorAction
-} from "@/actions/colorActions";
+import { addColorAction, updateColorAction } from "@/actions/colorActions";
 import { colorSchema, type ColorFormData } from "@/actions/schema/colorSchema";
 import type { TColor } from "@/types";
 
@@ -34,23 +31,23 @@ interface ColorModalProps {
 export function ColorModal({ open, onClose, editingColor }: ColorModalProps) {
   const t = useTranslations("Admin.colors");
   const queryClient = useQueryClient();
-  
+
   const form = useForm<ColorFormData>({
     resolver: zodResolver(colorSchema),
     defaultValues: {
-      name: ""
-    }
+      name: "",
+    },
   });
 
   // Update form data when editingColor changes
   useEffect(() => {
     if (editingColor) {
       form.reset({
-        name: editingColor.name || ""
+        name: editingColor.name || "",
       });
     } else {
       form.reset({
-        name: ""
+        name: "",
       });
     }
   }, [editingColor, form]);
@@ -66,7 +63,7 @@ export function ColorModal({ open, onClose, editingColor }: ColorModalProps) {
             if (messages && messages.length > 0) {
               form.setError(field as keyof ColorFormData, {
                 type: "server",
-                message: messages[0]
+                message: messages[0],
               });
             }
           });
@@ -78,7 +75,7 @@ export function ColorModal({ open, onClose, editingColor }: ColorModalProps) {
     onSuccess: () => {
       toast.success("Color created successfully");
       handleClose();
-      queryClient.invalidateQueries({ queryKey: ['colors'] });
+      queryClient.invalidateQueries({ queryKey: ["colors"] });
     },
     onError: (error: Error) => {
       toast.error(error.message);
@@ -86,7 +83,13 @@ export function ColorModal({ open, onClose, editingColor }: ColorModalProps) {
   });
 
   const updateMutation = useMutation({
-    mutationFn: async ({ id, formData }: { id: string; formData: FormData }) => {
+    mutationFn: async ({
+      id,
+      formData,
+    }: {
+      id: string;
+      formData: FormData;
+    }) => {
       const result = await updateColorAction(id, formData);
       if (!result.success) {
         // Handle validation errors
@@ -95,7 +98,7 @@ export function ColorModal({ open, onClose, editingColor }: ColorModalProps) {
             if (messages && messages.length > 0) {
               form.setError(field as keyof ColorFormData, {
                 type: "server",
-                message: messages[0]
+                message: messages[0],
               });
             }
           });
@@ -107,7 +110,7 @@ export function ColorModal({ open, onClose, editingColor }: ColorModalProps) {
     onSuccess: () => {
       toast.success("Color updated successfully");
       handleClose();
-      queryClient.invalidateQueries({ queryKey: ['colors'] });
+      queryClient.invalidateQueries({ queryKey: ["colors"] });
     },
     onError: (error: Error) => {
       toast.error(error.message);
@@ -119,7 +122,10 @@ export function ColorModal({ open, onClose, editingColor }: ColorModalProps) {
     formDataObj.append("name", values.name);
 
     if (editingColor) {
-      updateMutation.mutate({ id: editingColor.id.toString(), formData: formDataObj });
+      updateMutation.mutate({
+        id: editingColor.id.toString(),
+        formData: formDataObj,
+      });
     } else {
       createMutation.mutate(formDataObj);
     }
@@ -142,17 +148,20 @@ export function ColorModal({ open, onClose, editingColor }: ColorModalProps) {
       className="bg-white rounded-lg shadow-xl"
     >
       <div className="p-6 border-b">
-        <h2 className="text-xl font-semibold text-gray-900">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           {editingColor ? t("editColor") : t("createNewColor")}
         </h2>
-        <p className="text-sm text-gray-600 mt-1">
+        <p className="text-sm text-gray-600 mt-1 dark:text-white">
           {editingColor ? t("updateColorInfo") : t("addNewColor")}
         </p>
       </div>
 
-      <ModalBody className="p-6">
+      <ModalBody className="p-6 dark:bg-gray-900">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="bg-white">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="bg-white  dark:bg-gray-900"
+          >
             <div className="grid gap-4 py-6 px-6">
               <FormField
                 control={form.control}
@@ -193,7 +202,7 @@ export function ColorModal({ open, onClose, editingColor }: ColorModalProps) {
                   updateMutation.isPending ||
                   form.formState.isSubmitting
                 }
-                className="bg-black hover:bg-gray-800"
+                className="bg-black hover:bg-gray-900 dark:bg-white dark:hover:bg-gray-200"
               >
                 {editingColor ? t("update") : t("create")}
               </Button>

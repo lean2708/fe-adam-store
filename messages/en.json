@@ -21,13 +21,11 @@
     },
     "selectPlaceholder": "Select..."
   },
-
   "Locale": {
     "key": "en",
     "name": "English",
     "siteLanguage": "Site language"
   },
-
   "chatwithus": "Chat with us",
   "Login": {
     "title": "Log In",
@@ -702,8 +700,24 @@
       "phone": "Tel"
     }
   },
-
   "Admin": {
+    "status": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
+      "SUSPENDED": "Suspended"
+    },
+    "topsell": {
+      "title": "Top Selling Products",
+      "retry": "Retry",
+      "cannotLoad": "Unable to load data",
+      "cannotLoadDetail": "An error occurred while loading the top-selling products",
+      "noData": "No top-selling product data available",
+      "tryChangeRange": "Try changing the date range to view data",
+      "name": "Product Name",
+      "sold": "Sold",
+      "revenue": "Revenue",
+      "viewAll": "View all products"
+    },
     "ACTIVE": "Active",
     "INACTIVE": "Inactive",
     "dashboard": {
@@ -882,6 +896,17 @@
       "INACTIVE": "Inactive"
     },
     "users": {
+      "headers": {
+        "id": "ID",
+        "avatar": "Avatar",
+        "name": "Name",
+        "email": "Email",
+        "gender": "Gender",
+        "dob": "Birthday",
+        "roles": "Roles",
+        "status": "Status",
+        "actions": "Actions"
+      },
       "title": "Users Management",
       "description": "Manage system users",
       "addUser": "Add User",
@@ -906,6 +931,8 @@
       "openMenu": "Open menu",
       "ACTIVE": "Active",
       "gender": {
+        "title": "Gender",
+        "placeholder": "Select gender",
         "MALE": "Male",
         "FEMALE": "Female",
         "Other": "Other"
@@ -1255,9 +1282,10 @@
       "refreshMessagesError": "Error refreshing messages"
     },
     "common": {
-      "add": "Add",
       "edit": "Edit",
       "delete": "Delete",
+      "na": "N/A",
+      "add": "Add",
       "save": "Save",
       "cancel": "Cancel",
       "search": "Search",

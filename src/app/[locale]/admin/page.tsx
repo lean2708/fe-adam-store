@@ -31,7 +31,7 @@ export default function AdminDashboard() {
           {/* Calendar Date Picker */}
 
           {/* Recent Orders */}
-          <Card className="bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm h-full flex flex-col">
+          <Card className="bg-white dark:bg-gray-900 border border-border rounded-lg shadow-sm h-full flex flex-col">
             <CardHeader>
               <CardTitle>{t("dashboard.recentOrders.title")}</CardTitle>
               <CardDescription>
