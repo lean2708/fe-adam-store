@@ -7,15 +7,20 @@ import usePaymentMethod from '@/hooks/(order)/usePaymentMethod';
 import { useEffect } from 'react';
 import { PAYMENT_METHODS } from '@/enums';
 import { useOrderStore } from '@/stores/orderStore';
+import { useTranslations } from 'next-intl';
 
 export function PaymentSection() {
+  const t = useTranslations('Order');
   const setPaymentMethod = useOrderStore((state) => state.setPaymentMethod);
 
   const { listPromotion, selectedPromotion, handleSelectPromotion } =
     usePromotions();
 
-  const { selectedMethod, availableMethods, handleSelectPaymentMethod } =
-    usePaymentMethod();
+  const {
+    selectedMethod,
+    getTranslatedAvailableMethods,
+    handleSelectPaymentMethod,
+  } = usePaymentMethod();
 
   // Handle payment method change with fee calculation
   const handlePaymentMethodChange = (method: PAYMENT_METHODS) => {
@@ -23,6 +28,7 @@ export function PaymentSection() {
     setPaymentMethod(method);
   };
 
+  const paymentMethods = getTranslatedAvailableMethods(t);
   useEffect(() => {
     return () => {
       sessionStorage.removeItem(`payment-method-storage`);
@@ -31,7 +37,9 @@ export function PaymentSection() {
 
   return (
     <div>
-      <h2 className='text-2xl font-bold text-primary mb-4'>Thanh toán</h2>
+      <h2 className='text-2xl font-bold text-primary mb-4'>
+        {t('payment_methods.header')}
+      </h2>
 
       <Promotions
         promotionList={listPromotion}
@@ -42,7 +50,7 @@ export function PaymentSection() {
       <PaymentMethod
         selectedMethod={selectedMethod}
         onPaymentMethodChange={handlePaymentMethodChange}
-        availableMethods={availableMethods}
+        availableMethods={paymentMethods}
       />
     </div>
   );

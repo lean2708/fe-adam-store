@@ -21,21 +21,193 @@
     },
     "selectPlaceholder": "Select..."
   },
-
   "Locale": {
     "key": "en",
     "name": "English",
     "siteLanguage": "Site language"
   },
-
   "chatwithus": "Chat with us",
-
+  "Login": {
+    "title": "Log In",
+    "sub_title": "Log in with the account you have registered with us",
+    "email": {
+      "label": "Email",
+      "placeholder": "Email Address",
+      "validation": {
+        "invalid": "Invalid email",
+        "required": "Email is required"
+      }
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Password",
+      "validation": {
+        "required": "Password is required"
+      }
+    },
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "register": "Create an account now",
+    "login": "Log In",
+    "invalidCredentials": "Invalid login credentials",
+    "accountBlocked": "Your account has been blocked. Please contact support.",
+    "success": {
+      "title": "Login successful",
+      "message": "Welcome back! You have successfully logged in."
+    },
+    "failed": {
+      "title": "Login failed",
+      "message": "An error occurred during login. Please try again."
+    },
+    "action": {
+      "login": "Log In",
+      "loading": "Logging in..."
+    }
+  },
+  "Register": {
+    "title": "Register",
+    "sub_title": "Create a free account and enjoy it",
+    "name": {
+      "label": "Name",
+      "placeholder": "Account Name",
+      "validation": {
+        "required": "Name is required"
+      }
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Email Address",
+      "validation": {
+        "invalid": "Invalid email",
+        "required": "Email is required"
+      }
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Password",
+      "validation": {
+        "minLength": "Password must be at least {length} characters long",
+        "required": "Password is required"
+      }
+    },
+    "confirmPassword": {
+      "label": "Confirm Password",
+      "placeholder": "Re-enter Password",
+      "validation": {
+        "mismatch": "Passwords do not match",
+        "required": "Please confirm your password"
+      }
+    },
+    "haveAccount": "Already have an account?",
+    "login": "Log In",
+    "register": "Create Account",
+    "emailExists": "Email already in use. Please log in or use another email.",
+    "success": {
+      "title": "Registration successful",
+      "message": "Welcome to Adam Store! Your account has been created successfully."
+    },
+    "failed": {
+      "title": "Registration failed",
+      "message": "An error occurred during registration. Please try again."
+    },
+    "action": {
+      "register": "Register",
+      "loading": "Registering..."
+    },
+    "verify": {
+      "title": "Verify Email",
+      "sub_title": "We've sent a verification email to {email}. Please check your inbox.",
+      "resend": "Resend verification email",
+      "haveAccount": "Already have an account?",
+      "login": "Log In",
+      "placeholder": "Enter verification code",
+      "backToLogin": "Back to login",
+      "validation": {
+        "required": "Verification code is required"
+      },
+      "no_email": {
+        "title": "No verification info found or session has expired.",
+        "message": "Go back to the registration page"
+      },
+      "success": {
+        "title": "Verification email sent",
+        "message": "We have resent the verification email to {email}. Please check your inbox."
+      },
+      "failed": {
+        "title": "Resending verification email failed",
+        "message": "An error occurred while resending the verification email. Please try again."
+      },
+      "action": {
+        "resend": "Resend",
+        "loading": "Sending..."
+      }
+    }
+  },
+  "Forgot_password": {
+    "title": "Forgot Password",
+    "sub_title": "Reset your password",
+    "email": {
+      "label": "Email",
+      "placeholder": "Email Address",
+      "validation": {
+        "invalid": "Invalid email",
+        "required": "Email is required"
+      }
+    },
+    "code": {
+      "label": "Verification Code",
+      "placeholder": "Enter verification code",
+      "validation": {
+        "required": "Verification code is required"
+      }
+    },
+    "new_password": {
+      "label": "New Password",
+      "placeholder": "New Password",
+      "validation": {
+        "minLength": "Password must be at least {length} characters long",
+        "required": "New password is required"
+      }
+    },
+    "confirm_new_password": {
+      "label": "Confirm New Password",
+      "placeholder": "Re-enter new password",
+      "validation": {
+        "mismatch": "Passwords do not match",
+        "required": "Please confirm your new password"
+      }
+    },
+    "backToLogin": "Back to login",
+    "emailNotFound": "Email not found. Please check and try again.",
+    "action": {
+      "code": {
+        "loading": "Verifying...",
+        "send": "Verify"
+      },
+      "email": {
+        "loading": "Sending code...",
+        "send": "Send code"
+      },
+      "reset": {
+        "loading": "Confirming...",
+        "reset": "Confirm"
+      }
+    }
+  },
   "Auth": {
     "unauthenticated": {
       "title": "You haven't logged in yet",
       "message": "Please log in to continue.",
-      "login": "Đăng nhập"
+      "login": "Login"
     }
+  },
+  "Sidebar": {
+    "title": "Dashboard",
+    "categories": "Categories",
+    "best_seller": "Best Seller",
+    "new_product": "New Products",
+    "about_us": "About Us",
+    "store_location": "Store Locations"
   },
   "Marketing": {
     "categories": {
@@ -128,8 +300,11 @@
       "placeholder": "Select a promotion code",
       "no_promotion": "No promotion codes available"
     },
-    "payment_section": {
-      "title": "Payment Method"
+    "payment_methods": {
+      "header": "Pay",
+      "title": "Payment Method",
+      "cash": "Cash on Delivery",
+      "vnpay": "Payment via VNPAY"
     },
     "payment_summary": {
       "title": "Payment Details",
@@ -180,12 +355,304 @@
       "deleteAll": "Delete All"
     },
     "user": {
+      "welcome": "Welcome",
       "login": "Login",
       "register": "Register",
       "profile": "Profile",
       "logout": "Logout",
       "myorder": "My Orders",
       "adminDashboard": "Admin Dashboard"
+    }
+  },
+  "Profile": {
+    "tabs": {
+      "info": "Profile",
+      "addresses": "Addresses",
+      "change_password": "Change Password"
+    },
+    "title": "Account Information",
+    "personal_info": {
+      "title": "Personal Information",
+      "description": "Update your personal details",
+      "edit_profile": "Edit Profile",
+      "change_password": "Change Password",
+      "manage_addresses": "Manage Addresses",
+      "name": {
+        "label": "Full Name",
+        "placeholder": "Enter your name"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter your email"
+      },
+      "sex": {
+        "label": "Gender",
+        "placeholder": "Select gender",
+        "male": "Male",
+        "female": "Female",
+        "other": "Other"
+      },
+      "phone": {
+        "label": "Phone Number",
+        "placeholder": "Enter phone number"
+      },
+      "dob": {
+        "label": "Date of Birth",
+        "placeholder": "Select date of birth"
+      },
+      "action": {
+        "save": "Save Changes",
+        "cancel": "Cancel",
+        "edit": "Edit",
+        "change_avatar": "Change Avatar",
+        "uploading": "Uploading..."
+      }
+    },
+    "change_password": {
+      "title": "Change Password",
+      "description": "Keep your account secure by using a strong, unique password.",
+      "current_password": {
+        "label": "Current Password",
+        "placeholder": "Enter current password",
+        "validation": {
+          "required": "Current password is required"
+        }
+      },
+      "new_password": {
+        "label": "New Password",
+        "placeholder": "Enter new password",
+        "validation": {
+          "minLength": "Password must be at least {length} characters long",
+          "required": "New password is required"
+        }
+      },
+      "confirm_new_password": {
+        "label": "Confirm New Password",
+        "placeholder": "Re-enter new password",
+        "validation": {
+          "mismatch": "Confirm password does not match",
+          "required": "Please confirm your new password"
+        }
+      },
+      "action": {
+        "save": "Save Changes",
+        "cancel": "Cancel",
+        "updating": "Updating..."
+      },
+      "success": {
+        "title": "Password changed successfully",
+        "message": "Your password has been updated successfully."
+      },
+      "failed": {
+        "title": "Password change failed",
+        "message": "An error occurred while changing the password. Please try again."
+      },
+      "empty_field": {
+        "title": "Please fill in all passwords",
+        "message": "Please fill in both the old and new passwords."
+      },
+      "incorrect_current_password": {
+        "title": "Incorrect current password",
+        "message": "Please double-check your current password and try again."
+      },
+      "same_password": {
+        "title": "New password cannot be the same as current password",
+        "message": "Please choose a new password that is different from your current one."
+      },
+      "missmatch": {
+        "title": "New password and confirm password do not match",
+        "message": "Please ensure your new password and confirm password match."
+      }
+    },
+    "address": {
+      "title": "My Addresses",
+      "description": "Manage your delivery addresses",
+      "add_address": "Add New Address",
+      "edit_address": "Edit Address",
+      "no_address": "No addresses found.",
+      "address": "Address",
+      "full_name": {
+        "label": "Full Name",
+        "placeholder": "Enter full name",
+        "validation": {
+          "required": "Full name is required"
+        }
+      },
+      "phone": {
+        "label": "Phone Number",
+        "placeholder": "Enter phone number",
+        "validation": {
+          "required": "Phone number is required",
+          "invalid": "Invalid phone number"
+        }
+      },
+      "address_line1": {
+        "label": "Address Line 1",
+        "placeholder": "Enter detailed address (house number, street name, ward/commune)",
+        "validation": {
+          "required": "Address Line 1 is required"
+        }
+      },
+      "address_line2": {
+        "label": "Address Line 2",
+        "placeholder": "Enter Address Line 2 (optional)"
+      },
+      "city": {
+        "label": "City",
+        "placeholder": "Select city",
+        "validation": {
+          "required": "City is required"
+        }
+      },
+      "district": {
+        "label": "District",
+        "placeholder": "Select district",
+        "validation": {
+          "required": "District is required"
+        }
+      },
+      "ward": {
+        "label": "Ward",
+        "placeholder": "Select ward",
+        "validation": {
+          "required": "Ward is required"
+        }
+      },
+      "set_default": {
+        "title": "Default",
+        "label": "Set as default address"
+      },
+      "validation": {
+        "required_fields": "Please enter all required information"
+      },
+      "choose": {
+        "title": "Choose Address",
+        "décription": "Select one of your saved addresses"
+      },
+      "success": {
+        "title_add": "Address added successfully",
+        "message_add": "Your address has been added successfully.",
+        "title_update": "Address updated successfully",
+        "message_update": "Your address has been updated successfully.",
+        "title_delete": "Address deleted successfully",
+        "message_delete": "Your address has been deleted successfully.",
+        "message_update_order": "Address updated successfully"
+      },
+      "failed": {
+        "title": "Operation failed",
+        "message": "An error occurred during the operation. Please try again."
+      },
+      "action": {
+        "add": "Add Address",
+        "save": "Save Address",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "confirm_delete": "Are you sure you want to delete this address?",
+        "confirm_change": "Are you sure you want to change to this address?"
+      }
+    },
+    "my_orders": {
+      "tabs": {
+        "all": "All",
+        "pending": "Orders Pending Confirmation",
+        "processing": "Orders Processing",
+        "shipped": "Orders Shipped",
+        "delivered": "Orders Delivered",
+        "canceled": "Orders Cancelled"
+      },
+      "title": "My Orders",
+      "no_orders": "You don't have any orders.",
+      "order_id": "Order ID",
+      "date": "Date",
+      "status": "Status",
+      "total": "Total",
+      "items": "items",
+      "view_details": "View details",
+      "actions": {
+        "view_more": "View more",
+        "retry_payment": "Retry payment",
+        "change_address": "Change shipping address",
+        "cancel_order": "Cancel order",
+        "wait": "Wait",
+        "confirm_received": "Confirm receipt",
+        "contact_us": "Contact us",
+        "buy_again": "Buy again"
+      },
+      "summary": {
+        "total_amount": "Total amount ({count} items)"
+      },
+      "confirm": {
+        "cancel_order": "Are you sure you want to cancel this order?"
+      },
+      "messages": {
+        "cancel_success": "Order canceled successfully"
+      },
+      "review": {
+        "title": "Product Review",
+        "view_review": "View review",
+        "write_review": "Write a review",
+        "loading": "Loading . . .",
+        "product": {
+          "color": "Color",
+          "size": "Size",
+          "quantity": "Quantity"
+        },
+        "rating": {
+          "quality_label": "Product quality"
+        },
+        "content": {
+          "label": "Review content",
+          "placeholder": "Share your experience with other buyers."
+        },
+        "images": {
+          "add_button": "Add images"
+        },
+        "actions": {
+          "cancel": "Cancel",
+          "complete": "Complete",
+          "update": "Update"
+        },
+        "messages": {
+          "upload_success": "Image uploaded successfully",
+          "upload_error": "An error occurred while uploading the image",
+          "create_success": "Product review created successfully",
+          "update_success": "Product review updated successfully"
+        }
+      },
+      "order_details": {
+        "title": "Order Details",
+        "product_list": {
+          "title": "Products",
+          "color": "Color",
+          "size": "Size",
+          "quantity": "Quantity",
+          "price": "Price"
+        },
+        "shipping_info": {
+          "title": "Shipping Information",
+          "name": "Full name",
+          "address": "Address",
+          "phone": "Phone number"
+        },
+        "payment_info": {
+          "title": "Payment Information",
+          "method": "Payment method",
+          "status": "Payment status"
+        },
+        "summary": {
+          "title": "Order Summary",
+          "sub_total": "Subtotal",
+          "shipping_fee": "Shipping fee",
+          "promotion": "Promotion code",
+          "total": "Total"
+        },
+        "back_to_orders": "Back to my orders",
+        "retry_payment": {
+          "title": "Retry payment",
+          "failed": "Could not create payment link. Please try again.",
+          "error": "An error occurred while creating the payment link."
+        }
+      }
     }
   },
   "Footer": {
@@ -233,8 +700,24 @@
       "phone": "Tel"
     }
   },
-
   "Admin": {
+    "status": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
+      "SUSPENDED": "Suspended"
+    },
+    "topsell": {
+      "title": "Top Selling Products",
+      "retry": "Retry",
+      "cannotLoad": "Unable to load data",
+      "cannotLoadDetail": "An error occurred while loading the top-selling products",
+      "noData": "No top-selling product data available",
+      "tryChangeRange": "Try changing the date range to view data",
+      "name": "Product Name",
+      "sold": "Sold",
+      "revenue": "Revenue",
+      "viewAll": "View all products"
+    },
     "ACTIVE": "Active",
     "INACTIVE": "Inactive",
     "dashboard": {
@@ -413,6 +896,17 @@
       "INACTIVE": "Inactive"
     },
     "users": {
+      "headers": {
+        "id": "ID",
+        "avatar": "Avatar",
+        "name": "Name",
+        "email": "Email",
+        "gender": "Gender",
+        "dob": "Birthday",
+        "roles": "Roles",
+        "status": "Status",
+        "actions": "Actions"
+      },
       "title": "Users Management",
       "description": "Manage system users",
       "addUser": "Add User",
@@ -437,6 +931,8 @@
       "openMenu": "Open menu",
       "ACTIVE": "Active",
       "gender": {
+        "title": "Gender",
+        "placeholder": "Select gender",
         "MALE": "Male",
         "FEMALE": "Female",
         "Other": "Other"
@@ -786,9 +1282,10 @@
       "refreshMessagesError": "Error refreshing messages"
     },
     "common": {
-      "add": "Add",
       "edit": "Edit",
       "delete": "Delete",
+      "na": "N/A",
+      "add": "Add",
       "save": "Save",
       "cancel": "Cancel",
       "search": "Search",

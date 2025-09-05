@@ -15,17 +15,21 @@ import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { District, Province, Ward } from '@/types';
 import { Button } from '@/components/ui/button';
+import { useTranslations } from 'next-intl';
 
 export default function AddressForm() {
+  const t = useTranslations('Profile.address');
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get('idAddress');
   const { isAuthenticated, isLoading, user } = useAuth();
+
   useEffect(() => {
     if (!isLoading && !isAuthenticated && !user) {
       router.push('/login');
     }
   }, [isAuthenticated, user, isLoading, router]);
+
   const [listWard, setListWard] = useState<Ward[]>([]);
   const [listDistrict, setListDistrict] = useState<District[]>([]);
   const [listProvince, setListProvince] = useState<Province[]>([]);
@@ -39,6 +43,7 @@ export default function AddressForm() {
     districtId: 0,
     provinceId: 0,
   });
+
   useEffect(() => {
     getListProvince();
     console.log(id);
@@ -119,33 +124,32 @@ export default function AddressForm() {
       addressSet.streetDetail === '' ||
       addressSet.phone === ''
     ) {
-      toast.warning('Vui lòng nhập đủ các thông tin');
+      toast.warning(t('validation.required_fields'));
       return;
     }
     if (!/^(0[0-9]{9})$/.test(addressSet.phone)) {
-      toast.warning(
-        'Số điện thoại bắt đầu bằng 0, chỉ chứa các chữ số và có đủ 10 ký tự.'
-      );
+      toast.warning(t('phone.validation.invalid'));
       return;
     }
     try {
       if (id) {
         const res = await updateAddressByIdAction(Number(id), addressSet);
         if (res.status === 200 && res.newAddress) {
-          toast.success('Sửa địa chỉ thành công');
+          toast.success(t('success.message_update'));
           router.push('/user?tab=Address');
-        } else toast.error('Lỗi khi sửa địa chỉ !');
+        } else toast.error(t('failed.message'));
       } else {
         const res = await createAddressByIdAction(addressSet);
         if (res.status === 200 && res.newAddress) {
-          toast.success('Thêm địa chỉ thành công');
+          toast.success(t('success.message_add'));
           router.push('/user?tab=Address');
-        } else toast.error('Lỗi khi thêm địa chỉ !');
+        } else toast.error(t('failed.message'));
       }
     } catch (error) {
       console.log(error);
     }
   };
+
   if (
     id &&
     addressSet.provinceId === 0 &&
@@ -155,31 +159,31 @@ export default function AddressForm() {
     return (
       <main className='max-w-3xl mx-auto p-4 pt-5'>
         <h3 className='font-bold text-3xl w-full text-center'>
-          {id ? 'Chỉnh sửa' : 'Thêm'} địa chỉ mới
+          {id ? t('edit_address') : t('add_address')}
         </h3>
         <div className='mt-5 w-full p-5 min-h-110 border-2 border-black rounded-lg shadow adam-store-bg'>
           <div className='w-full flex mt-5 h-10 items-center'>
-            <span className='w-70'>Tỉnh/Thành phố:</span>
+            <span className='w-70'>{t('city.label')}:</span>
             <Skeleton className='h-9 rounded-lg w-full border p-2 outline-none'></Skeleton>
           </div>
           <div className='w-full flex mt-5 h-10 items-center'>
-            <span className='w-70'>Quận/Huyện/Thị xã:</span>
+            <span className='w-70'>{t('district.label')}:</span>
             <Skeleton className='h-9 rounded-lg w-full border p-2 outline-none'></Skeleton>
           </div>
           <div className='w-full flex mt-5 h-10 items-center'>
-            <span className='w-70'>Xã/Phường/Thị trấn:</span>
+            <span className='w-70'>{t('ward.label')}:</span>
             <Skeleton className='h-9 rounded-lg w-full border p-2 outline-none'></Skeleton>
           </div>
           <div className='w-full flex mt-5 h-10 items-center'>
-            <span className='w-70'>Địa chỉ cụ thể:</span>
+            <span className='w-70'>{t('address_line1.label')}:</span>
             <Skeleton className='h-9 w-full border  p-2 rounded-lg outline-none' />
           </div>
           <div className='w-full flex mt-5 h-10 items-center'>
-            <span className='w-70'>Số điện thoại:</span>
+            <span className='w-70'>{t('phone.label')}:</span>
             <Skeleton className='h-9 w-full border  p-2 rounded-lg outline-none' />
           </div>
           <div className='w-full flex mt-5 h-10 items-center'>
-            <span className='!w-50'>Đặt làm mặc định:</span>
+            <span className='!w-50'>{t('set_default.label')}:</span>
 
             <label className='switch text-start'>
               <input type='checkbox' disabled />
@@ -191,20 +195,21 @@ export default function AddressForm() {
               className='py-2 px-6 bg-black text-white rounded-lg'
               disabled
             >
-              {id ? 'Lưu địa chỉ' : 'Thêm địa chỉ'}
+              {id ? t('action.save') : t('action.add')}
             </button>
           </div>
         </div>
       </main>
     );
+
   return (
     <main className='max-w-3xl mx-auto p-4 pt-5'>
       <h3 className='font-bold text-3xl w-full text-center'>
-        {id ? 'Chỉnh sửa' : 'Thêm'} địa chỉ mới
+        {id ? t('edit_address') : t('add_address')}
       </h3>
       <div className='mt-5 w-full p-5 min-h-110 border-2 border-primary rounded-lg shadow adam-store-bg'>
         <div className='w-full flex mt-5 h-10 items-center'>
-          <span className='w-70'>Tỉnh/Thành phố:</span>
+          <span className='w-70'>{t('city.label')}:</span>
           <select
             value={addressSet.provinceId || ''}
             className='rounded-lg w-full border p-2 outline-none'
@@ -217,7 +222,7 @@ export default function AddressForm() {
               setListWard([]);
             }}
           >
-            <option value=''>Chọn tỉnh thành phố</option>
+            <option value=''>{t('city.placeholder')}</option>
             {listProvince.map((item) => (
               <option key={item.id} value={item.id}>
                 {item.name}
@@ -226,7 +231,7 @@ export default function AddressForm() {
           </select>
         </div>
         <div className='w-full flex mt-5 h-10 items-center'>
-          <span className='w-70'>Quận/Huyện/Thị xã:</span>
+          <span className='w-70'>{t('district.label')}:</span>
           <select
             value={addressSet.districtId || ''}
             className='rounded-lg w-full border p-2 outline-none'
@@ -236,7 +241,7 @@ export default function AddressForm() {
               setSelectedDistrictId(id);
             }}
           >
-            <option value=''>Chọn quận/Huyện/Thị xã</option>
+            <option value=''>{t('district.placeholder')}</option>
             {listDistrict.map((item) => (
               <option key={item.id} value={item.id}>
                 {item.name}
@@ -245,7 +250,7 @@ export default function AddressForm() {
           </select>
         </div>
         <div className='w-full flex mt-5 h-10 items-center'>
-          <span className='w-70'>Xã/Phường/Thị trấn:</span>
+          <span className='w-70'>{t('ward.label')}:</span>
           <select
             value={addressSet.wardCode || ''}
             className='rounded-lg w-full border p-2 outline-none'
@@ -254,7 +259,7 @@ export default function AddressForm() {
               setAddress({ ...addressSet, wardCode: code });
             }}
           >
-            <option value=''>Chọn xã/Phường/Thị trấn</option>
+            <option value=''>{t('ward.placeholder')}</option>
             {listWard.map((item) => (
               <option key={item.code} value={item.code}>
                 {item.name}
@@ -263,11 +268,11 @@ export default function AddressForm() {
           </select>
         </div>
         <div className='w-full flex mt-5 h-10 items-center'>
-          <span className='w-70'>Địa chỉ cụ thể:</span>
+          <span className='w-70'>{t('address_line1.label')}:</span>
           <input
             type='text'
             value={addressSet.streetDetail || ''}
-            placeholder='Nhập địa chỉ cụ thể'
+            placeholder={t('address_line1.placeholder')}
             className='w-full border p-2 rounded-lg outline-none'
             onChange={(e) =>
               setAddress({ ...addressSet, streetDetail: e.target.value })
@@ -275,11 +280,11 @@ export default function AddressForm() {
           />
         </div>
         <div className='w-full flex mt-5 h-10 items-center'>
-          <span className='w-70'>Số điện thoại:</span>
+          <span className='w-70'>{t('phone.label')}:</span>
           <input
             type='text'
             value={addressSet.phone || ''}
-            placeholder='Nhập Số điện thoại'
+            placeholder={t('phone.placeholder')}
             className='w-full border p-2 rounded-lg outline-none'
             onChange={(e) =>
               setAddress({ ...addressSet, phone: e.target.value })
@@ -287,7 +292,7 @@ export default function AddressForm() {
           />
         </div>
         <div className='w-full flex mt-5 h-10 items-center'>
-          <span className='!w-50'>Đặt làm mặc định:</span>
+          <span className='!w-50'>{t('set_default.label')}:</span>
 
           <label className='relative inline-block w-[50px] h-[28px]'>
             <input
@@ -307,7 +312,7 @@ export default function AddressForm() {
             className='py-6 px-8 font-medium rounded-xl'
             onClick={handleSaveChanges}
           >
-            {id ? 'Lưu địa chỉ' : 'Thêm địa chỉ'}
+            {id ? t('action.save') : t('action.add')}
           </Button>
         </div>
       </div>

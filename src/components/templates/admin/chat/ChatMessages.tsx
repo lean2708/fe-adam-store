@@ -70,7 +70,7 @@ export function ChatMessages({
     return (
       <div className="flex-1 flex flex-col">
         {/* Chat Header */}
-        <div className="p-4 border-b bg-white">
+        <div className="p-4 border-b bg-white dark:bg-black">
           <div className="flex items-center space-x-3">
             <Skeleton className="h-10 w-10 rounded-full" />
             <div>
@@ -125,7 +125,7 @@ export function ChatMessages({
   return (
     <div className="flex-1 flex flex-col">
       {/* Chat Header */}
-      <div className="p-4 border-b bg-white">
+      <div className="p-4 border-b bg-white dark:bg-gray-900">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <Avatar className="h-10 w-10">
@@ -135,12 +135,12 @@ export function ChatMessages({
                 }
                 alt={otherParticipantName}
               />
-              <AvatarFallback className="bg-gray-200 text-gray-600">
+              <AvatarFallback className="bg-gray-200 text-gray-600 dark:text-white">
                 {otherParticipantName.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
             <div>
-              <h3 className="font-medium text-gray-900">
+              <h3 className="font-medium text-gray-900 dark:text-white">
                 {otherParticipantName}
               </h3>
               <div className="flex items-center space-x-2">
@@ -274,7 +274,6 @@ export function ChatMessages({
           )}
         </div>
       </ScrollArea>
-     
     </div>
   );
 }

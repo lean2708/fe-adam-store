@@ -1,11 +1,11 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-import axios from "axios";
-import { ApiErrorResponse } from "@/api-client/models/api-error-response";
-import { TProduct } from "@/types";
-import { enAU, es, Locale, vi } from "react-day-picker/locale";
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import axios from 'axios';
+import { ApiErrorResponse } from '@/api-client/models/api-error-response';
+import { TProduct } from '@/types';
+import { enAU, es, Locale, vi } from 'react-day-picker/locale';
 import { ORDER_STATUS } from '@/enums';
-
+import { VND_TO_USD_RATE } from './constants';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -32,7 +32,8 @@ export function isValidColor(strColor: string) {
 
 // Line 28: Error: Unexpected any. Specify a different type. @typescript-eslint/no-explicit-any
 // Changed 'any[]' to 'T[]' and added a generic type 'T' to make it type-safe.
-export function shuffleArray<T>(array: T[]): T[] { // Added return type T[]
+export function shuffleArray<T>(array: T[]): T[] {
+  // Added return type T[]
   let currentIndex = array.length;
 
   // While there remain elements to shuffle...
@@ -66,18 +67,35 @@ export function checkSameDay(d1: Date, d2: Date) {
 // Line 55: Error: Unexpected any. Specify a different type. @typescript-eslint/no-explicit-any
 // Changed 'any' to 'unknown' which is safer when dealing with unknown error types.
 // Added more specific type guards for the `error as ApiErrorResponse` case.
-export function extractErrorMessage(error: unknown, defaultMessage: string = 'Something went wrong.'): ApiErrorResponse {
-  if (axios.isAxiosError(error) && error.response && typeof error.response.data === 'object' && error.response.data !== null) {
+export function extractErrorMessage(
+  error: unknown,
+  defaultMessage: string = 'Something went wrong.'
+): ApiErrorResponse {
+  if (
+    axios.isAxiosError(error) &&
+    error.response &&
+    typeof error.response.data === 'object' &&
+    error.response.data !== null
+  ) {
     const apiError = error.response.data as ApiErrorResponse;
     if (apiError.message) {
       return apiError; // Return the full API error object
     }
-  } else if (typeof error === 'object' && error !== null && 'code' in error && 'message' in error) {
+  } else if (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    'message' in error
+  ) {
     // This refined check ensures 'error' actually has 'code' and 'message' properties
     // before asserting it as ApiErrorResponse parts.
     const potentialApiError = error as { code?: number; message?: string };
-    if (potentialApiError.message) { // Only return if message exists
-      return { code: potentialApiError.code || 500, message: potentialApiError.message };
+    if (potentialApiError.message) {
+      // Only return if message exists
+      return {
+        code: potentialApiError.code || 500,
+        message: potentialApiError.message,
+      };
     }
   }
   // Fallback for unknown error types or if specific properties are missing
@@ -93,9 +111,9 @@ export function getAllImagesFromProduct(product: TProduct): string[] {
   }
 
   // Iterate through colors
-  product.colors?.forEach(color => {
+  product.colors?.forEach((color) => {
     // Iterate through variants within each color
-    color.variants?.forEach(variant => {
+    color.variants?.forEach((variant) => {
       if (variant.imageUrl) {
         imageUrls.push(variant.imageUrl);
       }
@@ -109,15 +127,23 @@ export function formatCurrency(value: number, locale: string = 'vi'): string {
   if (locale === 'vi') {
     return new Intl.NumberFormat('vi-VN').format(value) + ' VNĐ';
   } else {
-    return new Intl.NumberFormat('en', {
+    const usdValue = value * VND_TO_USD_RATE;
+
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD'
-    }).format(value);
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(usdValue);
   }
 }
 
-export function formatDate(dateString: string | undefined, locale: string = 'vi', options?: Intl.DateTimeFormatOptions): string {
-  if (!dateString) return "N/A";
+export function formatDate(
+  dateString: string | undefined,
+  locale: string = 'vi',
+  options?: Intl.DateTimeFormatOptions
+): string {
+  if (!dateString) return 'N/A';
 
   const defaultOptions: Intl.DateTimeFormatOptions = {
     year: 'numeric',
@@ -152,7 +178,10 @@ export function getReactDayPickerLocale(locale: string = 'vi'): Locale {
  * @param type - The type of status (general, order, payment)
  * @returns Tailwind CSS classes for the status
  */
-export const getStatusColor = (status: string, type: 'general' | 'order' | 'payment' = 'general') => {
+export const getStatusColor = (
+  status: string,
+  type: 'general' | 'order' | 'payment' = 'general'
+) => {
   console.log(status);
 
   switch (type) {
@@ -171,7 +200,6 @@ export const getStatusColor = (status: string, type: 'general' | 'order' | 'paym
         default:
           return 'whitespace-nowrap bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300 hover:bg-gray-100';
       }
-
 
     case 'payment':
       switch (status) {

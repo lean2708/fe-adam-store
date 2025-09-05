@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
 import { CircleX } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { AddressItem } from '@/types';
-import Link from 'next/link';
+import { TAddressItem } from '@/types';
 import { toast } from 'sonner';
 import ConfirmDialogModule from '@/components/modules/ConfirmDialogModule';
 import { Card, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { useTranslations } from 'next-intl';
 
 export default function AddressSectionModal(props: {
   visible: boolean;
-  addressList: AddressItem[];
+  addressList: TAddressItem[];
   currentAddressId?: number;
   onClose: () => void;
-  onSelectAddress: (address: AddressItem) => void;
+  onSelectAddress: (address: TAddressItem) => void;
   onAddNewAddress: () => void;
 }) {
   const {
@@ -26,6 +26,8 @@ export default function AddressSectionModal(props: {
     onSelectAddress,
     onAddNewAddress,
   } = props;
+
+  const t = useTranslations('Profile.address');
 
   const [selectedAddressId, setSelectedAddressId] = useState<
     number | undefined
@@ -58,7 +60,7 @@ export default function AddressSectionModal(props: {
       }
       onClose();
     } catch (error) {
-      toast.error('Failed to select address:');
+      toast.error(t('failed.message_select'));
       onClose();
     } finally {
       setConfirm(false);
@@ -84,10 +86,10 @@ export default function AddressSectionModal(props: {
       >
         <div className='!flex w-full justify-center items-center h-20 mt-2'>
           <div className='h-14 w-full flex flex-col items-center justify-between'>
-            <CardTitle className='!text-2xl !font-bold'>Chọn địa chỉ</CardTitle>
-            <p className='text-muted-foreground'>
-              Chọn 1 trong các địa chỉ bạn đã lưu
-            </p>
+            <CardTitle className='!text-2xl !font-bold'>
+              {t('choose.title')}
+            </CardTitle>
+            <p className='text-muted-foreground'>{t('choose.description')}</p>
           </div>
           <button
             onClick={onClose}
@@ -103,9 +105,9 @@ export default function AddressSectionModal(props: {
             className='space-y-3 mt-4'
           >
             {addressList.length === 0 ? (
-              <div className='text-center py-4'>Bạn chưa có địa chỉ nào.</div>
+              <div className='text-center py-4'>{t('no_address')}</div>
             ) : (
-              addressList.map((item: AddressItem) => (
+              addressList.map((item: TAddressItem) => (
                 <div
                   key={item.id}
                   className={cn(
@@ -152,7 +154,7 @@ export default function AddressSectionModal(props: {
                       </p>
                       {item.isDefault && (
                         <span className='absolute -top-3 left-5 px-2 py-0.5 adam-store-bg-light z-50'>
-                          Mặc định
+                          {t('set_default.title')}
                         </span>
                       )}
                     </div>
@@ -169,7 +171,7 @@ export default function AddressSectionModal(props: {
             }}
             className='h-14 w-full mt-3 flex justify-center items-center rounded-lg font-medium cursor-pointer'
           >
-            Thêm địa chỉ mới
+            {t('add_address')}
           </Button>
         </div>
 
@@ -179,7 +181,7 @@ export default function AddressSectionModal(props: {
             setConfirm(false);
             setPendingAddressId(undefined);
           }}
-          title='Bạn có chắc muốn thay đổi địa chỉ ?'
+          title={t('action.confirm_change')}
           onSubmit={handleConfirmSelect}
           confirm={confirm}
         />

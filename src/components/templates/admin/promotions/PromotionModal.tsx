@@ -11,7 +11,10 @@ import { Modal, ModalBody } from "@/components/ui/modal";
 import { useTranslations } from "next-intl";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { createPromotionAction, updatePromotionAction } from "@/actions/promotionActions";
+import {
+  createPromotionAction,
+  updatePromotionAction,
+} from "@/actions/promotionActions";
 import type { TPromotion, TPromotionRequest } from "@/types";
 import type { PromotionUpdateRequest } from "@/api-client/models";
 
@@ -21,7 +24,11 @@ interface PromotionModalProps {
   editingPromotion: TPromotion | null;
 }
 
-export function PromotionModal({ open, onClose, editingPromotion }: PromotionModalProps) {
+export function PromotionModal({
+  open,
+  onClose,
+  editingPromotion,
+}: PromotionModalProps) {
   const t = useTranslations("Admin.promotions");
   const queryClient = useQueryClient();
 
@@ -31,7 +38,7 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
     discountPercent: 0,
     startDate: "",
     endDate: "",
-    status: "ACTIVE" as "ACTIVE" | "INACTIVE"
+    status: "ACTIVE" as "ACTIVE" | "INACTIVE",
   });
 
   // Reset form when dialog opens/closes or editing promotion changes
@@ -43,7 +50,7 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
         discountPercent: editingPromotion.discountPercent || 0,
         startDate: editingPromotion.startDate || "",
         endDate: editingPromotion.endDate || "",
-        status: editingPromotion.status || "ACTIVE"
+        status: editingPromotion.status || "ACTIVE",
       });
     } else {
       setFormData({
@@ -52,7 +59,7 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
         discountPercent: 0,
         startDate: "",
         endDate: "",
-        status: "ACTIVE"
+        status: "ACTIVE",
       });
     }
   }, [editingPromotion, open]);
@@ -68,7 +75,7 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
     },
     onSuccess: () => {
       toast.success(t("promotionCreatedSuccess"));
-      queryClient.invalidateQueries({ queryKey: ['promotions'] });
+      queryClient.invalidateQueries({ queryKey: ["promotions"] });
       onClose();
     },
     onError: (error: Error) => {
@@ -78,17 +85,22 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
 
   // Update mutation
   const updateMutation = useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: PromotionUpdateRequest }) => {
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: PromotionUpdateRequest;
+    }) => {
       const result = await updatePromotionAction(parseInt(id), data);
       if (!result.success) {
         throw new Error(result.message || "Failed to update promotion");
       }
       return result.data;
-
     },
     onSuccess: () => {
       toast.success(t("promotionUpdatedSuccess"));
-      queryClient.invalidateQueries({ queryKey: ['promotions'] });
+      queryClient.invalidateQueries({ queryKey: ["promotions"] });
       onClose();
     },
     onError: (error: Error) => {
@@ -110,7 +122,11 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
       return;
     }
 
-    if (formData.startDate && formData.endDate && new Date(formData.startDate) >= new Date(formData.endDate)) {
+    if (
+      formData.startDate &&
+      formData.endDate &&
+      new Date(formData.startDate) >= new Date(formData.endDate)
+    ) {
       toast.error(t("invalidDateRange"));
       return;
     }
@@ -121,11 +137,14 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
       discountPercent: formData.discountPercent,
       startDate: formData.startDate,
       endDate: formData.endDate,
-      status: formData.status
+      status: formData.status,
     };
 
     if (editingPromotion) {
-      updateMutation.mutate({ id: editingPromotion.id.toString(), data: promotionData });
+      updateMutation.mutate({
+        id: editingPromotion.id.toString(),
+        data: promotionData,
+      });
     } else {
       createMutation.mutate(promotionData as TPromotionRequest);
     }
@@ -145,11 +164,13 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
       className="bg-white rounded-lg shadow-xl"
     >
       <div className="p-6 border-b">
-        <h2 className="text-xl font-semibold text-gray-900">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           {editingPromotion ? t("editPromotion") : t("addPromotion")}
         </h2>
         <p className="text-sm text-gray-600 mt-1">
-          {editingPromotion ? t("editPromotionDescription") : t("addPromotionDescription")}
+          {editingPromotion
+            ? t("editPromotionDescription")
+            : t("addPromotionDescription")}
         </p>
       </div>
 
@@ -162,9 +183,11 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
               <Input
                 id="code"
                 value={formData.code}
-                onChange={(e) => setFormData(prev => ({ ...prev, code: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, code: e.target.value }))
+                }
                 placeholder="Nhập mã giảm giá"
-                className="bg-gray-100 border-0 rounded-lg"
+                className="bg-gray-100 border-0 rounded-lg dark:text-black "
                 required
               />
             </div>
@@ -177,9 +200,14 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
                 min="0"
                 max="100"
                 value={formData.discountPercent}
-                onChange={(e) => setFormData(prev => ({ ...prev, discountPercent: parseFloat(e.target.value) || 0 }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    discountPercent: parseFloat(e.target.value) || 0,
+                  }))
+                }
                 placeholder="Nhập phần trăm giảm"
-                className="bg-gray-100 border-0 rounded-lg"
+                className="bg-gray-100 border-0 rounded-lg dark:text-black"
                 required
               />
             </div>
@@ -191,10 +219,15 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
             <Textarea
               id="description"
               value={formData.description}
-              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  description: e.target.value,
+                }))
+              }
               placeholder="Nhập mô tả"
               rows={3}
-              className="bg-gray-100 border-0 rounded-lg"
+              className="bg-gray-100 border-0 rounded-lg dark:text-black"
             />
           </div>
 
@@ -206,8 +239,13 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
                 id="startDate"
                 type="date"
                 value={formData.startDate}
-                onChange={(e) => setFormData(prev => ({ ...prev, startDate: e.target.value }))}
-                className="bg-gray-100 border-0 rounded-lg"
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    startDate: e.target.value,
+                  }))
+                }
+                className="bg-gray-100 border-0 rounded-lg dark:text-black"
               />
             </div>
 
@@ -217,8 +255,10 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
                 id="endDate"
                 type="date"
                 value={formData.endDate}
-                onChange={(e) => setFormData(prev => ({ ...prev, endDate: e.target.value }))}
-                className="bg-gray-100 border-0 rounded-lg"
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, endDate: e.target.value }))
+                }
+                className="bg-gray-100 border-0 rounded-lg dark:text-black"
               />
             </div>
           </div>
@@ -233,21 +273,25 @@ export function PromotionModal({ open, onClose, editingPromotion }: PromotionMod
           </div> */}
 
           <div className="flex justify-end gap-3 pt-4">
-            <Button 
-              type="button" 
-              variant="outline" 
-              onClick={onClose} 
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
               disabled={isLoading}
               className="px-8 py-3 bg-gray-200 border-0 text-gray-700 hover:bg-gray-300 rounded-lg"
             >
               Hủy bỏ
             </Button>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isLoading}
-              className="px-8 py-3 bg-black hover:bg-gray-800 text-white rounded-lg"
+              className="px-8 py-3 bg-black hover:bg-gray-900 text-white rounded-lg"
             >
-              {isLoading ? "Đang lưu..." : (editingPromotion ? "Cập nhật" : "Xác nhận")}
+              {isLoading
+                ? "Đang lưu..."
+                : editingPromotion
+                ? "Cập nhật"
+                : "Xác nhận"}
             </Button>
           </div>
         </form>

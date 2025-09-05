@@ -1,7 +1,10 @@
 import AuthTemplate from '@/components/templates/(auth)/AuthTemplate';
 import ResetPasswordForm from '@/components/templates/(auth)/forgot_password/ResetPasswordForm';
+import { getTranslations } from 'next-intl/server';
 
-export default function RegisterPage() {
+export default async function RegisterPage() {
+  const t = await getTranslations('Forgot_password');
+
   return (
     <AuthTemplate
       imageSrc='landing-forgot-password-img.jpg'
@@ -13,55 +16,11 @@ export default function RegisterPage() {
             Adam Store
           </h1>
           <h2 className='text-lg md:text-2xl lg:text-3xl font-medium adam-store-text'>
-            Quên mật khẩu
+            {t('title')}
           </h2>
-          <p className='text-xs md:text-sm '>Khôi phục mật khẩu của bạn</p>
+          <p className='text-xs md:text-sm '>{t('sub_title')}</p>
         </div>
 
-        {/* <form action='/login'>
-          <div className='space-y-4'>
-            <div className='space-y-2 relative'>
-              <Input
-                id='password'
-                type='password'
-                placeholder='Nhập mật khẩu mới của bạn'
-                className='w-full -px-3  py-8 rounded-none  border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none  focus-visible:border-b-2  focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none '
-              />
-
-              <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-                <Lock className='text-gray-500 size-5' />
-              </span>
-            </div>
-
-            <div className='space-y-2 relative'>
-              <Input
-                id='confirmPassword '
-                type='password'
-                placeholder='Nhập lại mật khẩu mới của bạn'
-                className='w-full -px-3  py-8 rounded-none  border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none  focus-visible:border-b-2  focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none '
-              />
-
-              <span className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-                <Lock className='text-gray-500 size-5' />
-              </span>
-            </div>
-          </div>
-
-          <div className='space-y-1 mt-8 flex justify-between'>
-            <Button className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 rounded-md font-medium'>
-              Xác nhận
-            </Button>
-
-            <div className='text-center'>
-              <Link
-                href='/login'
-                className='text-sm text-primary hover:underline'
-              >
-                Trờ về đăng nhập
-              </Link>
-            </div>
-          </div>
-        </form> */}
         <ResetPasswordForm />
       </div>
     </AuthTemplate>

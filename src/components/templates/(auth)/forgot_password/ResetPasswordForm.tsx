@@ -17,21 +17,25 @@ import {
 } from '@/components/ui/form';
 import { toast } from 'sonner';
 import { PasswordInput } from '@/components/modules/PasswordInput';
-
-const formSchema = z
-  .object({
-    password: z.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
-    confirmPassword: z.string().min(1, 'Vui lòng xác nhận mật khẩu'),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Mật khẩu xác nhận không khớp',
-    path: ['confirmPassword'],
-  });
-
-type FormValues = z.infer<typeof formSchema>;
+import { useTranslations } from 'next-intl';
 
 export default function ResetPasswordForm() {
+  const t = useTranslations('Forgot_password');
   const router = useRouter();
+
+  const formSchema = z
+    .object({
+      password: z
+        .string()
+        .min(6, t('new_password.validation.minLength', { length: 6 })),
+      confirmPassword: z.string().min(1, t('new_password.validation.required')),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t('confirm_new_password.validation.mismatch'),
+      path: ['confirmPassword'],
+    });
+
+  type FormValues = z.infer<typeof formSchema>;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -83,7 +87,7 @@ export default function ResetPasswordForm() {
                 <PasswordInput
                   {...field}
                   id='password'
-                  placeholder='Mật khẩu'
+                  placeholder={t('new_password.placeholder')}
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:ring-offset-0 focus-visible:shadow-none'
                 />
@@ -102,7 +106,7 @@ export default function ResetPasswordForm() {
                 <PasswordInput
                   {...field}
                   id='confirmPassword'
-                  placeholder='Nhập mật khẩu mới của bạn'
+                  placeholder={t('confirm_new_password.placeholder')}
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:ring-offset-0 focus-visible:shadow-none'
                 />
@@ -118,7 +122,7 @@ export default function ResetPasswordForm() {
             disabled={isSubmitting}
             className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 rounded-md font-medium'
           >
-            {isSubmitting ? 'Đang xác nhận...' : 'Xác nhận'}
+            {isSubmitting ? t('action.reset.loading') : t('action.reset.reset')}
           </Button>
 
           <div className='text-center'>
@@ -126,7 +130,7 @@ export default function ResetPasswordForm() {
               href='/login'
               className='text-sm text-primary hover:underline'
             >
-              Trờ về đăng nhập
+              {t('backToLogin')}
             </Link>
           </div>
         </div>

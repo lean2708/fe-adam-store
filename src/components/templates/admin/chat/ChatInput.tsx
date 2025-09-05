@@ -89,8 +89,8 @@ export function ChatInput({
   return (
     <div>
       {showUploader && <MultiImageUpload onChange={setSelectedImages} />}
-      <div className="p-4 border-t bg-white">
-        <div className="flex items-center space-x-2">
+      <div className="p-4 border-t bg-white dark:bg-gray-900">
+        <div className="flex items-center space-x-2 dark:bg-gray-900">
           {/* Attachment button */}
           <Button
             variant="ghost"

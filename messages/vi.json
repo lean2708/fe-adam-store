@@ -30,13 +30,187 @@
     "chatwithus": "Chat với shop"
   },
   "chatwithus": "Chat với shop",
-
+  "Login": {
+    "title": "Đăng nhập",
+    "sub_title": "Đăng nhập với tài khoản đã đăng ký với chúng tôi",
+    "email": {
+      "label": "Email",
+      "placeholder": "Địa chỉ Email",
+      "validation": {
+        "invalid": "Email không hợp lệ",
+        "required": "Email là bắt buộc"
+      }
+    },
+    "password": {
+      "label": "Mật khẩu",
+      "placeholder": "Mật khẩu",
+      "validation": {
+        "required": "Mật khẩu là bắt buộc"
+      }
+    },
+    "forgotPassword": "Quên mật khẩu ?",
+    "noAccount": "Bạn chưa có tài khoản ?",
+    "register": "Tạo tài khoản ngay",
+    "login": "Đăng nhập",
+    "invalidCredentials": "Thông tin đăng nhập không hợp lệ",
+    "accountBlocked": "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ bộ phận hỗ trợ.",
+    "success": {
+      "title": "Đăng nhập thành công",
+      "message": "Chào mừng trở lại! Bạn đã đăng nhập thành công."
+    },
+    "failed": {
+      "title": "Đăng nhập thất bại",
+      "message": "Đã xảy ra lỗi trong quá trình đăng nhập. Vui lòng thử lại."
+    },
+    "action": {
+      "login": "Đăng nhập",
+      "loading": "Đang đăng nhập..."
+    }
+  },
+  "Register": {
+    "title": "Đăng ký",
+    "sub_title": "Tạo một tài khoản miễn phí và tận hưởng nó",
+    "name": {
+      "label": "Tên",
+      "placeholder": "Tên tài khoản",
+      "validation": {
+        "required": "Tên là bắt buộc"
+      }
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Địa chỉ Email",
+      "validation": {
+        "invalid": "Email không hợp lệ",
+        "required": "Email là bắt buộc"
+      }
+    },
+    "password": {
+      "label": "Mật khẩu",
+      "placeholder": "Mật khẩu",
+      "validation": {
+        "minLength": "Mật khẩu phải có ít nhất {length} ký tự",
+        "required": "Mật khẩu là bắt buộc"
+      }
+    },
+    "confirmPassword": {
+      "label": "Xác nhận mật khẩu",
+      "placeholder": "Nhập lại mật khẩu",
+      "validation": {
+        "mismatch": "Mật khẩu xác nhận không khớp",
+        "required": "Vui lòng xác nhận mật khẩu"
+      }
+    },
+    "haveAccount": "Bạn đã có tài khoản ?",
+    "login": "Đăng nhập",
+    "register": "Tạo tài khoản",
+    "emailExists": "Email đã được sử dụng. Vui lòng đăng nhập hoặc sử dụng email khác.",
+    "success": {
+      "title": "Đăng ký thành công",
+      "message": "Chào mừng bạn đến với Adam Store! Tài khoản của bạn đã được tạo thành công."
+    },
+    "failed": {
+      "title": "Đăng ký thất bại",
+      "message": "Đã xảy ra lỗi trong quá trình đăng ký. Vui lòng thử lại."
+    },
+    "action": {
+      "register": "Đăng ký",
+      "loading": "Đang đăng ký..."
+    },
+    "verify": {
+      "title": "Xác minh email",
+      "sub_title": "Chúng tôi đã gửi một email xác minh đến {email}. Vui lòng kiểm tra hộp thư đến của bạn.",
+      "resend": "Gửi lại email xác minh",
+      "haveAccount": "Bạn đã có tài khoản ?",
+      "login": "Đăng nhập ",
+      "placeholder": "Nhập mã xác minh",
+      "backToLogin": "Quay lại đăng nhập",
+      "validation": {
+        "required": "Mã xác minh là bắt buộc"
+      },
+      "no_email": {
+        "title": "Không tìm thấy thông tin xác thực hoặc phiên làm việc đã hết hạn.",
+        "message": "Quay lại trang đăng ký"
+      },
+      "success": {
+        "title": "Email xác minh đã được gửi",
+        "message": "Chúng tôi đã gửi lại email xác minh đến {email}. Vui lòng kiểm tra hộp thư đến của bạn."
+      },
+      "failed": {
+        "title": "Gửi lại email xác minh thất bại",
+        "message": "Đã xảy ra lỗi trong quá trình gửi lại email xác minh. Vui lòng thử lại."
+      },
+      "action": {
+        "resend": "Gửi lại",
+        "loading": "Đang gửi..."
+      }
+    }
+  },
+  "Forgot_password": {
+    "title": "Quên mật khẩu",
+    "sub_title": "Khôi phục mật khẩu của bạn",
+    "email": {
+      "label": "Email",
+      "placeholder": "Địa chỉ Email",
+      "validation": {
+        "invalid": "Email không hợp lệ",
+        "required": "Email là bắt buộc"
+      }
+    },
+    "code": {
+      "label": "Mã xác minh",
+      "placeholder": "Nhập mã xác minh",
+      "validation": {
+        "required": "Mã xác minh là bắt buộc"
+      }
+    },
+    "new_password": {
+      "label": "Mật khẩu mới",
+      "placeholder": "Mật khẩu mới",
+      "validation": {
+        "minLength": "Mật khẩu phải có ít nhất {length} ký tự",
+        "required": "Mật khẩu mới là bắt buộc"
+      }
+    },
+    "confirm_new_password": {
+      "label": "Xác nhận mật khẩu mới",
+      "placeholder": "Nhập lại mật khẩu mới",
+      "validation": {
+        "mismatch": "Mật khẩu xác nhận không khớp",
+        "required": "Vui lòng xác nhận mật khẩu mới"
+      }
+    },
+    "backToLogin": "Quay lại đăng nhập",
+    "emailNotFound": "Không tìm thấy email. Vui lòng kiểm tra và thử lại.",
+    "action": {
+      "code": {
+        "loading": "Đang xác thực...",
+        "send": "Xác thực"
+      },
+      "email": {
+        "loading": "Đang gửi mã...",
+        "send": "Gửi mã"
+      },
+      "reset": {
+        "loading": "Đang xác nhận...",
+        "reset": "Xác nhận"
+      }
+    }
+  },
   "Auth": {
     "unauthenticated": {
       "title": "Bạn chưa đăng nhập",
       "message": "Vui lòng đăng nhập để tiếp tục.",
       "login": "Đăng nhập"
     }
+  },
+  "Sidebar": {
+    "title": "Bảng điều khiển",
+    "categories": "Danh mục",
+    "best_seller": "Bán chạy nhất",
+    "new_product": "Sản phẩm mới",
+    "about_us": "Về chúng tôi",
+    "store_location": "Cửa hàng"
   },
   "Marketing": {
     "categories": {
@@ -129,8 +303,11 @@
       "placeholder": "Chọn mã giảm giá",
       "no_promotion": "Không có mã giảm giá nào"
     },
-    "payment_section": {
-      "title": "Phương thức thang toán"
+    "payment_methods": {
+      "header": "Thanh toán",
+      "title": "Phương thức thang toán",
+      "cash": "Thanh toán khi nhận hàng",
+      "vnpay": "Thanh toán qua VNPAY"
     },
     "payment_summary": {
       "title": "Chi tiết thanh toán",
@@ -193,7 +370,6 @@
     }
   },
   "Header": {
-
     "search": {
       "placeholder": "Tìm kiếm sản phẩm...",
       "noResults": "Không tìm thấy sản phẩm nào"
@@ -227,15 +403,320 @@
       "deleteAll": "Xóa tất cả"
     },
     "user": {
+      "welcome": "Chào mừng",
       "login": "Đăng nhập",
       "register": "Đăng ký",
       "profile": "Hồ sơ",
       "logout": "Đăng xuất",
-      "myorder":"Đơn hàng của tôi",
-      "adminDashboard":"Quản trị hệ thống"
+      "myorder": "Đơn hàng của tôi",
+      "adminDashboard": "Quản trị hệ thống"
+    }
+  },
+  "Profile": {
+    "tabs": {
+      "info": "Hồ sơ cá nhân",
+      "addresses": "Địa chỉ",
+      "change_password": "Đổi mật khẩu"
+    },
+    "title": "Thông tin tài khoản",
+    "personal_info": {
+      "title": "Thông tin cá nhân",
+      "description": "Cập nhật thông tin cá nhân của bạn",
+      "edit_profile": "Chỉnh sửa hồ sơ",
+      "change_password": "Đổi mật khẩu",
+      "manage_addresses": "Quản lý địa chỉ",
+      "name": {
+        "label": "Họ tên",
+        "placeholder": "Nhập tên"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Nhập email"
+      },
+      "sex": {
+        "label": "Giới tính",
+        "placeholder": "Chọn giới tính",
+        "male": "Nam",
+        "female": "Nữ",
+        "other": "Khác"
+      },
+      "phone": {
+        "label": "Số điện thoại",
+        "placeholder": "Nhập số điện thoại"
+      },
+      "dob": {
+        "label": "Ngày sinh",
+        "placeholder": "Chọn ngày sinh"
+      },
+      "action": {
+        "save": "Lưu thay đổi",
+        "cancel": "Hủy",
+        "edit": "Chỉnh sửa",
+        "change_avatar": "Thay đổi avatar",
+        "uploading": "Đang tải lên..."
+      }
+    },
+    "change_password": {
+      "title": "Đổi mật khẩu",
+      "description": "Đảm bảo tài khoản của bạn an toàn bằng cách sử dụng mật khẩu mạnh và duy nhất.",
+      "current_password": {
+        "label": "Mật khẩu hiện tại",
+        "placeholder": "Nhập mật khẩu hiện tại",
+        "validation": {
+          "required": "Mật khẩu hiện tại là bắt buộc"
+        }
+      },
+      "new_password": {
+        "label": "Mật khẩu mới",
+        "placeholder": "Nhập mật khẩu mới",
+        "validation": {
+          "minLength": "Mật khẩu phải có ít nhất {length} ký tự",
+          "required": "Mật khẩu mới là bắt buộc"
+        }
+      },
+      "confirm_new_password": {
+        "label": "Xác nhận mật khẩu mới",
+        "placeholder": "Nhập lại mật khẩu mới",
+        "validation": {
+          "mismatch": "Mật khẩu xác nhận không khớp",
+          "required": "Vui lòng xác nhận mật khẩu mới"
+        }
+      },
+      "action": {
+        "save": "Lưu thay đổi",
+        "cancel": "Hủy",
+        "updating": "Đang cập nhật..."
+      },
+      "success": {
+        "title": "Đổi mật khẩu thành công",
+        "message": "Mật khẩu của bạn đã được cập nhật thành công."
+      },
+      "failed": {
+        "title": "Đổi mật khẩu thất bại",
+        "message": "Đã xảy ra lỗi trong quá trình đổi mật khẩu. Vui lòng thử lại."
+      },
+      "empty_field": {
+        "title": "Vui lòng điền đầy đủ mật khẩu",
+        "message": "Vui lòng điền đầy đủ mật khẩu cũ và mật khẩu mới."
+      },
+      "incorrect_current_password": {
+        "title": "Mật khẩu hiện tại không đúng",
+        "message": "Vui lòng kiểm tra lại mật khẩu hiện tại và thử lại."
+      },
+      "same_password": {
+        "title": "Mật khẩu mới không được trùng với mật khẩu hiện tại",
+        "message": "Vui lòng chọn mật khẩu mới khác với mật khẩu hiện tại."
+      },
+      "missmatch": {
+        "title": "Mật khẩu mới và xác nhận mật khẩu không khớp",
+        "message": "Vui lòng đảm bảo mật khẩu mới và xác nhận mật khẩu khớp nhau."
+      }
+    },
+    "address": {
+      "title": "Địa chỉ của tôi",
+      "description": "Quản lý địa chỉ giao hàng của bạn",
+      "add_address": "Thêm địa chỉ mới",
+      "edit_address": "Chỉnh sửa địa chỉ",
+      "no_address": "Không có địa chỉ nào cả.",
+      "address": "Địa chỉ",
+      "full_name": {
+        "label": "Họ và tên",
+        "placeholder": "Nhập họ và tên",
+        "validation": {
+          "required": "Họ và tên là bắt buộc"
+        }
+      },
+      "phone": {
+        "label": "Số điện thoại",
+        "placeholder": "Nhập số điện thoại",
+        "validation": {
+          "required": "Số điện thoại là bắt buộc",
+          "invalid": "Số điện thoại bắt đầu bằng 0, chỉ chứa các chữ số và có đủ 10 ký tự."
+        }
+      },
+      "address_line1": {
+        "label": "Địa chỉ cụ thể",
+        "placeholder": "Nhập địa chỉ cụ thể",
+        "validation": {
+          "required": "Địa chỉ dòng 1 là bắt buộc"
+        }
+      },
+      "address_line2": {
+        "label": "Địa chỉ dòng 2",
+        "placeholder": "Nhập địa chỉ dòng 2 (tùy chọn)"
+      },
+      "city": {
+        "label": "Tỉnh/Thành phố",
+        "placeholder": "Chọn tỉnh thành phố",
+        "validation": {
+          "required": "Thành phố là bắt buộc"
+        }
+      },
+      "district": {
+        "label": "Quận/Huyện/Thị xã",
+        "placeholder": "Chọn quận/Huyện/Thị xã",
+        "validation": {
+          "required": "Quận/Huyện là bắt buộc"
+        }
+      },
+      "ward": {
+        "label": "Xã/Phường/Thị trấn",
+        "placeholder": "Chọn xã/Phường/Thị trấn",
+        "validation": {
+          "required": "Phường/Xã là bắt buộc"
+        }
+      },
+      "set_default": {
+        "title": "Mặc định",
+        "label": "Đặt làm địa chỉ mặc định"
+      },
+      "validation": {
+        "required_fields": "Vui lòng nhập đủ các thông tin"
+      },
+      "choose": {
+        "title": "Chọn địa chỉ",
+        "description": "Chọn một trong các địa chỉ bạn đã lưu"
+      },
+      "success": {
+        "title_add": "Thêm địa chỉ thành công",
+        "message_add": "Thêm địa chỉ thành công",
+        "title_update": "Cập nhật địa chỉ thành công",
+        "message_update": "Sửa địa chỉ thành công",
+        "title_delete": "Xóa địa chỉ thành công",
+        "message_delete": "Địa chỉ của bạn đã được xóa thành công.",
+        "message_update_order": "Cập nhập địa chỉ thành công"
+      },
+      "failed": {
+        "title": "Thao tác thất bại",
+        "message": "Lỗi khi thêm/sửa địa chỉ !",
+        "message_select": "Lỗi khi chọn địa chỉ"
+      },
+      "action": {
+        "add": "Thêm địa chỉ",
+        "save": "Lưu địa chỉ",
+        "cancel": "Hủy",
+        "delete": "Xóa",
+        "confirm_delete": "Bạn có chắc chắn muốn xóa địa chỉ này không ?",
+        "confirm_change": "Bạn có chắc chắn muốn thay đổi địa chỉ này không ?"
+      }
+    },
+    "my_orders": {
+      "tabs": {
+        "all": "Tất cả",
+        "pending": "Đơn hàng chờ xác nhận",
+        "processing": "Đơn hàng đang xử lý",
+        "shipped": "Đơn hàng đã gửi đi",
+        "delivered": "Đơn hàng đã giao",
+        "canceled": "Đơn hàng đã hủy"
+      },
+      "title": "Đơn hàng của tôi",
+      "no_orders": "Bạn chưa có đơn hàng nào.",
+      "order_id": "Mã đơn hàng",
+      "date": "Ngày",
+      "status": "Trạng thái",
+      "total": "Tổng cộng",
+      "items": "sản phẩm",
+      "view_details": "Xem chi tiết",
+      "actions": {
+        "view_more": "Xem thêm",
+        "retry_payment": "Thanh toán lại",
+        "change_address": "Thay đổi địa chỉ nhận hàng",
+        "cancel_order": "Hủy đơn hàng",
+        "wait": "Chờ ",
+        "confirm_received": "Xác nhận đã nhận hàng",
+        "contact_us": "Liên hệ chúng tôi",
+        "buy_again": "Mua lại"
+      },
+      "summary": {
+        "total_amount": "Tổng số tiền ({count} sản phẩm)"
+      },
+      "confirm": {
+        "cancel_order": "Bạn có chắc muốn huỷ đơn hàng ?"
+      },
+      "messages": {
+        "cancel_success": "Hủy đơn hàng thành công"
+      },
+      "review": {
+        "title": "Đánh giá sản phẩm",
+        "view_review": "Xem đánh giá",
+        "write_review": "Đánh giá",
+        "loading": "Loading . . .",
+        "product": {
+          "color": "Màu",
+          "size": "Size",
+          "quantity": "Số lượng"
+        },
+        "rating": {
+          "quality_label": "Chất lượng sản phẩm"
+        },
+        "content": {
+          "label": "Nội dung đánh giá",
+          "placeholder": "Hãy chia sẻ trải nghiệm của bạn với những người mua khác nhé."
+        },
+        "images": {
+          "add_button": "Thêm hình ảnh"
+        },
+        "actions": {
+          "cancel": "Hủy bỏ",
+          "complete": "Hoàn thành",
+          "update": "Chỉnh sửa"
+        },
+        "messages": {
+          "upload_success": "Tải hình ảnh thành công",
+          "upload_error": "Có lỗi xảy ra khi tải hình ảnh",
+          "create_success": "Đánh giá sản phẩm thành công",
+          "update_success": "Chỉnh sửa đánh giá sản phẩm thành công"
+        }
+      },
+      "order_details": {
+        "title": "Chi tiết đơn hàng",
+        "product_list": {
+          "title": "Sản phẩm",
+          "color": "Màu sắc",
+          "size": "Kích thước",
+          "quantity": "Số lượng",
+          "price": "Giá"
+        },
+        "shipping_info": {
+          "title": "Thông tin giao hàng",
+          "name": "Họ và tên",
+          "address": "Địa chỉ",
+          "phone": "Số điện thoại"
+        },
+        "payment_info": {
+          "title": "Thông tin thanh toán",
+          "method": "Phương thức thanh toán",
+          "status": "Trạng thái thanh toán"
+        },
+        "summary": {
+          "title": "Tóm tắt đơn hàng",
+          "sub_total": "Tạm tính",
+          "shipping_fee": "Phí vận chuyển",
+          "promotion": "Mã giảm giá",
+          "total": "Tổng cộng"
+        },
+        "back_to_orders": "Quay lại đơn hàng của tôi",
+        "retry_payment": {
+          "title": "Thanh toán lại",
+          "failed": "Không thể tạo liên kết thanh toán. Vui lòng thử lại.",
+          "error": "Có lỗi xảy ra khi tạo liên kết thanh toán ."
+        }
+      }
     }
   },
   "Admin": {
+    "topsell": {
+      "title": "Các sản phẩm bán chạy",
+      "retry": "Thử lại",
+      "cannotLoad": "Không thể tải dữ liệu",
+      "cannotLoadDetail": "Đã xảy ra lỗi khi tải danh sách sản phẩm bán chạy",
+      "noData": "Không có dữ liệu sản phẩm bán chạy",
+      "tryChangeRange": "Thử thay đổi khoảng thời gian để xem dữ liệu",
+      "name": "Tên sản phẩm",
+      "sold": "Đã bán",
+      "revenue": "Doanh thu",
+      "viewAll": "Xem tất cả sản phẩm"
+    },
     "ACTIVE": "Hoạt động",
     "INACTIVE": "Không hoạt động",
     "dashboard": {
@@ -274,7 +755,6 @@
     },
     "products": {
       "productUpdated": "Sản phẩm đã được cập nhật thành công",
-
       "restorePayment": "Khôi phục",
       "updateProductTitle": "Cập nhật sản phẩm",
       "updateProduct": "Cập nhật sản phẩm",
@@ -415,8 +895,23 @@
       "INACTIVE": "Không hoạt động",
       "deletePayment": "Xóa"
     },
-
+    "status": {
+      "ACTIVE": "Hoạt động",
+      "INACTIVE": "Ngừng hoạt động",
+      "SUSPENDED": "Tạm khóa"
+    },
     "users": {
+      "headers": {
+        "id": "ID",
+        "avatar": "Avatar",
+        "name": "Tên",
+        "email": "Email",
+        "gender": "Giới tính",
+        "dob": "Sinh nhật",
+        "roles": "Vai trò",
+        "status": "Trạng thái",
+        "actions": "Hành động"
+      },
       "ACTIVE": "Hoạt động",
       "INACTIVE": "Không hoạt động",
       "title": "Quản lý người dùng",
@@ -508,7 +1003,6 @@
       "restoreBranch": "Khôi phục",
       "deleteBranchConfirm": "Bạn có chắc chắn muốn xóa chi nhánh này không?"
     },
-
     "sizes": {
       "ACTIVE": "Hoạt động",
       "INACTIVE": "Không hoạt động",
@@ -813,6 +1307,7 @@
       "refreshMessagesError": "Lỗi khi làm mới tin nhắn"
     },
     "common": {
+      "na": "Không có",
       "refresh": "Làm mới",
       "add": "Thêm",
       "edit": "Sửa",

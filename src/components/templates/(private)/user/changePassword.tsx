@@ -2,11 +2,14 @@ import { changePasswordAction } from '@/actions/userActions';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { Eye, EyeOff } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 export default function ChangePassword() {
+  const t = useTranslations('Profile.change_password');
+
   const [newPass, setNewPass] = useState({
     oldPassword: '',
     newPassword: '',
@@ -26,11 +29,11 @@ export default function ChangePassword() {
   }, [isAuthenticated, user, isLoading, router]);
   const submitChangePassword = async () => {
     if (newPass.newPassword !== newPass.confirmPassword) {
-      toast.warning('Mật khẩu mới và xác nhận mật khẩu không khớp!');
+      toast.warning(t('missmatch.title'));
       return;
     }
     if (newPass.oldPassword === newPass.newPassword) {
-      toast.warning('Mật khẩu mới và mật khẩu cũ bị trùng!');
+      toast.warning(t('same_password.title'));
       return;
     }
     if (
@@ -38,19 +41,19 @@ export default function ChangePassword() {
       newPass.newPassword === '' ||
       newPass.confirmPassword === ''
     ) {
-      toast.warning('Vui lòng điền đầy đủ mật khẩu cũ và mật khẩu mới!');
+      toast.warning(t('empty_field.title'));
     }
     try {
       const res = await changePasswordAction(newPass);
       if (res.success) {
-        toast.success('Đổi mật khẩu thành công!');
+        toast.success(res.message || t('success.title'));
         setNewPass({
           oldPassword: '',
           newPassword: '',
           confirmPassword: '',
         });
       } else {
-        toast.error('Đổi mật khẩu không thành công');
+        toast.error(res.message || t('error.title'));
       }
     } catch (error) {
       console.log(error);
@@ -60,7 +63,7 @@ export default function ChangePassword() {
     <div className='adam-store-bg mt-8 w-full h-90 border-2 border-primary rounded-lg shadow'>
       <ul className='w-full px-15'>
         <li className='w-full flex justify-between mt-8 items-center h-13 relative'>
-          <p className='font-semibold'>Mật khẩu hiện tại:</p>
+          <p className='font-semibold'>{t('current_password.label')}:</p>
           <input
             onChange={(e) =>
               setNewPass({ ...newPass, oldPassword: e.target.value })
@@ -68,7 +71,7 @@ export default function ChangePassword() {
             value={newPass.oldPassword}
             className='border border-border pl-3 rounded-lg w-130 h-full font-semibold text-muted-foreground outline-none'
             type={eye.oldPassword ? 'text' : 'password'}
-            placeholder='Mật khẩu hiện tại'
+            placeholder={t('current_password.placeholder')}
           />
           <button
             className='px-2 py-2 absolute right-0 outline-none text-muted-foreground'
@@ -78,7 +81,7 @@ export default function ChangePassword() {
           </button>{' '}
         </li>
         <li className='w-full flex justify-between mt-8 items-center h-13 relative'>
-          <p className='font-semibold'>Mật khẩu mới:</p>
+          <p className='font-semibold'>{t('new_password.label')}:</p>
           <input
             onChange={(e) =>
               setNewPass({ ...newPass, newPassword: e.target.value })
@@ -86,7 +89,7 @@ export default function ChangePassword() {
             value={newPass.newPassword}
             className='border border-border text-muted-foreground pl-3 rounded-lg w-130 h-full font-semibold outline-none'
             type={eye.newPassword ? 'text' : 'password'}
-            placeholder='Nhập mật khẩu mới'
+            placeholder={t('new_password.placeholder')}
           />
           <button
             className='px-2 py-2 absolute right-0 outline-none text-muted-foreground'
@@ -96,7 +99,7 @@ export default function ChangePassword() {
           </button>
         </li>
         <li className='w-full flex justify-between mt-8 items-center h-13 relative'>
-          <p className='font-semibold'>Xác nhận mật khẩu mới:</p>
+          <p className='font-semibold'>{t('confirm_new_password.label')}:</p>
           <input
             onChange={(e) =>
               setNewPass({ ...newPass, confirmPassword: e.target.value })
@@ -104,7 +107,7 @@ export default function ChangePassword() {
             value={newPass.confirmPassword}
             className='border border-border text-muted-foreground pl-3 rounded-lg w-130 h-full font-semibold outline-none'
             type={eye.confirmPassword ? 'text' : 'password'}
-            placeholder='Xác nhận mật khẩu mới'
+            placeholder={t('confirm_new_password.placeholder')}
           />
           <button
             className='px-2 py-2 absolute right-0 outline-none text-muted-foreground'
@@ -121,7 +124,7 @@ export default function ChangePassword() {
           className='py-6 px-8 font-medium rounded-xl'
           onClick={submitChangePassword}
         >
-          Lưu thay đổi
+          {t('action.save')}
         </Button>
       </div>
     </div>

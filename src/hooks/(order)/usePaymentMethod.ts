@@ -1,4 +1,5 @@
 import { PAYMENT_METHODS } from '@/enums';
+import { DEFAULT_PAYMENT_METHODS } from '@/lib/constants';
 import { usepaymentMethodsStore } from '@/stores/paymentMethodStore';
 import { useCallback } from 'react';
 import { useStore } from 'zustand';
@@ -23,6 +24,34 @@ export default function usePaymentMethod() {
   const resetPaymentMethod = useStore(
     usepaymentMethodsStore,
     (s) => s.resetPaymentMethod
+  );
+
+  // Get translated available methods
+  const getTranslatedPaymentMethods = (t: any) => {
+    return DEFAULT_PAYMENT_METHODS.map((method) => ({
+      ...method,
+      label: t(`payment_methods.${method.id}`),
+    }));
+  };
+
+  // Get translated available methods
+  const getTranslatedAvailableMethods = useCallback(
+    (t: any) => {
+      const translatedMethods = getTranslatedPaymentMethods(t);
+      return translatedMethods.filter((method) => method.isAvailable);
+    },
+    [getTranslatedPaymentMethods]
+  );
+
+  // Get translated selected method details
+  const getTranslatedSelectedMethodDetails = useCallback(
+    (t: any) => {
+      const translatedMethods = getTranslatedPaymentMethods(t);
+      return translatedMethods.find(
+        (method) => method.value === selectedMethod.toString()
+      );
+    },
+    [selectedMethod, getTranslatedPaymentMethods]
   );
 
   // Handle payment method selection
@@ -96,5 +125,8 @@ export default function usePaymentMethod() {
     // Utilities
     isMethodAvailable,
     validatePaymentMethod,
+    getTranslatedPaymentMethods,
+    getTranslatedAvailableMethods,
+    getTranslatedSelectedMethodDetails,
   };
 }

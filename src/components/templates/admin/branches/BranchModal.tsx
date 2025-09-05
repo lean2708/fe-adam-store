@@ -149,15 +149,18 @@ export function BranchModal({ open, onClose, editingBranch }: BranchModalProps) 
       showCloseButton={true}
       className="bg-white rounded-lg shadow-xl"
     >
-      <ModalBody className="p-8">
+      <ModalBody className="p-8 ">
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
             {editingBranch ? t("editBranch") : t("createNewBranch")}
           </h2>
         </div>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-6"
+          >
             <div className="grid grid-cols-2 gap-6">
               <FormField
                 control={form.control}
@@ -221,9 +224,9 @@ export function BranchModal({ open, onClose, editingBranch }: BranchModalProps) 
             />
 
             <div className="flex justify-end gap-3 pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={handleClose}
                 className="px-6 py-2"
               >
@@ -231,8 +234,12 @@ export function BranchModal({ open, onClose, editingBranch }: BranchModalProps) 
               </Button>
               <Button
                 type="submit"
-                disabled={createMutation.isPending || updateMutation.isPending || form.formState.isSubmitting}
-                className="px-6 py-2 bg-black hover:bg-gray-800 text-white"
+                disabled={
+                  createMutation.isPending ||
+                  updateMutation.isPending ||
+                  form.formState.isSubmitting
+                }
+                className="px-6 py-2 bg-black hover:bg-gray-900 text-white"
               >
                 {editingBranch ? t("update") : t("create")}
               </Button>

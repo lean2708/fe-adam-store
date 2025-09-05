@@ -11,9 +11,13 @@ import type { TPromotion } from "@/types";
 export default function PromotionsAdminPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<'ACTIVE' | 'INACTIVE' | "ALL">("ALL");
+  const [statusFilter, setStatusFilter] = useState<
+    "ACTIVE" | "INACTIVE" | "ALL"
+  >("ALL");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingPromotion, setEditingPromotion] = useState<TPromotion | null>(null);
+  const [editingPromotion, setEditingPromotion] = useState<TPromotion | null>(
+    null
+  );
 
   const {
     promotions,
@@ -22,7 +26,7 @@ export default function PromotionsAdminPage() {
     loading,
     handleDelete,
     handleRestore,
-    handleRefresh
+    handleRefresh,
   } = usePromotions(currentPage, 20, statusFilter, searchTerm);
 
   const handlePageChange = (newPage: number) => {
@@ -36,7 +40,7 @@ export default function PromotionsAdminPage() {
     setCurrentPage(0); // Reset to first page when searching
   };
 
-  const handleStatusFilterChange = (value: 'ACTIVE' | 'INACTIVE' | "ALL") => {
+  const handleStatusFilterChange = (value: "ACTIVE" | "INACTIVE" | "ALL") => {
     setStatusFilter(value);
     setCurrentPage(0); // Reset to first page when filter changes
   };
@@ -56,12 +60,10 @@ export default function PromotionsAdminPage() {
     setEditingPromotion(null);
   };
 
-
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="admin-page-container space-y-6 mt-4">
-        <div className="bg-white rounded-lg shadow-sm border">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 border  rounded-lg">
+      <div className="admin-page-container space-y-6 mt-4 dark:bg-gray-900">
+        <div className="bg-white  shadow-sm  dark:bg-gray-900">
           <PromotionTable
             promotions={promotions}
             loading={loading}

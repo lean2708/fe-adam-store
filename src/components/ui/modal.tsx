@@ -122,12 +122,13 @@ export function Modal({
             ref={modalContentRef}
             className={cn(
               "relative bg-white rounded-lg shadow-xl mx-4 my-8 z-50 flex flex-col overflow-hidden",
+              "dark:bg-gray-900",
               sizeStyles[size],
               className
             )}
             style={{
               maxHeight: "80vh",
-              ...style
+              ...style,
             }}
             {...props}
           >
@@ -143,7 +144,7 @@ export function Modal({
           </div>
         </div>
       </>
-    )
+    );
   }
   if ( variant === 'top') {
     return (

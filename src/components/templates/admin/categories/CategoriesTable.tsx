@@ -49,25 +49,31 @@ export function CategoriesTable({
 }: CategoriesTableProps) {
   const t = useTranslations("Admin.categories");
 
-
-
   if (loading) {
     return (
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-hidden">
         <div className="overflow-x-auto">
           <Table className="min-w-[800px]">
             <TableHeader>
               <TableRow>
-                <TableHead className="font-semibold text-gray-900  min-w-[60px]">ID</TableHead>
-                <TableHead className="font-semibold text-gray-900  min-w-[80px]">Ảnh</TableHead>
-                <TableHead className="font-semibold text-gray-900  min-w-[180px]">Tên</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[60px]">
+                  ID
+                </TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[80px]">
+                  Ảnh
+                </TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[180px]">
+                  Tên
+                </TableHead>
                 <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden md:table-cell">
                   Người tạo
                 </TableHead>
                 <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden lg:table-cell">
                   Ngày tạo
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900  min-w-[100px]">Trạng thái</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[100px]">
+                  Trạng thái
+                </TableHead>
                 <TableHead className="font-semibold text-gray-900  text-right min-w-[100px]">
                   Hành động
                 </TableHead>
@@ -113,16 +119,24 @@ export function CategoriesTable({
           <Table className="min-w-[800px]">
             <TableHeader>
               <TableRow>
-                <TableHead className="font-semibold text-gray-900  min-w-[60px]">ID</TableHead>
-                <TableHead className="font-semibold text-gray-900  min-w-[80px]">Ảnh</TableHead>
-                <TableHead className="font-semibold text-gray-900  min-w-[180px]">Tên</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[60px]">
+                  ID
+                </TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[80px]">
+                  Ảnh
+                </TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[180px]">
+                  Tên
+                </TableHead>
                 <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden md:table-cell">
                   Người tạo
                 </TableHead>
                 <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden lg:table-cell">
                   Ngày tạo
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900  min-w-[100px]">Trạng thái</TableHead>
+                <TableHead className="font-semibold text-gray-900  min-w-[100px]">
+                  Trạng thái
+                </TableHead>
                 <TableHead className="font-semibold text-gray-900  text-right min-w-[100px]">
                   Hành động
                 </TableHead>
@@ -154,20 +168,20 @@ export function CategoriesTable({
   return (
     <div>
       {/* Header */}
-      <div className="p-6 border-b bg-gray-50">
+      <div className="p-6 border-b bg-gray-50 dark:bg-gray-900 ">
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <FolderTree className="h-5 w-5 text-gray-700" />
-            <h2 className="text-lg font-semibold text-gray-900">
+          <div className="flex items-center gap-2 ">
+            <FolderTree className="h-5 w-5 text-gray-700 dark:text-white" />
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               {t("categoriesTitle") || "Quản lý danh mục"}
             </h2>
           </div>
           <div className="flex gap-3">
-            <Button onClick={onRefresh} variant="outline" size="sm">
+            <Button onClick={onRefresh} variant="outline" >
               <RefreshCw className="h-4 w-4 mr-2" />
               {t("refresh") || "Làm mới"}
             </Button>
-            <Button onClick={onCreateCategory} size="sm">
+            <Button onClick={onCreateCategory} >
               <Plus className="h-4 w-4 mr-2" />
               {t("addCategory") || "Thêm danh mục"}
             </Button>
@@ -217,10 +231,10 @@ export function CategoriesTable({
                 </div>
                 <ActionDropdown
                   onEdit={() => onEdit(category)}
-                  onDelete={() => onDelete((category.id))}
+                  onDelete={() => onDelete(category.id)}
                   onRestore={
                     category.status === "INACTIVE" && onRestore
-                      ? () => onRestore((category.id))
+                      ? () => onRestore(category.id)
                       : undefined
                   }
                   showRestore={category.status === "INACTIVE" && !!onRestore}
@@ -232,7 +246,10 @@ export function CategoriesTable({
               <div className="flex items-center justify-between text-xs">
                 <Badge
                   variant="secondary"
-                  className={getStatusColor(category.status || "INACTIVE", "general")}
+                  className={getStatusColor(
+                    category.status || "INACTIVE",
+                    "general"
+                  )}
                 >
                   {t(category.status || "INACTIVE") ||
                     category.status ||
@@ -249,21 +266,29 @@ export function CategoriesTable({
         </div>
 
         {/* Desktop Table View - Hidden on mobile */}
-        <div className="hidden sm:block rounded-md border">
+        <div className="hidden sm:block rounded-md border overflow-hidden">
           <div className="overflow-x-auto">
             <Table className="min-w-[800px]">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="font-semibold text-gray-900  min-w-[60px]">ID</TableHead>
-                  <TableHead className="font-semibold text-gray-900  min-w-[80px]">Ảnh</TableHead>
-                  <TableHead className="font-semibold text-gray-900  min-w-[180px]">Tên</TableHead>
+                  <TableHead className="font-semibold text-gray-900  min-w-[60px]">
+                    ID
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-900  min-w-[80px]">
+                    Ảnh
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-900  min-w-[180px]">
+                    Tên
+                  </TableHead>
                   <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden md:table-cell">
                     Người tạo
                   </TableHead>
                   <TableHead className="font-semibold text-gray-900  min-w-[120px] hidden lg:table-cell">
                     Ngày tạo
                   </TableHead>
-                  <TableHead className="font-semibold text-gray-900  min-w-[100px]">Trạng thái</TableHead>
+                  <TableHead className="font-semibold text-gray-900  min-w-[100px]">
+                    Trạng thái
+                  </TableHead>
                   <TableHead className="font-semibold text-gray-900  text-right min-w-[100px]">
                     Hành động
                   </TableHead>
@@ -335,10 +360,10 @@ export function CategoriesTable({
                     <TableCell className="text-right">
                       <ActionDropdown
                         onEdit={() => onEdit(category)}
-                        onDelete={() => onDelete((category.id))}
+                        onDelete={() => onDelete(category.id)}
                         onRestore={
                           category.status === "INACTIVE" && onRestore
-                            ? () => onRestore((category.id))
+                            ? () => onRestore(category.id)
                             : undefined
                         }
                         showRestore={

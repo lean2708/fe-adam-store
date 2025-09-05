@@ -14,19 +14,21 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { checkReviewAction } from '@/actions/reviewActions';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 interface TabItem {
   key: TabStatus;
   label: string;
 }
-const tabList: TabItem[] = [
-  { key: 'PENDING', label: 'Đơn hàng chờ xác nhận' },
-  { key: 'PROCESSING', label: 'Đơn hàng đang xử lý' },
-  { key: 'SHIPPED', label: 'Đơn hàng đã gửi đi' },
-  { key: 'DELIVERED', label: 'Đơn hàng đã giao' },
-  { key: 'CANCELLED', label: 'Đơn hàng đã huỷ' },
-];
 export function ContentOrder() {
+  const t = useTranslations('Profile.my_orders');
+  const tabList: TabItem[] = [
+    { key: 'PENDING', label: t('tabs.pending') },
+    { key: 'PROCESSING', label: t('tabs.processing') },
+    { key: 'SHIPPED', label: t('tabs.shipped') },
+    { key: 'DELIVERED', label: t('tabs.delivered') },
+    { key: 'CANCELLED', label: t('tabs.canceled') },
+  ];
   const { isAuthenticated, isLoading, user } = useAuth();
   const router = useRouter();
   useEffect(() => {
@@ -160,11 +162,11 @@ export function ContentOrder() {
       if (res.success && res.data?.paymentUrl) {
         router.push(res.data.paymentUrl);
       } else {
-        toast.error('Không thể tạo liên kết thanh toán. Vui lòng thử lại.');
+        toast.error(res.message || t('retry_payment.failed'));
       }
     } catch (error) {
       console.error('Failed to retry payment:', error);
-      toast.error('Có lỗi xảy ra khi tạo liên kết thanh toán.');
+      toast.error(t('retry_payment.error'));
     }
   };
 
@@ -220,7 +222,7 @@ export function ContentOrder() {
                   </h3>
                   <div className='py-3 flex w-full justify-between h-24 items-center'>
                     <p className='bg-gray-100 text-black rounded-md py-3 flex w-full h-16 items-center justify-center'>
-                      Bạn chưa có đơn hàng nào cả
+                      {t('no_orders')}
                     </p>
                   </div>
                 </div>

@@ -1,8 +1,8 @@
-import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
-import { notoSans } from "@/config/fonts";
-import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { cn } from '@/lib/utils';
+import { Button } from '../ui/button';
+import { notoSans } from '@/config/fonts';
+import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export default function SectionHeader({
   title,
@@ -17,12 +17,12 @@ export default function SectionHeader({
   hasButton: boolean;
   to: string;
 }) {
-  const t = useTranslations("Marketing");
+  const t = useTranslations('Marketing');
 
   return (
     <div
       className={cn(
-        "flex items-center justify-between border-t border-secondary py-6 dark:border-secondary-dark",
+        'flex items-center justify-between border-t border-secondary py-6 dark:border-secondary-dark',
         className
       )}
     >
@@ -30,7 +30,7 @@ export default function SectionHeader({
         {description ? (
           <p
             className={cn(
-              "text-sm bg-blac text-gray-700 dark:text-gray-300 sm:text-base"
+              'text-sm bg-blac text-gray-700 dark:text-gray-300 sm:text-base'
             )}
           >
             {description}
@@ -38,14 +38,14 @@ export default function SectionHeader({
         ) : null}
 
         <h2
-          className={cn("text-2xl font-bold sm:text-3xl", notoSans.className)}
+          className={cn('text-2xl font-bold sm:text-3xl', notoSans.className)}
         >
           {title}
         </h2>
       </div>
       {hasButton ? (
         <Link href={to}>
-          <Button variant="default"> Tất cả sản phẩm </Button>
+          <Button variant='default'> {t('sectionHeader.allProducts')} </Button>
         </Link>
       ) : null}
     </div>

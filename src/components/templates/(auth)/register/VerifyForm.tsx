@@ -19,16 +19,18 @@ import {
 import { toast } from 'sonner';
 import { verifyRegistrationAction } from '@/actions/nextAuthActions';
 import { signInWithTokens } from '@/lib/auth/client-token-login';
-
-// Schema validation
-const formSchema = z.object({
-  verifyCodeRequest: z.string().min(1, 'Mã xác thực là bắt buộc'),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+import { useTranslations } from 'next-intl';
 
 export default function VerifyForm({ email }: { email: string }) {
+  const t = useTranslations('Register.verify');
   const router = useRouter();
+
+  // Schema validation
+  const formSchema = z.object({
+    verifyCodeRequest: z.string().min(1, t('validation.required')),
+  });
+
+  type FormValues = z.infer<typeof formSchema>;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -64,9 +66,9 @@ export default function VerifyForm({ email }: { email: string }) {
           toast.success('Đăng nhập thành công!');
           router.push('/');
         } else {
-          toast.error(
-            'Xác thực thành công nhưng đăng nhập thất bại. Vui lòng đăng nhập thủ công.'
-          );
+          toast.error(t('failed.title'), {
+            description: t('failed.message'),
+          });
           router.push('/login?message=verification_success');
         }
       } else {
@@ -83,7 +85,7 @@ export default function VerifyForm({ email }: { email: string }) {
           });
         });
       }
-      toast.error(res.message || 'Xác thực thất bại');
+      toast.error(res.message || t('failed.title'));
     }
   };
 
@@ -100,7 +102,7 @@ export default function VerifyForm({ email }: { email: string }) {
                   {...field}
                   id='name'
                   type='text'
-                  placeholder='Nhập mã xác thực'
+                  placeholder={t('placeholder')}
                   disabled={isSubmitting}
                   className='w-full -px-3 py-8 adam-store-bg rounded-none border-b-1 border-t-0 border-l-0 border-r-0 border-b-gray-300 shadow-none focus-visible:border-b-2 focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none'
                 />
@@ -119,16 +121,16 @@ export default function VerifyForm({ email }: { email: string }) {
             disabled={isSubmitting}
             className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 rounded-md font-medium'
           >
-            {isSubmitting ? 'Đang xác thực...' : 'Xác thực'}
+            {isSubmitting ? t('action.loading') : t('action.submit')}
           </Button>
 
           <div className='text-center'>
-            Bạn đã có tài khoản?{' '}
+            {t('haveAccount')}{' '}
             <Link
               href='/login'
               className='text-sm text-primary hover:underline'
             >
-              Đăng nhập
+              {t('login')}
             </Link>
           </div>
         </div>

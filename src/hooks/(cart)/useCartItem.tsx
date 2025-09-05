@@ -1,5 +1,5 @@
 // hooks/useCartItemActions.ts
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import {
   changeCartItemVariantAction,
   deleteCartItemAction,

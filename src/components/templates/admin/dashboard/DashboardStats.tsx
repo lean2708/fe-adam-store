@@ -83,7 +83,7 @@ export function DashboardStats({ dateRange }: DashboardStatsProps) {
         {Array.from({ length: 3 }).map((_, i) => (
           <Card
             key={i}
-            className="bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm"
+            className="bg-white dark:bg-gray-900 border border-border rounded-lg shadow-sm"
           >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
@@ -108,7 +108,7 @@ export function DashboardStats({ dateRange }: DashboardStatsProps) {
         return (
           <Card
             key={index}
-            className="relative overflow-hidden bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm"
+            className="relative overflow-hidden bg-white dark:bg-gray-900 border border-border rounded-lg shadow-sm"
           >
             <CardContent className="p-6">
               <div className="flex items-start justify-between">

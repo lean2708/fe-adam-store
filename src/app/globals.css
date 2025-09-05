@@ -148,7 +148,7 @@ html, body {
 }
 
 .adam-store-bg-light {
-  @apply bg-gray-50 dark:bg-gray-800;
+  @apply bg-gray-50 dark:bg-gray-900;
 }
 
 .adam-store-border {
@@ -156,7 +156,7 @@ html, body {
 }
 
 .adam-store-bg-dark {
-  @apply bg-gray-800 dark:bg-gray-900;
+  @apply bg-gray-900 dark:bg-gray-900;
 }
 
 .adam-store-text-light {
@@ -165,7 +165,7 @@ html, body {
 
 /* Enhanced Adam Store Components */
 .adam-card {
-  @apply bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 transition-colors;
+  @apply bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 transition-colors;
 }
 
 .adam-card-hover {
@@ -174,7 +174,7 @@ html, body {
 
 /* Admin specific styles */
 .admin-card {
-  @apply bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm;
+  @apply bg-white dark:bg-gray-900 border border-border rounded-lg shadow-sm;
 }
 
 .admin-page-container {
@@ -182,19 +182,19 @@ html, body {
 }
 
 .admin-content-card {
-  @apply bg-white dark:bg-gray-800 border border-border shadow-sm rounded-lg;
+  @apply bg-white dark:bg-gray-900 border border-border shadow-sm rounded-lg;
 }
 
 .admin-table-container {
-  @apply bg-white dark:bg-gray-800 border border-border shadow-sm rounded-lg;
+  @apply bg-white dark:bg-gray-900 border border-border shadow-sm rounded-lg;
 }
 
 .admin-stats-card {
-  @apply bg-white dark:bg-gray-800 border border-border rounded-lg shadow-sm;
+  @apply bg-white dark:bg-gray-900 border border-border rounded-lg shadow-sm;
 }
 
 .adam-btn-primary {
-  @apply bg-black dark:bg-white text-white dark:text-black px-6 py-3 rounded-md font-medium transition-colors hover:bg-gray-800 dark:hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:ring-offset-2;
+  @apply bg-black dark:bg-white text-white dark:text-black px-6 py-3 rounded-md font-medium transition-colors hover:bg-gray-900 dark:hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:ring-offset-2;
 }
 
 .adam-btn-secondary {
@@ -202,11 +202,11 @@ html, body {
 }
 
 .adam-btn-outline {
-  @apply border border-gray-300 dark:border-gray-600 text-black dark:text-white px-6 py-3 rounded-md font-medium transition-colors hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
+  @apply border border-gray-300 dark:border-gray-600 text-black dark:text-white px-6 py-3 rounded-md font-medium transition-colors hover:bg-gray-50 dark:hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
 }
 
 .adam-input {
-  @apply w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent transition-colors placeholder:text-gray-500 dark:placeholder:text-gray-400;
+  @apply w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-black dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent transition-colors placeholder:text-gray-500 dark:placeholder:text-gray-400;
 }
 
 .adam-label {

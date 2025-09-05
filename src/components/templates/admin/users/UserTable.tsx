@@ -70,16 +70,15 @@ export function UserTable({
   const t = useTranslations("Admin");
   const locale = useLocale();
 
-
   // No client-side filtering needed since we're using server-side search
   const filteredUsers = users;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 ">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
             <Users className="h-5 w-5" />
             {t("users.title")}
           </h2>
@@ -96,7 +95,6 @@ export function UserTable({
           </Button>
         </div>
       </div>
-
       {/* Search */}
       <div className="flex items-center space-x-2">
         <div className="relative flex-1 max-w-sm rounded-lg border-2 focus-within:border-blue-500 overflow-hidden">
@@ -109,79 +107,70 @@ export function UserTable({
           />
         </div>
       </div>
-
       {/* Table */}
-      <div className="admin-table-container">
-        <div className="rounded-md border">
+      <div className="admin-table-container overflow-hidden">
+        <div>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="font-semibold text-gray-900  ">
-                  ID
+                <TableHead className="font-semibold text-gray-900">
+                  {t("users.headers.id")}
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900  ">
-                  Avatar
+                <TableHead className="font-semibold text-gray-900">
+                  {t("users.headers.avatar")}
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900  ">
-                  Tên
+                <TableHead className="font-semibold text-gray-900">
+                  {t("users.headers.name")}
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900  ">
-                  Email
+                <TableHead className="font-semibold text-gray-900">
+                  {t("users.headers.email")}
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900  ">
-                  Giới tính
+                <TableHead className="font-semibold text-gray-900">
+                  {t("users.headers.gender")}
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900  ">
-                  Sinh nhật
+                <TableHead className="font-semibold text-gray-900">
+                  {t("users.headers.dob")}
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900  ">
-                  Vai trò
+                <TableHead className="font-semibold text-gray-900">
+                  {t("users.headers.roles")}
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900  ">
-                  Trạng thái
+                <TableHead className="font-semibold text-gray-900">
+                  {t("users.headers.status")}
                 </TableHead>
                 <TableHead className="font-semibold text-gray-900 text-right whitespace-nowrap">
-                  Hành động
+                  {t("users.headers.actions")}
                 </TableHead>
               </TableRow>
             </TableHeader>
+
             <TableBody>
               {loading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <TableRow key={i}>
-                    {/* ID */}
                     <TableCell>
                       <div className="h-4 bg-muted rounded animate-pulse w-16" />
                     </TableCell>
-                    {/* Avatar */}
                     <TableCell>
                       <div className="h-8 w-8 bg-muted rounded-full animate-pulse" />
                     </TableCell>
-                    {/* Tên */}
                     <TableCell>
                       <div className="h-4 bg-muted rounded animate-pulse w-32" />
                     </TableCell>
-                    {/* Email */}
                     <TableCell>
                       <div className="h-4 bg-muted rounded animate-pulse w-40" />
                     </TableCell>
-                    {/* Giới tính */}
                     <TableCell>
                       <div className="h-4 bg-muted rounded animate-pulse w-16" />
                     </TableCell>
-                    {/* Sinh nhật */}
                     <TableCell>
                       <div className="h-4 bg-muted rounded animate-pulse w-24" />
                     </TableCell>
-                    {/* Vai trò */}
                     <TableCell>
                       <div className="h-6 bg-muted rounded animate-pulse w-20" />
                     </TableCell>
-                    {/* Trạng thái */}
                     <TableCell>
                       <div className="h-6 bg-muted rounded animate-pulse w-16" />
                     </TableCell>
-                    {/* Hành động */}
                     <TableCell className="text-right">
                       <div className="h-8 w-8 bg-muted rounded animate-pulse ml-auto" />
                     </TableCell>
@@ -207,33 +196,40 @@ export function UserTable({
                     {/* Avatar */}
                     <TableCell>
                       <Avatar className="h-8 w-8">
-                        <AvatarImage src={user.avatarUrl} alt={user.name} />
+                        <AvatarImage
+                          src={user.avatarUrl}
+                          alt={user.name || t("common.na")}
+                        />
                         <AvatarFallback className="text-xs">
                           {user.name?.charAt(0)?.toUpperCase() || "U"}
                         </AvatarFallback>
                       </Avatar>
                     </TableCell>
 
-                    {/* Tên */}
+                    {/* Name */}
                     <TableCell>
-                      <div className="font-medium">{user.name || "N/A"}</div>
+                      <div className="font-medium">
+                        {user.name || t("common.na")}
+                      </div>
                     </TableCell>
 
                     {/* Email */}
                     <TableCell>
                       <div className="text-sm text-gray-600">
-                        {user.email || "N/A"}
+                        {user.email || t("common.na")}
                       </div>
                     </TableCell>
 
-                    {/* Giới tính */}
+                    {/* Gender */}
                     <TableCell>
                       <div className="text-sm">
-                        {t(`users.gender.${user.gender || "Other"}`)}
+                        {t(
+                          `users.gender.${(user.gender || "Other").toString()}`
+                        )}
                       </div>
                     </TableCell>
 
-                    {/* Sinh nhật */}
+                    {/* DOB */}
                     <TableCell>
                       <div className="text-sm text-gray-600">
                         {user.dob
@@ -242,11 +238,11 @@ export function UserTable({
                               month: "short",
                               day: "numeric",
                             })
-                          : "N/A"}
+                          : t("common.na")}
                       </div>
                     </TableCell>
 
-                    {/* Vai trò */}
+                    {/* Roles */}
                     <TableCell>
                       <div className="flex flex-wrap gap-1">
                         {user.roles && Array.from(user.roles).length > 0 ? (
@@ -267,9 +263,8 @@ export function UserTable({
                       </div>
                     </TableCell>
 
-                    {/* Trạng thái */}
+                    {/* Status */}
                     <TableCell>
-                      
                       <Badge
                         variant="secondary"
                         className={getStatusColor(
@@ -277,14 +272,11 @@ export function UserTable({
                           "general"
                         )}
                       >
-                        {t(user.status || "INACTIVE") ||
-                          user.status ||
-                          "INACTIVE"}
+                        {t(`status.${(user.status || "INACTIVE").toString()}`)}
                       </Badge>
-        
                     </TableCell>
 
-                    {/* Hành động */}
+                    {/* Actions */}
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>

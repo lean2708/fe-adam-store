@@ -1,30 +1,32 @@
-"use client";
-import Address from "@/components/templates/(private)/user/address";
-import ChangePassword from "@/components/templates/(private)/user/changePassword";
-import Infomation from "@/components/templates/(private)/user/infomation";
-import { useAuth } from "@/hooks/useAuth";
-import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-
-const tabList = [
-  { key: "Info", label: "Hồ sơ cá nhân" },
-  { key: "Change", label: "Đổi mật khẩu" },
-  { key: "Address", label: "Địa chỉ" },
-];
+'use client';
+import Address from '@/components/templates/(private)/user/address';
+import ChangePassword from '@/components/templates/(private)/user/changePassword';
+import Infomation from '@/components/templates/(private)/user/infomation';
+import { useAuth } from '@/hooks/useAuth';
+import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 export function ContentUser() {
+  const t = useTranslations('Profile');
+
+  const tabList = [
+    { key: 'Info', label: t('tabs.info') },
+    { key: 'Change', label: t('tabs.change_password') },
+    { key: 'Address', label: t('tabs.addresses') },
+  ];
   const { isAuthenticated, isLoading, user } = useAuth();
   const router = useRouter();
- const searchParams = useSearchParams(); // Lấy tham số tìm kiếm
-  const tab = searchParams.get('tab'); 
+  const searchParams = useSearchParams(); // Lấy tham số tìm kiếm
+  const tab = searchParams.get('tab');
 
-  const [activeStatus, setActiveStatus] = useState<string>("Info"); // Mặc định là 'Info'
+  const [activeStatus, setActiveStatus] = useState<string>('Info'); // Mặc định là 'Info'
 
   useEffect(() => {
     // Kiểm tra xác thực và điều hướng đến trang đăng nhập nếu chưa xác thực
     if (!isLoading && !isAuthenticated && !user) {
-      router.push("/login");
+      router.push('/login');
     }
   }, [isAuthenticated, user, isLoading, router]);
 
@@ -42,16 +44,16 @@ export function ContentUser() {
 
   return (
     <>
-      <div className="max-w-xs flex flex-col items-center">
-        <h3 className="font-bold text-3xl">Thông tin tài khoản</h3>
-        <ul className="mt-4">
+      <div className='max-w-xs flex flex-col items-center'>
+        <h3 className='font-bold text-3xl'>{t('title')}</h3>
+        <ul className='mt-4'>
           {tabList.map((item) => (
             <li
               key={item.key}
               onClick={() => handleTabChange(item.key)}
               className={cn(
-                "px-3 py-2 cursor-pointer",
-                activeStatus !== item.key && "text-gray-400"
+                'px-3 py-2 cursor-pointer',
+                activeStatus !== item.key && 'text-gray-400'
               )}
             >
               {item.label}
@@ -59,13 +61,13 @@ export function ContentUser() {
           ))}
         </ul>
       </div>
-      <div className="flex-1 flex-col ml-6">
-        <h3 className="w-full text-center font-bold text-3xl">
+      <div className='flex-1 flex-col ml-6'>
+        <h3 className='w-full text-center font-bold text-3xl'>
           {tabList.find((tab) => tab.key === activeStatus)?.label}
         </h3>
-        {activeStatus === "Info" && <Infomation />}
-        {activeStatus === "Change" && <ChangePassword />}
-        {activeStatus === "Address" && <Address />}
+        {activeStatus === 'Info' && <Infomation />}
+        {activeStatus === 'Change' && <ChangePassword />}
+        {activeStatus === 'Address' && <Address />}
       </div>
     </>
   );

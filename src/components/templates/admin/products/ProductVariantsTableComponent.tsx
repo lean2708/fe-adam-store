@@ -78,15 +78,15 @@ export function ProductVariantsTableComponent({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border">
+    <div className="bg-white rounded-lg shadow-sm border dark:bg-gray-900">
       <div className="p-6 ">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-black">
+          <h3 className="text-lg font-bold text-black dark:text-white">
             {t("productVariants") || "Biến thể sản phẩm"}
           </h3>
           <Button
             onClick={handleOpenAddModal}
-            className="w-30 bg-black hover:bg-gray-800 text-white flex items-center justify-center space-x-2 py-3"
+            className="w-30 bg-black hover:bg-gray-900 text-white flex items-center justify-center space-x-2 py-3"
           >
             <svg
               width="16"

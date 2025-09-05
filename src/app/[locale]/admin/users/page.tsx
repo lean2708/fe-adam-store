@@ -54,9 +54,9 @@ export default function UsersPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="admin-page-container space-y-6 mt-4 rounded-lg">
-        <div className="bg-white rounded-lg shadow-sm border p-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 rounded-lg border">
+      <div className="admin-page-container space-y-6 mt-4  ">
+        <div className="bg-white  shadow-sm  p-6 dark:bg-gray-900">
           <UserTable
             users={users}
             loading={loading}

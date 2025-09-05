@@ -28,7 +28,7 @@ export function BranchesHeader({ onRefresh, onCreateBranch }: BranchesHeaderProp
           <RefreshCw className="h-4 w-4 mr-2" />
           {t("refresh")}
         </Button>
-        <Button onClick={onCreateBranch} className="bg-black hover:bg-gray-800 text-white">
+        <Button onClick={onCreateBranch} className="bg-black hover:bg-gray-900 text-white">
           <Plus className="h-4 w-4 mr-2" />
           {t("addBranch")}
         </Button>

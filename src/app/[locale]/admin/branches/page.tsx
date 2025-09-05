@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 
-
 import { BranchesTable } from "@/components/templates/admin/branches/BranchesTable";
 import { BranchModal } from "@/components/templates/admin/branches/BranchModal";
 import { useBranches } from "@/hooks/admin/useBranches";
-import type { TBranch }  from "@/types";
+import type { TBranch } from "@/types";
 
 export default function BranchesAdminPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,10 +44,9 @@ export default function BranchesAdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="admin-page-container space-y-6 mt-4">
-
-        <div className="bg-white rounded-lg shadow-sm border">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 rounded-lg border">
+      <div className="admin-page-container space-y-6 mt-4 dark:bg-gray-900">
+        <div className="bg-white  shadow-sm  dark:bg-gray-900">
           <BranchesTable
             branches={branches}
             loading={loading}

@@ -4,7 +4,7 @@ import { ORDER_STATUS } from '@/enums';
 import { PAYMENT_METHODS } from '@/enums';
 
 export type TCategory = {
-  izd: number;
+  id: number;
   name: string;
   imageUrl: string;
   status?: string;
@@ -340,7 +340,7 @@ export type TProductVariant = {
 export type TPaymentMethodOption = {
   id: string;
   value: PAYMENT_METHODS;
-  label: string;
+  label?: string;
   icon?: React.ComponentType<{ className?: string }>;
   image?: string;
   isAvailable?: boolean;
