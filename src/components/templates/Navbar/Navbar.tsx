@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { ShoppingBag, User, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -19,16 +19,12 @@ export default function Navbar() {
   const { user, isAuthenticated } = useAuth();
 
   const cartItems = useCartStore((state) => state.cartItems);
+  const clearCart = useCartStore((state) => state.clearCart);
   // Only manage modal open/close triggers here
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-
-  const cartItemCount = useMemo(
-    () => cartItems.reduce((total, item) => total + item.quantity, 0),
-    [cartItems]
-  );
 
   // Modal close handlers
   const handleCartModalClose = useCallback(() => {
@@ -47,6 +43,13 @@ export default function Navbar() {
   const handleSearchExpand = useCallback((expanded: boolean) => {
     setIsSearchExpanded(expanded);
   }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      clearCart();
+    }
+  }, [isAuthenticated, clearCart]);
+
   return (
     <header className='border-b adam-store-border adam-store-bg relative h-16 flex items-center'>
       {/* Hide other content when search is expanded */}
@@ -87,9 +90,9 @@ export default function Navbar() {
                 className='relative'
               >
                 <ShoppingBag className='h-5 w-5' />
-                {cartItemCount > 0 && isAuthenticated && (
+                {cartItems.length > 0 && isAuthenticated && (
                   <span className='absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center'>
-                    {cartItemCount}
+                    {cartItems.length}
                   </span>
                 )}
               </Button>

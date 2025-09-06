@@ -84,7 +84,7 @@ export default function MobileSidebar({
               {categories.map((category) => (
                 <Link
                   key={category.id || category.name}
-                  href={`/detail?categoryId=${category.id}`}
+                  href={`/detail?category=${category.id}`}
                   className='block py-4 px-2 text-primary font-medium border-b border-border hover:bg-secondary/50 rounded-t-xl'
                   onClick={onClose}
                 >
