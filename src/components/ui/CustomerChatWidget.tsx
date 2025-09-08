@@ -283,7 +283,7 @@ export function CustomerChatWidget() {
     return (
       <div
         className={cn(
-          'fixed bottom-4 right-4 z-50 bg-white rounded-2xl shadow-2xl border border-border transition-all duration-300 flex flex-col overflow-hidden',
+          'fixed bottom-4 right-4 z-50 bg-white rounded-2xl shadow-2xl border border-gray-200 transition-all duration-300 flex flex-col overflow-hidden',
           // Mobile styles (default)
           'w-[calc(100vw-2rem)] max-w-[320px] max-h-[400px]',
           // Tablet styles
@@ -295,24 +295,24 @@ export function CustomerChatWidget() {
         )}
       >
         {/* Header */}
-        <div className='flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white shrink-0'>
+        <div className='flex items-center justify-between px-4 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white shrink-0'>
           <div className='flex items-center gap-3 min-w-0'>
             <div className='relative'>
-              <Avatar className='w-10 h-10 shrink-0 ring-2 ring-white/20'>
-                <AvatarFallback className='bg-white text-blue-600 text-sm font-bold'>
+              <Avatar className='w-10 h-10 shrink-0 ring-2 ring-gray-300/30'>
+                <AvatarFallback className='bg-gray-100 text-gray-800 text-sm font-bold'>
                   AS
                 </AvatarFallback>
               </Avatar>
               <div
                 className={cn(
                   'absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white',
-                  isWebSocketConnected ? 'bg-green-400' : 'bg-gray-400'
+                  isWebSocketConnected ? 'bg-emerald-400' : 'bg-gray-500'
                 )}
               />
             </div>
             <div className='min-w-0 flex-1'>
               <h3 className='font-semibold text-base truncate'>Adam Store</h3>
-              <p className='text-xs text-blue-100 truncate'>
+              <p className='text-xs text-gray-300 truncate'>
                 {connectionStatus}
               </p>
             </div>
@@ -322,7 +322,7 @@ export function CustomerChatWidget() {
             variant='ghost'
             size='sm'
             onClick={minimizeWidget}
-            className='h-8 w-8 p-0 text-white hover:bg-white/10 rounded-full shrink-0 transition-colors'
+            className='h-8 w-8 p-0 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-full shrink-0 transition-colors'
             aria-label='Minimize chat'
           >
             <X className='h-4 w-4' />
@@ -363,7 +363,7 @@ export function CustomerChatWidget() {
             <Button
               variant='ghost'
               size='sm'
-              className='text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-full p-2 shrink-0 transition-colors'
+              className='text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-full p-2 shrink-0 transition-colors'
               onClick={toggleUploader}
               aria-label='Toggle file upload'
             >
@@ -376,7 +376,7 @@ export function CustomerChatWidget() {
                 onKeyDown={handleKeyDown}
                 placeholder={t('Admin.chat.messagePlaceholder')}
                 disabled={isSending || !isWebSocketConnected}
-                className='flex-1 text-black min-w-0 bg-gray-100 border-0 rounded-full px-4 py-2.5 text-sm placeholder:text-gray-500 focus:bg-white focus:ring-1 focus:ring-blue-500 focus:ring-offset-0 transition-all resize-none'
+                className='flex-1 text-gray-900 min-w-0 bg-gray-100 border-0 rounded-full px-4 py-2.5 text-sm placeholder:text-gray-500 focus:bg-white focus:ring-1 focus:ring-gray-400 focus:ring-offset-0 transition-all resize-none'
                 style={{ minHeight: '40px' }}
               />
             </div>
@@ -395,7 +395,7 @@ export function CustomerChatWidget() {
                   uploadAndSendMutation.isPending ||
                   !isWebSocketConnected
                   ? 'bg-gray-300 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl'
+                  : 'bg-gray-700 hover:bg-gray-800 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl'
               )}
               aria-label='Send message'
             >
@@ -415,14 +415,14 @@ export function CustomerChatWidget() {
     <Button
       onClick={handleChatClick}
       className='fixed bottom-6 right-6 z-50 group
-          bg-gradient-to-r from-blue-600 to-blue-700 
-          hover:from-blue-700 hover:to-blue-800 
+          bg-gradient-to-r from-gray-600 to-gray-700 
+          hover:from-gray-700 hover:to-gray-800 
           text-white rounded-full px-6 py-4 
           shadow-xl hover:shadow-2xl
           transform transition-all  ease-out
           hover:scale-105 hover:-translate-y-1
           animate-in slide-in-from-bottom-8 fade-in duration-500
-          border border-blue-500/20
+          border border-gray-500/20
           backdrop-blur-sm
           flex items-center gap-3
           min-w-[140px] justify-center
@@ -436,8 +436,8 @@ export function CustomerChatWidget() {
         {t('chatwithus')}
       </span>
 
-      <div className='absolute inset-0 rounded-full border-2 border-blue-400/50 animate-ping opacity-75'></div>
-      <div className='absolute inset-0 rounded-full border border-blue-300/30 animate-pulse'></div>
+      <div className='absolute inset-0 rounded-full border-2 border-gray-400/50 animate-ping opacity-75'></div>
+      <div className='absolute inset-0 rounded-full border border-gray-300/30 animate-pulse'></div>
     </Button>
   );
 }
