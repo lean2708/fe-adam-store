@@ -56,16 +56,19 @@ export default function ProductCardIndex({
     <div className={cn('group relative cursor-pointer', className)}>
       {/* Product Image Container */}
       <div className='relative mb-4 aspect-[3/4] overflow-hidden rounded-xl bg-gray-50'>
-        <Link href={`/product/${product.id}`} className='block h-full w-full'>
+        <Link
+          href={`/product/${product.id}`}
+          className='block w-[286px] h-[429px]'
+        >
           <Image
             src={
               product.mainImage ||
               'https://images.pexels.com/photos/6069525/pexels-photo-6069525.jpeg?auto=compress&cs=tinysrgb&h=400&w=300placeholder-product.jpg'
             }
             alt={product.name || 'Product image'}
-            width={300}
-            height={400}
-            className='h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110'
+            fill
+            sizes='286px'
+            className='object-cover transition-transform duration-500 ease-out group-hover:scale-110'
           />
 
           {/* Badge */}
