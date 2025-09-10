@@ -15,7 +15,6 @@ export function PaymentSummary() {
   const locale = useLocale();
 
   const { items: products, subtotal, type } = useCheckoutDatas();
-  console.log('subtotal', subtotal);
 
   const { currentAddress } = useAddress();
   const selectedTotalPrice = useCartStore((s) => s.selectedTotalPrice);

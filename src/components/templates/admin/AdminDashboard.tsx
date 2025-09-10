@@ -13,11 +13,7 @@ import { DashboardTopProducts } from '@/components/templates/admin/dashboard/Das
 import { useTranslations } from 'next-intl';
 import { useDateRange } from '@/hooks/useDateRange';
 
-type Props = {
-  locale: string;
-};
-
-export default function AdminDashboard({ locale }: Props) {
+export default function AdminDashboard() {
   const t = useTranslations('Admin');
   const { dateRange } = useDateRange();
 

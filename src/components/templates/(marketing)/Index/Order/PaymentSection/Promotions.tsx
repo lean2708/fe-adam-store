@@ -8,7 +8,6 @@ import {
 import { TPromotion } from '@/types';
 import { BadgePercent } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import React from 'react';
 
 interface PromotionsProps {
   promotionList: TPromotion[];

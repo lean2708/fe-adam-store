@@ -6,10 +6,24 @@ import { useAuth } from '@/hooks/useAuth';
 import { TAddressItem } from '@/types';
 import Link from 'next/link';
 import { useState } from 'react';
-import AddressSectionModal from './Address/AddressSectionModal';
-import { AddNewAddressModal } from './Address/AddNewAddressModal';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
+
+// *Dynamic import cho Modal components
+const AddressSectionModal = dynamic(
+  () => import('./Address/AddressSectionModal'),
+  {
+    ssr: false,
+  }
+);
+
+const AddNewAddressModal = dynamic(
+  () => import('./Address/AddNewAddressModal'),
+  {
+    ssr: false,
+  }
+);
 
 export function DeliveryInfo() {
   const t = useTranslations('Order.delivery_info');

@@ -46,7 +46,7 @@ interface AddNewAddressModalProps {
   onSaveSuccess: () => void;
 }
 
-export function AddNewAddressModal({
+export default function AddNewAddressModal({
   open,
   onclose,
   onSaveSuccess,
