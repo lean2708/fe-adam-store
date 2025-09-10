@@ -1,14 +1,25 @@
-import { ContentNews } from "@/components/templates/(marketing)/news/ContentNew";
-import { useTranslations } from "next-intl";
+import { ContentNews } from '@/components/templates/(marketing)/news/ContentNew';
+import { pageMetadataPresets } from '@/lib/metadata';
+import { useTranslations } from 'next-intl';
+
+type Props = {
+  params: { locale: string };
+};
+
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
+
+  return pageMetadataPresets.news(locale);
+}
 
 export default function NewsPage() {
-  const t = useTranslations("Marketing");
+  const t = useTranslations('Marketing');
   return (
-    <div className="w-full !p-6">
-      <h1 className="font-bold text-3xl text-center">
-        {t("newestProducts.title")}
+    <div className='w-full !p-6'>
+      <h1 className='font-bold text-3xl text-center'>
+        {t('newestProducts.title')}
       </h1>
-      <div className="h-full w-full">
+      <div className='h-full w-full'>
         <ContentNews />
       </div>
     </div>

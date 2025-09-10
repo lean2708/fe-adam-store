@@ -1,8 +1,20 @@
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { manrope } from '@/config/fonts';
+import { pageMetadataPresets } from '@/lib/metadata';
 import { cn } from '@/lib/utils';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import React from 'react';
+
+type Props = {
+  params: { locale: string };
+};
+
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
+
+  return pageMetadataPresets.aboutUs(locale);
+}
 
 const page = () => {
   return (

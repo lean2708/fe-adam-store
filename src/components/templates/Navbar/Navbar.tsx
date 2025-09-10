@@ -58,6 +58,7 @@ export default function Navbar() {
         <div className='absolute left-5 top-0 h-16 flex items-center z-50 pl-2'>
           <Button
             variant='ghost'
+            aria-label='Mobile Menu'
             size='sm'
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
@@ -78,6 +79,7 @@ export default function Navbar() {
             <div className='flex items-center space-x-2'>
               <Button
                 variant='ghost'
+                aria-label='User Menu'
                 size='sm'
                 onClick={() => setIsUserModalOpen((v) => !v)}
               >
@@ -85,6 +87,7 @@ export default function Navbar() {
               </Button>
               <Button
                 variant='ghost'
+                aria-label='Cart'
                 size='sm'
                 onClick={() => setIsCartOpen(!isCartOpen)}
                 className='relative'

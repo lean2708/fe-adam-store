@@ -19,6 +19,7 @@ export default function ReviewItem({ review, onImageClick }: ReviewItemProps) {
                 <Avatar className='size-12 ml-2'>
                   <AvatarImage
                     src={review.userAvatarUrl || '/placeholder.svg'}
+                    alt={review.userName || 'User Avatar'}
                   />
                   <AvatarFallback>
                     {review.userName?.charAt(0) || 'U'}

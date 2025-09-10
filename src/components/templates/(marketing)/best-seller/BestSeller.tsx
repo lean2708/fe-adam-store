@@ -51,7 +51,6 @@ export function ContentBestSeller() {
     };
     getProductByIdCategory();
   }, [state.value, state.page]);
-  console.log(state);
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setState((ps) => ({ ...ps, value: event.target.value, page: 0 }));
   };
