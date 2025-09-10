@@ -52,19 +52,16 @@ const ChatMessage = ({
 
       <div
         className={cn(
-          'max-w-[80%] rounded-lg px-3 py-2 text-sm',
+          'max-w-[80%] px-4 py-3 text-sm shadow-md backdrop-blur-sm',
           isCurrentUser
-            ? 'bg-blue-500 text-white rounded-br-sm'
-            : 'bg-gray-200 text-gray-800 rounded-bl-sm'
+            ? 'bg-gradient-to-br from-cyan-50 to-cyan-100 text-gray-900 rounded-2xl rounded-tr-md border border-cyan-200/50'
+            : 'bg-gradient-to-br from-white to-gray-50 text-gray-900 rounded-2xl rounded-tl-md border border-gray-200/50 shadow-lg'
         )}
       >
         <ChatMessageContent content={message.message} />
         {formattedTime && (
           <p
-            className={cn(
-              'text-xs mt-1 opacity-70',
-              isCurrentUser ? 'text-blue-100' : 'text-gray-500'
-            )}
+            className={cn('text-xs mt-2 opacity-60 text-gray-500 font-medium')}
           >
             {formattedTime}
           </p>
@@ -332,7 +329,7 @@ export function CustomerChatWidget() {
         {/* Messages Area */}
         <div
           ref={messagesContainerRef}
-          className='flex-1 p-3 overflow-y-auto bg-gray-50 min-h-0 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 hover:scrollbar-thumb-gray-500'
+          className='flex-1 p-3 overflow-y-auto bg-gray-100 min-h-0 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 hover:scrollbar-thumb-gray-500'
           id='messages-container'
           style={{
             scrollbarWidth: 'thin',
