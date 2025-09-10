@@ -18,7 +18,7 @@ export default function ReviewItem({ review, onImageClick }: ReviewItemProps) {
               <div className='flex flex-row gap-6 items-center'>
                 <Avatar className='size-12 ml-2'>
                   <AvatarImage
-                    src={review.userAvatarUrl || '/placeholder.svg'}
+                    src={review.userAvatarUrl || '/imgs/placeholder.png'}
                     alt={review.userName || 'User Avatar'}
                   />
                   <AvatarFallback>

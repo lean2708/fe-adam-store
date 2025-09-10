@@ -40,7 +40,7 @@ function CartItemModal({
     >
       <div className='flex-shrink-0'>
         <Image
-          src={cartItem.Product.mainImage || '/placeholder.svg'}
+          src={cartItem.Product.mainImage || '/imgs/placeholder.png'}
           alt={cartItem.Product.name || 'Product Image'}
           width={90}
           height={110}

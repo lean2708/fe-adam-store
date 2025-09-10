@@ -24,16 +24,7 @@ export default function Footer() {
     fetchBranches();
   }, []);
   return (
-    <footer
-      className='bg-black text-white '
-      style={{
-        paddingTop: '70px',
-        paddingRight: '36px',
-        paddingBottom: '70px',
-        paddingLeft: '36px',
-        opacity: 1,
-      }}
-    >
+    <footer className='bg-black text-white py-16 px-10'>
       <div className='max-w-7xl mx-auto'>
         {/* Top Section */}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16'>

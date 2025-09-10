@@ -3,7 +3,6 @@ import ProductCardIndex from '@/components/modules/ProductCardIndex';
 import { Carousel, CarouselItem } from '@/components/ui/carousel';
 import { TProduct } from '@/types';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Pagination from '../detail/Pagination';
 import { getAllProductsTotalAction } from '@/actions/productActions';
