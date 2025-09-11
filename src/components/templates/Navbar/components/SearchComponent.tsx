@@ -5,8 +5,13 @@ import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import SearchInput from '@/components/ui/search-input';
-import SearchModal from '../modal/SearchModal';
 import { useSearchParams, useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
+
+// *Dynamic modals
+const SearchModal = dynamic(() => import('../modal/SearchModal'), {
+  ssr: false,
+});
 
 interface SearchComponentProps {
   onSearchExpand?: (expanded: boolean) => void;

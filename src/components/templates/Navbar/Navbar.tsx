@@ -1,40 +1,55 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, lazy, Suspense } from 'react';
 import { ShoppingBag, User, Menu } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
-// Import modals from modal folder
-import UserModal from './modal/UserModal';
-import CartModal from './modal/CartModal/CartModal';
-import MobileSidebar from './modal/MobileSidebar';
+import { Button } from '@/components/ui/button';
 import ThemeToggle from '@/components/modules/ThemeToggle';
 import Logo from '@/components/modules/Logo';
 import SearchComponent from './components/SearchComponent';
 import NavigationLocaleSwitcherPublic from './components/NavigationLocaleSwitcherPublic';
 import { useCartStore } from '@/stores/cartStore';
 import { useAuth } from '@/hooks/useAuth';
+import dynamic from 'next/dynamic';
+import {
+  CartModalWithoutLoginSkeleton,
+  UserModalSkeleton,
+} from '@/components/ui/skeleton';
+
+// *Dynamic modals
+const UserModal = dynamic(() => import('./modal/UserModal'), {
+  loading: () => <UserModalSkeleton />,
+  ssr: false,
+});
+const CartModal = dynamic(() => import('./modal/CartModal/CartModal'), {
+  loading: () => <CartModalWithoutLoginSkeleton />,
+  ssr: false,
+});
+const MobileSidebar = dynamic(() => import('./modal/MobileSidebar'), {
+  loading: () => (
+    <div className='h-[350px] flex items-center justify-center'>
+      <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary'></div>
+    </div>
+  ),
+  ssr: false,
+});
 
 export default function Navbar() {
   const { user, isAuthenticated } = useAuth();
-
   const cartItems = useCartStore((state) => state.cartItems);
   const clearCart = useCartStore((state) => state.clearCart);
-  // Only manage modal open/close triggers here
+
+  // State quản lý việc mở/đóng modal
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  // Không cần state isSearchExpanded ở đây nữa nếu nó chỉ được quản lý bên trong SearchComponent
+  // Trừ khi bạn cần dùng nó để ẩn các thành phần khác
 
-  // Modal close handlers
-  const handleCartModalClose = useCallback(() => {
-    setIsCartOpen(false);
-  }, []);
-
-  const handleUserModalClose = useCallback(() => {
-    setIsUserModalOpen(false);
-  }, []);
-
+  // Các hàm đóng modal được bọc trong useCallback
+  const handleCartModalClose = useCallback(() => setIsCartOpen(false), []);
+  const handleUserModalClose = useCallback(() => setIsUserModalOpen(false), []);
   const handleMobileSidebarClose = useCallback(() => {
     setIsMobileMenuOpen(false);
   }, []);
@@ -52,7 +67,6 @@ export default function Navbar() {
 
   return (
     <header className='border-b adam-store-border adam-store-bg relative h-16 flex items-center'>
-      {/* Hide other content when search is expanded */}
       <>
         {/* Mobile Menu Button */}
         <div className='absolute left-5 top-0 h-16 flex items-center z-50 pl-2'>
@@ -60,13 +74,12 @@ export default function Navbar() {
             variant='ghost'
             aria-label='Mobile Menu'
             size='sm'
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            onClick={() => setIsMobileMenuOpen(true)} // Chỉ mở, không toggle
           >
             <Menu className='h-5 w-5' />
           </Button>
         </div>
-        {/* `Logo */}
-        {/* Centered Logo - Hidden on mobile */}
+        {/* Centered Logo */}
         <div className='hidden sm:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10'>
           <Logo />
         </div>
@@ -81,7 +94,7 @@ export default function Navbar() {
                 variant='ghost'
                 aria-label='User Menu'
                 size='sm'
-                onClick={() => setIsUserModalOpen((v) => !v)}
+                onClick={() => setIsUserModalOpen(true)}
               >
                 <User className='h-5 w-5' />
               </Button>
@@ -89,7 +102,7 @@ export default function Navbar() {
                 variant='ghost'
                 aria-label='Cart'
                 size='sm'
-                onClick={() => setIsCartOpen(!isCartOpen)}
+                onClick={() => setIsCartOpen(true)}
                 className='relative'
               >
                 <ShoppingBag className='h-5 w-5' />
@@ -104,34 +117,34 @@ export default function Navbar() {
           </div>
         </div>
       </>
-      <div className='px-15'>
-        <div className=' items-center justify-start'>
-          <NavigationLocaleSwitcherPublic />
-        </div>
+      {/* Language Switcher - Vị trí này có vẻ hợp lý hơn */}
+      <div className='absolute left-20 top-0 h-16 flex items-center z-10'>
+        <NavigationLocaleSwitcherPublic />
       </div>
 
-      {/* Modals */}
-      {isUserModalOpen && (
-        <div className=' absolute right-5 top-8 '>
-          <UserModal open={isUserModalOpen} onClose={handleUserModalClose} />
-        </div>
-      )}
-
-      {isCartOpen && (
-        <div className=' absolute right-5 top-2 '>
-          <CartModal
-            userId={user?.id || 0}
-            open={isCartOpen}
-            onClose={handleCartModalClose}
+      {/* Sử dụng Suspense để bao bọc các modal được tải động */}
+      <Suspense fallback={null}>
+        {isUserModalOpen && (
+          <div className='absolute right-5 top-8'>
+            <UserModal open={isUserModalOpen} onClose={handleUserModalClose} />
+          </div>
+        )}
+        {isCartOpen && (
+          <div className='absolute right-5 top-2'>
+            <CartModal
+              userId={user?.id || 0}
+              open={isCartOpen}
+              onClose={handleCartModalClose}
+            />
+          </div>
+        )}
+        {isMobileMenuOpen && (
+          <MobileSidebar
+            open={isMobileMenuOpen}
+            onClose={handleMobileSidebarClose}
           />
-        </div>
-      )}
-      {isMobileMenuOpen && (
-        <MobileSidebar
-          open={isMobileMenuOpen}
-          onClose={handleMobileSidebarClose}
-        />
-      )}
+        )}
+      </Suspense>
     </header>
   );
 }
