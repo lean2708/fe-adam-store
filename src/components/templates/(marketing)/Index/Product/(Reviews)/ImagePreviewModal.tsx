@@ -152,7 +152,9 @@ export default function ImagePreviewModal({
                       aria-label={`Xem ảnh ${index + 1}`}
                       aria-pressed={index === selectedImageIndex}
                     >
-                      <img
+                      <Image
+                        width={100}
+                        height={100}
                         src={img || '/imgs/placeholder.png'}
                         alt={`Review thumbnail ${index + 1}`}
                         className='w-full h-full object-cover'

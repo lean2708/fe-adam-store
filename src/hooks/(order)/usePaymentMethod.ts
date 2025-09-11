@@ -27,12 +27,12 @@ export default function usePaymentMethod() {
   );
 
   // Get translated available methods
-  const getTranslatedPaymentMethods = (t: any) => {
+  const getTranslatedPaymentMethods = useCallback((t: any) => {
     return DEFAULT_PAYMENT_METHODS.map((method) => ({
       ...method,
       label: t(`payment_methods.${method.id}`),
     }));
-  };
+  }, []);
 
   // Get translated available methods
   const getTranslatedAvailableMethods = useCallback(

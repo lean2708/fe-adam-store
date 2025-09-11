@@ -50,7 +50,11 @@ const Promotions = ({
             </SelectItem>
           )}
           {promotionList.map((promo) => (
-            <SelectItem key={promo.id} value={promo.id?.toString()!}>
+            <SelectItem
+              key={promo.id}
+              value={promo.id ? promo.id.toString() : ''}
+              disabled={!promo.id}
+            >
               {promo.code} - {promo.description}
             </SelectItem>
           ))}

@@ -77,7 +77,7 @@ export default function SearchComponent({
 
       setSearchModalOpen(false);
     },
-    [isSearchExpanded, handleSearchExpand]
+    [isSearchExpanded, handleSearchExpand, query]
   );
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);

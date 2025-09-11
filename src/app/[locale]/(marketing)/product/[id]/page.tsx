@@ -25,8 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return pageMetadataPresets.product(
     locale,
-    product.product?.name!,
-    product.product?.id.toString()!,
+    product.product?.name || 'Chi tiết sản phẩm',
+    product.product?.id.toString() || id,
     product.product?.mainImage,
     product.product?.minPrice
       ? formatCurrency(product.product?.minPrice, locale)

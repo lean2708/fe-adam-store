@@ -45,7 +45,7 @@ export default function ChooseAddress(props: {
         setSelectedIndex(defaultIndex >= 0 ? defaultIndex : 0);
       }
     }
-  }, [visible]);
+  }, [visible, listAddress.length]);
 
   useEffect(() => {
     if (listAddress.length && orderItem?.id) {

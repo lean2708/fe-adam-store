@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import ReviewModule from '../modules/ReviewModule';
 import { Button } from './button';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 export default function OrderItem(props: {
   onDeleted: (id: number) => void;
@@ -169,7 +170,9 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
   return (
     <div className='border-b-1 border-dashed py-2 w-full flex justify-between min-h-25 items-center'>
       <div className='flex '>
-        <img
+        <Image
+          width={100}
+          height={100}
           className='h-25 rounded-sm'
           src={item.imageUrl}
           alt={'' + item.image?.id}

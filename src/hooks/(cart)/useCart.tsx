@@ -21,7 +21,7 @@ export const useCart = (userId: string) => {
       console.error('Đã xảy ra lỗi khi xóa giỏ hàng: ', error);
       toast.error('Đã xảy ra lỗi khi xóa giỏ hàng');
     }
-  }, [clearCart]);
+  }, [userId, clearCart]);
 
   return {
     cartItems,

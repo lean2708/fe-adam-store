@@ -29,14 +29,7 @@ export default function useCalculateTotal() {
       return subtotal + (shippingFee || 0) - discount;
     }
     return selectedTotalPrice + (shippingFee || 0) - discount;
-  }, [
-    type,
-    subtotal,
-    calculateDiscount,
-    discount,
-    selectedTotalPrice,
-    shippingFee,
-  ]);
+  }, [type, subtotal, discount, selectedTotalPrice, shippingFee]);
 
   return { total, isCalculatingTotal, calculatingShipping };
 }

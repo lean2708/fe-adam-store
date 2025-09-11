@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 export default function Infomation() {
   const t = useTranslations('Profile.personal_info');
@@ -123,10 +124,12 @@ export default function Infomation() {
         >
           {infoUser.avatarUrl ? (
             <>
-              <img
+              <Image
+                width={100}
+                height={100}
                 className='w-full h-full object-cover'
                 src={infoUser.avatarUrl}
-                alt={infoUser.name}
+                alt={infoUser.name!}
               />
               <button
                 disabled={loading}

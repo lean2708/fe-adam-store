@@ -94,7 +94,7 @@ export default function AddNewAddressModal({
         setSelectedProvince(null);
       }
     }
-  }, [open, provinces.length, loadingProvinces]);
+  }, [open, provinces.length, loadingProvinces, reset]);
 
   const onSubmit = (data: AddressSchema) => {
     const addressData = {
@@ -193,7 +193,7 @@ export default function AddNewAddressModal({
                 {provinces.map((province) => (
                   <SelectItem
                     key={province.id}
-                    value={province.id?.toString()!}
+                    value={province.id ? province.id.toString() : ''}
                   >
                     {province.name}
                   </SelectItem>
@@ -230,7 +230,7 @@ export default function AddNewAddressModal({
                 {districts.map((district) => (
                   <SelectItem
                     key={district.id}
-                    value={district.id?.toString()!}
+                    value={district.id ? district.id.toString() : ''}
                   >
                     {district.name}
                   </SelectItem>

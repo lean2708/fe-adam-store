@@ -2,6 +2,7 @@ import { handlePendingEmail } from '@/actions/nextAuthActions';
 import AuthTemplate from '@/components/templates/(auth)/AuthTemplate';
 import VerifyForm from '@/components/templates/(auth)/register/VerifyForm';
 import { getTranslations } from 'next-intl/server';
+import Link from 'next/link';
 
 // This page needs to be dynamically rendered because it uses cookies
 export const dynamic = 'force-dynamic';
@@ -16,9 +17,12 @@ export default async function RegisterPage() {
         <div className='text-center p-6 adam-store-bg rounded-lg shadow-md'>
           <h1 className='text-2xl font-bold mb-4'>Yêu cầu không hợp lệ</h1>
           <p className='mb-4'>{t('no_email.title')}</p>
-          <a href='/register' className='text-muted-foreground hover:underline'>
+          <Link
+            href='/register'
+            className='text-muted-foreground hover:underline'
+          >
             {t('no_email.message')}
-          </a>
+          </Link>
         </div>
       </div>
     );

@@ -46,7 +46,6 @@ export default function AddressForm() {
 
   useEffect(() => {
     getListProvince();
-    console.log(id);
     if (id) {
       getAddress();
     }

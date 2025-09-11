@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { UseQueryResult } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
-import ProductItme from "./ProductItem";
-import ProductCardSkeleton from "@/components/modules/ProductCardSkeleton";
-import { ApiResponsePageResponseProductResponse } from "@/api-client";
-import { transformProductResponseToTProduct } from "@/lib/data/transform/product";
+import { UseQueryResult } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
+import ProductItme from './ProductItem';
+import ProductCardSkeleton from '@/components/modules/ProductCardSkeleton';
+import { ApiResponsePageResponseProductResponse } from '@/api-client';
+import { transformProductResponseToTProduct } from '@/lib/data/transform/product';
 
 export default function Products({
   query,
@@ -14,7 +14,7 @@ export default function Products({
 }) {
   const { data, isLoading, error } = query;
   const searchParams = useSearchParams();
-  const categoryId = searchParams.get("category") || "1";
+  const categoryId = searchParams.get('category') || '1';
 
   if (!categoryId) {
     return <div>Vui lòng chọn danh mục sản phẩm.</div>;
@@ -22,9 +22,9 @@ export default function Products({
 
   if (isLoading) {
     return (
-      <div className="grid  md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+      <div className='grid  md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8'>
         {Array.from({ length: 10 }, (_, i) => (
-          <ProductCardSkeleton />
+          <ProductCardSkeleton key={i} />
         ))}
       </div>
     );
@@ -42,7 +42,7 @@ export default function Products({
     data &&
     data.result &&
     data.result.items && (
-      <div className="grid  md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+      <div className='grid  md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8'>
         {data.result?.items.map((product) => (
           <ProductItme
             product={transformProductResponseToTProduct(product)}
