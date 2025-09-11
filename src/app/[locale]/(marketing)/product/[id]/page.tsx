@@ -8,7 +8,6 @@ import { pageMetadataPresets } from '@/lib/metadata';
 import { cn, formatCurrency } from '@/lib/utils';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import React from 'react';
 
 type Props = {
   params: { id: string; locale: string };

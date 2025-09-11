@@ -1,9 +1,9 @@
-import React from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Loader2, Minus, Plus } from 'lucide-react';
+import { memo } from 'react';
 
-const Quantity = React.memo(
+const Quantity = memo(
   ({
     quantity,
     maxQuantity,

@@ -1,4 +1,3 @@
-import React from 'react';
 import { TEntityBasic } from '@/types';
 import {
   Select,
@@ -8,8 +7,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
+import { memo } from 'react';
 
-const Sizes = React.memo(
+const Sizes = memo(
   ({
     size,
     productSizes,

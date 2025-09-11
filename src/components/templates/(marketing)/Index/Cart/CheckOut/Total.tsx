@@ -1,6 +1,5 @@
 import { formatCurrency } from '@/lib/utils';
 import { useLocale, useTranslations } from 'next-intl';
-import React from 'react';
 
 const Total = ({ total }: { total: number }) => {
   const t = useTranslations('Header');

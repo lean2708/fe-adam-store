@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/stores/cartStore';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import React from 'react';
 
 const CheckOutActions = () => {
   const t = useTranslations('Header');

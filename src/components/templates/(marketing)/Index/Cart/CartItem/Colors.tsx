@@ -1,5 +1,3 @@
-import React from 'react';
-import Loader from '@/components/modules/Loader';
 import { TColor } from '@/types';
 import {
   Select,
@@ -9,8 +7,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
+import { memo } from 'react';
 
-const Colors = React.memo(
+const Colors = memo(
   ({
     cartItemId,
     color,
