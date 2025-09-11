@@ -127,8 +127,6 @@ export const useCartStore = create<State & Actions>()(
       // Replace cart items and recompute totals (also reconcile selection)
       setCartItems: (cartItems) =>
         set((state) => {
-          console.log('cartItems', cartItems);
-
           // Merge new items with existing ones, updating if exists, adding if new
           const mergedItems = [...state.cartItems];
 

@@ -163,8 +163,6 @@ export function formatDate(
 }
 
 export function getReactDayPickerLocale(locale: string = 'vi'): Locale {
-  console.log(locale);
-
   if (locale === 'vi') {
     return vi;
   } else {
@@ -182,8 +180,6 @@ export const getStatusColor = (
   status: string,
   type: 'general' | 'order' | 'payment' = 'general'
 ) => {
-  console.log(status);
-
   switch (type) {
     case 'order':
       switch (status) {

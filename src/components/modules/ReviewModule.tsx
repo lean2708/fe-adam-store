@@ -89,7 +89,6 @@ export default function ReviewModule(props: {
     const fileArray = Array.from(files);
     try {
       const res = await uploadImagesAction(fileArray);
-      console.log(res);
       if (res.success && res.data) {
         const imgRes: string[] = [];
         for (const img of res.data) {

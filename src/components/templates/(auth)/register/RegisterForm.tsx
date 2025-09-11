@@ -74,7 +74,6 @@ export default function RegisterForm() {
     if (res.success && res.data) {
       toast.success(`${res.message}`);
 
-      console.log('res data: ', res.data);
       router.push(
         `/register/verify?email=${encodeURIComponent(res.data.email ?? '')}`
       );
