@@ -24,7 +24,7 @@ export default function Footer() {
     fetchBranches();
   }, []);
   return (
-    <footer className='bg-black text-white py-16 px-10'>
+    <footer className='bg-black text-white py-16 px-10 h-full'>
       <div className='max-w-7xl mx-auto'>
         {/* Top Section */}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16'>
@@ -182,7 +182,7 @@ export default function Footer() {
               <h2 className='font-semibold mb-4 text-white'>
                 {t('branches.title')}
               </h2>
-              <ul className='space-y-2 text-sm text-gray-300'>
+              <ul className='space-y-2 text-sm text-gray-300 min-h-[120px]'>
                 {branches.length > 0 ? (
                   branches.map((branch) => (
                     <li key={branch.id} className='mb-3'>

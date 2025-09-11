@@ -148,9 +148,9 @@ export default function ProductCardIndex({
       {/* Product Info */}
       <div className='space-y-2'>
         <Link href={`product/${product.id}`}>
-          <h3 className='text-sm font-medium uppercase tracking-wide text-gray-900 transition-colors hover:text-gray-600 dark:text-gray-100 dark:hover:text-gray-300'>
+          <h1 className='text-sm font-medium uppercase tracking-wide text-gray-900 transition-colors hover:text-gray-600 dark:text-gray-100 dark:hover:text-gray-300'>
             {product.title}
-          </h3>
+          </h1>
         </Link>
 
         <p className='text-sm font-semibold text-gray-900 dark:text-gray-100'>
