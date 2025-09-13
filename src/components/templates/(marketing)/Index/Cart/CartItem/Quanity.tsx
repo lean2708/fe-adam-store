@@ -27,6 +27,7 @@ const Quantity = memo(
           )}
           onClick={onDecrease}
           disabled={isUpdating || quantity <= 1}
+          aria-label='Decrease quantity'
         >
           <Minus className='h-3 w-3' />
         </Button>
@@ -47,6 +48,7 @@ const Quantity = memo(
           )}
           onClick={onIncrease}
           disabled={isUpdating || quantity >= maxQuantity}
+          aria-label='Increase quantity'
         >
           <Plus className='h-3 w-3' />
         </Button>

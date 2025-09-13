@@ -13,7 +13,7 @@ export default async function authLayout({
     <div className='min-h-screen adam-store-bg-light'>
       <Navbar />
 
-      <div>
+      <div className='min-h-screen'>
         <Suspense fallback={<Loading />}>{children}</Suspense>
       </div>
       <Footer />

@@ -36,6 +36,7 @@ const Colors = memo(
         <SelectTrigger
           className='w-28 h-9 text-sm bg-accent'
           disabled={isChanging}
+          aria-label='Choose color'
         >
           {isChanging ? (
             <Loader2 className='animate-spin size-4 ' />

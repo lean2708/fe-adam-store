@@ -35,6 +35,7 @@ const Sizes = memo(
         <SelectTrigger
           className='w-28 h-9 text-sm bg-accent'
           disabled={isChanging}
+          aria-label='Choose size'
         >
           {isChanging ? (
             <Loader2 className='animate-spin size-4 ' />

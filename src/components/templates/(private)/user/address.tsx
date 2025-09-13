@@ -135,12 +135,14 @@ export default function Address() {
               </div>
               <div className='flex space-x-1'>
                 <Link
+                  aria-label='Edit Address'
                   className='p-2 rounded-lg group transition-all duration-200 hover:bg-blue-100 hover:scale-110 hover:shadow-md active:scale-95'
                   href={`/address?idAddress=${address.id}`}
                 >
                   <SquarePen className='transition-colors duration-200 group-hover:text-blue-600' />
                 </Link>
                 <button
+                  aria-label='Delete Address'
                   className='p-2 cursor-pointer rounded-lg transition-all duration-200 hover:bg-red-100 hover:scale-110 hover:shadow-md active:scale-95'
                   onClick={() => {
                     setSelectAddressId(address.id);

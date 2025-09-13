@@ -63,8 +63,11 @@ export default function ChangePassword() {
     <div className='adam-store-bg mt-8 w-full h-90 border-2 border-primary rounded-lg shadow'>
       <ul className='w-full px-15'>
         <li className='w-full flex justify-between mt-8 items-center h-13 relative'>
-          <p className='font-semibold'>{t('current_password.label')}:</p>
+          <label htmlFor='current-password' className='font-semibold'>
+            {t('current_password.label')}:
+          </label>
           <input
+            id='current-password'
             onChange={(e) =>
               setNewPass({ ...newPass, oldPassword: e.target.value })
             }
@@ -74,6 +77,7 @@ export default function ChangePassword() {
             placeholder={t('current_password.placeholder')}
           />
           <button
+            aria-label='Toggle Password Visibility'
             className='px-2 py-2 absolute right-0 outline-none text-muted-foreground'
             onClick={() => setEye({ ...eye, oldPassword: !eye.oldPassword })}
           >
@@ -81,8 +85,11 @@ export default function ChangePassword() {
           </button>{' '}
         </li>
         <li className='w-full flex justify-between mt-8 items-center h-13 relative'>
-          <p className='font-semibold'>{t('new_password.label')}:</p>
+          <label htmlFor='new-password' className='font-semibold'>
+            {t('new_password.label')}:
+          </label>
           <input
+            id='new-password'
             onChange={(e) =>
               setNewPass({ ...newPass, newPassword: e.target.value })
             }
@@ -92,6 +99,7 @@ export default function ChangePassword() {
             placeholder={t('new_password.placeholder')}
           />
           <button
+            aria-label='Toggle Password Visibility'
             className='px-2 py-2 absolute right-0 outline-none text-muted-foreground'
             onClick={() => setEye({ ...eye, newPassword: !eye.newPassword })}
           >
@@ -99,8 +107,11 @@ export default function ChangePassword() {
           </button>
         </li>
         <li className='w-full flex justify-between mt-8 items-center h-13 relative'>
-          <p className='font-semibold'>{t('confirm_new_password.label')}:</p>
+          <label htmlFor='confirm-new-password' className='font-semibold'>
+            {t('confirm_new_password.label')}:
+          </label>
           <input
+            id='confirm-new-password'
             onChange={(e) =>
               setNewPass({ ...newPass, confirmPassword: e.target.value })
             }
@@ -110,6 +121,7 @@ export default function ChangePassword() {
             placeholder={t('confirm_new_password.placeholder')}
           />
           <button
+            aria-label='Toggle Password Visibility'
             className='px-2 py-2 absolute right-0 outline-none text-muted-foreground'
             onClick={() =>
               setEye({ ...eye, confirmPassword: !eye.confirmPassword })

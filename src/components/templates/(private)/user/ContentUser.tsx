@@ -53,7 +53,7 @@ export function ContentUser() {
               onClick={() => handleTabChange(item.key)}
               className={cn(
                 'px-3 py-2 cursor-pointer',
-                activeStatus !== item.key && 'text-gray-400'
+                activeStatus !== item.key && 'text-muted-foreground'
               )}
             >
               {item.label}
