@@ -58,7 +58,7 @@ export default function ProductCardIndex({
       <div className='relative mb-4 aspect-[3/4] overflow-hidden rounded-xl bg-gray-50'>
         <Link
           href={`/product/${product.id}`}
-          className='block w-[286px] h-[429px]'
+          className='block relative w-[295px] h-[429px]'
         >
           <Image
             src={

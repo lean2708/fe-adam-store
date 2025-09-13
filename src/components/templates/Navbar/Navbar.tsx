@@ -44,8 +44,6 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-  // Không cần state isSearchExpanded ở đây nữa nếu nó chỉ được quản lý bên trong SearchComponent
-  // Trừ khi bạn cần dùng nó để ẩn các thành phần khác
 
   // Các hàm đóng modal được bọc trong useCallback
   const handleCartModalClose = useCallback(() => setIsCartOpen(false), []);
@@ -83,6 +81,7 @@ export default function Navbar() {
         <div className='hidden sm:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10'>
           <Logo />
         </div>
+
         {/* Right Side Icons */}
         {/* Search Component */}
         <SearchComponent onSearchExpand={handleSearchExpand} />
@@ -117,7 +116,7 @@ export default function Navbar() {
           </div>
         </div>
       </>
-      {/* Language Switcher - Vị trí này có vẻ hợp lý hơn */}
+      {/* Language Switcher  */}
       <div className='absolute left-20 top-0 h-16 flex items-center z-10'>
         <NavigationLocaleSwitcherPublic />
       </div>

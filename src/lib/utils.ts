@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 import axios from 'axios';
 import { ApiErrorResponse } from '@/api-client/models/api-error-response';
 import { TProduct } from '@/types';
-import { enAU, es, Locale, vi } from 'react-day-picker/locale';
+import { enAU, Locale, vi } from 'react-day-picker/locale';
 import { ORDER_STATUS } from '@/enums';
 import { VND_TO_USD_RATE } from './constants';
 

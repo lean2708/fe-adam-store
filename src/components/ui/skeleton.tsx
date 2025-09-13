@@ -136,51 +136,53 @@ function CartItemModalSkeleton({ className }: TSkeletonProps) {
 
 function UserModalSkeleton({ className }: TSkeletonProps) {
   return (
-    <div
-      style={{
-        position: 'absolute',
-        width: '338px',
-        minHeight: '224px',
-        top: '40px',
-        right: '25px',
-        borderRadius: '8px',
-        padding: '16px',
-        zIndex: 9999,
-        boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
-        display: 'flex',
-        flexDirection: 'column',
-        maxHeight: '80vh',
-        overflowY: 'auto',
-      }}
-      className={cn(
-        'border border-border bg-primary-foreground animate-pulse',
-        className
-      )}
-    >
-      {/* Skeleton cho phần chào mừng */}
-      <div className='mb-2 p-3 bg-muted/50 rounded-lg'>
-        <div className='space-y-2'>
-          <Skeleton className='h-4 w-[100px]' />
-          <Skeleton className='h-5 w-[150px]' />
+    <div className='fixed inset-0 bg-black/30 z-[9998]'>
+      <div
+        style={{
+          position: 'absolute',
+          width: '338px',
+          minHeight: '224px',
+          top: '80px',
+          right: '25px',
+          borderRadius: '8px',
+          padding: '16px',
+          zIndex: 9999,
+          boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
+          display: 'flex',
+          flexDirection: 'column',
+          maxHeight: '80vh',
+          overflowY: 'auto',
+        }}
+        className={cn(
+          'border border-border bg-primary-foreground animate-pulse',
+          className
+        )}
+      >
+        {/* Skeleton cho phần chào mừng */}
+        <div className='mb-2 p-3 bg-muted/50 rounded-lg'>
+          <div className='space-y-2'>
+            <Skeleton className='h-4 w-[100px]' />
+            <Skeleton className='h-5 w-[150px]' />
+          </div>
         </div>
-      </div>
 
-      {/* Skeleton cho một mục menu (ví dụ: Profile, My Orders) */}
-      <div className='flex items-center h-16 gap-3 px-3 py-1'>
-        <Skeleton className='h-12 w-12 rounded-full' />
-        <Skeleton className='h-6 w-[120px]' />
-      </div>
+        {/* Skeleton cho một mục menu (ví dụ: Profile, My Orders) */}
+        <div className='flex items-center h-16 gap-3 px-3 py-1'>
+          <Skeleton className='h-12 w-12 rounded-full' />
+          <Skeleton className='h-6 w-[120px]' />
+        </div>
 
-      {/* Lặp lại cho mục menu thứ hai */}
-      <div className='flex items-center h-16 gap-3 px-3 py-1'>
-        <Skeleton className='h-12 w-12 rounded-full' />
-        <Skeleton className='h-6 w-[130px]' />
-      </div>
+        {/* Lặp lại cho mục menu thứ hai */}
+        <div className='flex items-center h-16 gap-3 px-3 py-1'>
+          <Skeleton className='h-12 w-12 rounded-full' />
+          <Skeleton className='h-6 w-[130px]' />
+        </div>
 
-      {/* Skeleton cho mục Logout */}
-      <div className='flex items-center h-16 gap-3 px-3 py-1'>
-        <Skeleton className='h-12 w-12 rounded-full' />
-        <Skeleton className='h-6 w-[100px]' />
+        {/* Skeleton cho mục Logout */}
+        <div className='flex items-center h-16 gap-3 px-3 py-1'>
+          <Skeleton className='h-12 w-12 rounded-full' />
+          <Skeleton className='h-6 w-[100px]' />
+        </div>
       </div>
     </div>
   );
@@ -188,30 +190,32 @@ function UserModalSkeleton({ className }: TSkeletonProps) {
 
 function CartModalWithoutLoginSkeleton({ className }: TSkeletonProps) {
   return (
-    <div
-      style={{
-        position: 'absolute',
-        top: '40px',
-        right: '25px',
-        zIndex: 9999,
-        boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-      className={cn('', className)}
-    >
-      <div className='adam-store-bg max-h-[60vh] w-[400px] rounded-lg shadow-lg py-8 px-4'>
-        {/* Cart Items Skeleton */}
-        <div className='space-y-2 mb-6 overflow-y-auto max-h-[50vh]'>
-          <div className='flex items-center flex-col justify-center gap-4 p-2 rounded-sm  transition-colors'>
-            <Skeleton className='h-12 w-1/2' />
-            <Skeleton className='h-6 w-10/12' />
+    <div className='fixed inset-0 bg-black/30 z-[9998]'>
+      <div
+        style={{
+          position: 'absolute',
+          top: '80px',
+          right: '50px',
+          zIndex: 9999,
+          boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+        className={cn('', className)}
+      >
+        <div className='adam-store-bg max-h-[60vh] w-[360px] rounded-lg shadow-lg py-8 px-4'>
+          {/* Cart Items Skeleton */}
+          <div className='space-y-2 mb-6 overflow-y-auto max-h-[50vh]'>
+            <div className='flex items-center flex-col justify-center gap-4 p-2 rounded-sm  transition-colors'>
+              <Skeleton className='h-6 w-1/2' />
+              <Skeleton className='h-4 w-10/12' />
+            </div>
           </div>
-        </div>
 
-        {/* Cart Actions Skeleton */}
-        <div className='space-y-2'>
-          <Skeleton className='h-10 w-full rounded-md' />
+          {/* Cart Actions Skeleton */}
+          <div className='space-y-2'>
+            <Skeleton className='h-8 w-full rounded-md' />
+          </div>
         </div>
       </div>
     </div>
