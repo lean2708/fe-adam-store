@@ -10,8 +10,6 @@ export async function generateMetadata({ params }: Props) {
   return pageMetadataPresets.adminDashboard(locale);
 }
 
-export default async function AdminPage({ params }: Props) {
-  const { locale } = await params;
-
-  return <AdminDashboard locale={locale} />;
+export default async function AdminPage() {
+  return <AdminDashboard />;
 }

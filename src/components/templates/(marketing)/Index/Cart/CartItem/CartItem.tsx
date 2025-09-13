@@ -59,6 +59,7 @@ export function CartItem({
       <CardContent className='py-4 px-0 relative'>
         <div className='flex gap-4'>
           <Checkbox
+            aria-label='choose item'
             className='my-auto'
             checked={selected}
             onCheckedChange={onSelect}

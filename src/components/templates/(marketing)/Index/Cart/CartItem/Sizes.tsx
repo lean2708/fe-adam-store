@@ -1,4 +1,3 @@
-import React from 'react';
 import { TEntityBasic } from '@/types';
 import {
   Select,
@@ -8,8 +7,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
+import { memo } from 'react';
 
-const Sizes = React.memo(
+const Sizes = memo(
   ({
     size,
     productSizes,
@@ -35,6 +35,7 @@ const Sizes = React.memo(
         <SelectTrigger
           className='w-28 h-9 text-sm bg-accent'
           disabled={isChanging}
+          aria-label='Choose size'
         >
           {isChanging ? (
             <Loader2 className='animate-spin size-4 ' />

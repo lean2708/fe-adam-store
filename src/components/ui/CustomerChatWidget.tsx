@@ -43,7 +43,7 @@ const ChatMessage = ({
     >
       {!isCurrentUser && (
         <Avatar className='w-8 h-8 shrink-0'>
-          <AvatarImage src={message.sender?.avatarUrl} />
+          <AvatarImage src={message.sender?.avatarUrl} alt='Avatar' />
           <AvatarFallback className='bg-gray-500 text-white text-xs'>
             {message.sender?.name?.charAt(0) || 'A'}
           </AvatarFallback>

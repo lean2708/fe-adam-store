@@ -1,10 +1,8 @@
 import { Label } from '@/components/ui/label';
 import { RadioGroupItem } from '@/components/ui/radio-group';
 import { PAYMENT_METHODS } from '@/enums';
-import { DEFAULT_PAYMENT_METHODS } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { TPaymentMethodOption } from '@/types';
-import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useCallback } from 'react';
 

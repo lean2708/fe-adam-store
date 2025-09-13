@@ -29,7 +29,6 @@ export function HeaderSearch() {
           className='outline-none ml-2 adam-store-bg-light'
           value={searchParams.get('sort') || 'desc'}
           onChange={(e) => {
-            console.log(e.target.value);
             const newValue = e.target.value;
             updateQuery('sort', newValue);
           }}

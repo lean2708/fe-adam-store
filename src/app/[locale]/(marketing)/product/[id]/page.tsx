@@ -8,7 +8,6 @@ import { pageMetadataPresets } from '@/lib/metadata';
 import { cn, formatCurrency } from '@/lib/utils';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import React from 'react';
 
 type Props = {
   params: { id: string; locale: string };
@@ -25,8 +24,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return pageMetadataPresets.product(
     locale,
-    product.product?.name!,
-    product.product?.id.toString()!,
+    product.product?.name || 'Chi tiết sản phẩm',
+    product.product?.id.toString() || id,
     product.product?.mainImage,
     product.product?.minPrice
       ? formatCurrency(product.product?.minPrice, locale)
@@ -57,8 +56,6 @@ const page = async ({ params }: Props) => {
       </>
     );
   }
-
-  // console.log(productResponse);
 
   return (
     <div className='min-h-screen adam-store-bg-light pb-1'>

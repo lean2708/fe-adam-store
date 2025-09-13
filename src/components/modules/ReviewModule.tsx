@@ -11,6 +11,7 @@ import {
 } from '@/actions/reviewActions';
 import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 export default function ReviewModule(props: {
   visible: boolean;
@@ -65,7 +66,7 @@ export default function ReviewModule(props: {
       }
     };
     if (visible && isReview) getReviewById();
-  }, [orderItem?.id, visible]);
+  }, [orderItem?.id, visible, isReview]);
 
   const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
   if (!visible) return null;
@@ -88,7 +89,6 @@ export default function ReviewModule(props: {
     const fileArray = Array.from(files);
     try {
       const res = await uploadImagesAction(fileArray);
-      console.log(res);
       if (res.success && res.data) {
         const imgRes: string[] = [];
         for (const img of res.data) {
@@ -173,7 +173,9 @@ export default function ReviewModule(props: {
         <div className='pt-4'>
           {/* Product preview */}
           <div className='border border-black dark:border-white p-3 rounded-lg flex'>
-            <img
+            <Image
+              width={96}
+              height={96}
               className='w-24 h-24'
               src={orderItem?.imageUrl}
               alt={String(orderItem?.id)}
@@ -289,7 +291,9 @@ export default function ReviewModule(props: {
                 key={index}
                 className='w-full aspect-square overflow-hidden rounded-lg shadow'
               >
-                <img
+                <Image
+                  width={100}
+                  height={100}
                   src={img}
                   alt={`img-${index}`}
                   className='w-full h-full object-cover'

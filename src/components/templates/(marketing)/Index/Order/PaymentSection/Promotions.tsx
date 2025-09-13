@@ -8,7 +8,6 @@ import {
 import { TPromotion } from '@/types';
 import { BadgePercent } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import React from 'react';
 
 interface PromotionsProps {
   promotionList: TPromotion[];
@@ -51,7 +50,11 @@ const Promotions = ({
             </SelectItem>
           )}
           {promotionList.map((promo) => (
-            <SelectItem key={promo.id} value={promo.id?.toString()!}>
+            <SelectItem
+              key={promo.id}
+              value={promo.id ? promo.id.toString() : ''}
+              disabled={!promo.id}
+            >
               {promo.code} - {promo.description}
             </SelectItem>
           ))}

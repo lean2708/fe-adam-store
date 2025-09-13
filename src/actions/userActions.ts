@@ -6,9 +6,9 @@ import type {
   UserUpdateRequest,
   PageResponseUserResponse,
   PageResponseRoleResponse,
-  PageResponsePromotionResponse
-} from "@/api-client/models";
-import type { TUser } from "@/types";
+  PageResponsePromotionResponse,
+} from '@/api-client/models';
+import type { TUser } from '@/types';
 import {
   fetchAllUsersForAdmin,
   searchUsersForAdmin,
@@ -19,16 +19,15 @@ import {
   fetchUserById,
   fetchPromotionsbyUser,
   fetchAllRoles,
-} from "@/lib/data/user";
-import { extractErrorMessage } from "@/lib/utils";
-import { changePassword1, getMyInfoApi } from "@/lib/data/auth";
+} from '@/lib/data/user';
+import { extractErrorMessage } from '@/lib/utils';
+import { changePassword1, getMyInfoApi } from '@/lib/data/auth';
 import {
   userCreateSchema,
   UserUpdateFormData,
   userUpdateSchema,
   type UserCreateFormData,
-} from "@/actions/schema/userSchema";
-
+} from '@/actions/schema/userSchema';
 
 /**
  * Fetch all users for admin
@@ -98,11 +97,11 @@ export async function createUserAction(
     if (error instanceof Error && error.name === 'ZodError') {
       return {
         success: false,
-        message: "Dữ liệu không hợp lệ",
+        message: 'Dữ liệu không hợp lệ',
       };
     }
 
-    const extractedError = extractErrorMessage(error, "Lỗi server");
+    const extractedError = extractErrorMessage(error, 'Lỗi server');
     return {
       success: false,
       message: extractedError.message,
@@ -126,10 +125,9 @@ export async function updateUserAction(
     const userData: UserUpdateRequest = {
       name: validatedData.name,
       roleIds: Array.from(validatedData.roleIds) as unknown as Set<number>,
-      dob: validatedData.dob || "",
+      dob: validatedData.dob || '',
       gender: validatedData.gender as any,
     };
-    console.log(userData);
     // Only include password if it's provided
     if (validatedData.password && validatedData.password.length > 0) {
       (userData as any).password = validatedData.password;
@@ -142,11 +140,11 @@ export async function updateUserAction(
     if (error instanceof Error && error.name === 'ZodError') {
       return {
         success: false,
-        message: "Dữ liệu không hợp lệ",
+        message: 'Dữ liệu không hợp lệ',
       };
     }
 
-    const extractedError = extractErrorMessage(error, "Lỗi server");
+    const extractedError = extractErrorMessage(error, 'Lỗi server');
 
     console.log(error);
 
@@ -266,7 +264,10 @@ export async function getInfoUser(): Promise<ActionResponse<TUser>> {
       data,
     };
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi lấy thông tin người dùng");
+    const extractedError = extractErrorMessage(
+      error,
+      'Lỗi lấy thông tin người dùng'
+    );
     return {
       success: false,
       message: extractedError.message,
@@ -276,9 +277,9 @@ export async function getInfoUser(): Promise<ActionResponse<TUser>> {
 }
 
 export async function changePasswordAction(newPass: {
-  oldPassword: string,
-  newPassword: string,
-  confirmPassword: string
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 }): Promise<ActionResponse<any>> {
   try {
     const data = await changePassword1(newPass);
@@ -287,7 +288,7 @@ export async function changePasswordAction(newPass: {
       data,
     };
   } catch (error) {
-    const extractedError = extractErrorMessage(error, "Lỗi đổi mật khẩu");
+    const extractedError = extractErrorMessage(error, 'Lỗi đổi mật khẩu');
     return {
       success: false,
       message: extractedError.message,

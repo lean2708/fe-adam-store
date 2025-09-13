@@ -1,9 +1,9 @@
-import React from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Loader2, Minus, Plus } from 'lucide-react';
+import { memo } from 'react';
 
-const Quantity = React.memo(
+const Quantity = memo(
   ({
     quantity,
     maxQuantity,
@@ -27,6 +27,7 @@ const Quantity = React.memo(
           )}
           onClick={onDecrease}
           disabled={isUpdating || quantity <= 1}
+          aria-label='Decrease quantity'
         >
           <Minus className='h-3 w-3' />
         </Button>
@@ -47,6 +48,7 @@ const Quantity = React.memo(
           )}
           onClick={onIncrease}
           disabled={isUpdating || quantity >= maxQuantity}
+          aria-label='Increase quantity'
         >
           <Plus className='h-3 w-3' />
         </Button>

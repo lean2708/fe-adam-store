@@ -2,9 +2,7 @@ import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { manrope } from '@/config/fonts';
 import { pageMetadataPresets } from '@/lib/metadata';
 import { cn } from '@/lib/utils';
-import { Metadata } from 'next';
 import Image from 'next/image';
-import React from 'react';
 
 type Props = {
   params: { locale: string };
@@ -28,10 +26,10 @@ const page = () => {
             <Image
               src={'/imgs/about_us.jpg'}
               alt='Adam Store - thời trang nam lịch lãm'
-              width={300}
-              height={400}
+              fill
               className='w-full h-full object-cover transition-opacity duration-300 rounded-md'
               sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px'
+              loading='lazy'
             />
           </AspectRatio>
           <div>
