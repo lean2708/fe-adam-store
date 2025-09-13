@@ -6,6 +6,7 @@ import { getActiveBranchesAction } from '@/actions/branchActions';
 import { TBranch } from '@/types';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Footer() {
   const t = useTranslations('Footer');
@@ -24,7 +25,7 @@ export default function Footer() {
     fetchBranches();
   }, []);
   return (
-    <footer className='bg-black text-white py-16 px-10 h-full'>
+    <footer className='bg-black text-white py-16 px-10 min-h-[600px] lg:min-h-[700px]'>
       <div className='max-w-7xl mx-auto'>
         {/* Top Section */}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16'>
@@ -95,7 +96,7 @@ export default function Footer() {
               <h2 className='font-semibold mb-4 text-white'>
                 {t('policies.title')}
               </h2>
-              <ul className='space-y-2 text-sm text-gray-300'>
+              <ul className='space-y-2 text-sm text-gray-300 min-h-[120px]'>
                 <li>
                   <Link href='#' className='hover:text-white transition-colors'>
                     {t('policies.return')}
@@ -124,7 +125,7 @@ export default function Footer() {
               <h2 className='font-semibold mb-4 text-white'>
                 {t('customerCare.title')}
               </h2>
-              <ul className='space-y-2 text-sm text-gray-300'>
+              <ul className='space-y-2 text-sm text-gray-300 min-h-[120px]'>
                 <li>
                   <Link href='#' className='hover:text-white transition-colors'>
                     {t('customerCare.sizeGuide')}
@@ -153,7 +154,7 @@ export default function Footer() {
               <h2 className='font-semibold mb-4 text-white'>
                 {t('about.title')}
               </h2>
-              <ul className='space-y-2 text-sm text-gray-300'>
+              <ul className='space-y-2 text-sm text-gray-300 min-h-[120px]'>
                 <li>
                   <Link href='#' className='hover:text-white transition-colors'>
                     {t('about.story')}
@@ -185,7 +186,7 @@ export default function Footer() {
               <ul className='space-y-2 text-sm text-gray-300 min-h-[120px]'>
                 {branches.length > 0 ? (
                   branches.map((branch) => (
-                    <li key={branch.id} className='mb-3'>
+                    <li key={branch.id} className='mb-3 min-h-[48px]'>
                       <div className='font-medium text-white'>
                         {branch.name}
                       </div>
@@ -198,12 +199,15 @@ export default function Footer() {
                     </li>
                   ))
                 ) : (
-                  // Fallback content if no branches are available
+                  // Skeleton loading with fixed height
                   <>
-                    <li>132E Nguyễn Thái Học, Phường Bến Thành, Quận 1, HCM</li>
-                    <li>132E Nguyễn Thái Học, Phường Bến Thành, Quận 1, HCM</li>
-                    <li>132E Nguyễn Thái Học, Phường Bến Thành, Quận 1, HCM</li>
-                    <li>132E Nguyễn Thái Học, Phường Bến Thành, Quận 1, HCM</li>
+                    {[...Array(4)].map((_, idx) => (
+                      <li key={idx} className='mb-3 min-h-[48px]'>
+                        <Skeleton className=' h-4 w-2/3 mb-2' />
+                        <Skeleton className=' h-3 w-1/2 mb-1' />
+                        <Skeleton className=' h-3 w-1/3' />
+                      </li>
+                    ))}
                   </>
                 )}
               </ul>

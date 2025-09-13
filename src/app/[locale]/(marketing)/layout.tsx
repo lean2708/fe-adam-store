@@ -24,7 +24,7 @@ export default async function MarketingLayout({
     <div className='min-h-screen adam-store-bg-light'>
       <Navbar />
 
-      <div>
+      <div className='min-h-screen'>
         <Suspense fallback={<Loading />}>{children}</Suspense>
       </div>
 
