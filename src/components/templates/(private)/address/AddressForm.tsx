@@ -46,7 +46,6 @@ export default function AddressForm() {
 
   useEffect(() => {
     getListProvince();
-    console.log(id);
     if (id) {
       getAddress();
     }
@@ -101,7 +100,6 @@ export default function AddressForm() {
     const res = await fetchAddressById(Number(id));
     if (res.status === 200 && res.address) {
       const address = res.address;
-      console.log(address);
       setAddress({
         isDefault: address.isDefault || false,
         phone: address.phone || '',

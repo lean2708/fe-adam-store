@@ -43,7 +43,7 @@ const ChatMessage = ({
     >
       {!isCurrentUser && (
         <Avatar className='w-8 h-8 shrink-0'>
-          <AvatarImage src={message.sender?.avatarUrl} />
+          <AvatarImage src={message.sender?.avatarUrl} alt='Avatar' />
           <AvatarFallback className='bg-gray-500 text-white text-xs'>
             {message.sender?.name?.charAt(0) || 'A'}
           </AvatarFallback>
@@ -52,19 +52,16 @@ const ChatMessage = ({
 
       <div
         className={cn(
-          'max-w-[80%] rounded-lg px-3 py-2 text-sm',
+          'max-w-[80%] px-4 py-3 text-sm shadow-md backdrop-blur-sm',
           isCurrentUser
-            ? 'bg-blue-500 text-white rounded-br-sm'
-            : 'bg-gray-200 text-gray-800 rounded-bl-sm'
+            ? 'bg-gradient-to-br from-cyan-50 to-cyan-100 text-gray-900 rounded-2xl rounded-tr-md border border-cyan-200/50'
+            : 'bg-gradient-to-br from-white to-gray-50 text-gray-900 rounded-2xl rounded-tl-md border border-gray-200/50 shadow-lg'
         )}
       >
         <ChatMessageContent content={message.message} />
         {formattedTime && (
           <p
-            className={cn(
-              'text-xs mt-1 opacity-70',
-              isCurrentUser ? 'text-blue-100' : 'text-gray-500'
-            )}
+            className={cn('text-xs mt-2 opacity-60 text-gray-500 font-medium')}
           >
             {formattedTime}
           </p>
@@ -283,35 +280,37 @@ export function CustomerChatWidget() {
     return (
       <div
         className={cn(
-          'fixed bottom-4 right-4 z-50 bg-white rounded-lg shadow-2xl border transition-all duration-300 flex flex-col',
+          'fixed bottom-4 right-4 z-50 bg-white rounded-2xl shadow-2xl border border-gray-200 transition-all duration-300 flex flex-col overflow-hidden',
           // Mobile styles (default)
-          'w-[calc(100vw-2rem)] max-w-[280px] max-h-[40vh]',
+          'w-[calc(100vw-2rem)] max-w-[320px] max-h-[400px]',
           // Tablet styles
-          'sm:w-64 sm:max-h-[280px]',
+          'sm:w-80 sm:max-h-[420px]',
           // Desktop styles
-          'md:w-72 md:max-h-[320px]',
+          'md:w-96 md:max-h-[480px]',
           // Large desktop
-          'lg:w-80 lg:max-h-[350px]'
+          'lg:w-[400px] lg:max-h-[520px]'
         )}
       >
         {/* Header */}
-        <div className='flex items-center justify-between p-4 adam-store-bg-dark text-white rounded-t-lg shrink-0'>
+        <div className='flex items-center justify-between px-4 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white shrink-0'>
           <div className='flex items-center gap-3 min-w-0'>
-            <Avatar className='w-8 h-8 shrink-0'>
-              <AvatarFallback className='bg-white text-black text-xs font-semibold'>
-                AS
-              </AvatarFallback>
-            </Avatar>
-            <div className='min-w-0'>
-              <h3 className='font-semibold text-sm truncate'>Adam Store</h3>
-              <p className='text-xs opacity-80 flex items-center gap-1'>
-                <span
-                  className={cn(
-                    'w-2 h-2 rounded-full shrink-0',
-                    isWebSocketConnected ? 'bg-green-400' : 'bg-red-400'
-                  )}
-                />
-                <span className='truncate'>{connectionStatus}</span>
+            <div className='relative'>
+              <Avatar className='w-10 h-10 shrink-0 ring-2 ring-gray-300/30'>
+                <AvatarFallback className='bg-gray-100 text-gray-800 text-sm font-bold'>
+                  AS
+                </AvatarFallback>
+              </Avatar>
+              <div
+                className={cn(
+                  'absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white',
+                  isWebSocketConnected ? 'bg-emerald-400' : 'bg-gray-500'
+                )}
+              />
+            </div>
+            <div className='min-w-0 flex-1'>
+              <h3 className='font-semibold text-base truncate'>Adam Store</h3>
+              <p className='text-xs text-gray-300 truncate'>
+                {connectionStatus}
               </p>
             </div>
           </div>
@@ -320,7 +319,7 @@ export function CustomerChatWidget() {
             variant='ghost'
             size='sm'
             onClick={minimizeWidget}
-            className='h-8 w-8 p-0 text-white hover:bg-white/20 shrink-0'
+            className='h-8 w-8 p-0 text-gray-300 hover:text-white hover:bg-gray-700/50 rounded-full shrink-0 transition-colors'
             aria-label='Minimize chat'
           >
             <X className='h-4 w-4' />
@@ -330,8 +329,12 @@ export function CustomerChatWidget() {
         {/* Messages Area */}
         <div
           ref={messagesContainerRef}
-          className='flex-1 p-4 overflow-y-auto bg-gray-50 min-h-0'
+          className='flex-1 p-3 overflow-y-auto bg-gray-100 min-h-0 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 hover:scrollbar-thumb-gray-500'
           id='messages-container'
+          style={{
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#9ca3af #e5e7eb',
+          }}
         >
           {isLoading || isConnecting ? (
             <LoadingState isConnecting={isConnecting} />
@@ -346,31 +349,34 @@ export function CustomerChatWidget() {
 
         {/* Uploader */}
         {showUploader && (
-          <div className='shrink-0 border-t'>
+          <div className='shrink-0 border-t border-gray-200 bg-white p-3'>
             <MultiImageUpload onChange={setSelectedImages} />
           </div>
         )}
 
         {/* Input Area */}
-        <div className='p-4 border-t bg-white rounded-b-lg shrink-0'>
+        <div className='p-3 bg-white border-t border-gray-200 shrink-0'>
           <div className='flex items-center gap-2'>
             <Button
               variant='ghost'
               size='sm'
-              className='text-gray-500 hover:text-gray-700 shrink-0'
+              className='text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-full p-2 shrink-0 transition-colors'
               onClick={toggleUploader}
               aria-label='Toggle file upload'
             >
-              <Paperclip className='h-4 w-4' />
+              <Paperclip className='h-5 w-5' />
             </Button>
 
-            <Input
-              ref={messageInputRef}
-              onKeyDown={handleKeyDown}
-              placeholder={t('Admin.chat.messagePlaceholder')}
-              disabled={isSending || !isWebSocketConnected}
-              className='flex-1 min-w-0 adam-store-bg-dark text-white'
-            />
+            <div className='flex-1 relative'>
+              <Input
+                ref={messageInputRef}
+                onKeyDown={handleKeyDown}
+                placeholder={t('Admin.chat.messagePlaceholder')}
+                disabled={isSending || !isWebSocketConnected}
+                className='flex-1 text-gray-900 min-w-0 bg-gray-100 border-0 rounded-full px-4 py-2.5 text-sm placeholder:text-gray-500 focus:bg-white focus:ring-1 focus:ring-gray-400 focus:ring-offset-0 transition-all resize-none'
+                style={{ minHeight: '40px' }}
+              />
+            </div>
 
             <Button
               onClick={handleSendMessage}
@@ -380,13 +386,20 @@ export function CustomerChatWidget() {
                 !isWebSocketConnected
               }
               size='sm'
-              className='adam-store-bg-dark hover:bg-gray-900 shrink-0'
+              className={cn(
+                'rounded-full p-2.5 shrink-0 transition-all duration-200',
+                isSending ||
+                  uploadAndSendMutation.isPending ||
+                  !isWebSocketConnected
+                  ? 'bg-gray-300 cursor-not-allowed'
+                  : 'bg-gray-700 hover:bg-gray-800 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl'
+              )}
               aria-label='Send message'
             >
               {uploadAndSendMutation.isPending ? (
-                <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin' />
+                <div className='w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin' />
               ) : (
-                <Send className='h-4 w-4 text-white' />
+                <Send className='h-5 w-5 text-white' />
               )}
             </Button>
           </div>
@@ -406,7 +419,7 @@ export function CustomerChatWidget() {
           transform transition-all  ease-out
           hover:scale-105 hover:-translate-y-1
           animate-in slide-in-from-bottom-8 fade-in duration-500
-          border border-blue-500/20
+          border border-gray-500/20
           backdrop-blur-sm
           flex items-center gap-3
           min-w-[140px] justify-center

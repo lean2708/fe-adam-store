@@ -50,7 +50,7 @@ export default function ImagePreviewModal({
             {/* Main Image */}
             <div className='relative flex items-center  justify-center  w-full aspect-square max-w-[500px] '>
               <Image
-                src={currentImage || '/placeholder.svg'}
+                src={currentImage || '/imgs/placeholder.png'}
                 alt={`Review image ${selectedImageIndex + 1} by ${
                   review.userName || 'Người dùng'
                 }`}
@@ -90,7 +90,7 @@ export default function ImagePreviewModal({
               <div className='flex items-center gap-3 mb-4'>
                 <Avatar className='w-10 h-10'>
                   <AvatarImage
-                    src={review.userAvatarUrl || '/placeholder.svg'}
+                    src={review.userAvatarUrl || '/imgs/placeholder.png'}
                   />
                   <AvatarFallback>
                     {review.userName?.charAt(0) || 'U'}
@@ -152,8 +152,10 @@ export default function ImagePreviewModal({
                       aria-label={`Xem ảnh ${index + 1}`}
                       aria-pressed={index === selectedImageIndex}
                     >
-                      <img
-                        src={img || '/placeholder.svg'}
+                      <Image
+                        width={100}
+                        height={100}
+                        src={img || '/imgs/placeholder.png'}
                         alt={`Review thumbnail ${index + 1}`}
                         className='w-full h-full object-cover'
                       />

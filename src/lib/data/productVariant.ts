@@ -1,10 +1,8 @@
-import {
-  type ProductVariantResponse
-} from "@/api-client";
-import { ControllerFactory } from "./factory-api-client";
-import type { TProductVariant } from "@/types";
-import type { ActionResponse } from "@/lib/types/actions";
-import { extractErrorMessage } from "@/lib/utils";
+import { type ProductVariantResponse } from '@/api-client';
+import { ControllerFactory } from './factory-api-client';
+import type { TProductVariant } from '@/types';
+import type { ActionResponse } from '@/lib/types/actions';
+import { extractErrorMessage } from '@/lib/utils';
 
 /**
  * Helper to get an instance of ProductVariantControllerApi with NextAuth using factory.
@@ -34,7 +32,7 @@ function transformProductVariantResponseToTProductVariant(
     status: response.status as 'ACTIVE' | 'INACTIVE',
     size: response.size,
     color: response.color,
-    label: ""
+    label: '',
   };
 }
 
@@ -180,8 +178,7 @@ export async function updateProductVariantApi(
         quantity: variantData.quantity,
       },
     });
-    console.log(response.data.code);
-    
+
     if (response.data.code !== 200) {
       return {
         success: false,

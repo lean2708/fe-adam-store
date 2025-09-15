@@ -2,6 +2,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Star } from 'lucide-react';
 import { TReview } from '@/types';
+import Image from 'next/image';
 
 interface ReviewItemProps {
   review: TReview;
@@ -18,7 +19,8 @@ export default function ReviewItem({ review, onImageClick }: ReviewItemProps) {
               <div className='flex flex-row gap-6 items-center'>
                 <Avatar className='size-12 ml-2'>
                   <AvatarImage
-                    src={review.userAvatarUrl || '/placeholder.svg'}
+                    src={review.userAvatarUrl || '/imgs/placeholder.png'}
+                    alt={review.userName || 'User Avatar'}
                   />
                   <AvatarFallback>
                     {review.userName?.charAt(0) || 'U'}
@@ -55,8 +57,10 @@ export default function ReviewItem({ review, onImageClick }: ReviewItemProps) {
                     onClick={() => onImageClick(review, i)}
                     className='size-24 bg-muted rounded overflow-hidden hover:opacity-80 transition-opacity cursor-pointer border border-border shadow-md hover:shadow-lg'
                   >
-                    <img
+                    <Image
                       src={img}
+                      width={118}
+                      height={188}
                       alt={`Review image ${i + 1}`}
                       className='w-full h-full object-cover'
                       loading='lazy'

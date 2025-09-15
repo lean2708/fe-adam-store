@@ -51,18 +51,19 @@ export function ContentNews() {
     };
     getProductByIdCategory();
   }, [state.value, state.page]);
-  console.log(state);
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setState((ps) => ({ ...ps, value: event.target.value, page: 0 }));
   };
   return (
     <>
       <div className='w-full h-20 flex items-center justify-between'>
-        <p className='text-[#888888]'>
+        <p className='text-muted-foreground'>
           {Math.min(state.totalProducts, 5 * 12)} Sản phẩm
         </p>
         <p>
-          <span className='text-[#888888]'>Sắp xếp theo</span>
+          <label htmlFor='sort' className='text-muted-foreground'>
+            Sắp xếp theo
+          </label>
           <select
             className='outline-none'
             value={state.value}
