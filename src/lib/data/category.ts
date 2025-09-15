@@ -1,8 +1,14 @@
-import type { TCategory } from "@/types";
-import type { ApiResponsePageResponseProductResponse, CategoryRequest } from "@/api-client/models";
-import { ControllerFactory } from "./factory-api-client";
-import { transformCategoryResponseToTCategory, transformApiResponsePageResponseCategoryToActionResponse } from "./transform/category";
-import { ActionResponse } from "../types/actions";
+import type { TCategory } from '@/types';
+import type {
+  ApiResponsePageResponseProductResponse,
+  CategoryRequest,
+} from '@/api-client/models';
+import { ControllerFactory } from './factory-api-client';
+import {
+  transformCategoryResponseToTCategory,
+  transformApiResponsePageResponseCategoryToActionResponse,
+} from './transform/category';
+import { ActionResponse } from '../types/actions';
 
 /**
  * Helper to get an instance of CategoryControllerApi with NextAuth using factory.
@@ -14,17 +20,24 @@ async function getCategoryController() {
 /**
  * Fetch all categories for user (public).
  */
-export async function fetchAllCategoriesApi(page?: number, size?: number, sort?: string[]): Promise<ActionResponse<TCategory[]>> {
+export async function fetchAllCategoriesApi(
+  page?: number,
+  size?: number,
+  sort?: string[]
+): Promise<ActionResponse<TCategory[]>> {
   try {
     const api = await getCategoryController();
     const response = await api.fetchAll3({ page, size, sort });
 
-    return transformApiResponsePageResponseCategoryToActionResponse(response.data);
+    return transformApiResponsePageResponseCategoryToActionResponse(
+      response.data
+    );
   } catch (error) {
-    console.error("Error fetching categories:", error);
+    console.error('Error fetching categories:', error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch categories",
+      message:
+        error instanceof Error ? error.message : 'Failed to fetch categories',
     };
   }
 }
@@ -32,26 +45,31 @@ export async function fetchAllCategoriesApi(page?: number, size?: number, sort?:
 /**
  * Create a new category (admin).
  */
-export async function createCategoryApi(data: CategoryRequest): Promise<TCategory> {
+export async function createCategoryApi(
+  data: CategoryRequest
+): Promise<TCategory> {
   const api = await getCategoryController();
   const response = await api.create8({ categoryRequest: data });
   if (response.data.code !== 200) {
     throw response.data;
   }
-  if (!response.data.result) throw new Error("No category returned");
+  if (!response.data.result) throw new Error('No category returned');
   return transformCategoryResponseToTCategory(response.data.result);
 }
 
 /**
  * Update a category (admin).
  */
-export async function updateCategoryApi(id: number, data: CategoryRequest): Promise<TCategory> {
+export async function updateCategoryApi(
+  id: number,
+  data: CategoryRequest
+): Promise<TCategory> {
   const api = await getCategoryController();
   const response = await api.update7({ id, categoryRequest: data });
   if (response.data.code !== 200) {
     throw response.data;
   }
-  if (!response.data.result) throw new Error("No category returned");
+  if (!response.data.result) throw new Error('No category returned');
   return transformCategoryResponseToTCategory(response.data.result);
 }
 
@@ -64,7 +82,7 @@ export async function deleteCategoryApi(id: number): Promise<TCategory> {
   if (response.data.code !== 200) {
     throw response.data;
   }
-  if (!response.data.result) throw new Error("No category returned");
+  if (!response.data.result) throw new Error('No category returned');
   return transformCategoryResponseToTCategory(response.data.result);
 }
 
@@ -77,24 +95,31 @@ export async function restoreCategoryApi(id: number): Promise<TCategory> {
   if (response.data.code !== 200) {
     throw response.data;
   }
-  if (!response.data.result) throw new Error("No category returned");
+  if (!response.data.result) throw new Error('No category returned');
   return transformCategoryResponseToTCategory(response.data.result);
 }
 
 /**
  * Fetch all categories for admin (admin).
  */
-export async function fetchAllCategoriesForAdminApi(page?: number, size?: number, sort?: string[]): Promise<ActionResponse<TCategory[]>> {
+export async function fetchAllCategoriesForAdminApi(
+  page?: number,
+  size?: number,
+  sort?: string[]
+): Promise<ActionResponse<TCategory[]>> {
   try {
     const api = await getCategoryController();
     const response = await api.fetchAllCategoriesForAdmin({ page, size, sort });
 
-    return transformApiResponsePageResponseCategoryToActionResponse(response.data);
+    return transformApiResponsePageResponseCategoryToActionResponse(
+      response.data
+    );
   } catch (error) {
-    console.error("Error fetching categories:", error);
+    console.error('Error fetching categories:', error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to fetch categories",
+      message:
+        error instanceof Error ? error.message : 'Failed to fetch categories',
     };
   }
 }
@@ -112,9 +137,8 @@ export async function fetchAllProductByCategoryApi(
       size: size,
       sort: sort.length > 0 ? sort : undefined,
     });
-    console.log(res.data);
     return res.data;
   } catch (error: any) {
-    throw new Error(error?.message || "Unknown error");
+    throw new Error(error?.message || 'Unknown error');
   }
 }

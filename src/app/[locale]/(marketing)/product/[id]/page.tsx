@@ -4,13 +4,34 @@ import Gallery from '@/components/templates/(marketing)/Index/Product/Gallery';
 import Recommendations from '@/components/templates/(marketing)/Index/Product/Recommendations';
 import Reviews from '@/components/templates/(marketing)/Index/Product/Reviews';
 import { manrope } from '@/config/fonts';
-import { cn } from '@/lib/utils';
+import { pageMetadataPresets } from '@/lib/metadata';
+import { cn, formatCurrency } from '@/lib/utils';
+import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import React from 'react';
 
 type Props = {
-  params: { id: string };
+  params: { id: string; locale: string };
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id, locale } = await params;
+
+  const product = await getProductDetailsAction(id);
+
+  if (!product) {
+    return pageMetadataPresets.product(locale, 'Sản phẩm không tồn tại', id);
+  }
+
+  return pageMetadataPresets.product(
+    locale,
+    product.product?.name || 'Chi tiết sản phẩm',
+    product.product?.id.toString() || id,
+    product.product?.mainImage,
+    product.product?.minPrice
+      ? formatCurrency(product.product?.minPrice, locale)
+      : undefined
+  );
+}
 
 const page = async ({ params }: Props) => {
   // ? tôi không còn lựa chọn nào khác ngoài việc sử dụng getTranslations để lấy các bản dịch
@@ -35,8 +56,6 @@ const page = async ({ params }: Props) => {
       </>
     );
   }
-
-  // console.log(productResponse);
 
   return (
     <div className='min-h-screen adam-store-bg-light pb-1'>

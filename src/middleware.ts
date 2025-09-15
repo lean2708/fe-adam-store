@@ -1,15 +1,26 @@
 // middleware.ts
-import { NextResponse, NextRequest } from "next/server";
-import createMiddleware from "next-intl/middleware";
-import { routing } from "./i18n/routing";
+import { NextResponse, NextRequest } from 'next/server';
+import createMiddleware from 'next-intl/middleware';
+import { Pathnames, LocalePrefixMode } from 'next-intl/routing';
 
-const intlMiddleware = createMiddleware(routing); // returns a middleware handler function
+export const defaultLocale = 'en' as const;
+export const locales = ['en', 'vi'] as const;
+export const pathnames: Pathnames<typeof locales> = {};
+export type Locale = (typeof locales)[number];
+export const localePrefix: LocalePrefixMode = 'always';
+
+const intlMiddleware = createMiddleware({
+  defaultLocale,
+  locales,
+  localePrefix,
+  pathnames,
+});
 
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
   // Skip API routes
-  if (url.pathname.startsWith("/api")) {
+  if (url.pathname.startsWith('/api')) {
     return NextResponse.next();
   }
 
@@ -20,7 +31,7 @@ export default async function middleware(req: NextRequest) {
 export const config = {
   matcher: [
     // Match only non-static files, non-Next internals
-    "/((?!_next|.*\\..*).*)",
-    "/(api|trpc)(.*)",
+    '/((?!_next|.*\\..*).*)',
+    '/(api|trpc)(.*)',
   ],
 };

@@ -59,7 +59,6 @@ export function ContentCategory() {
     };
     if (paramCate) getProductByIdCategory(paramCate);
   }, [paramCate, state.value, state.page]);
-  console.log(state);
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setState((ps) => ({ ...ps, value: event.target.value, page: 0 }));
   };
@@ -67,7 +66,9 @@ export function ContentCategory() {
     <>
       <div className='w-full h-20 flex items-center justify-end'>
         <p>
-          <span className='text-[#888888]'>Sắp xếp theo</span>
+          <label htmlFor='sort' className='text-muted-foreground'>
+            Sắp xếp theo
+          </label>
           <select
             className='outline-none'
             value={state.value}
@@ -107,17 +108,18 @@ export function ContentCategory() {
                   <Skeleton className='h-6 w-[45%]'></Skeleton>
                 </CarouselItem>
               ))}
-            {!state.loading && state.listProducts.map((product) => (
-              <CarouselItem
-                key={product.id}
-                className="basis-1/2 md:basis-1/3 lg:basis-1/4 mb-2"
-              >
+            {!state.loading &&
+              state.listProducts.map((product) => (
+                <CarouselItem
+                  key={product.id}
+                  className='basis-1/2 md:basis-1/3 lg:basis-1/4 mb-2'
+                >
                   <ProductCardIndex
                     product={product}
                     badgeText={t('bestSellers.badgeText')}
                   />
-              </CarouselItem>
-            ))}
+                </CarouselItem>
+              ))}
           </div>
         </Carousel>
       </div>

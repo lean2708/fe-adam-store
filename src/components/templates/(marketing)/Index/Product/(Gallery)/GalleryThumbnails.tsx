@@ -36,7 +36,7 @@ export default function GalleryThumbnails({
           } hover:border-[#0e3bac] transition-all duration-200`}
         >
           <Image
-            src={image?.imageUrl || '/placeholder.svg'}
+            src={image?.imageUrl || '/imgs/placeholder.png'}
             alt={`Product view ${index + 1}`}
             width={80}
             height={80}

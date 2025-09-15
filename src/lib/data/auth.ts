@@ -172,7 +172,6 @@ export async function getMyInfoApi(token?: string): Promise<UserResponse> {
 
   const response = await authApi.getMyInfo();
 
-  // console.log(response)
   if (response.data.code !== 200 || !response.data.result) {
     throw response.data;
   }

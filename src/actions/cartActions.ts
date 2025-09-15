@@ -73,7 +73,6 @@ export async function deleteAllCartItemsAction(userId: string) {
     // No bulk delete in API, so fetch all and delete one by one
     const items = await fetchCartItemsApi(Number(userId));
     const userItems = items.filter((item) => item.userId === userId);
-    console.log(items);
     await Promise.all(
       userItems.map((item) => deleteCartItemApi(Number(item.id)))
     );

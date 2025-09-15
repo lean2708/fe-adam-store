@@ -261,7 +261,8 @@
         "no_recommendations": "Không có sản phẩm gợi ý nào."
       },
       "product_not_found": "Không tìm thấy sản phẩm."
-    }
+    },
+    "noProductsFound":"Không tìm thấy sản phẩm nào"
   },
   "Order": {
     "title": "Xác nhận đơn hàng",

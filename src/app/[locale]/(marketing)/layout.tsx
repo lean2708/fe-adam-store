@@ -3,8 +3,19 @@ import Navbar from '@/components/templates/Navbar/Navbar';
 import { CustomerChatWidget } from '@/components/ui/CustomerChatWidget';
 import { Suspense } from 'react';
 import Loading from './loading';
+import type { Metadata } from 'next';
+import { generateBaseMetadata } from '@/lib/metadata';
 
-export default async function authLayout({
+type Props = {
+  params: { locale: string };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  return generateBaseMetadata(locale);
+}
+
+export default async function MarketingLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -13,7 +24,7 @@ export default async function authLayout({
     <div className='min-h-screen adam-store-bg-light'>
       <Navbar />
 
-      <div>
+      <div className='min-h-screen'>
         <Suspense fallback={<Loading />}>{children}</Suspense>
       </div>
 

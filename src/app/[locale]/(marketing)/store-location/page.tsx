@@ -3,8 +3,18 @@ import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Card, CardContent } from '@/components/ui/card';
 import { manrope } from '@/config/fonts';
 import { cn } from '@/lib/utils';
+import { pageMetadataPresets } from '@/lib/metadata';
 import { TBranch } from '@/types';
 import Image from 'next/image';
+
+type Props = {
+  params: { locale: string };
+};
+
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
+  return pageMetadataPresets.storeLocation(locale);
+}
 
 const page = async () => {
   const res = await getActiveBranchesAction();

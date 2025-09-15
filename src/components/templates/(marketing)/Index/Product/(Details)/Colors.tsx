@@ -30,6 +30,7 @@ export default function Colors({ tColors, onChangeColor }: ColorsProps) {
       <div className=' flex gap-2'>
         {tColors.map((tColor) => (
           <button
+            aria-label={tColor.name}
             key={tColor.id}
             className={cn(
               'w-14 h-8 rounded-full border border-accent-foreground [&.active]:outline-3 [&.active]:outline-offset-3 [&.active]:outline-accent-foreground transition-all duration-200 hover:scale-110',

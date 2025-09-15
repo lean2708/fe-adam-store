@@ -11,7 +11,7 @@ export function ProductItem({ product }: { product: TProductVariant }) {
       <Image
         width={134}
         height={180}
-        src={product.imageUrl || '/placeholder.svg'}
+        src={product.imageUrl || '/imgs/placeholder.png'}
         alt={product.name || 'Product Item'}
         className='w-32 h-44 object-cover rounded-lg'
         loading='lazy'

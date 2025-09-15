@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 import axios from 'axios';
 import { ApiErrorResponse } from '@/api-client/models/api-error-response';
 import { TProduct } from '@/types';
-import { enAU, es, Locale, vi } from 'react-day-picker/locale';
+import { enAU, Locale, vi } from 'react-day-picker/locale';
 import { ORDER_STATUS } from '@/enums';
 import { VND_TO_USD_RATE } from './constants';
 
@@ -163,8 +163,6 @@ export function formatDate(
 }
 
 export function getReactDayPickerLocale(locale: string = 'vi'): Locale {
-  console.log(locale);
-
   if (locale === 'vi') {
     return vi;
   } else {
@@ -182,8 +180,6 @@ export const getStatusColor = (
   status: string,
   type: 'general' | 'order' | 'payment' = 'general'
 ) => {
-  console.log(status);
-
   switch (type) {
     case 'order':
       switch (status) {

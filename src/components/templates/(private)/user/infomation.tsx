@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 export default function Infomation() {
   const t = useTranslations('Profile.personal_info');
@@ -123,10 +124,12 @@ export default function Infomation() {
         >
           {infoUser.avatarUrl ? (
             <>
-              <img
+              <Image
+                width={100}
+                height={100}
                 className='w-full h-full object-cover'
                 src={infoUser.avatarUrl}
-                alt={infoUser.name}
+                alt={infoUser.name!}
               />
               <button
                 disabled={loading}
@@ -164,11 +167,14 @@ export default function Infomation() {
       </div>
       <div className='pt-6'>
         <p className='w-full flex justify-between h-9'>
-          <span style={{ width: '30%' }}>{t('name.label')}</span>
+          <label htmlFor='name' style={{ width: '30%' }}>
+            {t('name.label')}
+          </label>
           <input
             className='border-b-1 border-gray-300 w-120 pl-0 outline-none'
             style={{ width: '70%' }}
             type='text'
+            id='name'
             name='name'
             value={infoUser.name}
             onChange={handleInputChange}
@@ -182,6 +188,7 @@ export default function Infomation() {
             }
           >
             <input
+              id='male'
               className='mr-1'
               type='radio'
               name='gender'
@@ -190,7 +197,7 @@ export default function Infomation() {
                 setInfoUser({ ...infoUser, gender: GenderEnum.Male })
               }
             />
-            <label>{t('sex.male')}</label>
+            <label htmlFor='male'>{t('sex.male')}</label>
           </p>
           <p
             onClick={() =>
@@ -199,6 +206,7 @@ export default function Infomation() {
             className='mx-3'
           >
             <input
+              id='female'
               className='mr-1'
               type='radio'
               name='gender'
@@ -207,7 +215,7 @@ export default function Infomation() {
               }
               checked={infoUser.gender === 'FEMALE'}
             />
-            <label>{t('sex.female')}</label>
+            <label htmlFor='female'>{t('sex.female')}</label>
           </p>
           <p
             onClick={() =>
@@ -215,6 +223,7 @@ export default function Infomation() {
             }
           >
             <input
+              id='other'
               className='mr-1'
               type='radio'
               name='gender'
@@ -223,12 +232,15 @@ export default function Infomation() {
               }
               checked={infoUser.gender === 'OTHER' || infoUser.gender == null}
             />
-            <label>{t('sex.other')}</label>
+            <label htmlFor='other'>{t('sex.other')}</label>
           </p>
         </div>
         <p className='mt-4 w-full flex justify-between h-9'>
-          <span style={{ width: '30%' }}>{t('dob.label')}:</span>
+          <label htmlFor='dob' style={{ width: '30%' }}>
+            {t('dob.label')}:
+          </label>
           <input
+            id='dob'
             type='date'
             className='border-b-1 border-gray-300 w-120 pl-0 outline-none'
             style={{ width: '70%' }}
@@ -238,8 +250,11 @@ export default function Infomation() {
           />
         </p>
         <p className='mt-4 w-full flex justify-between h-9'>
-          <span style={{ width: '30%' }}>Email:</span>
+          <label htmlFor='email' style={{ width: '30%' }}>
+            Email:
+          </label>
           <input
+            id='email'
             className='border-b-1 border-gray-300 w-120 pl-0 outline-none'
             style={{ width: '70%' }}
             type='text'

@@ -3,7 +3,6 @@ import ProductCardIndex from '@/components/modules/ProductCardIndex';
 import { Carousel, CarouselItem } from '@/components/ui/carousel';
 import { TProduct } from '@/types';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Pagination from '../detail/Pagination';
 import { getAllProductsTotalAction } from '@/actions/productActions';
@@ -51,7 +50,6 @@ export function ContentBestSeller() {
     };
     getProductByIdCategory();
   }, [state.value, state.page]);
-  console.log(state);
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setState((ps) => ({ ...ps, value: event.target.value, page: 0 }));
   };
