@@ -11,6 +11,7 @@ export function useCheckoutDatas() {
 
   const { productVariantList } = useProductVariant();
   const selectedTotalPrice = useCartStore((s) => s.selectedTotalPrice);
+  const selectedItems = useCartStore((s) => s.selectedItems);
   const { buyNowItems } = useBuyNowStore();
 
   const checkoutData = useMemo(() => {
@@ -24,6 +25,7 @@ export function useCheckoutDatas() {
         items: buyNowItems,
         subtotal: buyNowTotal,
         type: 'buy-now' as const,
+        checlEmptyTemp: buyNowItems.length === 0,
       };
     }
 
@@ -31,6 +33,7 @@ export function useCheckoutDatas() {
       items: productVariantList,
       subtotal: selectedTotalPrice,
       type: 'cart' as const,
+      checlEmptyTemp: selectedItems.length === 0,
     };
   }, [checkoutType, buyNowItems, productVariantList, selectedTotalPrice]);
 

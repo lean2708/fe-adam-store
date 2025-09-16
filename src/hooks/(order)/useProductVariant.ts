@@ -16,13 +16,16 @@ export default function useProductVariant() {
 
   const { productVariantList, loading } = useMemo(() => {
     // Handle hydration - if cartItems or selectedItems are null/undefined, return loading state
-    if (!cartItems || !selectedItems?.length) {
+    if (!cartItems) {
+      return { productVariantList: [], loading: true };
+    }
+    if (!selectedItems?.length) {
       return { productVariantList: [], loading: false };
     }
 
     // Lọc cartItems dựa trên selectedItems
-    const selectedItemsData = cartItems.filter((item) =>
-      selectedItems.includes(Number(item.id))
+    const selectedItemsData = cartItems.filter(
+      (item) => selectedItems.map(String).includes(String(item.id)) // ép cùng kiểu để chắc chắn
     );
 
     // Add safety check
@@ -60,7 +63,7 @@ export default function useProductVariant() {
 
           // Trả về object với đầy đủ thông tin cần thiết
           return {
-            label:"",
+            label: '',
             id: selectedVariant.id,
             name: item.Product.name,
             // title: item.Product.title,
