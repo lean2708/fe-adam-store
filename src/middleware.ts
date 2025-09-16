@@ -1,4 +1,3 @@
-// middleware.ts
 import { NextResponse, NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { Pathnames, LocalePrefixMode } from 'next-intl/routing';
@@ -16,22 +15,56 @@ const intlMiddleware = createMiddleware({
   pathnames,
 });
 
+const protectedRoutes = [
+  '/dashboard',
+  '/profile',
+  '/orders',
+  '/order',
+  '/cart',
+];
+
+function isProtectedRoute(pathname: string) {
+  return protectedRoutes.some((route) => pathname.startsWith(route));
+}
+
 export default async function middleware(req: NextRequest) {
-  const url = req.nextUrl;
+  const url = req.nextUrl.clone();
+  const pathname = url.pathname;
 
   // Skip API routes
-  if (url.pathname.startsWith('/api')) {
+  if (pathname.startsWith('/api')) {
     return NextResponse.next();
   }
 
-  // Unprotected route: just handle i18n
+  // Check if the path has a locale prefix
+  const pathSegments = pathname.split('/').filter(Boolean);
+  const maybeLocale = pathSegments[0];
+  const hasLocale = locales.includes(maybeLocale as Locale);
+
+  // Extract the path without locale
+  const normalizedPath = hasLocale
+    ? '/' + pathSegments.slice(1).join('/')
+    : pathname;
+
+  // Check if the normalized path is protected
+  if (isProtectedRoute(normalizedPath)) {
+    const token = req.cookies.get('token')?.value;
+
+    if (!token) {
+      // Redirect to login with the appropriate locale
+      const locale = hasLocale ? maybeLocale : defaultLocale;
+      url.pathname = `/${locale}/login`;
+      return NextResponse.redirect(url);
+    }
+  }
+
+  // Handle internationalization
   return intlMiddleware(req);
 }
 
 export const config = {
   matcher: [
-    // Match only non-static files, non-Next internals
+    // Match all paths except static files and Next.js internals
     '/((?!_next|.*\\..*).*)',
-    '/(api|trpc)(.*)',
   ],
 };
