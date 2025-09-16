@@ -13,7 +13,7 @@ export function ProductList() {
 
   const { isAuthenticated, isLoading, user } = useAuth();
   const router = useRouter();
-  const { items: products, checlEmptyTemp } = useCheckoutDatas();
+  const { items: products, isEmpty } = useCheckoutDatas();
 
   // Dùng ref để tránh push nhiều lần
   const hasRedirected = useRef(false);
@@ -25,7 +25,7 @@ export function ProductList() {
   }, [isAuthenticated, user, isLoading, router]);
 
   useEffect(() => {
-    if (checlEmptyTemp && !hasRedirected.current) {
+    if (isEmpty && !hasRedirected.current) {
       hasRedirected.current = true;
       router.push('/');
       toast.info('Your order has been cancelled !', {
@@ -33,7 +33,7 @@ export function ProductList() {
           'Please try the transaction again, avoid reloading the page',
       });
     }
-  }, [checlEmptyTemp, router]);
+  }, [isEmpty, router]);
 
   return (
     <div>
