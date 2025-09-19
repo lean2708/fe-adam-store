@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { Pathnames, LocalePrefixMode } from 'next-intl/routing';
+import { getToken } from 'next-auth/jwt';
 
 export const defaultLocale = 'en' as const;
 export const locales = ['en', 'vi'] as const;
@@ -48,10 +49,9 @@ export default async function middleware(req: NextRequest) {
 
   // Check if the normalized path is protected
   if (isProtectedRoute(normalizedPath)) {
-    const token = req.cookies.get('token')?.value;
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
     if (!token) {
-      // Redirect to login with the appropriate locale
       const locale = hasLocale ? maybeLocale : defaultLocale;
       url.pathname = `/${locale}/login`;
       return NextResponse.redirect(url);
