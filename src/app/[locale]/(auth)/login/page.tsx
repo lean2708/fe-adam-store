@@ -13,18 +13,18 @@ export default async function LoginPage() {
     >
       <div className='space-y-4 md:space-y-6'>
         <div className='space-y-1 md:space-y-2'>
-          <h1 className='text-3xl md:text-4xl lg:text-6xl xl:text-7xl  mb-8 md:mb-16 lg:mb-24 font-sans  text-primary'>
+          <h1 className='text-5xl lg:text-6xl xl:text-7xl  mb-8 md:mb-16 lg:mb-24 font-sans  text-primary'>
             Adam Store
           </h1>
-          <h2 className='text-lg md:text-2xl lg:text-3xl font-medium adam-store-text'>
+          <h2 className='text-2xl md:text-3xl  font-medium adam-store-text'>
             {t('title')}
           </h2>
-          <p className='text-xs md:text-sm '>{t('sub_title')}</p>
+          <p className='text-base md:text-sm '>{t('sub_title')}</p>
         </div>
 
         <LoginForm />
 
-        <div className='text-sm text-primary px-3'>
+        <div className='text-sm text-primary px-2 py-2 sm:py-0 text-center sm:text-start'>
           {t('noAccount')}
           <Link
             href='/register'

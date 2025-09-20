@@ -28,7 +28,7 @@ export default function Footer() {
     <footer className='bg-black text-white py-16 px-10 min-h-[600px] lg:min-h-[700px]'>
       <div className='max-w-7xl mx-auto'>
         {/* Top Section */}
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16'>
+        <div className='flex flex-col gap-8 mb-16 lg:grid lg:grid-cols-3 '>
           {/* Left Column - Brand */}
           <div className='lg:col-span-1'>
             <h1 className='text-2xl font-bold mb-4'>{t('brand.title')}</h1>
@@ -42,7 +42,7 @@ export default function Footer() {
 
           {/* Middle Column - Contact Info */}
           <div className='lg:col-span-1'>
-            <div className='text-right'>
+            <div className='lg:text-right'>
               <div className='mb-4'>
                 <p className='text-sm text-gray-300'>{t('contact.hotline')}</p>
                 <p className='text-sm text-gray-300'>
@@ -57,11 +57,11 @@ export default function Footer() {
 
           {/* Right Column - Social Icons */}
           <div className='lg:col-span-1'>
-            <div className='text-right'>
+            <div className='lg:text-right'>
               <h2 className='font-semibold mb-4 text-white'>
                 {t('social.title')}
               </h2>
-              <div className='flex justify-end gap-4'>
+              <div className='flex justify-start lg:justify-end gap-4'>
                 <Link
                   href='#'
                   className='w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-600 transition-colors'

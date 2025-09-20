@@ -34,7 +34,7 @@ const Colors = memo(
         disabled={isChanging}
       >
         <SelectTrigger
-          className='w-28 h-9 text-sm bg-accent'
+          className='sm:w-28 sm:h-9 text-xs sm:text-sm bg-accent'
           disabled={isChanging}
           aria-label='Choose color'
         >

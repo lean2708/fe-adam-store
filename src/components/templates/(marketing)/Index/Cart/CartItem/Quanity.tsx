@@ -2,6 +2,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Loader2, Minus, Plus } from 'lucide-react';
 import { memo } from 'react';
+import useIsMobile from '@/hooks/useIsMobile';
 
 const Quantity = memo(
   ({
@@ -17,12 +18,14 @@ const Quantity = memo(
     onDecrease: () => void;
     isUpdating?: boolean;
   }) => {
+    const isMobile = useIsMobile();
+
     return (
       <div className='flex items-center gap-2 border border-border rounded-full'>
         <Button
-          size='icon'
+          size={isMobile ? 'sm' : 'icon'}
           className={cn(
-            'h-8 w-8 bg-transparent text-primary hover:bg-muted rounded-bl-2xl rounded-tl-2xl cursor-pointer',
+            'bg-transparent text-primary hover:bg-muted rounded-bl-2xl rounded-tl-2xl cursor-pointer',
             isUpdating && 'opacity-50 cursor-not-allowed'
           )}
           onClick={onDecrease}
@@ -32,7 +35,7 @@ const Quantity = memo(
           <Minus className='h-3 w-3' />
         </Button>
 
-        <div className='w-8 text-center'>
+        <div className='w-2 sm:w-8 text-center'>
           {isUpdating ? (
             <Loader2 className='animate-spin size-4 mx-auto' />
           ) : (
@@ -41,9 +44,9 @@ const Quantity = memo(
         </div>
 
         <Button
-          size='icon'
+          size={isMobile ? 'sm' : 'icon'}
           className={cn(
-            'h-8 w-8 bg-transparent text-primary hover:bg-muted rounded-br-2xl rounded-tr-2xl cursor-pointer',
+            ' bg-transparent text-primary hover:bg-muted rounded-br-2xl rounded-tr-2xl cursor-pointer',
             isUpdating && 'opacity-50 cursor-not-allowed'
           )}
           onClick={onIncrease}

@@ -62,10 +62,11 @@ export function CartItemsList() {
               id='select-all'
               checked={allSelected}
               onCheckedChange={() => toggleAllItems(!allSelected)}
+              className='size-5 md:size-4'
             />
             <Label
               htmlFor='select-all'
-              className='text-primary text-base font-normal '
+              className='text-primary text-lg md:text-base font-normal '
             >
               {t('cart.allProducts')}
             </Label>

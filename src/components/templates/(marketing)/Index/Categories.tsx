@@ -1,16 +1,21 @@
-"use client";
+'use client';
 
-import { TCategory } from "@/types";
-import CategoryItem from "./Category/CategoryItem";
-import { getAllCategoriesAction } from "@/actions/categoryActions";
-import { CategorySkeleton } from "@/components/ui/skeleton";
-import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { TCategory } from '@/types';
+import CategoryItem from './Category/CategoryItem';
+import { getAllCategoriesAction } from '@/actions/categoryActions';
+import { CategorySkeleton } from '@/components/ui/skeleton';
+import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from '@/components/ui/carousel';
 
 export default function Categories() {
   const [categories, setCategories] = useState<TCategory[]>([]);
   const [loading, setLoading] = useState(true);
-  const t = useTranslations("Marketing");
+  const t = useTranslations('Marketing');
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -22,7 +27,7 @@ export default function Categories() {
           setCategories(response.data);
         }
       } catch (error) {
-        console.error("Failed to fetch categories:", error);
+        console.error('Failed to fetch categories:', error);
       } finally {
         setLoading(false);
       }
@@ -34,13 +39,18 @@ export default function Categories() {
   // Show loading state
   if (loading) {
     return (
-      <section>
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-4 px-8">
+      <Carousel className='w-full py-4 relative px-4 mt-8  md:px-6 md:mt-10 lg:mt-12'>
+        <CarouselContent>
           {[...Array(6)].map((_, index) => (
-            <CategorySkeleton key={index} />
+            <CarouselItem
+              key={index}
+              className='basis-1/2 md:basis-1/3 lg:basis-1/6'
+            >
+              <CategorySkeleton />
+            </CarouselItem>
           ))}
-        </div>
-      </section>
+        </CarouselContent>
+      </Carousel>
     );
   }
 
@@ -48,25 +58,29 @@ export default function Categories() {
   if (!categories.length) {
     return (
       <section>
-        <div className="text-center py-8">
-          <p className="text-gray-500">{t("categories.noCategories")}</p>
+        <div className='text-center py-8'>
+          <p className='text-gray-500'>{t('categories.noCategories')}</p>
         </div>
       </section>
     );
   }
 
   return (
-    <section>
-      <div className="grid grid-cols-2 md:grid-cols-6 gap-4 px-8 mt-12">
+    <Carousel className='w-full py-4 relative mt-8 px-4 md:px-6 md:mt-10 lg:mt-12'>
+      <CarouselContent>
         {categories.map((category) => (
-          <CategoryItem
+          <CarouselItem
             key={category.id}
-            title={category.name}
-            imageSrc={category.imageUrl}
-            id={category.id + ""}
-          />
+            className='basis-1/2 md:basis-1/3 lg:basis-1/6 '
+          >
+            <CategoryItem
+              title={category.name}
+              imageSrc={category.imageUrl}
+              id={category.id + ''}
+            />
+          </CarouselItem>
         ))}
-      </div>
-    </section>
+      </CarouselContent>
+    </Carousel>
   );
 }

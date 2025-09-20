@@ -15,6 +15,8 @@ import {
   CartModalWithoutLoginSkeleton,
   UserModalSkeleton,
 } from '@/components/ui/skeleton';
+import useIsMobile from '@/hooks/useIsMobile';
+import { useRouter } from 'next/navigation';
 
 // *Dynamic modals
 const UserModal = dynamic(() => import('./modal/UserModal'), {
@@ -31,6 +33,9 @@ const MobileSidebar = dynamic(() => import('./modal/MobileSidebar'), {
 
 export default function Navbar() {
   const { user, isAuthenticated } = useAuth();
+  const isMobile = useIsMobile();
+  const router = useRouter();
+
   const cartItems = useCartStore((state) => state.cartItems);
   const clearCart = useCartStore((state) => state.clearCart);
 
@@ -96,7 +101,13 @@ export default function Navbar() {
                 variant='ghost'
                 aria-label='Cart'
                 size='sm'
-                onClick={() => setIsCartOpen(true)}
+                onClick={() => {
+                  if (isMobile) {
+                    router.push('/cart');
+                  } else {
+                    setIsCartOpen(true);
+                  }
+                }}
                 className='relative'
               >
                 <ShoppingBag className='h-5 w-5' />

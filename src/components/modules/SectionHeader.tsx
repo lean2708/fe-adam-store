@@ -37,9 +37,7 @@ export default function SectionHeader({
           </p>
         ) : null}
 
-        <h2
-          className={cn('text-2xl font-bold sm:text-3xl', notoSans.className)}
-        >
+        <h2 className={cn('text-xl font-bold sm:text-3xl', notoSans.className)}>
           {title}
         </h2>
       </div>

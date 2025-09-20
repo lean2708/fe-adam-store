@@ -28,7 +28,7 @@ export default function Gallery({ product }: { product: TProduct }) {
   } = useGallery(images);
 
   return (
-    <div className='flex gap-4'>
+    <div className='flex flex-col-reverse sm:flex-row gap-4'>
       {/* Thumbnail Images */}
       <GalleryThumbnails
         images={images}
@@ -39,11 +39,11 @@ export default function Gallery({ product }: { product: TProduct }) {
 
       {/* Main Image Carousel */}
       <div
-        className='flex-1'
+        className='flex-1 w-full sm:w-auto'
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <Carousel setApi={setApi} className='w-full h-full'>
+        <Carousel setApi={setApi} className='w-full h-fit'>
           <CarouselContent>
             {images.map((image, index) => (
               <CarouselItem key={index}>
@@ -65,8 +65,6 @@ export default function Gallery({ product }: { product: TProduct }) {
 
                     {!imagesLoaded[index] && <CategorySkeleton />}
                   </AspectRatio>
-
-                  {/* Loading overlay */}
                 </div>
               </CarouselItem>
             ))}
@@ -91,9 +89,9 @@ export default function Gallery({ product }: { product: TProduct }) {
           </div>
 
           {/* Auto-play indicator */}
-          {isAutoPlaying && (
+          {/* {isAutoPlaying && (
             <div className='absolute top-4 right-4 w-2 h-2 bg-green-500 rounded-full animate-pulse' />
-          )}
+          )} */}
         </Carousel>
       </div>
     </div>

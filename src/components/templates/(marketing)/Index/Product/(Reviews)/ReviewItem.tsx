@@ -11,8 +11,8 @@ interface ReviewItemProps {
 
 export default function ReviewItem({ review, onImageClick }: ReviewItemProps) {
   return (
-    <Card className='border-border'>
-      <CardContent className='p-6'>
+    <Card className=''>
+      <CardContent className='pt-6 pb-4'>
         <div className='flex items-start gap-4'>
           <div className='flex-1'>
             <div className='flex justify-between gap-2 mb-4'>

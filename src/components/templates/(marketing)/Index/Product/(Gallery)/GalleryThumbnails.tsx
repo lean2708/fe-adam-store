@@ -24,12 +24,12 @@ export default function GalleryThumbnails({
   }
 
   return (
-    <div className='flex flex-col gap-4 min-w-[80px]'>
+    <div className='flex flex-row sm:flex-col gap-4 min-w-[80px]'>
       {images.map((image, index) => (
         <button
           key={index}
           onClick={() => onSelect(index)}
-          className={`w-20 h-20 bg-muted-foreground rounded overflow-hidden border-2 relative shadow-md hover:shadow-lg ${
+          className={`w-14 h-14 sm:w-20 sm:h-20 bg-muted-foreground rounded overflow-hidden border-2 relative shadow-md hover:shadow-lg ${
             current === index + 1
               ? 'border-[#0e3bac] shadow-lg'
               : 'border-transparent'

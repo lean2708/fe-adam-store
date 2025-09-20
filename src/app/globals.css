@@ -287,7 +287,7 @@ body {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
-
+/* 
 .peer,
 .peer:active {
   background-position: 0 24px;
@@ -330,7 +330,7 @@ body {
 .peer:checked ~ .peer,
 .peer:checked ~ .peer:active {
   background-position: 0 -24px;
-}
+} */
 
 .rating {
   display: inline-block;

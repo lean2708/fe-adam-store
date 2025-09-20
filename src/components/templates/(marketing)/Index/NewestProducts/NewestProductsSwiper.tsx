@@ -1,86 +1,100 @@
-"use client";
+'use client';
 
 import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/components/ui/carousel";
-import { TProduct } from "@/types";
-import ProductCardIndex from "@/components/modules/ProductCardIndex";
-import { getAllProductsAction } from "@/actions/productActions";
-import { ProductCardWithColorsSkeleton } from "@/components/ui/skeleton";
-import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
+import { TProduct } from '@/types';
+import ProductCardIndex from '@/components/modules/ProductCardIndex';
+import { getAllProductsAction } from '@/actions/productActions';
+import { ProductCardWithColorsSkeleton } from '@/components/ui/skeleton';
+import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function NewestProductsSwiper() {
-    const [products, setProducts] = useState<TProduct[]>([]);
-    const [loading, setLoading] = useState(true);
-    const t = useTranslations("Marketing");
+  const [products, setProducts] = useState<TProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  const t = useTranslations('Marketing');
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                setLoading(true);
-                // Fetch newest products (first 10 items, sorted by creation date)
-                const response = await getAllProductsAction(0, 10, ["createdAt,desc"]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        // Fetch newest products (first 10 items, sorted by creation date)
+        const response = await getAllProductsAction(0, 10, ['createdAt,desc']);
 
-                if (response.status === 200 && response.products) {
-                    setProducts(response.products);
-                }
-            } catch (error) {
-                console.error("Failed to fetch products:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+        if (response.status === 200 && response.products) {
+          setProducts(response.products);
+        }
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        fetchProducts();
-    }, []);
+    fetchProducts();
+  }, []);
 
-    // Show loading state
-    if (loading) {
-        return (
-            <div className="w-full">
-                <Carousel className="w-full">
-                    <CarouselContent>
-                        {[...Array(5)].map((_, index) => (
-                            <CarouselItem key={index} className="basis-1/2 md:basis-1/3 lg:basis-1/5">
-                                <ProductCardWithColorsSkeleton />
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext />
-                </Carousel>
-            </div>
-        );
-    }
-
-    // Show empty state if no products
-    if (!products.length) {
-        return (
-            <div className="w-full text-center py-8">
-                <p className="text-gray-500">{t("newestProducts.noProducts")}</p>
-            </div>
-        );
-    }
-
+  // Show loading state
+  if (loading) {
     return (
-        <Carousel className="w-full">
-            <CarouselContent>
-                {products.map((product) => (
-                    <CarouselItem key={product.id} className="basis-1/2 md:basis-1/3 lg:basis-1/5">
-                        <ProductCardIndex
-                            product={product}
-                            badgeText={t("newestProducts.badgeText")}
-                        />
-                    </CarouselItem>
-                ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
+      <div className='w-full relative'>
+        <Carousel className='w-full'>
+          <CarouselContent>
+            {[...Array(5)].map((_, index) => (
+              <CarouselItem
+                key={index}
+                className='basis-1/2 md:basis-1/3 lg:basis-1/5'
+              >
+                <ProductCardWithColorsSkeleton />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className='absolute right-10 top-1/2 -translate-y-1/2 z-10'>
+            <CarouselNext className='opacity-80 hover:scale-125 hover:opacity-100' />{' '}
+          </div>
+          <div className='absolute left-10 top-1/2 -translate-y-1/2 z-10'>
+            <CarouselPrevious className='opacity-80 hover:scale-125 hover:opacity-100' />{' '}
+          </div>
         </Carousel>
+      </div>
     );
+  }
+
+  // Show empty state if no products
+  if (!products.length) {
+    return (
+      <div className='w-full text-center py-8'>
+        <p className='text-gray-500'>{t('newestProducts.noProducts')}</p>
+      </div>
+    );
+  }
+
+  return (
+    <Carousel className='w-full relative'>
+      <CarouselContent>
+        {products.map((product) => (
+          <CarouselItem
+            key={product.id}
+            className='basis-1/2 md:basis-1/3 lg:basis-1/5'
+          >
+            <ProductCardIndex
+              product={product}
+              badgeText={t('newestProducts.badgeText')}
+            />
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <div className='absolute right-10 top-1/2 -translate-y-1/2 z-10'>
+        <CarouselNext className='opacity-80 hover:scale-125 hover:opacity-100' />{' '}
+      </div>
+      <div className='absolute left-10 top-1/2 -translate-y-1/2 z-10'>
+        <CarouselPrevious className='opacity-80 hover:scale-125 hover:opacity-100' />{' '}
+      </div>
+    </Carousel>
+  );
 }
