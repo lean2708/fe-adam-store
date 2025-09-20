@@ -56,7 +56,7 @@ export function CartItemsList() {
       {cartItems?.length === 0 && status === 'success' ? (
         <EmptyCart className=' order-2' />
       ) : (
-        <div className='lg:col-span-2 mb-24'>
+        <div className='lg:col-span-2 sm:mb-24 mb-44'>
           <div className='flex items-center gap-2 mb-2'>
             <Checkbox
               id='select-all'

@@ -7,10 +7,24 @@ import { TBranch } from '@/types';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { usePathname } from 'next/navigation';
+import useIsMobile from '@/hooks/useIsMobile';
+import { shouldHideByPathAndDevice } from '@/lib/utils';
 
 export default function Footer() {
   const t = useTranslations('Footer');
   const [branches, setBranches] = useState<TBranch[]>([]);
+  const pathname = usePathname();
+  const isMobile = useIsMobile();
+
+  const unAllowPaths = ['/login', '/register', '/cart', '/order', '/checkout']; // List of paths to be excluded from the footer
+
+  // Check if should hide footer
+  const shouldHideFooter = shouldHideByPathAndDevice(
+    pathname,
+    isMobile,
+    unAllowPaths
+  );
 
   useEffect(() => {
     const fetchBranches = async () => {
@@ -24,6 +38,9 @@ export default function Footer() {
     };
     fetchBranches();
   }, []);
+
+  if (shouldHideFooter) return null;
+
   return (
     <footer className='bg-black text-white py-16 px-10 min-h-[600px] lg:min-h-[700px]'>
       <div className='max-w-7xl mx-auto'>

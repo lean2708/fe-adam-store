@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useCallback, useEffect, lazy, Suspense } from 'react';
-import { ShoppingBag, User, Menu } from 'lucide-react';
+import { useState, useCallback, useEffect, Suspense } from 'react';
+import { ShoppingBag, User, Menu, ArrowLeft } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import ThemeToggle from '@/components/modules/ThemeToggle';
@@ -16,7 +16,10 @@ import {
   UserModalSkeleton,
 } from '@/components/ui/skeleton';
 import useIsMobile from '@/hooks/useIsMobile';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { cn, shouldHideByPathAndDevice } from '@/lib/utils';
+import { manrope } from '@/config/fonts';
 
 // *Dynamic modals
 const UserModal = dynamic(() => import('./modal/UserModal'), {
@@ -33,8 +36,19 @@ const MobileSidebar = dynamic(() => import('./modal/MobileSidebar'), {
 
 export default function Navbar() {
   const { user, isAuthenticated } = useAuth();
+  const t = useTranslations();
   const isMobile = useIsMobile();
   const router = useRouter();
+  const pathname = usePathname();
+
+  const unAllowPaths = ['/cart'];
+
+  // Check if should hide cart navba
+  const shouldHideCartNavbar = shouldHideByPathAndDevice(
+    pathname,
+    isMobile,
+    unAllowPaths
+  );
 
   const cartItems = useCartStore((state) => state.cartItems);
   const clearCart = useCartStore((state) => state.clearCart);
@@ -62,6 +76,28 @@ export default function Navbar() {
       clearCart();
     }
   }, [isAuthenticated, clearCart]);
+
+  if (isMobile && shouldHideCartNavbar) {
+    // Mobile Header với comeback button
+    return (
+      <header className='border-b adam-store-border adam-store-bg relative h-16 flex items-center'>
+        <Button
+          variant='ghost'
+          aria-label='Go back'
+          size='sm'
+          onClick={() => router.back()}
+          className='mx-2'
+        >
+          <ArrowLeft className='size-5' />
+        </Button>
+        <div className='flex-1 text-start'>
+          <span className={cn('font-bold text-lg', manrope.className)}>
+            {t('Header.cart.title')} ({cartItems.length})
+          </span>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header className='border-b adam-store-border adam-store-bg relative h-16 flex items-center'>

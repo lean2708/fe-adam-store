@@ -6,7 +6,7 @@ const Total = ({ total }: { total: number }) => {
   const locale = useLocale();
 
   return (
-    <div className='flex justify-between items-center border-border border-b-2 font-semibold text-lg my-4 pb-4'>
+    <div className='flex justify-between items-center font-semibold text-lg my-4 '>
       <span className='text-primary font-medium text-sm'>
         {t('cart.checkOut.total')}
       </span>

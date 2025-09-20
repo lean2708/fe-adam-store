@@ -9,13 +9,15 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useChatWidgetStore } from '@/stores/chatWidgetStore';
 import { useCustomerChat } from '@/hooks/useCustomerChat';
 import { useAuth } from '@/hooks/useAuth';
-import { cn } from '@/lib/utils';
+import { cn, shouldHideByPathAndDevice } from '@/lib/utils';
 import type { ChatMessageResponse } from '@/api-client/models';
 import { ChatMessageContent } from '../templates/admin/chat/ChatMessageContent';
 import { MultiImageUpload } from './MultiImageUpload';
 import { uploadImagesAction } from '@/actions/fileActions';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import useIsMobile from '@/hooks/useIsMobile';
+import { usePathname } from 'next/navigation';
 
 // Memoized ChatMessage component
 const ChatMessage = ({
@@ -139,6 +141,18 @@ const MessagesList = ({
 
 export function CustomerChatWidget() {
   const t = useTranslations();
+  const isMobile = useIsMobile();
+
+  const pathname = usePathname();
+
+  const unAllowPaths = ['/cart'];
+
+  // Check if should hide cart navba
+  const shouldHideBubbleChat = shouldHideByPathAndDevice(
+    pathname,
+    isMobile,
+    unAllowPaths
+  );
   const { isAuthenticated } = useAuth();
   const { isOpen, isMinimized, minimizeWidget, resetUnreadCount } =
     useChatWidgetStore();
@@ -275,6 +289,8 @@ export function CustomerChatWidget() {
 
   // Early returns
   if (!isAuthenticated) return null;
+
+  if (shouldHideBubbleChat) return null;
 
   if (!isMinimized) {
     return (
@@ -422,16 +438,18 @@ export function CustomerChatWidget() {
           border border-gray-500/20
           backdrop-blur-sm
           flex items-center gap-3
-          min-w-[140px] justify-center
+          max-w-[140px] justify-center
           active:scale-95 active:shadow-lg
           before:absolute before:inset-0 before:rounded-full 
           before:bg-white/10 before:opacity-0 before:transition-opacity 
           hover:before:opacity-100'
     >
       <MessageCircle className='h-6 w-6 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110' />
-      <span className='font-medium text-sm tracking-wide'>
-        {t('chatwithus')}
-      </span>
+      {!isMobile && (
+        <span className='font-medium text-sm tracking-wide'>
+          {t('chatwithus')}
+        </span>
+      )}
 
       <div className='absolute inset-0 rounded-full border-2 border-gray-400/50 animate-ping opacity-75'></div>
       <div className='absolute inset-0 rounded-full border border-gray-300/30 animate-pulse'></div>

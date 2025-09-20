@@ -353,7 +353,12 @@
       "color": "Color",
       "size": "Size",
       "remove": "Remove",
-      "deleteAll": "Delete All"
+      "deleteAll": "Delete All",
+      "confirm_to_delete": "Are you sure you want to delete this item from your cart ?",
+      "action": {
+        "confirm": "Continue",
+        "cancel": "Cancel"
+      }
     },
     "user": {
       "welcome": "Welcome",

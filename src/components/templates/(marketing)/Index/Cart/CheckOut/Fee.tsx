@@ -14,7 +14,7 @@ function Fee({
   const locale = useLocale();
 
   return (
-    <div className='space-y-3 border-border border-b-2 pb-4'>
+    <div className='space-y-3'>
       <div className='flex justify-between text-sm text-primary'>
         <span className=''>{t('cart.checkOut.productFeeTotal')}</span>
         <span className='font-medium'>{formatCurrency(subtotal, locale)}</span>

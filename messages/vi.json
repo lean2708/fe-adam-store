@@ -262,7 +262,7 @@
       },
       "product_not_found": "Không tìm thấy sản phẩm."
     },
-    "noProductsFound":"Không tìm thấy sản phẩm nào"
+    "noProductsFound": "Không tìm thấy sản phẩm nào"
   },
   "Order": {
     "title": "Xác nhận đơn hàng",
@@ -401,7 +401,12 @@
       "color": "Màu sắc",
       "size": "Kích thước",
       "remove": "Xóa",
-      "deleteAll": "Xóa tất cả"
+      "deleteAll": "Xóa tất cả",
+      "confirm_to_delete": "Bạn muốn xóa sản phẩm khỏi giỏ hàng ?",
+      "action": {
+        "confirm": "Tiếp tục",
+        "cancel": "Hủy"
+      }
     },
     "user": {
       "welcome": "Chào mừng",
