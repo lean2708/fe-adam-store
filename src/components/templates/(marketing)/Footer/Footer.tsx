@@ -16,17 +16,21 @@ export default function Footer() {
   const [branches, setBranches] = useState<TBranch[]>([]);
   const pathname = usePathname();
   const isMobile = useIsMobile();
+  const [isMounted, setIsMounted] = useState(false);
 
   const unAllowPaths = ['/login', '/register', '/cart', '/order', '/checkout']; // List of paths to be excluded from the footer
 
-  // Check if should hide footer
-  const shouldHideFooter = shouldHideByPathAndDevice(
-    pathname,
-    isMobile,
-    unAllowPaths
-  );
+  // Check if should hide footer - only after component mounts
+  const shouldHideFooter =
+    isMounted && shouldHideByPathAndDevice(pathname, isMobile, unAllowPaths);
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (shouldHideFooter) return; // Don't fetch if footer is hidden
+
     const fetchBranches = async () => {
       try {
         const branchesResult = await getActiveBranchesAction();
@@ -37,7 +41,12 @@ export default function Footer() {
       }
     };
     fetchBranches();
-  }, []);
+  }, [shouldHideFooter]);
+
+  // Don't render anything until we know the client state
+  if (!isMounted) {
+    return null;
+  }
 
   if (shouldHideFooter) return null;
 

@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -151,9 +152,9 @@ export default function AddNewAddressModal({
           <DialogTitle className='text-center text-lg font-medium text-primary'>
             Thêm địa chỉ mới
           </DialogTitle>
-          <p className='text-center text-sm text-muted-foreground mt-1'>
+          <DialogDescription className='text-center text-sm text-muted-foreground mt-1'>
             Cập nhật địa chỉ mới
-          </p>
+          </DialogDescription>
         </DialogHeader>
 
         <form

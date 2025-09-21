@@ -15,11 +15,11 @@ import {
   CartModalWithoutLoginSkeleton,
   UserModalSkeleton,
 } from '@/components/ui/skeleton';
-import useIsMobile from '@/hooks/useIsMobile';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { cn, shouldHideByPathAndDevice } from '@/lib/utils';
 import { manrope } from '@/config/fonts';
+import useIsMobile from '@/hooks/useIsMobile';
 
 // *Dynamic modals
 const UserModal = dynamic(() => import('./modal/UserModal'), {
@@ -37,18 +37,18 @@ const MobileSidebar = dynamic(() => import('./modal/MobileSidebar'), {
 export default function Navbar() {
   const { user, isAuthenticated } = useAuth();
   const t = useTranslations();
-  const isMobile = useIsMobile();
   const router = useRouter();
   const pathname = usePathname();
+  const isMobile = useIsMobile();
+  const [isMounted, setIsMounted] = useState(false);
 
-  const unAllowPaths = ['/cart'];
+  const unAllowPaths = ['/cart', '/order'];
 
-  // Check if should hide cart navba
-  const shouldHideCartNavbar = shouldHideByPathAndDevice(
-    pathname,
-    isMobile,
-    unAllowPaths
-  );
+  const pathWithoutLocale = pathname.replace(/^\/[a-zA-Z-]+/, '');
+
+  // Check if should hide navbar - only after component mounts
+  const shouldHideNavbar =
+    isMounted && shouldHideByPathAndDevice(pathname, isMobile, unAllowPaths);
 
   const cartItems = useCartStore((state) => state.cartItems);
   const clearCart = useCartStore((state) => state.clearCart);
@@ -77,22 +77,39 @@ export default function Navbar() {
     }
   }, [isAuthenticated, clearCart]);
 
-  if (isMobile && shouldHideCartNavbar) {
-    // Mobile Header với comeback button
+  // Set isMounted to true after component mounts
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  let title = '';
+  if (pathWithoutLocale === '/cart') {
+    title = t('Header.cart.title') + ` (${cartItems.length})`;
+  } else if (pathWithoutLocale === '/order') {
+    title = t('Order.title');
+  }
+
+  // Don't render anything until we know the client state
+  if (!isMounted) {
+    return (
+      <header className='border-b adam-store-border adam-store-bg relative h-16 flex items-center' />
+    );
+  }
+
+  if (isMobile && shouldHideNavbar) {
     return (
       <header className='border-b adam-store-border adam-store-bg relative h-16 flex items-center'>
-        <Button
-          variant='ghost'
+        <button
+          data-slot='button'
+          className='inline-flex items-center justify-center whitespace-nowrap text-sm font-medium rounded-md mx-2 h-9 px-3 py-2 bg-transparent hover:bg-muted transition-colors'
           aria-label='Go back'
-          size='sm'
           onClick={() => router.back()}
-          className='mx-2'
         >
           <ArrowLeft className='size-5' />
-        </Button>
+        </button>
         <div className='flex-1 text-start'>
           <span className={cn('font-bold text-lg', manrope.className)}>
-            {t('Header.cart.title')} ({cartItems.length})
+            {title}
           </span>
         </div>
       </header>
@@ -101,67 +118,89 @@ export default function Navbar() {
 
   return (
     <header className='border-b adam-store-border adam-store-bg relative h-16 flex items-center'>
-      <>
-        {/* Mobile Menu Button */}
-        <div className='absolute left-5 top-0 h-16 flex items-center z-50 pl-2'>
-          <Button
-            variant='ghost'
-            aria-label='Mobile Menu'
-            size='sm'
-            onClick={() => setIsMobileMenuOpen(true)} // Chỉ mở, không toggle
+      {isMobile && shouldHideNavbar && (
+        <>
+          <button
+            data-slot='button'
+            className='inline-flex items-center justify-center whitespace-nowrap text-sm font-medium rounded-md mx-2 h-9 px-3 py-2 bg-transparent hover:bg-muted transition-colors'
+            aria-label='Go back'
+            onClick={() => router.back()}
           >
-            <Menu className='h-5 w-5' />
-          </Button>
-        </div>
-        {/* Centered Logo */}
-        <div className='hidden sm:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10'>
-          <Logo />
-        </div>
+            <ArrowLeft className='size-5' />
+          </button>
+          <div className='flex-1 text-start'>
+            <span className={cn('font-bold text-lg', manrope.className)}>
+              {title}
+            </span>
+          </div>
+        </>
+      )}
 
-        {/* Right Side Icons */}
-        {/* Search Component */}
-        <SearchComponent onSearchExpand={handleSearchExpand} />
-        <div className='absolute right-5 top-0 h-16 flex items-center z-20'>
-          <div className='flex items-center space-x-4'>
-            {/* User and Cart Icons */}
-            <div className='flex items-center space-x-2'>
+      {!(isMobile && shouldHideNavbar) && (
+        <>
+          <div>
+            {/* Mobile Menu Button */}
+            <div className='absolute left-5 top-0 h-16 flex items-center z-50 pl-2'>
               <Button
                 variant='ghost'
-                aria-label='User Menu'
+                aria-label='Mobile Menu'
                 size='sm'
-                onClick={() => setIsUserModalOpen(true)}
+                onClick={() => setIsMobileMenuOpen(true)} // Chỉ mở, không toggle
               >
-                <User className='h-5 w-5' />
+                <Menu className='h-5 w-5' />
               </Button>
-              <Button
-                variant='ghost'
-                aria-label='Cart'
-                size='sm'
-                onClick={() => {
-                  if (isMobile) {
-                    router.push('/cart');
-                  } else {
-                    setIsCartOpen(true);
-                  }
-                }}
-                className='relative'
-              >
-                <ShoppingBag className='h-5 w-5' />
-                {cartItems.length > 0 && isAuthenticated && (
-                  <span className='absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center'>
-                    {cartItems.length}
-                  </span>
-                )}
-              </Button>
-              <ThemeToggle />
+            </div>
+            {/* Centered Logo */}
+            <div className='hidden sm:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10'>
+              <Logo />
+            </div>
+
+            {/* Right Side Icons */}
+            {/* Search Component */}
+            <SearchComponent onSearchExpand={handleSearchExpand} />
+            <div className='absolute right-5 top-0 h-16 flex items-center z-20'>
+              <div className='flex items-center space-x-4'>
+                {/* User and Cart Icons */}
+                <div className='flex items-center space-x-2'>
+                  <Button
+                    variant='ghost'
+                    aria-label='User Menu'
+                    size='sm'
+                    onClick={() => setIsUserModalOpen(true)}
+                  >
+                    <User className='h-5 w-5' />
+                  </Button>
+                  <Button
+                    variant='ghost'
+                    aria-label='Cart'
+                    size='sm'
+                    onClick={() => {
+                      if (isMobile) {
+                        router.push('/cart');
+                      } else {
+                        setIsCartOpen(true);
+                      }
+                    }}
+                    className='relative'
+                  >
+                    <ShoppingBag className='h-5 w-5' />
+                    {cartItems.length > 0 && isAuthenticated && (
+                      <span className='absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center'>
+                        {cartItems.length}
+                      </span>
+                    )}
+                  </Button>
+                  <ThemeToggle />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </>
-      {/* Language Switcher  */}
-      <div className='absolute left-20 top-0 h-16 flex items-center z-10'>
-        <NavigationLocaleSwitcherPublic />
-      </div>
+          {/* Language Switcher  */}
+          <div className='absolute left-20 top-0 h-16 flex items-center z-10'>
+            <NavigationLocaleSwitcherPublic />
+          </div>
+        </>
+      )}
 
       {/* Sử dụng Suspense để bao bọc các modal được tải động */}
       <Suspense fallback={null}>

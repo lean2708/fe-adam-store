@@ -13,7 +13,7 @@ export default async function OrderLayout({
     <div className={cn('min-h-screen adam-store-bg', manrope.className)}>
       <Navbar />
 
-      <div>
+      <div className='mx-4'>
         <Suspense fallback={<Loading />}>{children}</Suspense>
       </div>
     </div>

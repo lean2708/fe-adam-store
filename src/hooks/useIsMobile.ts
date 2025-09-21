@@ -3,15 +3,18 @@ import { useEffect, useState } from 'react';
 const MOBILE_BREAKPOINT = 768;
 
 function useIsMobile(): boolean {
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== 'undefined'
-      ? window.innerWidth <= MOBILE_BREAKPOINT
-      : false
-  );
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // This code only runs on the client after component mounts
+    const checkIsMobile = () => window.innerWidth <= MOBILE_BREAKPOINT;
+
+    // Set initial value
+    setIsMobile(checkIsMobile());
+
+    // Add resize listener
     function handleResize() {
-      setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
+      setIsMobile(checkIsMobile());
     }
 
     window.addEventListener('resize', handleResize);
