@@ -63,6 +63,7 @@ export function ContentCategory() {
     };
     if (paramCate) getProductByIdCategory(paramCate);
   }, [paramCate, state.value, state.page]);
+
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setState((ps) => ({ ...ps, value: event.target.value, page: 0 }));
   };

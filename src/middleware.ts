@@ -49,9 +49,9 @@ export default async function middleware(req: NextRequest) {
 
   // Check if the normalized path is protected
   if (isProtectedRoute(normalizedPath)) {
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const hasAuthCookie = req.cookies.has('next-auth.session-token');
 
-    if (!token) {
+    if (!hasAuthCookie) {
       const locale = hasLocale ? maybeLocale : defaultLocale;
       url.pathname = `/${locale}/login`;
       return NextResponse.redirect(url);

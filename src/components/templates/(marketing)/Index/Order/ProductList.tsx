@@ -1,7 +1,7 @@
 'use client';
 
 import { ProductItem } from './ProductItem';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useCheckoutDatas } from '@/hooks/(order)/useCheckOutDatas';
@@ -30,6 +30,17 @@ export function ProductList({ className }: { className?: string }) {
       });
     }
   }, [isAuthenticated, user, isLoading, router]);
+
+  // useEffect(() => {
+  //   if (isEmpty && !hasRedirected.current) {
+  //     hasRedirected.current = true;
+  //     router.push('/');
+  //     toast.info('Your order has been cancelled !', {
+  //       description:
+  //         'Please try the transaction again, avoid reloading the page',
+  //     });
+  //   }
+  // }, [isEmpty, router]);
 
   return (
     <div className={className}>
