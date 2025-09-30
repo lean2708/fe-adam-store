@@ -9,7 +9,7 @@ import { Modal, ModalBody, ModalFooter } from '@/components/ui/modal';
 import { ProductCardSkeleton } from '@/components/ui/skeleton';
 import { searchProductsAction } from '@/actions/productActions';
 import { TProduct } from '@/types';
-import { useTranslations, useLocale } from 'next-intl';
+import { useLocale } from 'next-intl';
 import { formatCurrency } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 
@@ -27,7 +27,6 @@ export default function SearchModal({
   isSearchExpanded = false,
 }: SearchModalProps) {
   const router = useRouter();
-  const t = useTranslations('Marketing');
   const locale = useLocale();
   const [searchResults, setSearchResults] = useState<TProduct[]>([]);
   const [isSearching, setIsSearching] = useState(false);

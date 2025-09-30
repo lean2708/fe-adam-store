@@ -18,9 +18,9 @@ export default function ReviewModule(props: {
   returnRivew: () => void;
   orderItem: TOrderItem;
   onClose: () => void;
-  isReview?: boolean;
+  // isReview?: boolean;
 }) {
-  const { onClose, isReview, orderItem, visible, returnRivew } = props;
+  const { onClose, orderItem, visible, returnRivew } = props;
   const t = useTranslations('Profile.my_orders.review');
 
   const [state, setState] = useState<{
@@ -46,12 +46,14 @@ export default function ReviewModule(props: {
         setState((ps) => ({ ...ps, loading: true }));
         if (orderItem?.id) {
           const res = await getProductReviewsAction(orderItem.id);
+          console.log('res: ', res);
+
           if (res.status && res.reviews) {
             setState((ps) => ({
               ...ps,
               comment: res.reviews.comment || '',
               reviewId: res.reviews.id || 0,
-              rating: res.reviews.rating || 0,
+              rating: Math.round(res.reviews.rating || 0),
               isUpdate: true,
               listImg: Array.isArray(res.reviews.imageUrls)
                 ? res.reviews.imageUrls
@@ -65,8 +67,8 @@ export default function ReviewModule(props: {
         setState((ps) => ({ ...ps, loading: false }));
       }
     };
-    if (visible && isReview) getReviewById();
-  }, [orderItem?.id, visible, isReview]);
+    if (visible) getReviewById();
+  }, [orderItem?.id, visible]);
 
   const stopPropagation = (e: React.MouseEvent) => e.stopPropagation();
   if (!visible) return null;
@@ -160,14 +162,14 @@ export default function ReviewModule(props: {
 
   return (
     <div
-      className='fixed inset-0 z-50 flex items-center justify-center bg-black/40'
+      className='fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4'
       onClick={CloseMoule}
     >
       <Card
         className='relative w-full max-w-3xl bg-white dark:bg-gray-700 !p-6 rounded-lg shadow-lg'
         onClick={stopPropagation}
       >
-        <CardHeader className='font-bold text-2xl !p-0'>
+        <CardHeader className='font-bold text-lg md:text-xl lg:text-2xl !p-0'>
           {t('title')}
         </CardHeader>
         <div className='pt-4'>
@@ -181,12 +183,12 @@ export default function ReviewModule(props: {
               alt={String(orderItem?.id)}
             />
             <div className='ml-7 h-24 justify-between flex flex-col'>
-              <p className='text-xl font-bold'>
-                {orderItem.productVariant?.label}
+              <p className='text-sm sm:text-lg md:text-xl font-bold'>
+                {orderItem.Product?.title}
               </p>
               <span>
-                {t('product.color')} {orderItem?.productVariant?.color?.name},{' '}
-                {t('product.size')} {orderItem?.productVariant?.size?.name}
+                {t('product.color')} {orderItem?.color}, {t('product.size')}{' '}
+                {orderItem?.size}
               </span>
               <span>
                 {t('product.quantity')}: {orderItem?.quantity}
@@ -196,7 +198,7 @@ export default function ReviewModule(props: {
 
           <div className='flex mt-5 h-6'>
             <p className='h-full items-center'>{t('rating.quality_label')}</p>
-            <div className='rating ml-3 flex h-full'>
+            <div className='rating sm:ml-3 flex h-full'>
               <input
                 type='radio'
                 checked={state.rating === 5}
@@ -285,7 +287,7 @@ export default function ReviewModule(props: {
           />
 
           {/* Image previews */}
-          <div className='mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3\5 md:grid-cols-6 lg:grid-cols-7'>
+          <div className='mt-3 size-1/2 md:size-full grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-7'>
             {state.listImg.map((img, index) => (
               <div
                 key={index}

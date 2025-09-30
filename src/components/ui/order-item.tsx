@@ -26,13 +26,13 @@ export default function OrderItem(props: {
       <>
         <button
           onClick={() => onRetryPay()}
-          className='w-52 px-4 mr-4 py-2 rounded-md border border-[#888888] text-sm'
+          className='w-52 mr-4 px-6 md:px-4 py-4 md:py-2rounded-md border border-[#888888] text-sm'
         >
           {t('actions.retry_payment')}
         </button>
         <button
           onClick={() => openModule()}
-          className='w-52 px-4 mr-4 py-2 rounded-md border border-[#888888] text-sm'
+          className='w-52  mr-4  px-6 md:px-4 py-4 md:py-2 rounded-md border border-[#888888] text-sm'
         >
           {t('actions.change_address')}
         </button>
@@ -40,7 +40,7 @@ export default function OrderItem(props: {
           onClick={() => {
             setIsDeleted(true);
           }}
-          className='w-40 px-4 py-2 border-[#888888] border text-black rounded-md text-sm'
+          className='w-40  px-6 md:px-4 py-4 md:py-2 border-[#888888] border text-black rounded-md text-sm'
         >
           {t('actions.cancel_order')}
         </button>
@@ -48,12 +48,12 @@ export default function OrderItem(props: {
     ),
     PROCESSING: (
       <>
-        <button className='w-40 px-4 py-2 mr-4 rounded-md border border-[#C5C4C2] text-sm text-[#C5C4C2] bg-[#E5E4E1]'>
+        <button className='w-40  px-6 md:px-4 py-4 md:py-2 mr-4 rounded-md border border-[#C5C4C2] text-sm text-[#C5C4C2] bg-[#E5E4E1]'>
           {t('actions.wait')}
         </button>
         <button
           onClick={() => openModule()}
-          className='w-52 px-4 mr-4 py-2 rounded-md border border-[#888888] text-sm'
+          className='w-52 mr-4  px-6 md:px-4 py-4 md:py-2rounded-md border border-[#888888] text-sm'
         >
           {t('actions.change_address')}
         </button>
@@ -61,7 +61,7 @@ export default function OrderItem(props: {
           onClick={() => {
             setIsDeleted(true);
           }}
-          className='w-40 px-4 py-2 border-[#888888] border text-black rounded-md text-sm'
+          className='w-40  px-6 md:px-4 py-4 md:py-2 border-[#888888] border text-black rounded-md text-sm'
         >
           {t('actions.cancel_order')}
         </button>
@@ -76,17 +76,17 @@ export default function OrderItem(props: {
     ),
     DELIVERED: (
       <>
-        <button className='w-40 px-4 py-2 border border-[#888888] rounded-md text-sm mr-4'>
+        <button className='w-40 px-6 md:px-4 py-4 md:py-2 border border-[#888888] rounded-md text-sm mr-4'>
           {t('actions.contact_us')}
         </button>
-        <button className='w-28 px-4 py-2 bg-black text-white rounded-md text-sm'>
+        <button className='w-28 px-6 md:px-4 py-4 md:py-2 bg-black text-white rounded-md text-sm'>
           {t('actions.buy_again')}
         </button>
       </>
     ),
     CANCELLED: (
       <>
-        <button className='w-28 px-4 py-2 bg-black text-white rounded-md text-sm'>
+        <button className='w-28 px-6 md:px-4 py-4 md:py-2 bg-black text-white rounded-md text-sm'>
           {t('actions.buy_again')}
         </button>
       </>
@@ -178,7 +178,9 @@ function ItemProductOrder(props: { item: TOrderItem; active: TabStatus }) {
           alt={'' + item.image?.id}
         />
         <div className='h-full flex flex-col justify-between ml-3'>
-          <h4 className='font-bold'>{item.Product?.title}</h4>
+          <h4 className='font-bold text-sm md:text-base'>
+            {item.Product?.title}
+          </h4>
           <p className='text-[#888888]'>
             {t('order_details.product_list.color')}: {item.color}
           </p>

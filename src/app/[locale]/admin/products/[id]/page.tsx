@@ -17,7 +17,7 @@ import {
 import { useTranslations, useLocale } from 'next-intl';
 import { useQueryClient } from '@tanstack/react-query';
 import { formatCurrency } from '@/lib/utils';
-import { ArrowLeft, Plus, RefreshCw } from 'lucide-react';
+import { ArrowLeft, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
 import { fetchProductByIdAction } from '@/actions/productActions';
 import { transformProductResponseToTProduct } from '@/lib/data/transform/product';
@@ -174,7 +174,7 @@ export default function ProductVariantsPage() {
 
         {/* Product Information Section */}
         <div className='bg-white rounded-lg shadow-sm border dark:bg-gray-900'>
-          <div className='p-6'>
+          <div className='p-4 md:p-6'>
             <div className='flex items-center justify-between mb-6'>
               <h2 className='text-lg font-semibold text-gray-900 dark:text-white'>
                 {t('productDetails') || 'Product Details'}

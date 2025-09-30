@@ -5,16 +5,19 @@ import { Carousel, CarouselItem } from '@/components/ui/carousel';
 import { transformProductResponseToTProduct } from '@/lib/data/transform/product';
 import { TProduct } from '@/types';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Pagination from './Pagination';
 import { Skeleton } from '@/components/ui/skeleton';
+import useIsMobile from '@/hooks/useIsMobile';
+import { cn } from '@/lib/utils';
 
 export function ContentCategory() {
   const searchParams = useSearchParams();
   const paramCate = searchParams.get('category');
   const t = useTranslations('Marketing');
+  const isMobile = useIsMobile();
+
   const [state, setState] = useState<{
     loading: boolean;
     value: string;
@@ -30,9 +33,11 @@ export function ContentCategory() {
     totalProducts: 0,
     listProducts: [],
   });
+
   useEffect(() => {
     setState((ps) => ({ ...ps, page: 0 }));
   }, [paramCate]);
+
   useEffect(() => {
     const getProductByIdCategory = async (id: string) => {
       try {
@@ -59,18 +64,33 @@ export function ContentCategory() {
     };
     if (paramCate) getProductByIdCategory(paramCate);
   }, [paramCate, state.value, state.page]);
+
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setState((ps) => ({ ...ps, value: event.target.value, page: 0 }));
   };
+
   return (
-    <>
-      <div className='w-full h-20 flex items-center justify-end'>
-        <p>
-          <label htmlFor='sort' className='text-muted-foreground'>
+    <div className='w-full'>
+      {/* Mobile: SideCategory sẽ được render ở đây */}
+      <div className='md:hidden w-full'>
+        {/* SideCategory component sẽ tự động render mobile view */}
+      </div>
+
+      <div
+        className={cn(
+          'w-full  items-center justify-end gap-2',
+          isMobile ? 'h-16 hidden' : 'h-20 flex'
+        )}
+      >
+        <p className='flex items-center gap-2'>
+          <label
+            htmlFor='sort'
+            className='text-muted-foreground text-sm md:text-base'
+          >
             Sắp xếp theo
           </label>
           <select
-            className='outline-none'
+            className='outline-none border rounded px-2 py-1 text-sm md:text-base'
             value={state.value}
             onChange={handleSortChange}
             name='sort'
@@ -81,14 +101,15 @@ export function ContentCategory() {
           </select>
         </p>
       </div>
+
       <div>
-        <Carousel className='w-full'>
-          <div className='flex flex-wrap'>
+        <div className='w-full'>
+          <div className='flex flex-wrap -mx-1'>
             {state.loading &&
               [1, 2, 3, 4].map((product) => (
-                <CarouselItem
+                <div
                   key={product}
-                  className='basis-1/2 md:basis-1/3 lg:basis-1/4 mb-2'
+                  className='basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/4 mb-4 px-1'
                 >
                   <Skeleton className='aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden mb-3'></Skeleton>
                   <div className='flex items-center gap-2 mb-3'>
@@ -106,29 +127,31 @@ export function ContentCategory() {
                   </div>
                   <Skeleton className='h-6 w-full mb-3'></Skeleton>
                   <Skeleton className='h-6 w-[45%]'></Skeleton>
-                </CarouselItem>
+                </div>
               ))}
             {!state.loading &&
               state.listProducts.map((product) => (
-                <CarouselItem
+                <div
                   key={product.id}
-                  className='basis-1/2 md:basis-1/3 lg:basis-1/4 mb-2'
+                  className='basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/4 mb-4 px-1'
                 >
                   <ProductCardIndex
                     product={product}
                     badgeText={t('bestSellers.badgeText')}
+                    className='px-1'
                   />
-                </CarouselItem>
+                </div>
               ))}
           </div>
-        </Carousel>
+        </div>
       </div>
+
       <Pagination
         totalPage={state.maxPage}
         page={state.page}
         totalProduct={state.totalProducts}
         onChangePage={(val) => setState((ps) => ({ ...ps, page: val - 1 }))}
       />
-    </>
+    </div>
   );
 }

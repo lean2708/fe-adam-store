@@ -88,7 +88,7 @@ export default function Infomation() {
   };
   if (!infoUser)
     return (
-      <div className='adam-store-bg mt-8 w-full px-10 pb-8 border-2 border-black rounded-lg shadow'>
+      <div className='adam-store-bg mt-8 w-full px-10 pb-8 md:border-2 border-black rounded-lg shadow'>
         <div className='w-full flex justify-center pt-10'>
           <div className='h-37 relative w-37 rounded-full overflow-hidden group'>
             <Skeleton className='h-34 w-34 rounded-full' />
@@ -114,7 +114,7 @@ export default function Infomation() {
       </div>
     );
   return (
-    <div className=' adam-store-bg mt-8 w-full px-10 pb-8 border-2 border-primary rounded-lg shadow'>
+    <div className=' adam-store-bg mt-8 w-full md:px-10 pb-8 md:border-2 border-primary md:rounded-lg md:shadow'>
       <div className='w-full flex justify-center pt-10'>
         <div
           className={cn(
@@ -265,7 +265,7 @@ export default function Infomation() {
           />
         </p>
       </div>
-      <div className='mt-6 w-full text-center'>
+      <div className='mt-10 md:mt-6 w-full text-center'>
         <Button
           className=' py-6 px-8 font-medium rounded-xl'
           onClick={saveInfoUser}

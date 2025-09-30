@@ -15,7 +15,7 @@ import {
   CartModalWithoutLoginSkeleton,
   UserModalSkeleton,
 } from '@/components/ui/skeleton';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { cn, shouldHideByPathAndDevice } from '@/lib/utils';
 import { manrope } from '@/config/fonts';
@@ -39,10 +39,11 @@ export default function Navbar() {
   const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const isMobile = useIsMobile();
   const [isMounted, setIsMounted] = useState(false);
 
-  const unAllowPaths = ['/cart', '/order'];
+  const unAllowPaths = ['/cart', '/order', '/address'];
 
   const pathWithoutLocale = pathname.replace(/^\/[a-zA-Z-]+/, '');
 
@@ -87,6 +88,12 @@ export default function Navbar() {
     title = t('Header.cart.title') + ` (${cartItems.length})`;
   } else if (pathWithoutLocale === '/order') {
     title = t('Order.title');
+  } else if (pathWithoutLocale === '/address') {
+    if (searchParams.has('idAddress')) {
+      title = t('Profile.address.edit_address');
+    } else {
+      title = t('Profile.address.add_address');
+    }
   }
 
   // Don't render anything until we know the client state

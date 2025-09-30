@@ -4,13 +4,9 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Pagination from '../detail/Pagination';
 import { TProduct } from '@/types';
-import { Carousel, CarouselItem } from '@/components/ui/carousel';
 import ProductCardIndex from '@/components/modules/ProductCardIndex';
 import { useTranslations } from 'next-intl';
-import {
-  ProductCardWithColorsSkeleton,
-  Skeleton,
-} from '@/components/ui/skeleton';
+import { ProductCardWithColorsSkeleton } from '@/components/ui/skeleton';
 const priceFilters = [
   [`minPrice<500000`],
   [`minPrice>500000`, `minPrice<1000000`],
@@ -159,7 +155,7 @@ export default function ContentSearch({
 
   return (
     <>
-      <Carousel className='w-full'>
+      <div className='w-full '>
         <div className='flex flex-wrap min-h-[400px]'>
           {state.loading ? (
             <LoadingSkeleton />
@@ -179,7 +175,7 @@ export default function ContentSearch({
             </div>
           ) : (
             state.listProducts.map((product, index) => (
-              <CarouselItem
+              <div
                 key={product.id}
                 className='basis-1/2 md:basis-1/3 lg:basis-1/5 mb-2'
                 style={{
@@ -190,13 +186,14 @@ export default function ContentSearch({
                   <ProductCardIndex
                     product={product}
                     badgeText={t('bestSellers.badgeText')}
+                    className=' px-2'
                   />
                 </div>
-              </CarouselItem>
+              </div>
             ))
           )}
         </div>
-      </Carousel>
+      </div>
 
       {/* Only show pagination if there are products and more than 1 page */}
       {state.listProducts.length > 0 && state.totalPage > 1 && (

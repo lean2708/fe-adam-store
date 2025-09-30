@@ -66,7 +66,7 @@ async function getSearchData(searchParams: {
 // Loading component chỉ cho ContentSearch area
 function ContentLoading() {
   return (
-    <div className='w-[85%] p-4'>
+    <div className='md:w-[85%] p-4'>
       <div className='animate-pulse space-y-4'>
         <div className='flex flex-wrap'>
           {Array.from({ length: 15 }, (_, i) => (
@@ -93,14 +93,14 @@ async function ContentSearchWrapper({
 
   if (!searchData.success) {
     return (
-      <div className='w-[85%] flex items-center justify-center h-64'>
+      <div className='md:w-[85%] flex items-center justify-center h-64'>
         <p className='text-red-500'>Có lỗi xảy ra khi tải dữ liệu</p>
       </div>
     );
   }
 
   return (
-    <div className='w-[85%]'>
+    <div className='md:w-[85%]  -mx-2 md:-mx-0'>
       <ContentSearch
         initialProducts={searchData.products}
         totalProducts={searchData.totalProducts}
@@ -140,9 +140,9 @@ export default async function SearchPage({
   });
 
   return (
-    <div className='adam-store-bg-light'>
+    <div className='adam-store-bg-light px-4'>
       <HeaderSearch />
-      <div className='flex'>
+      <div className='md:flex'>
         {/* SideSearch không bị re-mount, luôn hiển thị */}
         <StaticSideSearch searchParams={resolvedSearchParams} />
 

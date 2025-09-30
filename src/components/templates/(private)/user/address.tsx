@@ -60,11 +60,11 @@ export default function Address() {
   if (!listAddress)
     return (
       <div className='mt-8 w-full h-90'>
-        <div className='flex w-full justify-between'>
+        <div className='flex w-full justify-center md:justify-between'>
           <h5 className='font-bold text-3xl'>{t('title')}</h5>
           <Button
             onClick={() => router.push('/address')}
-            className='py-6 px-8 font-medium rounded-xl'
+            className='hidden md:flex py-6 px-8 font-medium rounded-xl'
           >
             {t('action.add')}
           </Button>
@@ -73,16 +73,24 @@ export default function Address() {
           <Skeleton className='w-full  mt-3 py-9 px-6 flex items-center justify-between shadow' />
           <Skeleton className='w-full  mt-3 py-9 px-6 flex items-center justify-between shadow' />
         </ul>
+        <div className='flex justify-center'>
+          <Button
+            onClick={() => router.push('/address')}
+            className='flex md:hidden mt-10 py-6 px-8 font-medium rounded-xl'
+          >
+            {t('action.add')}
+          </Button>
+        </div>
       </div>
     );
   if (listAddress.length === 0)
     return (
       <div className='mt-8 w-full h-90'>
-        <div className='flex w-full justify-between'>
+        <div className='flex w-full justify-center md:justify-between'>
           <h5 className='font-bold text-3xl'>{t('title')}</h5>
           <Button
             onClick={() => router.push('/address')}
-            className='py-6 px-8 font-medium rounded-xl'
+            className='hidden md:flex py-6 px-8 font-medium rounded-xl'
           >
             {t('action.add')}
           </Button>
@@ -92,15 +100,23 @@ export default function Address() {
             <p>{t('no_address')}</p>
           </div>
         </ul>
+        <div className='flex justify-center'>
+          <Button
+            onClick={() => router.push('/address')}
+            className='flex md:hidden mt-10 py-6 px-8 font-medium rounded-xl'
+          >
+            {t('action.add')}
+          </Button>
+        </div>
       </div>
     );
   return (
-    <div className='mt-8 w-full h-90'>
-      <div className='flex w-full justify-between'>
+    <div className='mt-8 w-full h-full md:h-90 '>
+      <div className='flex w-full justify-center md:justify-between'>
         <h5 className='font-bold text-3xl'>{t('title')}</h5>
         <Button
           onClick={() => router.push('/address')}
-          className='py-6 px-8 font-medium rounded-xl'
+          className='hidden md:flex py-6 px-8 font-medium rounded-xl'
         >
           {t('action.add')}
         </Button>
@@ -109,7 +125,7 @@ export default function Address() {
         {listAddress &&
           listAddress.map((address, index) => (
             <li
-              className='adam-store-bg max-w-full rounded-md m-3 py-9 px-6 flex items-center justify-between shadow transform transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-lg hover:bg-accent/80 animate-fade-in '
+              className='adam-store-bg max-w-full rounded-md m-3 py-9 px-6 flex flex-col md:flex-row gap-2 items-start md:items-center justify-between shadow transform transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-lg hover:bg-accent/80 animate-fade-in '
               key={address.id}
               style={{
                 animationDelay: `${index * 100}ms`,
@@ -129,7 +145,7 @@ export default function Address() {
                   {t('address')}: {address.streetDetail} - {address.ward?.name}{' '}
                   - {address.district?.name} - {address.province?.name}
                 </p>
-                <p className='pt-2 transition-colors duration-200 group-hover:text-gray-700'>
+                <p className='md:pt-2 transition-colors duration-200 group-hover:text-gray-700'>
                   {t('phone.label')}: {address.phone}
                 </p>
               </div>
@@ -158,6 +174,14 @@ export default function Address() {
             </li>
           ))}
       </ul>
+      <div className='flex justify-center'>
+        <Button
+          onClick={() => router.push('/address')}
+          className='flex md:hidden mt-10 py-6 px-8 font-medium rounded-xl'
+        >
+          {t('action.add')}
+        </Button>
+      </div>
       <ConfirmDialogModule
         title={t('action.confirm_delete')}
         onClose={() => {

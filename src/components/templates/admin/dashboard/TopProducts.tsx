@@ -177,7 +177,7 @@ export function TopProducts({ dateRange }: TopProductsProps) {
                     </div>
 
                     <div>
-                      <div className='font-medium text-sm'>
+                      <div className='font-medium text-xs md:text-sm'>
                         {product.productName || `Product #${product.productId}`}
                       </div>
                     </div>

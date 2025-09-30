@@ -34,7 +34,7 @@ export default function Pagination(props: {
       </div>
 
       {/* Footer Text */}
-      <div className='text-center text-xs text-gray-500 mt-3'>
+      <div className='text-center text-xl sm:text-lg lg:text-sm xl:text-xs text-gray-500 mt-3'>
         Trang {page + 1} / {newTotalPage} - Đang hiển thị {newTotalProducts} sản
         phẩm
       </div>

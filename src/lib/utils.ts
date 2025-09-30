@@ -238,20 +238,22 @@ export const getStatusColor = (
  *  => true
  */
 export function shouldHideByPathAndDevice(
-  pathname: string | null,
+  pathname: string,
   isMobile: boolean,
   unAllowPaths: string[]
-): boolean {
+) {
   if (!pathname) return false;
 
   // Remove locale prefix: "/en/cart" => "/cart"
   const pathWithoutLocale = pathname.replace(/^\/[a-zA-Z-]+/, '');
 
-  // Trim trailing slash để tránh mismatch "/cart/" vs "/cart"
+  // Trim trailing slash: "/cart/" => "/cart"
   const normalizedPath = pathWithoutLocale.replace(/\/$/, '');
 
-  // Match nếu bắt đầu bằng 1 trong các prefix
-  return (
-    isMobile && unAllowPaths.some((path) => normalizedPath.startsWith(path))
+  // Match theo segment đầu tiên
+  const match = unAllowPaths.some(
+    (path) => normalizedPath === path || normalizedPath.startsWith(path + '/')
   );
+
+  return isMobile && match;
 }

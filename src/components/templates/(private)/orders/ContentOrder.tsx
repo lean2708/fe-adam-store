@@ -172,13 +172,13 @@ export function ContentOrder() {
 
   return (
     <>
-      <div className='rounded-xl border-2 border-black dark:border-white'>
+      <div className='rounded-xl md:border-2 border-black dark:border-white'>
         <div className='flex border-b border-black dark:border-white !box-border overflow-auto pt-2'>
           {tabList.map((tab) => (
             <button
               key={tab.key}
               className={cn(
-                'outline-none whitespace-nowrap mx-4 h-full dark:text-white text-black py-2 text-sm font-medium transition-colors',
+                'outline-none whitespace-nowrap mx-4 h-full dark:text-white text-black py-2 text-lg md:text-sm font-medium transition-colors',
                 state.activeStatus === tab.key &&
                   'border-b-3 border-black dark:border-white'
               )}
@@ -196,12 +196,12 @@ export function ContentOrder() {
             </button>
           ))}
         </div>
-        <div className='px-8 py-6'>
-          <div className='rounded-xl px-5'>
+        <div className='md:px-8 py-6'>
+          <div className='rounded-xl md:px-5'>
             <div>
               {state.isLoading && (
                 <div>
-                  <h3 className='border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase'>
+                  <h3 className='border-b-1 h-11 flex items-center justify-center md:justify-end border-gray-400 border-dashed font-semibold uppercase'>
                     {
                       tabList.find((tab) => tab.key === state.activeStatus)
                         ?.label
@@ -214,7 +214,7 @@ export function ContentOrder() {
               )}
               {!state.isLoading && state.listOrders.length === 0 && (
                 <div>
-                  <h3 className='border-b-1 h-11 flex items-center justify-end border-gray-400 border-dashed font-semibold uppercase'>
+                  <h3 className='border-b-1 h-11 flex items-center justify-center md:justify-end border-gray-400 border-dashed font-semibold uppercase'>
                     {
                       tabList.find((tab) => tab.key === state.activeStatus)
                         ?.label

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { UserTable } from "@/components/templates/admin/users/UserTable";
-import { UserModal } from "@/components/templates/admin/users/UserModal";
-import type { TUser } from "@/types";
-import { useUsers } from "@/hooks/admin/useUsers";
+import { useState } from 'react';
+import { UserTable } from '@/components/templates/admin/users/UserTable';
+import { UserModal } from '@/components/templates/admin/users/UserModal';
+import type { TUser } from '@/types';
+import { useUsers } from '@/hooks/admin/useUsers';
 
 export default function UsersPage() {
   const [currentPage, setCurrentPage] = useState(0);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const pageSize = 10;
 
   const {
@@ -18,7 +18,7 @@ export default function UsersPage() {
     loading,
     handleDelete,
     handleRestore,
-    handleRefresh
+    handleRefresh,
   } = useUsers(currentPage, pageSize);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,9 +54,9 @@ export default function UsersPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 rounded-lg border">
-      <div className="admin-page-container space-y-6 mt-4  ">
-        <div className="bg-white  shadow-sm  p-6 dark:bg-gray-900">
+    <div className='min-h-screen bg-gray-50 dark:bg-gray-900 rounded-lg border'>
+      <div className='admin-page-container space-y-6 mt-4  '>
+        <div className='bg-white  shadow-sm  p-4 md:p-6 dark:bg-gray-900'>
           <UserTable
             users={users}
             loading={loading}

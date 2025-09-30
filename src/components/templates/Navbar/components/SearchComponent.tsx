@@ -155,7 +155,7 @@ export default function SearchComponent({
           onChange={handleSearchChange}
           onClick={() => handleSearchExpand(true)}
           onFocus={() => handleSearchExpand(true)}
-          className='w-[250px] md:w-[150px] lg:w-[200px] xl:w-[250px] 2xl:w-[280px]'
+          className='w-[250px] md:w-[150px] lg:w-[200px] xl:w-[250px] 2xl:w-[280px] text-base'
         />
       </div>
 
