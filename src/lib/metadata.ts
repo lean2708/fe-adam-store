@@ -3,7 +3,8 @@ import { Metadata } from 'next';
 
 // Base metadata configuration
 export const BASE_METADATA_CONFIG = {
-  baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://adamstore.com',
+  baseUrl:
+    process.env.NEXT_PUBLIC_BASE_URL || 'https://fe-adam-store.vercel.app',
   siteName: 'Adam Store',
   twitterHandle: '@adamstore_vn',
   defaultImages: {
