@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { ProductHeader } from "@/components/templates/admin/products/ProductHeader";
-import { ProductVariantsStats } from "@/components/templates/admin/products/ProductVariantsStats";
-import { ProductVariantsTable } from "@/components/templates/admin/products/ProductVariantsTable";
-import { ProductVariantModal } from "@/components/templates/admin/products/ProductVariantModal";
-import { ProductCreateModal } from "@/components/templates/admin/products/ProductCreateModal";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { ProductHeader } from '@/components/templates/admin/products/ProductHeader';
+import { ProductVariantsStats } from '@/components/templates/admin/products/ProductVariantsStats';
+import { ProductVariantsTable } from '@/components/templates/admin/products/ProductVariantsTable';
+import { ProductVariantModal } from '@/components/templates/admin/products/ProductVariantModal';
+import { ProductCreateModal } from '@/components/templates/admin/products/ProductCreateModal';
 
-import { useProducts } from "@/hooks/admin/useProductVariants";
+import { useProducts } from '@/hooks/admin/useProductVariants';
 
-import type { TProduct } from "@/types";
+import type { TProduct } from '@/types';
 
 export default function ProductsPage() {
   const router = useRouter();
@@ -19,7 +19,7 @@ export default function ProductsPage() {
   const [editingProduct, setEditingProduct] = useState<TProduct | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(20);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const {
     products,
@@ -74,9 +74,9 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="admin-page-container space-y-6 dark:bg-gray-900">
-        <div className="bg-white rounded-lg shadow-sm border p-6 dark:bg-gray-900">
+    <div className='min-h-screen bg-gray-50 dark:bg-gray-900'>
+      <div className='admin-page-container space-y-6 dark:bg-gray-900'>
+        <div className='bg-white rounded-lg shadow-sm border p-4 md:p-6 dark:bg-gray-900'>
           <ProductHeader
             onRefresh={handleRefresh}
             onCreateProduct={handleCreateProduct}
@@ -85,7 +85,7 @@ export default function ProductsPage() {
           />
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border p-6 dark:bg-gray-900">
+        <div className='bg-white rounded-lg shadow-sm border p-4 md:p-6 dark:bg-gray-900'>
           <ProductVariantsStats
             variants={products}
             totalElements={totalElements}

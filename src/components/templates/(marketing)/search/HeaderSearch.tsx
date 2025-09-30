@@ -18,12 +18,14 @@ export function HeaderSearch() {
     router.push(`?${params.toString()}`, { scroll: false });
   };
   return (
-    <div className='w-full h-24 px-8 flex justify-between items-center'>
-      <div>
+    <div className='w-full h-24 px-4 md:px-8 flex justify-between items-center'>
+      <div className='mx-auto md:mx-0'>
         <p className='text-[#888888] font-extrabold'>Kết quả tìm kiếm</p>
-        <h3 className='text-3xl mt-1 font-bold'>{decoded}</h3>
+        <h3 className='text-3xl mt-1 font-bold text-center md:text-start'>
+          {decoded}
+        </h3>
       </div>
-      <div>
+      <div className='hidden md:block'>
         <span className='text-[#888888]'>Sắp xếp theo</span>
         <select
           className='outline-none ml-2 adam-store-bg-light'

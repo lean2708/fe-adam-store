@@ -59,11 +59,11 @@ export async function generateMetadata({ params, searchParams }: Props) {
 
 export default function AoPoloStore() {
   return (
-    <div className='flex w-full'>
-      <div className='h-full w-[17%]'>
+    <div className='md:flex w-full'>
+      <div className='h-full w-full md:w-[17%]'>
         <SideCategory />
       </div>
-      <div className='h-full w-[83%] px-5'>
+      <div className='h-full w-full md:w-[83%] px-4'>
         <ContentCategory />
       </div>
     </div>

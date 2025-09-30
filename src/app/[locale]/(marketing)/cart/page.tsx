@@ -10,7 +10,7 @@ export default async function CartPage() {
   return (
     <div className='min-h-screen adam-store-bg'>
       <main className={cn(`max-w-7xl mx-auto px-4 py-8`, manrope.className)}>
-        <h1 className='text-3xl md:text-4xl xl:text-5xl font-semibold text-primary text-center mb-8'>
+        <h1 className='hidden lg:block text-3xl md:text-4xl xl:text-5xl font-semibold text-primary text-center mb-8'>
           {t('cart.title')}
         </h1>
 

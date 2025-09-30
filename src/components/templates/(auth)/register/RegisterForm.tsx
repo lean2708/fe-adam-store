@@ -180,11 +180,11 @@ export default function RegisterForm() {
           )}
         />
 
-        <div className='space-y-1 mt-8 flex justify-between'>
+        <div className='gap-4 sm:gap-2 mt-8 flex flex-col sm:flex-row justify-between items-center sm:items-start'>
           <Button
             type='submit'
             disabled={isSubmitting || !isDirty}
-            className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 mb-4 rounded-md font-medium'
+            className='w-52 sm:w-fit h-10 bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-10 mb-4 rounded-md font-medium'
           >
             {isSubmitting ? t('action.loading') : t('action.register')}
           </Button>
@@ -193,7 +193,7 @@ export default function RegisterForm() {
             {t('haveAccount')}{' '}
             <Link
               href='/login'
-              className='text-sm text-primary hover:underline'
+              className='text-sm text-primary hover:underline text-center sm:text-start'
             >
               {t('login')}
             </Link>

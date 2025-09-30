@@ -26,7 +26,7 @@ export default function MainBanner() {
     <section className=''>
       {/* Hero Carousel - Embla carousel */}
       <div
-        className='relative pb-16  adam-store-bg-light overflow-hidden w-full'
+        className='relative pb-4 sm:pb-10 md:pb-16  adam-store-bg-light overflow-hidden w-full'
         style={{ minHeight: 400 }}
       >
         <MainBannerSwiper heroSlides={heroSlides} />

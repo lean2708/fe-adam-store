@@ -9,9 +9,11 @@ export function useCheckoutDatas() {
   const searchParams = useSearchParams();
   const checkoutType = searchParams.get('type');
 
-  const { productVariantList } = useProductVariant();
+  const { productVariantList, loading: variantLoading } = useProductVariant();
   const selectedTotalPrice = useCartStore((s) => s.selectedTotalPrice);
+  // const selectedItems = useCartStore((s) => s.selectedItems);
   const { buyNowItems } = useBuyNowStore();
+  const cartStatus = useCartStore((s) => s.status);
 
   const checkoutData = useMemo(() => {
     if (checkoutType === 'buy-now') {
@@ -24,6 +26,8 @@ export function useCheckoutDatas() {
         items: buyNowItems,
         subtotal: buyNowTotal,
         type: 'buy-now' as const,
+        isEmpty: buyNowItems.length === 0,
+        isLoading: false,
       };
     }
 
@@ -31,8 +35,17 @@ export function useCheckoutDatas() {
       items: productVariantList,
       subtotal: selectedTotalPrice,
       type: 'cart' as const,
+      isEmpty: productVariantList.length === 0 && !variantLoading,
+      isLoading: variantLoading || cartStatus === 'loading',
     };
-  }, [checkoutType, buyNowItems, productVariantList, selectedTotalPrice]);
+  }, [
+    checkoutType,
+    buyNowItems,
+    productVariantList,
+    selectedTotalPrice,
+    variantLoading,
+    cartStatus,
+  ]);
 
   return checkoutData;
 }

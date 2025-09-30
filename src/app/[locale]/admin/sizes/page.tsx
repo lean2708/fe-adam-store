@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { SizeTable } from "@/components/templates/admin/sizes/SizeTable";
-import { fetchAllSizesAction } from "@/actions/sizeActions";
-import type { TSize } from "@/types";
-import { toast } from "sonner";
+import { useState, useEffect } from 'react';
+import { SizeTable } from '@/components/templates/admin/sizes/SizeTable';
+import { fetchAllSizesAction } from '@/actions/sizeActions';
+import type { TSize } from '@/types';
+import { toast } from 'sonner';
 
 export default function SizesAdminPage() {
   const [sizes, setSizes] = useState<TSize[]>([]);
@@ -30,10 +30,10 @@ export default function SizesAdminPage() {
         setTotalElements(result.actionSizeResponse?.totalItems || 0);
         setCurrentPage(page);
       } else {
-        toast.error(result.message || "Failed to load sizes");
+        toast.error(result.message || 'Failed to load sizes');
       }
     } catch {
-      toast.error("Failed to load sizes");
+      toast.error('Failed to load sizes');
     } finally {
       setLoading(false);
     }
@@ -50,9 +50,9 @@ export default function SizesAdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="admin-page-container space-y-6 mt-4 dark:bg-gray-900">
-        <div className="bg-white rounded-lg shadow-sm border p-6 dark:bg-gray-900">
+    <div className='min-h-screen bg-gray-50 dark:bg-gray-900'>
+      <div className='admin-page-container space-y-6 mt-4 dark:bg-gray-900'>
+        <div className='bg-white rounded-lg shadow-sm border p-4 md:p-6 dark:bg-gray-900'>
           <SizeTable
             sizes={sizes}
             loading={loading}

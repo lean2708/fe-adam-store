@@ -6,16 +6,16 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useCheckoutDatas } from '@/hooks/(order)/useCheckOutDatas';
 import { useTranslations } from 'next-intl';
-import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
+import { Separator } from '@/components/ui/separator';
+import { useCartStore } from '@/stores/cartStore';
 
-export function ProductList() {
+export function ProductList({ className }: { className?: string }) {
   const t = useTranslations('Order.product_list');
 
   const { isAuthenticated, isLoading, user } = useAuth();
   const selectedItems = useCartStore((s) => s.selectedItems);
   const router = useRouter();
-
   const { items: products } = useCheckoutDatas();
 
   useEffect(() => {
@@ -32,11 +32,14 @@ export function ProductList() {
   }, [isAuthenticated, user, isLoading, router]);
 
   return (
-    <div>
+    <div className={className}>
       <h3 className='text-2xl font-bold text-primary mb-6'>{t('title')}</h3>
-      <div className='space-y-6 overflow-y-auto h-screen'>
+      <div className='space-y-6 overflow-y-auto md:h-screen h-full'>
         {products?.map((product, index) => (
-          <ProductItem key={index} product={product} />
+          <div key={index}>
+            <ProductItem key={index} product={product} />
+            <Separator className='md:hidden block' />
+          </div>
         ))}
       </div>
     </div>

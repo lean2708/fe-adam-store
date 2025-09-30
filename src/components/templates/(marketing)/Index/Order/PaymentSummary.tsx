@@ -5,13 +5,15 @@ import useAddress from '@/hooks/(order)/useAddress';
 import useCalculateTotal from '@/hooks/(order)/useCalculateTotal';
 import { useCheckoutDatas } from '@/hooks/(order)/useCheckOutDatas';
 import usePromotions from '@/hooks/(order)/usePromotions';
+import useIsMobile from '@/hooks/useIsMobile';
 import useShippingFee from '@/hooks/useShippingFee';
-import { formatCurrency } from '@/lib/utils';
+import { cn, formatCurrency } from '@/lib/utils';
 import { useCartStore } from '@/stores/cartStore';
 import { useLocale, useTranslations } from 'next-intl';
 
 export function PaymentSummary() {
   const t = useTranslations('Order.payment_summary');
+  const isMobile = useIsMobile();
   const locale = useLocale();
 
   const { items: products, subtotal, type } = useCheckoutDatas();
@@ -30,7 +32,12 @@ export function PaymentSummary() {
   );
 
   return (
-    <div className='space-y-3 text-sm'>
+    <div
+      className={cn(
+        'space-y-3 text-sm',
+        isMobile && 'border-border border p-4 rounded-md'
+      )}
+    >
       <h4 className='text-2xl font-bold text-primary mb-4'>{t('title')}</h4>
       <div className='flex justify-between text-muted-foreground'>
         <span className=''>{t('sub_total')}</span>

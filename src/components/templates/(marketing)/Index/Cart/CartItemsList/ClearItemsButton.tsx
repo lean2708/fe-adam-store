@@ -26,7 +26,7 @@ export default function ClearCartButton({ userId }: { userId: string }) {
     <button
       onClick={handleClick}
       disabled={isDeleting}
-      className='ml-auto text-muted-foreground font-normal cursor-pointer hover:underline'
+      className='text-lg md:text-base ml-auto text-muted-foreground font-normal cursor-pointer hover:underline'
     >
       {isDeleting ? (
         <Loader2 className='mr-2 h-4 w-4 animate-spin' />

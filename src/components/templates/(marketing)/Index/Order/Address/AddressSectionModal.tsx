@@ -81,7 +81,7 @@ export default function AddressSectionModal(props: {
       onClick={onClose}
     >
       <Card
-        className='relative w-full max-w-xl adam-store-bg-light rounded-xl shadow-lg'
+        className='relative w-full adam-store-bg-light rounded-xl shadow-lg max-w-[calc(100%-2rem)] sm:max-w-lg'
         onClick={stopPropagation}
       >
         <div className='!flex w-full justify-center items-center h-20 mt-2'>

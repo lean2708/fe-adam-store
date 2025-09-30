@@ -1,16 +1,16 @@
-import SectionHeader from "@/components/modules/SectionHeader";
-import NewestProductsSwiper from "./NewestProducts/NewestProductsSwiper";
-import { useTranslations } from "next-intl";
+import SectionHeader from '@/components/modules/SectionHeader';
+import NewestProductsSwiper from './NewestProducts/NewestProductsSwiper';
+import { useTranslations } from 'next-intl';
 
 export default function NewestProducts() {
-  const t = useTranslations("Marketing");
+  const t = useTranslations('Marketing');
   return (
-    <section className="mb-16 px-4">
+    <section className='mb-16 px-4'>
       <SectionHeader
-        to="/news"
-        title={t("newestProducts.title")}
+        to='/news'
+        title={t('newestProducts.title')}
         // description="Get newest product"
-        className="mt-10"
+        className='mt-10'
         hasButton={true}
       />
 

@@ -1,9 +1,7 @@
 'use client';
 import ProductCardIndex from '@/components/modules/ProductCardIndex';
-import { Carousel, CarouselItem } from '@/components/ui/carousel';
 import { TProduct } from '@/types';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Pagination from '../detail/Pagination';
 import { getAllProductsTotalAction } from '@/actions/productActions';
@@ -77,11 +75,11 @@ export function ContentNews() {
         </p>
       </div>
       <div>
-        <Carousel className='w-full'>
+        <div className='w-full'>
           <div className='flex flex-wrap'>
             {state.loading &&
               [1, 2, 3, 4].map((product) => (
-                <CarouselItem
+                <div
                   key={product}
                   className='basis-1/2 md:basis-1/3 lg:basis-1/4 mb-2'
                 >
@@ -101,21 +99,22 @@ export function ContentNews() {
                   </div>
                   <Skeleton className='h-6 w-full mb-3'></Skeleton>
                   <Skeleton className='h-6 w-[45%]'></Skeleton>
-                </CarouselItem>
+                </div>
               ))}
             {state.listProducts.map((product) => (
-              <CarouselItem
+              <div
                 key={product.id}
                 className='basis-1/2 md:basis-1/3 lg:basis-1/4 mb-2'
               >
                 <ProductCardIndex
                   product={product}
                   badgeText={t('newestProducts.badgeText')}
+                  className='px-1'
                 />
-              </CarouselItem>
+              </div>
             ))}
           </div>
-        </Carousel>
+        </div>
       </div>
       <Pagination
         totalPage={state.maxPage}

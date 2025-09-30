@@ -156,35 +156,35 @@ export default function AddressForm() {
   )
     return (
       <main className='max-w-3xl mx-auto p-4 pt-5'>
-        <h3 className='font-bold text-3xl w-full text-center'>
+        <h3 className='hidden md:block font-bold text-3xl w-full text-center'>
           {id ? t('edit_address') : t('add_address')}
         </h3>
-        <div className='mt-5 w-full p-5 min-h-110 border-2 border-black rounded-lg shadow adam-store-bg'>
-          <div className='w-full flex mt-5 h-10 items-center'>
+        <div className='mt-5 w-full md:p-5 md:min-h-110 md:border-2 border-primary rounded-lg md:shadow adam-store-bg'>
+          <div className='w-full flex flex-col md:flex-row mt-8 md:mt-5 md:h-10 gap-2 items-start md:items-center h-fit'>
             <span className='w-70'>{t('city.label')}:</span>
             <Skeleton className='h-9 rounded-lg w-full border p-2 outline-none'></Skeleton>
           </div>
-          <div className='w-full flex mt-5 h-10 items-center'>
+          <div className='w-full flex flex-col md:flex-row mt-8 md:mt-5 md:h-10 gap-2 items-start md:items-center h-fit'>
             <span className='w-70'>{t('district.label')}:</span>
             <Skeleton className='h-9 rounded-lg w-full border p-2 outline-none'></Skeleton>
           </div>
-          <div className='w-full flex mt-5 h-10 items-center'>
+          <div className='w-full flex flex-col md:flex-row mt-8 md:mt-5 md:h-10 gap-2 items-start md:items-center h-fit'>
             <span className='w-70'>{t('ward.label')}:</span>
             <Skeleton className='h-9 rounded-lg w-full border p-2 outline-none'></Skeleton>
           </div>
-          <div className='w-full flex mt-5 h-10 items-center'>
+          <div className='w-full flex flex-col md:flex-row mt-8 md:mt-5 md:h-10 gap-2 items-start md:items-center h-fit'>
             <span className='w-70'>{t('address_line1.label')}:</span>
             <Skeleton className='h-9 w-full border  p-2 rounded-lg outline-none' />
           </div>
-          <div className='w-full flex mt-5 h-10 items-center'>
+          <div className='w-full flex flex-col md:flex-row mt-8 md:mt-5 md:h-10 gap-2 items-start md:items-center h-fit'>
             <span className='w-70'>{t('phone.label')}:</span>
             <Skeleton className='h-9 w-full border  p-2 rounded-lg outline-none' />
           </div>
-          <div className='w-full flex mt-5 h-10 items-center'>
+          <div className='w-full flex flex-col md:flex-row mt-8 md:mt-5 md:h-10 gap-2 items-start md:items-center h-fit'>
             <span className='!w-50'>{t('set_default.label')}:</span>
 
             <label className='switch text-start'>
-              <input type='checkbox' disabled />
+              <input type='checkbox' disabled checked={false} />
               <span className='slider'></span>
             </label>
           </div>
@@ -201,12 +201,12 @@ export default function AddressForm() {
     );
 
   return (
-    <main className='max-w-3xl mx-auto p-4 pt-5'>
-      <h3 className='font-bold text-3xl w-full text-center'>
+    <main className='w-full md:max-w-3xl mx-auto md:p-4 mt-5'>
+      <h3 className='hidden md:block font-bold text-3xl w-full text-center'>
         {id ? t('edit_address') : t('add_address')}
       </h3>
-      <div className='mt-5 w-full p-5 min-h-110 border-2 border-primary rounded-lg shadow adam-store-bg'>
-        <div className='w-full flex mt-5 h-10 items-center'>
+      <div className='mt-5 w-full md:p-5 md:min-h-110 md:border-2 border-primary rounded-lg md:shadow adam-store-bg'>
+        <div className='w-full flex flex-col md:flex-row mt-8 md:mt-5 md:h-10 gap-2 items-start md:items-center h-fit'>
           <span className='w-70'>{t('city.label')}:</span>
           <select
             value={addressSet.provinceId || ''}
@@ -228,7 +228,7 @@ export default function AddressForm() {
             ))}
           </select>
         </div>
-        <div className='w-full flex mt-5 h-10 items-center'>
+        <div className='w-full flex flex-col md:flex-row mt-8 md:mt-5 md:h-10 gap-2 items-start md:items-center h-fit'>
           <span className='w-70'>{t('district.label')}:</span>
           <select
             value={addressSet.districtId || ''}
@@ -247,7 +247,7 @@ export default function AddressForm() {
             ))}
           </select>
         </div>
-        <div className='w-full flex mt-5 h-10 items-center'>
+        <div className='w-full flex flex-col md:flex-row mt-8 md:mt-5 md:h-10 gap-2 items-start md:items-center h-fit'>
           <span className='w-70'>{t('ward.label')}:</span>
           <select
             value={addressSet.wardCode || ''}
@@ -265,7 +265,7 @@ export default function AddressForm() {
             ))}
           </select>
         </div>
-        <div className='w-full flex mt-5 h-10 items-center'>
+        <div className='w-full flex flex-col md:flex-row mt-8 md:mt-5 md:h-10 gap-2 items-start md:items-center h-fit'>
           <span className='w-70'>{t('address_line1.label')}:</span>
           <input
             type='text'
@@ -277,7 +277,7 @@ export default function AddressForm() {
             }
           />
         </div>
-        <div className='w-full flex mt-5 h-10 items-center'>
+        <div className='w-full flex flex-col md:flex-row mt-8 md:mt-5 md:h-10 gap-2 items-start md:items-center h-fit'>
           <span className='w-70'>{t('phone.label')}:</span>
           <input
             type='text'
@@ -289,13 +289,13 @@ export default function AddressForm() {
             }
           />
         </div>
-        <div className='w-full flex mt-5 h-10 items-center'>
+        <div className='w-full flex mt-8 md:mt-5 md:h-10 gap-2 items-start md:items-center h-fit'>
           <span className='!w-50'>{t('set_default.label')}:</span>
 
           <label className='relative inline-block w-[50px] h-[28px]'>
             <input
               type='checkbox'
-              checked={addressSet.isDefault}
+              checked={addressSet.isDefault || false}
               onChange={(e) =>
                 setAddress({ ...addressSet, isDefault: e.target.checked })
               }

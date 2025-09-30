@@ -94,16 +94,16 @@ export default function ForgotPasswordForm() {
           )}
         />
 
-        <div className='space-y-1 mt-8 flex justify-between'>
+        <div className='gap-6 sm:gap-2 mt-8 flex flex-col-reverse sm:flex-row justify-between items-center'>
           <Button
             type='submit'
             disabled={isSubmitting}
-            className='w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-4 rounded-md font-medium'
+            className='w-52 h-10 sm:w-fit bg-foreground cursor-pointer hover:bg-foreground/80 text-secondary py-2 px-10 rounded-md font-medium self-center'
           >
             {isSubmitting ? t('action.email.loading') : t('action.email.send')}
           </Button>
 
-          <div className='text-center'>
+          <div className='text-center self-end sm:self-baseline'>
             <Link
               href='/login'
               className='text-sm text-primary hover:underline'

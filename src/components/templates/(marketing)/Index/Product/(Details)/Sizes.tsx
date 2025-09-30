@@ -24,11 +24,11 @@ export default function Sizes({ tColor, onChangeSize }: SizesProps) {
   };
 
   return (
-    <div>
-      <span className='block text-sm font-medium text-primary mb-2'>
+    <div className=''>
+      <span className='text-sm font-medium text-primary mb-2'>
         {t('product_infor.sizes')}:
       </span>
-      <div className='flex gap-2'>
+      <div className='flex flex-wrap gap-2'>
         {SIZE_LIST.map((size) => {
           // Tìm variant có size tương ứng
           const variant = tColor.variants?.find(

@@ -66,24 +66,34 @@ export default function ImagePreviewModal({
               <>
                 <button
                   onClick={onPrevImage}
-                  className='absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-muted-foreground/20 hover:bg-muted-foreground/30 rounded-full flex items-center justify-center transition-colors'
+                  className={`absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 group bg-background/80 hover:bg-primary/80 border-2 border-primary shadow-lg rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary z-10 ${
+                    selectedImageIndex === 0
+                      ? 'opacity-50 cursor-not-allowed'
+                      : ''
+                  }`}
                   aria-label='Ảnh trước'
+                  disabled={selectedImageIndex === 0}
                 >
-                  <ChevronLeft className='w-6 h-6 text-primary' />
+                  <ChevronLeft className='w-6 h-6 text-primary group-hover:text-primary-foreground' />
                 </button>
                 <button
                   onClick={onNextImage}
-                  className='absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-muted-foreground/20 hover:bg-muted-foreground/30 rounded-full flex items-center justify-center transition-colors'
+                  className={`absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 group bg-background/80 hover:bg-primary/80 border-2 border-primary shadow-lg rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary z-10 ${
+                    selectedImageIndex === images.length - 1
+                      ? 'opacity-50 cursor-not-allowed'
+                      : ''
+                  }`}
                   aria-label='Ảnh tiếp theo'
+                  disabled={selectedImageIndex === images.length - 1}
                 >
-                  <ChevronRight className='w-6 h-6 text-primary' />
+                  <ChevronRight className='w-6 h-6 text-primary group-hover:text-primary-foreground' />
                 </button>
               </>
             )}
           </div>
 
           {/* Right Side - Review Details */}
-          <div className='w-96 bg-background border-l border-border flex flex-col overflow-y-auto'>
+          <div className='hidden w-96 bg-background border-l border-border sm:flex flex-col overflow-y-auto'>
             {/* Review Content */}
             <div className='flex-1 p-6 overflow-y-auto'>
               {/* User Info */}

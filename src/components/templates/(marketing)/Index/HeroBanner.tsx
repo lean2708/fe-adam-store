@@ -9,7 +9,7 @@ export default function HeroBanner() {
   const route = useRouter();
 
   return (
-    <div className='relative rounded-lg overflow-hidden mb-12'>
+    <div className='relative overflow-hidden mb-12'>
       <div className='relative h-[400px] bg-gradient-to-r from-gray-100 to-gray-200'>
         <div className='absolute inset-0 adam-store-bg-dark bg-opacity-20'></div>
         <div className='absolute inset-0 flex items-center justify-center'>

@@ -45,7 +45,7 @@ export default function BestSellersSwiper() {
   // Show loading state
   if (loading) {
     return (
-      <div className='w-full'>
+      <div className='w-full relative'>
         <Carousel className='w-full'>
           <CarouselContent>
             {[...Array(5)].map((_, index) => (
@@ -57,8 +57,12 @@ export default function BestSellersSwiper() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <div className='absolute right-10 top-1/2 -translate-y-1/2 z-10'>
+            <CarouselNext className='opacity-80 hover:scale-125 hover:opacity-100' />{' '}
+          </div>
+          <div className='absolute left-10 top-1/2 -translate-y-1/2 z-10'>
+            <CarouselPrevious className='opacity-80 hover:scale-125 hover:opacity-100' />{' '}
+          </div>
         </Carousel>
       </div>
     );
@@ -74,7 +78,7 @@ export default function BestSellersSwiper() {
   }
 
   return (
-    <Carousel className='w-full'>
+    <Carousel className='w-full relative'>
       <CarouselContent>
         {products.map((product) => (
           <CarouselItem
@@ -88,8 +92,12 @@ export default function BestSellersSwiper() {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <div className='absolute right-10 top-1/2 -translate-y-1/2 z-10'>
+        <CarouselNext className='opacity-80 hover:scale-125 hover:opacity-100' />{' '}
+      </div>
+      <div className='absolute left-10 top-1/2 -translate-y-1/2 z-10'>
+        <CarouselPrevious className='opacity-80 hover:scale-125 hover:opacity-100' />{' '}
+      </div>
     </Carousel>
   );
 }

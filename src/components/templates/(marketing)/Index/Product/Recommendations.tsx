@@ -36,7 +36,7 @@ export default function Recommendations() {
           <p className='text-gray-500'>Không có sản phẩm bán chạy nào.</p>
         </div>
       ) : (
-        <Carousel className='w-full'>
+        <Carousel className='w-full relative'>
           <CarouselContent>
             {products.map((product) => (
               <CarouselItem
@@ -47,8 +47,12 @@ export default function Recommendations() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <div className='absolute right-10 top-1/2 -translate-y-1/2 z-10'>
+            <CarouselNext className='opacity-80 hover:scale-125 hover:opacity-100' />{' '}
+          </div>
+          <div className='absolute left-10 top-1/2 -translate-y-1/2 z-10'>
+            <CarouselPrevious className='opacity-80 hover:scale-125 hover:opacity-100' />{' '}
+          </div>
         </Carousel>
       )}
     </div>

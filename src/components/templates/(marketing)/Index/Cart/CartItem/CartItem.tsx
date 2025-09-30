@@ -15,6 +15,8 @@ import { useState } from 'react';
 import { useCartItem } from '@/hooks/(cart)/useCartItem';
 import Quantity from './Quanity';
 import { useLocale, useTranslations } from 'next-intl';
+import useIsMobile from '@/hooks/useIsMobile';
+import ButtonDel from './ButtonDel';
 
 type ProductProps = {
   cartItem: TCartItem;
@@ -30,6 +32,7 @@ export function CartItem({
   onSelect,
 }: ProductProps) {
   const t = useTranslations('Header');
+  const isMobile = useIsMobile();
   const locale = useLocale();
 
   const updateCartItem = useCartStore((state) => state.updateCartItem);
@@ -60,7 +63,7 @@ export function CartItem({
         <div className='flex gap-4'>
           <Checkbox
             aria-label='choose item'
-            className='my-auto'
+            className='my-auto size-5 md:size-4'
             checked={selected}
             onCheckedChange={onSelect}
           />
@@ -71,8 +74,8 @@ export function CartItem({
                 : `/images/no-image.jpg`
             }
             alt={cartItem.Product.name || 'Product Image'}
-            width={135}
-            height={180}
+            width={isMobile ? 110 : 135}
+            height={isMobile ? 110 : 180}
             className='rounded-lg object-cover'
             onError={() => setImageError(true)}
             unoptimized
@@ -80,7 +83,7 @@ export function CartItem({
           <div className='grid grid-rows-3 w-full'>
             <div className='flex justify-between'>
               <div>
-                <h3 className='font-bold text-primary mb-1'>
+                <h3 className=' font-bold text-primary mb-1 line-clamp-1 text-xs sm:text-sm md:text-base'>
                   {cartItem.Product.name}
                 </h3>
                 <p
@@ -94,13 +97,24 @@ export function CartItem({
               </div>
 
               <div className='text-right'>
-                <p className='text-sm text-primary font-normal mb-1'>
-                  {formatCurrency(price || 0, locale)} × {cartItem.quantity}
-                </p>
-
-                <p className='font-bold text-primary mb-2'>
-                  {formatCurrency(totalPrice, locale)}
-                </p>
+                {!isMobile ? (
+                  <>
+                    <p className='text-sm text-primary font-normal mb-1'>
+                      {formatCurrency(price || 0, locale)} × {cartItem.quantity}
+                    </p>
+                    <p className='font-bold text-primary mb-2'>
+                      {formatCurrency(totalPrice, locale)}
+                    </p>
+                  </>
+                ) : (
+                  <ButtonDel
+                    onRemoveItem={onRemoveItem}
+                    isChanged={isChanged}
+                    isQuantityUpdating={isQuantityUpdating}
+                    textDisplay={false}
+                    className='ml-2'
+                  />
+                )}
               </div>
             </div>
 
@@ -126,24 +140,18 @@ export function CartItem({
               />
             </div>
 
-            <div className='flex items-end-safe justify-between'>
-              <div className='flex justify-center items-center'>
-                <button
-                  onClick={onRemoveItem}
-                  className={cn(
-                    'flex justify-center items-center group',
-                    isChanged || isQuantityUpdating
-                      ? 'opacity-50 cursor-not-allowed'
-                      : ''
-                  )}
-                  disabled={isChanged || isQuantityUpdating}
-                >
-                  <Trash2 className='  size-5 mr-1 text-muted-foreground group-hover:text-destructive' />
-                  <span className='  text-muted-foreground font-medium group-hover:text-destructive group-hover:underline'>
-                    {t('cart.remove')}
-                  </span>
-                </button>
-              </div>
+            <div className='flex items-end justify-between'>
+              {!isMobile ? (
+                <ButtonDel
+                  onRemoveItem={onRemoveItem}
+                  isChanged={isChanged}
+                  isQuantityUpdating={isQuantityUpdating}
+                />
+              ) : (
+                <p className='font-bold text-primary mb-1'>
+                  {formatCurrency(totalPrice, locale)}
+                </p>
+              )}
 
               <Quantity
                 quantity={quantity}

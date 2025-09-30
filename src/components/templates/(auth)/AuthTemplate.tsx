@@ -29,7 +29,7 @@ export default function AuthTemplate({
   );
 
   const FormSection = () => (
-    <div className='h-fit lg:w-1/2 p-4 sm:p-8 md:p-12 lg:px-24 flex flex-col justify-center'>
+    <div className='h-fit lg:w-1/2 py-8 px-4 md:px-12 md:py-12 lg:px-24  flex flex-col justify-center'>
       {children}
     </div>
   );
@@ -37,7 +37,7 @@ export default function AuthTemplate({
   return (
     <div className='adam-store-bg-light flex items-center justify-center'>
       <div className='w-full adam-store-bg overflow-hidden'>
-        <div className='flex flex-col lg:flex-row min-h-screen '>
+        <div className='flex flex-col lg:flex-row min-h-screen py-10 lg:py-0'>
           {reverseOrder ? (
             <>
               <FormSection />

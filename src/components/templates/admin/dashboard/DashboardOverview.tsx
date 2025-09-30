@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DateRangePicker } from "@/components/ui/date-range-picker";
-import { DashboardStats } from "./DashboardStats";
-import { Overview } from "./Overview";
-import { useDateRange } from "@/hooks/useDateRange";
-import { useTranslations, useLocale } from "next-intl";
-import { Button } from "@/components/ui/button";
-import { getexportOrderRevenueToExcel } from "@/actions/statisticsActions";
-import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DateRangePicker } from '@/components/ui/date-range-picker';
+import { DashboardStats } from './DashboardStats';
+import { Overview } from './Overview';
+import { useDateRange } from '@/hooks/useDateRange';
+import { useTranslations, useLocale } from 'next-intl';
+import { Button } from '@/components/ui/button';
+import { getexportOrderRevenueToExcel } from '@/actions/statisticsActions';
+import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
 
 interface DashboardOverviewProps {
   className?: string;
 }
 
 export function DashboardOverview({ className }: DashboardOverviewProps) {
-  const t = useTranslations("Admin");
+  const t = useTranslations('Admin');
   const locale = useLocale();
   const [isExporting, setIsExporting] = useState(false);
   const { dateRange, handleDateRangeUpdate } = useDateRange();
@@ -41,51 +41,53 @@ export function DashboardOverview({ className }: DashboardOverviewProps) {
 
       if (result.success) {
         const blob = b64ToBlob(
-          result.data?.base64 || "",
-          result.data?.contentType || ""
+          result.data?.base64 || '',
+          result.data?.contentType || ''
         );
 
         const url = URL.createObjectURL(blob);
 
-        const a = document.createElement("a");
+        const a = document.createElement('a');
         a.href = url;
-        a.download = result.data?.filename || "";
+        a.download = result.data?.filename || '';
         document.body.appendChild(a);
         a.click();
         a.remove();
         URL.revokeObjectURL(url);
       } else {
-        alert("Export failed: " + result.message);
+        alert('Export failed: ' + result.message);
       }
     } catch (e) {
       console.log(e);
 
-      alert("Export failed.");
+      alert('Export failed.');
     } finally {
       setIsExporting(false);
     }
   };
   return (
-    <div className="space-y-6 col-span-7 h-full">
-      <Card className="bg-white dark:bg-gray-900 border border-border rounded-lg shadow-sm h-full flex flex-col">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>{t("dashboard.overview.title")}</CardTitle>
+    <div className='space-y-6 col-span-7 h-full'>
+      <Card className='bg-white dark:bg-gray-900 border border-border rounded-lg shadow-sm h-full flex flex-col'>
+        <CardHeader className='flex flex-row items-center justify-between p-4 md:p-6'>
+          <CardTitle className='text-xl md:text-base'>
+            {t('dashboard.overview.title')}
+          </CardTitle>
 
           <DateRangePicker
             onUpdate={handleDateRangeUpdate}
             initialDateFrom={dateRange.from}
             initialDateTo={dateRange.to}
-            align="start"
+            align='start'
             locale={locale}
-            t={useTranslations("")}
+            t={useTranslations('')}
             showCompare={false}
           />
         </CardHeader>
-        <CardContent className="pl-2 flex-1">
+        <CardContent className='p-4 md:p-6 flex-1'>
           <DashboardStats dateRange={dateRange} />
           <Overview dateRange={dateRange} />
         </CardContent>
-        <CardContent className="flex justify-end">
+        <CardContent className=' p-4 md:p-6 flex justify-end'>
           <Button
             onClick={handleExport}
             disabled={isExporting}
@@ -93,11 +95,11 @@ export function DashboardOverview({ className }: DashboardOverviewProps) {
           >
             {isExporting ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t("dashboard.overview.loading")}
+                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                {t('dashboard.overview.loading')}
               </>
             ) : (
-              t("dashboard.overview.button")
+              t('dashboard.overview.button')
             )}
           </Button>
         </CardContent>

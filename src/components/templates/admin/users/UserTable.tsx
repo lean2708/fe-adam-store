@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useTranslations, useLocale } from "next-intl";
-import { formatDate, getStatusColor } from "@/lib/utils";
+import { useTranslations, useLocale } from 'next-intl';
+import { formatDate, getStatusColor } from '@/lib/utils';
 import {
   Table,
   TableBody,
@@ -9,17 +9,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/table';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
   Plus,
   Search,
@@ -29,9 +29,9 @@ import {
   RotateCcw,
   RefreshCw,
   Users,
-} from "lucide-react";
-import type { TUser } from "@/types";
-import { AdminPagination } from "@/components/ui/pagination";
+} from 'lucide-react';
+import type { TUser } from '@/types';
+import { AdminPagination } from '@/components/ui/pagination';
 
 interface UserTableProps {
   users: TUser[];
@@ -67,78 +67,83 @@ export function UserTable({
   pageSize,
   onPageChange,
 }: UserTableProps) {
-  const t = useTranslations("Admin");
+  const t = useTranslations('Admin');
   const locale = useLocale();
 
   // No client-side filtering needed since we're using server-side search
   const filteredUsers = users;
 
   return (
-    <div className="space-y-4 ">
+    <div className='space-y-4 '>
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className='flex items-center justify-between'>
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-            <Users className="h-5 w-5" />
-            {t("users.title")}
+          <h2 className='text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2'>
+            <Users className='h-5 w-5 hidden md:block' />
+            {t('users.title')}
           </h2>
-          <p className="text-sm text-gray-600 mt-1">{t("users.description")}</p>
+          <p className='text-sm text-gray-600 mt-1'>{t('users.description')}</p>
         </div>
-        <div className="flex gap-3">
-          <Button onClick={onRefresh} variant="outline" size="sm">
-            <RefreshCw className="h-4 w-4 mr-2" />
-            {t("common.refresh") || "Làm mới"}
+        <div className='flex gap-3'>
+          <Button
+            onClick={onRefresh}
+            variant='outline'
+            size='sm'
+            className='hidden md:flex'
+          >
+            <RefreshCw className='h-4 w-4 mr-2' />
+            {t('common.refresh') || 'Làm mới'}
           </Button>
-          <Button onClick={onCreateUser} size="sm">
-            <Plus className="mr-2 h-4 w-4" />
-            {t("users.addUser")}
+          <Button onClick={onCreateUser} size='sm'>
+            <Plus className='mr-2 h-4 w-4' />
+            {t('users.addUser')}
           </Button>
         </div>
       </div>
       {/* Search */}
-      <div className="flex items-center space-x-2">
-        <div className="relative flex-1 max-w-sm rounded-lg border-2 focus-within:border-blue-500 overflow-hidden">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
+      <div className='flex items-center space-x-2'>
+        <div className='relative flex-1 max-w-sm rounded-lg border-2 focus-within:border-blue-500 overflow-hidden'>
+          <Search className='absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4' />
           <Input
-            placeholder={t("users.searchPlaceholder")}
+            placeholder={t('users.searchPlaceholder')}
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-10 border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none rounded-none"
+            className='pl-10 border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none rounded-none'
           />
         </div>
       </div>
       {/* Table */}
-      <div className="admin-table-container overflow-hidden">
+      <div className='admin-table-container overflow-hidden'>
         <div>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="font-semibold text-gray-900">
-                  {t("users.headers.id")}
+                <TableHead className='font-semibold text-gray-900'>
+                  {t('users.headers.id')}
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900">
-                  {t("users.headers.avatar")}
+                <TableHead className='font-semibold text-gray-900'>
+                  {t('users.headers.avatar')}
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900">
-                  {t("users.headers.name")}
+                <TableHead className='font-semibold text-gray-900'>
+                  {t('users.headers.name')}
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900">
-                  {t("users.headers.email")}
+                <TableHead className='font-semibold text-gray-900'>
+                  {t('users.headers.email')}
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900">
-                  {t("users.headers.gender")}
+                <TableHead className='font-semibold text-gray-900'>
+                  {t('users.headers.gender')}
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900">
-                  {t("users.headers.dob")}
+                <TableHead className='font-semibold text-gray-900'>
+                  {t('users.headers.dob')}
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900">
-                  {t("users.headers.roles")}
+                <TableHead className='font-semibold text-gray-900'>
+                  {t('users.headers.roles')}
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900">
-                  {t("users.headers.status")}
+                <TableHead className='font-semibold text-gray-900'>
+                  {t('users.headers.status')}
                 </TableHead>
-                <TableHead className="font-semibold text-gray-900 text-right whitespace-nowrap">
-                  {t("users.headers.actions")}
+                <TableHead className='font-semibold text-gray-900 text-right whitespace-nowrap'>
+                  {t('users.headers.actions')}
                 </TableHead>
               </TableRow>
             </TableHeader>
@@ -148,31 +153,31 @@ export function UserTable({
                 Array.from({ length: 5 }).map((_, i) => (
                   <TableRow key={i}>
                     <TableCell>
-                      <div className="h-4 bg-muted rounded animate-pulse w-16" />
+                      <div className='h-4 bg-muted rounded animate-pulse w-16' />
                     </TableCell>
                     <TableCell>
-                      <div className="h-8 w-8 bg-muted rounded-full animate-pulse" />
+                      <div className='h-8 w-8 bg-muted rounded-full animate-pulse' />
                     </TableCell>
                     <TableCell>
-                      <div className="h-4 bg-muted rounded animate-pulse w-32" />
+                      <div className='h-4 bg-muted rounded animate-pulse w-32' />
                     </TableCell>
                     <TableCell>
-                      <div className="h-4 bg-muted rounded animate-pulse w-40" />
+                      <div className='h-4 bg-muted rounded animate-pulse w-40' />
                     </TableCell>
                     <TableCell>
-                      <div className="h-4 bg-muted rounded animate-pulse w-16" />
+                      <div className='h-4 bg-muted rounded animate-pulse w-16' />
                     </TableCell>
                     <TableCell>
-                      <div className="h-4 bg-muted rounded animate-pulse w-24" />
+                      <div className='h-4 bg-muted rounded animate-pulse w-24' />
                     </TableCell>
                     <TableCell>
-                      <div className="h-6 bg-muted rounded animate-pulse w-20" />
+                      <div className='h-6 bg-muted rounded animate-pulse w-20' />
                     </TableCell>
                     <TableCell>
-                      <div className="h-6 bg-muted rounded animate-pulse w-16" />
+                      <div className='h-6 bg-muted rounded animate-pulse w-16' />
                     </TableCell>
-                    <TableCell className="text-right">
-                      <div className="h-8 w-8 bg-muted rounded animate-pulse ml-auto" />
+                    <TableCell className='text-right'>
+                      <div className='h-8 w-8 bg-muted rounded animate-pulse ml-auto' />
                     </TableCell>
                   </TableRow>
                 ))
@@ -180,84 +185,84 @@ export function UserTable({
                 <TableRow>
                   <TableCell
                     colSpan={9}
-                    className="text-center py-8 text-muted-foreground"
+                    className='text-center py-8 text-muted-foreground'
                   >
-                    {t("users.noUsersFound")}
+                    {t('users.noUsersFound')}
                   </TableCell>
                 </TableRow>
               ) : (
                 filteredUsers.map((user) => (
                   <TableRow key={user.id}>
                     {/* ID */}
-                    <TableCell className="font-mono text-sm">
+                    <TableCell className='font-mono text-sm'>
                       {user.id}
                     </TableCell>
 
                     {/* Avatar */}
                     <TableCell>
-                      <Avatar className="h-8 w-8">
+                      <Avatar className='h-8 w-8'>
                         <AvatarImage
                           src={user.avatarUrl}
-                          alt={user.name || t("common.na")}
+                          alt={user.name || t('common.na')}
                         />
-                        <AvatarFallback className="text-xs">
-                          {user.name?.charAt(0)?.toUpperCase() || "U"}
+                        <AvatarFallback className='text-xs'>
+                          {user.name?.charAt(0)?.toUpperCase() || 'U'}
                         </AvatarFallback>
                       </Avatar>
                     </TableCell>
 
                     {/* Name */}
                     <TableCell>
-                      <div className="font-medium">
-                        {user.name || t("common.na")}
+                      <div className='font-medium'>
+                        {user.name || t('common.na')}
                       </div>
                     </TableCell>
 
                     {/* Email */}
                     <TableCell>
-                      <div className="text-sm text-gray-600">
-                        {user.email || t("common.na")}
+                      <div className='text-sm text-gray-600'>
+                        {user.email || t('common.na')}
                       </div>
                     </TableCell>
 
                     {/* Gender */}
                     <TableCell>
-                      <div className="text-sm">
+                      <div className='text-sm'>
                         {t(
-                          `users.gender.${(user.gender || "Other").toString()}`
+                          `users.gender.${(user.gender || 'Other').toString()}`
                         )}
                       </div>
                     </TableCell>
 
                     {/* DOB */}
                     <TableCell>
-                      <div className="text-sm text-gray-600">
+                      <div className='text-sm text-gray-600'>
                         {user.dob
                           ? formatDate(user.dob, locale, {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
                             })
-                          : t("common.na")}
+                          : t('common.na')}
                       </div>
                     </TableCell>
 
                     {/* Roles */}
                     <TableCell>
-                      <div className="flex flex-wrap gap-1">
+                      <div className='flex flex-wrap gap-1'>
                         {user.roles && Array.from(user.roles).length > 0 ? (
                           Array.from(user.roles).map((role: any) => (
                             <Badge
                               key={role.id}
-                              variant="secondary"
-                              className="text-xs"
+                              variant='secondary'
+                              className='text-xs'
                             >
                               {role.name}
                             </Badge>
                           ))
                         ) : (
-                          <span className="text-sm text-gray-500">
-                            {t("users.noRoles")}
+                          <span className='text-sm text-gray-500'>
+                            {t('users.noRoles')}
                           </span>
                         )}
                       </div>
@@ -266,46 +271,46 @@ export function UserTable({
                     {/* Status */}
                     <TableCell>
                       <Badge
-                        variant="secondary"
+                        variant='secondary'
                         className={getStatusColor(
-                          user.status || "INACTIVE",
-                          "general"
+                          user.status || 'INACTIVE',
+                          'general'
                         )}
                       >
-                        {t(`status.${(user.status || "INACTIVE").toString()}`)}
+                        {t(`status.${(user.status || 'INACTIVE').toString()}`)}
                       </Badge>
                     </TableCell>
 
                     {/* Actions */}
-                    <TableCell className="text-right">
+                    <TableCell className='text-right'>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">
-                              {t("users.openMenu")}
+                          <Button variant='ghost' className='h-8 w-8 p-0'>
+                            <span className='sr-only'>
+                              {t('users.openMenu')}
                             </span>
-                            <MoreHorizontal className="h-4 w-4" />
+                            <MoreHorizontal className='h-4 w-4' />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
+                        <DropdownMenuContent align='end'>
                           <DropdownMenuItem onClick={() => onEditUser(user)}>
-                            <Edit className="mr-2 h-4 w-4" />
-                            {t("common.edit")}
+                            <Edit className='mr-2 h-4 w-4' />
+                            {t('common.edit')}
                           </DropdownMenuItem>
-                          {user.status === "ACTIVE" ? (
+                          {user.status === 'ACTIVE' ? (
                             <DropdownMenuItem
-                              onClick={() => onDeleteUser(user.id + "")}
-                              className="text-destructive"
+                              onClick={() => onDeleteUser(user.id + '')}
+                              className='text-destructive'
                             >
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              {t("common.delete")}
+                              <Trash2 className='mr-2 h-4 w-4' />
+                              {t('common.delete')}
                             </DropdownMenuItem>
                           ) : (
                             <DropdownMenuItem
-                              onClick={() => onRestoreUser(user.id + "")}
+                              onClick={() => onRestoreUser(user.id + '')}
                             >
-                              <RotateCcw className="mr-2 h-4 w-4" />
-                              {t("common.restore")}
+                              <RotateCcw className='mr-2 h-4 w-4' />
+                              {t('common.restore')}
                             </DropdownMenuItem>
                           )}
                         </DropdownMenuContent>
@@ -320,14 +325,14 @@ export function UserTable({
       </div>
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex justify-end ">
+        <div className='flex justify-center md:justify-end '>
           <AdminPagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={onPageChange}
             totalItems={totalElements}
             itemsPerPage={pageSize}
-            itemName="users"
+            itemName='users'
           />
         </div>
       )}

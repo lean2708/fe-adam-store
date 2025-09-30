@@ -246,7 +246,9 @@ export const useCartStore = create<State & Actions>()(
       name: 'cart-storage',
       partialize: (state) => ({
         selectedItems: state.selectedItems,
-        // cartItems: state.cartItems,
+        // *Tạm thời để cart Item trong sessionStore
+        // *Nhưng đây là bad Practice
+        cartItems: state.cartItems,
         lastFetched: state.lastFetched,
         // totalPrice: state.totalPrice,
         // selectedTotalPrice: state.selectedTotalPrice,

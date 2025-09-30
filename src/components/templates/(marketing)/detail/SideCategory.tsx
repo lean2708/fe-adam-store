@@ -5,6 +5,14 @@ import { TCategory } from '@/types';
 import { ChevronRight } from 'lucide-react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import useIsMobile from '@/hooks/useIsMobile';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 export default function SideCategory() {
   const searchParams = useSearchParams();
@@ -13,6 +21,8 @@ export default function SideCategory() {
   const [categories, setCategories] = useState<TCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(true);
+  const isMobile = useIsMobile();
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -30,21 +40,70 @@ export default function SideCategory() {
 
     fetchCategories();
   }, []);
+
   const handleCheckboxChange = (categoryId: string) => {
     router.push(`?category=${categoryId}`);
   };
+
   const toggleDropdown = () => {
-    setIsOpen((prev) => !prev); // Chuyển đổi trạng thái hiển thị
+    setIsOpen((prev) => !prev);
   };
+
+  // Mobile Select Handler
+  const handleSelectChange = (categoryId: number | string) => {
+    if (categoryId !== undefined && categoryId !== null) {
+      router.push(`?category=${categoryId}`);
+    }
+  };
+
+  // Mobile View - Select dropdown
+  if (isMobile) {
+    return (
+      <div className=' m-4 '>
+        <div className='flex items-center justify-between w-full'>
+          <span className='text-lg font-medium text-gray-700'>
+            Nhóm sản phẩm
+          </span>
+
+          <div className=' '>
+            <Select
+              value={paramCate || 'all'}
+              onValueChange={(value) => handleSelectChange(value)}
+            >
+              <SelectTrigger className=' bg-transparent border-none text-lg focus:outline-none cursor-pointer'>
+                <SelectValue placeholder='Tất cả' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value='all' className='text-lg'>
+                  Tất cả
+                </SelectItem>
+                {categories.map((category) => (
+                  <SelectItem
+                    key={category.id}
+                    value={category.id.toString()}
+                    className='text-lg'
+                  >
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop View - Giữ nguyên
   return (
-    <aside>
+    <aside className='hidden md:block'>
       <h2 className='h-20 w-full text-4xl font-bold flex pl-8 items-center'>
         {categories.find((item) => item.id + '' === paramCate)?.name}
         {!paramCate && 'Sản phẩm'}
       </h2>
       <p
         className='w-full flex px-8 justify-between font-medium h-14 items-center border-b-1 border-[#DDDDDD] cursor-pointer'
-        onClick={toggleDropdown} // Thêm sự kiện click để mở/đóng danh sách
+        onClick={toggleDropdown}
       >
         <span className='uppercase'>Nhóm sản phẩm</span>
         <ChevronRight

@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props) {
 export default function NewsPage() {
   const t = useTranslations('Marketing');
   return (
-    <div className='w-full !p-6'>
+    <div className='w-full py-6 px-4'>
       <h1 className='font-bold text-3xl text-center'>
         {t('newestProducts.title')}
       </h1>

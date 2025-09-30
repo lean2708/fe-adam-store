@@ -9,6 +9,8 @@ import { useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
+import { cn } from '@/lib/utils';
+import useIsMobile from '@/hooks/useIsMobile';
 
 // *Dynamic import cho Modal components
 const AddressSectionModal = dynamic(
@@ -27,6 +29,7 @@ const AddNewAddressModal = dynamic(
 
 export function DeliveryInfo() {
   const t = useTranslations('Order.delivery_info');
+  const isMobile = useIsMobile();
 
   const { user } = useAuth();
   const { currentAddress, loading, listAddress, setCurrentAddress } =
@@ -46,13 +49,13 @@ export function DeliveryInfo() {
 
   if (loading) {
     return (
-      <div>
+      <div className={cn(isMobile && 'border-border border p-4 rounded-md')}>
         <div className='flex flex-row items-center justify-between mb-3'>
           <h2 className='text-2xl font-bold text-primary'>{t('title')}</h2>
           <Skeleton className='w-32 h-10 rounded-full' />
         </div>
         <div className='flex flex-row gap-12'>
-          <div className='flex flex-col justify-between text-muted-foreground gap-2'>
+          <div className='hidden md:flex flex-col justify-between text-muted-foreground gap-2'>
             <span>Họ và tên:</span>
             <span>Địa chỉ nhận hàng:</span>
             <span>Số điện thoại:</span>
@@ -86,7 +89,7 @@ export function DeliveryInfo() {
   }
 
   return (
-    <div>
+    <div className={cn(isMobile && 'border-border border p-4 rounded-md')}>
       <div className='flex flex-row items-center justify-between mb-3'>
         <h2 className='text-2xl font-bold text-primary'>{t('title')}</h2>
         <Button
@@ -98,13 +101,13 @@ export function DeliveryInfo() {
         </Button>
       </div>
       <div className='flex flex-row gap-12'>
-        <div className='flex flex-col justify-between text-muted-foreground gap-2'>
+        <div className='hidden md:flex flex-col justify-between text-muted-foreground gap-2'>
           <span>{t('info_receiver.name')}:</span>
           <span>{t('info_receiver.address')}:</span>
           <span>{t('info_receiver.phone')}:</span>
         </div>
         <div className='flex flex-col justify-between text-muted-foreground gap-2'>
-          <span>{user?.name}</span>
+          <span className='font-bold'>{user?.name}</span>
           <span>
             {deliveryAddress.streetDetail},{deliveryAddress.ward?.name},
             {deliveryAddress.district?.name},{deliveryAddress.province?.name}

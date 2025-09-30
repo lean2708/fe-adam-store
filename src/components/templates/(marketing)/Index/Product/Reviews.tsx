@@ -11,6 +11,7 @@ import ReviewItem from './(Reviews)/ReviewItem';
 import useReviews from '@/hooks/(product_details)/useReviews';
 import ImagePreviewModal from './(Reviews)/ImagePreviewModal';
 import { useTranslations } from 'next-intl';
+import { Separator } from '@/components/ui/separator';
 
 export default function Reviews({ productId }: { productId: string }) {
   const t = useTranslations('Marketing.product_details');
@@ -82,12 +83,10 @@ export default function Reviews({ productId }: { productId: string }) {
         <p className='text-gray-500'>{t('reviews.no_reviews')}.</p>
       ) : (
         <div className='-space-y-3'>
-          {reviews.map((review) => (
-            <div
-              key={review.id}
-              className='first:border-t-0 border-t-2 border-border'
-            >
+          {reviews.map((review, index) => (
+            <div key={review.id} className=''>
               <ReviewItem review={review} onImageClick={handleImageClick} />
+              {index < reviews.length - 1 && <Separator className='my-2' />}
             </div>
           ))}
 

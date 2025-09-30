@@ -225,3 +225,35 @@ export const getStatusColor = (
       }
   }
 };
+
+/**
+ * Check if a component should be hidden based on path and device type
+ *
+ * @param pathname full pathname from usePathname (includes locale prefix)
+ * @param isMobile boolean from useIsMobile
+ * @param unAllowPaths list of disallowed paths (without locale prefix)
+ *
+ * @example
+ *  shouldHideByPathAndDevice("/en/cart", true, ["/cart", "/login"])
+ *  => true
+ */
+export function shouldHideByPathAndDevice(
+  pathname: string,
+  isMobile: boolean,
+  unAllowPaths: string[]
+) {
+  if (!pathname) return false;
+
+  // Remove locale prefix: "/en/cart" => "/cart"
+  const pathWithoutLocale = pathname.replace(/^\/[a-zA-Z-]+/, '');
+
+  // Trim trailing slash: "/cart/" => "/cart"
+  const normalizedPath = pathWithoutLocale.replace(/\/$/, '');
+
+  // Match theo segment đầu tiên
+  const match = unAllowPaths.some(
+    (path) => normalizedPath === path || normalizedPath.startsWith(path + '/')
+  );
+
+  return isMobile && match;
+}
