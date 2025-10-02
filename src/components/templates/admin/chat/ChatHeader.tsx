@@ -1,17 +1,9 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useTranslations } from 'next-intl';
-import {
-  RefreshCw,
-  Search,
-  Wifi,
-  WifiOff,
-  MessageCircle,
-  Plus,
-} from 'lucide-react';
+import { Search, Wifi, WifiOff, MessageCircle } from 'lucide-react';
 
 interface ChatHeaderProps {
   onRefresh: () => void;
@@ -54,26 +46,6 @@ export function ChatHeader({
               'Quản lý cuộc trò chuyện và tin nhắn với khách hàng'}
           </p>
         </div>
-        {/* <div className="flex gap-3">
-          {onCreateConversation && (
-            <Button
-              onClick={onCreateConversation}
-              className="bg-black hover:bg-gray-900 text-white"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              {t("createConversation") || "Tạo cuộc trò chuyện"}
-            </Button>
-          )}
-          <Button
-            onClick={onRefresh}
-            variant="outline"
-            className="bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
-            disabled={loading}
-          >
-            <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-            {t("refresh") || "Refresh"}
-          </Button>
-        </div> */}
       </div>
 
       {/* Search and Status */}

@@ -1,7 +1,6 @@
 'use client';
 import { getProductByCategoryAction } from '@/actions/categoryActions';
 import ProductCardIndex from '@/components/modules/ProductCardIndex';
-import { Carousel, CarouselItem } from '@/components/ui/carousel';
 import { transformProductResponseToTProduct } from '@/lib/data/transform/product';
 import { TProduct } from '@/types';
 import { useTranslations } from 'next-intl';

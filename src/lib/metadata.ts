@@ -3,13 +3,14 @@ import { Metadata } from 'next';
 
 // Base metadata configuration
 export const BASE_METADATA_CONFIG = {
-  baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://adamstore.com',
+  baseUrl:
+    process.env.NEXT_PUBLIC_BASE_URL || 'https://fe-adam-store.vercel.app',
   siteName: 'Adam Store',
   twitterHandle: '@adamstore_vn',
   defaultImages: {
-    og: '/og-marketing.jpg',
-    twitter: '/twitter-marketing.jpg',
-    logo: '/og-logo.jpg',
+    og: '/imgs/og/og-marketing.jpg',
+    twitter: '/imgs/og/twitter-marketing.jpg',
+    logo: '/imgs/og/og-logo.jpg',
   },
 };
 
@@ -323,7 +324,7 @@ export const pageMetadataPresets = {
                 : []),
               'Vietnamese fashion store',
             ],
-      ogImage: '/imgs/store-location.jpg',
+      ogImage: '/imgs/map.jpg',
       canonical: `/${locale}/store-location${
         location ? `/${location.toLowerCase().replace(/\s+/g, '-')}` : ''
       }`,

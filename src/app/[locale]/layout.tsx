@@ -8,16 +8,6 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { QueryProvider } from '@/providers/react-query-provider';
 import CartInitializer from '@/providers/CartInitializer';
-import { generateBaseMetadata } from '@/lib/metadata';
-
-type Props = {
-  params: { locale: string };
-};
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
-  return generateBaseMetadata(locale);
-}
 
 export const viewport: Viewport = {
   width: 'device-width',

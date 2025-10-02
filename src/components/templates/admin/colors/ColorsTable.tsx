@@ -1,9 +1,7 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { useTranslations, useLocale } from 'next-intl';
-import { formatDate } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 import {
   Table,
   TableBody,
@@ -92,7 +90,6 @@ export function ColorsTable({
   onPageChange,
 }: ColorsTableProps) {
   const t = useTranslations('Admin.colors');
-  const locale = useLocale();
 
   return (
     <div>

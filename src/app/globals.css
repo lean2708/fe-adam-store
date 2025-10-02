@@ -149,7 +149,7 @@ body {
 }
 
 .adam-store-bg-light {
-  @apply bg-gray-50 dark:bg-gray-800;
+  @apply bg-gray-50 dark:bg-gray-900;
 }
 
 .adam-store-border {
@@ -157,7 +157,7 @@ body {
 }
 
 .adam-store-bg-dark {
-  @apply bg-gray-800 dark:bg-gray-900;
+  @apply bg-gray-900 dark:bg-gray-900;
 }
 
 .adam-store-text-light {

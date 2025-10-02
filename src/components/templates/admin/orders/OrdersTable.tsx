@@ -21,7 +21,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { ActionDropdown } from '@/components/ui/action-dropdown';
 import { AdminPagination } from '@/components/ui/pagination';
-import { ShoppingCart, Eye, X, RefreshCw } from 'lucide-react';
+import { ShoppingCart, X, RefreshCw } from 'lucide-react';
 import type { TOrder, SearchOrdersForAdminOrderStatusEnum } from '@/types';
 import { Button } from '@/components/ui/button';
 import { ORDER_STATUS } from '@/enums';

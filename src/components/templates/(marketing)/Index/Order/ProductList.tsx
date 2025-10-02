@@ -8,20 +8,26 @@ import { useCheckoutDatas } from '@/hooks/(order)/useCheckOutDatas';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Separator } from '@/components/ui/separator';
+import { useCartStore } from '@/stores/cartStore';
 
 export function ProductList({ className }: { className?: string }) {
   const t = useTranslations('Order.product_list');
 
   const { isAuthenticated, isLoading, user } = useAuth();
+  const selectedItems = useCartStore((s) => s.selectedItems);
   const router = useRouter();
-  const { items: products, isEmpty } = useCheckoutDatas();
-
-  // Dùng ref để tránh push nhiều lần
-  const hasRedirected = useRef(false);
+  const { items: products } = useCheckoutDatas();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated && !user) {
       router.push('/login');
+    }
+    if (selectedItems.length === 0) {
+      router.push('/');
+      toast.info('Your order has been cancelled !', {
+        description:
+          'Please try the transaction again, avoid reloading the page',
+      });
     }
   }, [isAuthenticated, user, isLoading, router]);
 

@@ -23,16 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Tag,
-  CheckCircle,
-  XCircle,
-  Percent,
-  Calendar,
-  RefreshCw,
-  Search,
-  Plus,
-} from 'lucide-react';
+import { Tag, Percent, Calendar, RefreshCw, Search, Plus } from 'lucide-react';
 import type { TPromotion } from '@/types';
 
 interface PromotionTableProps {
