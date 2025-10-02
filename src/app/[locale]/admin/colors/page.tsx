@@ -1,20 +1,37 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
+import { useColors } from '@/hooks/admin/useColors';
 
-import { ColorsTable } from "@/components/templates/admin/colors/ColorsTable";
-import { ColorModal } from "@/components/templates/admin/colors/ColorModal";
-import { useColors } from "@/hooks/admin/useColors";
+import type { TColor } from '@/types';
+import dynamic from 'next/dynamic';
 
-import type { TColor } from "@/types";
+const ColorsTable = dynamic(() =>
+  import('@/components/templates/admin/colors/ColorsTable').then((mod) => ({
+    default: mod.ColorsTable,
+  }))
+);
 
+const ColorModal = dynamic(() =>
+  import('@/components/templates/admin/colors/ColorModal').then((mod) => ({
+    default: mod.ColorModal,
+  }))
+);
 export default function ColorsAdminPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingColor, setEditingColor] = useState<TColor | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
-  
-  const { colors, totalElements, totalPages, loading, handleDelete, handleRestore, handleRefresh } = useColors(currentPage, 20);
+
+  const {
+    colors,
+    totalElements,
+    totalPages,
+    loading,
+    handleDelete,
+    handleRestore,
+    handleRefresh,
+  } = useColors(currentPage, 20);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 0 && newPage < totalPages) {
@@ -38,9 +55,9 @@ export default function ColorsAdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 border rounded-lg">
-      <div className="admin-page-container space-y-6 mt-4 dark:bg-gray-900">
-        <div className="bg-white  shadow-sm  dark:bg-gray-900">
+    <div className='min-h-screen bg-gray-50 dark:bg-gray-900 border rounded-lg'>
+      <div className='admin-page-container space-y-6 mt-4 dark:bg-gray-900'>
+        <div className='bg-white  shadow-sm  dark:bg-gray-900'>
           <ColorsTable
             colors={colors}
             loading={loading}

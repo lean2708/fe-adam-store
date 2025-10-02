@@ -1,20 +1,8 @@
 import { NextResponse, NextRequest } from 'next/server';
-import createMiddleware from 'next-intl/middleware';
-import { Pathnames, LocalePrefixMode } from 'next-intl/routing';
-import { getToken } from 'next-auth/jwt';
 
-export const defaultLocale = 'en' as const;
+export const defaultLocale = 'en';
 export const locales = ['en', 'vi'] as const;
-export const pathnames: Pathnames<typeof locales> = {};
 export type Locale = (typeof locales)[number];
-export const localePrefix: LocalePrefixMode = 'always';
-
-const intlMiddleware = createMiddleware({
-  defaultLocale,
-  locales,
-  localePrefix,
-  pathnames,
-});
 
 const protectedRoutes = [
   '/dashboard',
@@ -28,43 +16,31 @@ function isProtectedRoute(pathname: string) {
   return protectedRoutes.some((route) => pathname.startsWith(route));
 }
 
-export default async function middleware(req: NextRequest) {
+export default function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
-  const pathname = url.pathname;
+  const pathSegments = url.pathname.split('/').filter(Boolean);
 
-  // Skip API routes
-  if (pathname.startsWith('/api')) {
-    return NextResponse.next();
+  const maybeLocale = pathSegments[0] as Locale | undefined;
+  if (!maybeLocale || !locales.includes(maybeLocale)) {
+    url.pathname = `/${defaultLocale}${url.pathname}`;
+    return NextResponse.redirect(url);
   }
 
-  // Check if the path has a locale prefix
-  const pathSegments = pathname.split('/').filter(Boolean);
-  const maybeLocale = pathSegments[0];
-  const hasLocale = locales.includes(maybeLocale as Locale);
-
-  // Extract the path without locale
-  const normalizedPath = hasLocale
-    ? '/' + pathSegments.slice(1).join('/')
-    : pathname;
-
-  // Check if the normalized path is protected
+  const normalizedPath = '/' + pathSegments.slice(1).join('/');
   if (isProtectedRoute(normalizedPath)) {
-    const hasAuthCookie = req.cookies.has('next-auth.session-token');
+    const hasAuthCookie =
+      req.cookies.has('next-auth.session-token') ||
+      req.cookies.has('__Secure-next-auth.session-token');
 
     if (!hasAuthCookie) {
-      const locale = hasLocale ? maybeLocale : defaultLocale;
-      url.pathname = `/${locale}/login`;
+      url.pathname = `/${maybeLocale}/login`;
       return NextResponse.redirect(url);
     }
   }
 
-  // Handle internationalization
-  return intlMiddleware(req);
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    // Match all paths except static files and Next.js internals
-    '/((?!_next|.*\\..*).*)',
-  ],
+  matcher: ['/((?!_next|api|.*\\..*).*)'], //
 };

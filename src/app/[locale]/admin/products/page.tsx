@@ -4,13 +4,29 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ProductHeader } from '@/components/templates/admin/products/ProductHeader';
 import { ProductVariantsStats } from '@/components/templates/admin/products/ProductVariantsStats';
-import { ProductVariantsTable } from '@/components/templates/admin/products/ProductVariantsTable';
-import { ProductVariantModal } from '@/components/templates/admin/products/ProductVariantModal';
-import { ProductCreateModal } from '@/components/templates/admin/products/ProductCreateModal';
+
+const ProductVariantModal = dynamic(() =>
+  import('@/components/templates/admin/products/ProductVariantModal').then(
+    (mod) => ({ default: mod.ProductVariantModal })
+  )
+);
+
+const ProductCreateModal = dynamic(() =>
+  import('@/components/templates/admin/products/ProductCreateModal').then(
+    (mod) => ({ default: mod.ProductCreateModal })
+  )
+);
+
+const ProductVariantsTable = dynamic(() =>
+  import('@/components/templates/admin/products/ProductVariantsTable').then(
+    (mod) => ({ default: mod.ProductVariantsTable })
+  )
+);
 
 import { useProducts } from '@/hooks/admin/useProductVariants';
 
 import type { TProduct } from '@/types';
+import dynamic from 'next/dynamic';
 
 export default function ProductsPage() {
   const router = useRouter();

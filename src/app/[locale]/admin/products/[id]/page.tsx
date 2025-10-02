@@ -5,10 +5,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
-import { ProductVariantEditModal } from '@/components/templates/admin/products/ProductVariantEditModal';
-import { ProductUpdateModal } from '@/components/templates/admin/products/ProductUpdateModal';
-import { ProductVariantsTableComponent } from '@/components/templates/admin/products/ProductVariantsTableComponent';
-
 import {
   Carousel,
   CarouselContent,
@@ -22,6 +18,25 @@ import { toast } from 'sonner';
 import { fetchProductByIdAction } from '@/actions/productActions';
 import { transformProductResponseToTProduct } from '@/lib/data/transform/product';
 import Spinner from '@/components/ui/Spinner';
+import dynamic from 'next/dynamic';
+
+const ProductVariantEditModal = dynamic(() =>
+  import('@/components/templates/admin/products/ProductVariantEditModal').then(
+    (mod) => ({ default: mod.ProductVariantEditModal })
+  )
+);
+
+const ProductUpdateModal = dynamic(() =>
+  import('@/components/templates/admin/products/ProductUpdateModal').then(
+    (mod) => ({ default: mod.ProductUpdateModal })
+  )
+);
+
+const ProductVariantsTableComponent = dynamic(() =>
+  import(
+    '@/components/templates/admin/products/ProductVariantsTableComponent'
+  ).then((mod) => ({ default: mod.ProductVariantsTableComponent }))
+);
 
 export default function ProductVariantsPage() {
   const params = useParams();

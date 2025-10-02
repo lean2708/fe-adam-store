@@ -2,10 +2,21 @@
 
 import { useState } from 'react';
 
-import { BranchesTable } from '@/components/templates/admin/branches/BranchesTable';
-import { BranchModal } from '@/components/templates/admin/branches/BranchModal';
 import { useBranches } from '@/hooks/admin/useBranches';
 import type { TBranch } from '@/types';
+import dynamic from 'next/dynamic';
+
+const BranchesTable = dynamic(() =>
+  import('@/components/templates/admin/branches/BranchesTable').then((mod) => ({
+    default: mod.BranchesTable,
+  }))
+);
+
+const BranchModal = dynamic(() =>
+  import('@/components/templates/admin/branches/BranchModal').then((mod) => ({
+    default: mod.BranchModal,
+  }))
+);
 
 export default function BranchesAdminPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
