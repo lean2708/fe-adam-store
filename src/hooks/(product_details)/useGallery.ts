@@ -55,20 +55,20 @@ export default function useGallery(images: ImageBasic[]) {
     api.on('select', () => setCurrent(api.selectedScrollSnap() + 1));
   }, [api]);
 
-  // TODO: Auto-play functionality
-  useEffect(() => {
-    if (!api || !isAutoPlaying) return;
+  // // TODO: Auto-play functionality
+  // useEffect(() => {
+  //   if (!api || !isAutoPlaying) return;
 
-    const interval = setInterval(() => {
-      if (api.canScrollNext()) {
-        api.scrollNext();
-      } else {
-        api.scrollTo(0);
-      }
-    }, 5000);
+  //   const interval = setInterval(() => {
+  //     if (api.canScrollNext()) {
+  //       api.scrollNext();
+  //     } else {
+  //       api.scrollTo(0);
+  //     }
+  //   }, 5000);
 
-    return () => clearInterval(interval);
-  }, [api, isAutoPlaying]);
+  //   return () => clearInterval(interval);
+  // }, [api, isAutoPlaying]);
 
   const handleImageSelect = useCallback(
     (index: number) => api?.scrollTo(index),
