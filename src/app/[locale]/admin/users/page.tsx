@@ -1,10 +1,21 @@
 'use client';
 
 import { useState } from 'react';
-import { UserTable } from '@/components/templates/admin/users/UserTable';
-import { UserModal } from '@/components/templates/admin/users/UserModal';
 import type { TUser } from '@/types';
 import { useUsers } from '@/hooks/admin/useUsers';
+import dynamic from 'next/dynamic';
+
+const UserTable = dynamic(() =>
+  import('@/components/templates/admin/users/UserTable').then((mod) => ({
+    default: mod.UserTable,
+  }))
+);
+
+const UserModal = dynamic(() =>
+  import('@/components/templates/admin/users/UserModal').then((mod) => ({
+    default: mod.UserModal,
+  }))
+);
 
 export default function UsersPage() {
   const [currentPage, setCurrentPage] = useState(0);

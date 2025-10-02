@@ -1,20 +1,49 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
+import { useCategories } from '@/hooks/admin/useCategories';
 
-import { CategoriesTable } from "@/components/templates/admin/categories/CategoriesTable";
-import { CategoryModal } from "@/components/templates/admin/categories/CategoryModal";
-import { useCategories } from "@/hooks/admin/useCategories";
+import type { TCategory } from '@/types';
+import dynamic from 'next/dynamic';
 
-import type { TCategory } from "@/types";
+const CategoriesTable = dynamic(
+  () =>
+    import('@/components/templates/admin/categories/CategoriesTable').then(
+      (mod) => ({ default: mod.CategoriesTable })
+    ),
+  {
+    loading: () => (
+      <div className='h-[350px] flex items-center justify-center'>
+        <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary'></div>
+      </div>
+    ),
+    ssr: false,
+  }
+);
+
+const CategoryModal = dynamic(() =>
+  import('@/components/templates/admin/categories/CategoryModal').then(
+    (mod) => ({ default: mod.CategoryModal })
+  )
+);
 
 export default function CategoriesAdminPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<TCategory | null>(null);
+  const [editingCategory, setEditingCategory] = useState<TCategory | null>(
+    null
+  );
   const [currentPage, setCurrentPage] = useState(0);
-  
-  const { categories, totalElements, totalPages, loading, handleDelete, handleRestore, handleRefresh } = useCategories(currentPage, 20);
+
+  const {
+    categories,
+    totalElements,
+    totalPages,
+    loading,
+    handleDelete,
+    handleRestore,
+    handleRefresh,
+  } = useCategories(currentPage, 20);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 0 && newPage < totalPages) {
@@ -38,9 +67,9 @@ export default function CategoriesAdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 border rounded-lg">
-      <div className="admin-page-container space-y-6 mt-4 dark:bg-gray-900">
-        <div className="bg-white  shadow-sm  dark:bg-gray-900">
+    <div className='min-h-screen bg-gray-50 dark:bg-gray-900 border rounded-lg'>
+      <div className='admin-page-container space-y-6 mt-4 dark:bg-gray-900'>
+        <div className='bg-white  shadow-sm  dark:bg-gray-900'>
           <CategoriesTable
             categories={categories}
             loading={loading}

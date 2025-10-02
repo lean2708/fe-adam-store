@@ -1,0 +1,46 @@
+Route (app)                                      Size  First Load JS    
+┌ ○ /_not-found                                 997 B         102 kB
+├ ƒ /[locale]                                 4.39 kB         196 kB
+├ ƒ /[locale]/about-us                        1.71 kB         108 kB
+├ ƒ /[locale]/address                           181 B         158 kB
+├ ƒ /[locale]/address/[id]                      764 B         159 kB
+├ ƒ /[locale]/admin                           3.72 kB         132 kB
+├ ƒ /[locale]/admin/branches                  4.08 kB         137 kB
+├ ƒ /[locale]/admin/categories                4.17 kB         137 kB
+├ ƒ /[locale]/admin/chat                      15.6 kB         204 kB
+├ ƒ /[locale]/admin/colors                    4.02 kB         137 kB
+├ ƒ /[locale]/admin/files                     8.86 kB         191 kB
+├ ƒ /[locale]/admin/orders                     5.3 kB         209 kB
+├ ƒ /[locale]/admin/payment-history           4.87 kB         154 kB
+├ ƒ /[locale]/admin/products                  4.24 kB         157 kB
+├ ƒ /[locale]/admin/products/[id]             9.47 kB         164 kB
+├ ƒ /[locale]/admin/promotions                5.13 kB         204 kB
+├ ƒ /[locale]/admin/search                    8.37 kB         141 kB
+├ ƒ /[locale]/admin/sizes                       11 kB         152 kB
+├ ƒ /[locale]/admin/users                     4.11 kB         137 kB
+├ ƒ /[locale]/best-seller                      1.2 kB         172 kB
+├ ƒ /[locale]/cart                            9.16 kB         221 kB
+├ ƒ /[locale]/detail                          6.68 kB         201 kB
+├ ƒ /[locale]/forgot_password                 2.04 kB         175 kB
+├ ƒ /[locale]/forgot_password/reset_password  2.47 kB         175 kB
+├ ƒ /[locale]/forgot_password/verify_code     2.05 kB         175 kB
+├ ƒ /[locale]/login                           3.41 kB         185 kB
+├ ƒ /[locale]/news                            1.21 kB         172 kB
+├ ƒ /[locale]/order                           12.2 kB         219 kB
+├ ƒ /[locale]/orders                          15.8 kB         168 kB
+├ ƒ /[locale]/product/[id]                    13.5 kB         199 kB
+├ ƒ /[locale]/register                        2.93 kB         176 kB
+├ ƒ /[locale]/register/verify                 2.47 kB         184 kB
+├ ƒ /[locale]/search                          10.4 kB         185 kB
+├ ƒ /[locale]/sitemap.xml                       141 B         102 kB
+├ ƒ /[locale]/store-location                  1.71 kB         108 kB
+├ ƒ /[locale]/user                            11.5 kB         171 kB
+├ ƒ /api/auth/[...nextauth]                     141 B         102 kB
+└ ○ /robots.txt                                 141 B         102 kB
++ First Load JS shared by all                  101 kB
+  ├ chunks/2842-356f878b23659987.js           44.3 kB
+  ├ chunks/2dab77ab-07fe2f039c21b56d.js       54.1 kB
+  └ other shared chunks (total)               2.98 kB
+
+
+ƒ Middleware                                  33.3 kB

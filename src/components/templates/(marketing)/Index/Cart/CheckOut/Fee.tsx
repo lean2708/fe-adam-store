@@ -1,5 +1,6 @@
 import { formatCurrency } from '@/lib/utils';
 import { useLocale, useTranslations } from 'next-intl';
+import { memo } from 'react';
 
 function Fee({
   subtotal,
@@ -33,4 +34,4 @@ function Fee({
   );
 }
 
-export default Fee;
+export default memo(Fee);

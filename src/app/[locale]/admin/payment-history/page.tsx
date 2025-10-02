@@ -2,9 +2,15 @@
 
 import { useState } from 'react';
 import { PaymentHistoryStats } from '@/components/templates/admin/payment-history/PaymentHistoryStats';
-import { PaymentHistoryTable } from '@/components/templates/admin/payment-history/PaymentHistoryTable';
 import { usePaymentHistory } from '@/hooks/admin/usePaymentHistory';
 import { useDateRange } from '@/hooks/useDateRange';
+import dynamic from 'next/dynamic';
+
+const PaymentHistoryTable = dynamic(() =>
+  import(
+    '@/components/templates/admin/payment-history/PaymentHistoryTable'
+  ).then((mod) => ({ default: mod.PaymentHistoryTable }))
+);
 
 export default function PaymentHistoryAdminPage() {
   const [currentPage, setCurrentPage] = useState(0);
@@ -23,7 +29,6 @@ export default function PaymentHistoryAdminPage() {
     loading,
     handleDelete,
     handleRestore,
-    handleRefresh,
   } = usePaymentHistory(currentPage, 10, statusFilter, searchTerm, dateRange);
 
   const handlePageChange = (newPage: number) => {

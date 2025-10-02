@@ -7,11 +7,27 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { RecentOrders } from '@/components/templates/admin/dashboard/RecentOrders';
-import { DashboardOverview } from '@/components/templates/admin/dashboard/DashboardOverview';
-import { DashboardTopProducts } from '@/components/templates/admin/dashboard/DashboardTopProducts';
 import { useTranslations } from 'next-intl';
 import { useDateRange } from '@/hooks/useDateRange';
+import dynamic from 'next/dynamic';
+
+const DashboardTopProducts = dynamic(() =>
+  import('@/components/templates/admin/dashboard/DashboardTopProducts').then(
+    (mod) => ({ default: mod.DashboardTopProducts })
+  )
+);
+
+const RecentOrders = dynamic(() =>
+  import('@/components/templates/admin/dashboard/RecentOrders').then((mod) => ({
+    default: mod.RecentOrders,
+  }))
+);
+
+const DashboardOverview = dynamic(() =>
+  import('@/components/templates/admin/dashboard/DashboardOverview').then(
+    (mod) => ({ default: mod.DashboardOverview })
+  )
+);
 
 export default function AdminDashboard() {
   const t = useTranslations('Admin');
