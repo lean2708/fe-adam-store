@@ -47,20 +47,22 @@ export default function Gallery({ product }: { product: TProduct }) {
           <CarouselContent>
             {images.map((image, index) => (
               <CarouselItem key={index}>
-                <div className=' bg-muted-foreground rounded-lg overflow-hidden relative h-[580px]'>
-                  <AspectRatio ratio={3 / 4} className='w-full h-full'>
+                <div className=' bg-muted-foreground rounded-lg overflow-hidden relative md:h-[580px]'>
+                  <AspectRatio ratio={3 / 4} className='w-full md:h-full'>
                     <Image
                       src={
                         image?.imageUrl ||
-                        'https://images.pexels.com/photos/6069525/pexels-photo-6069525.jpeg?auto=compress&cs=tinysrgb&h=400&w=300'
+                        'https://images.pexels.com/photos/6069525/pexels-photo-6069525.jpeg'
                       }
                       alt={`${product.name} ${index + 1}`}
-                      width={300}
-                      height={400}
-                      className='w-full h-full object-cover transition-opacity duration-300'
+                      fill
+                      className='object-cover transition-opacity duration-300'
                       priority={index === 0}
-                      sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px'
-                      unoptimized
+                      sizes='(min-width: 1360px) 504px,
+         (min-width: 1040px) calc(40vw - 32px),
+         (min-width: 640px) calc(100vw - 128px),
+         (min-width: 380px) calc(100vw - 32px),
+         calc(28.33vw + 226px)'
                     />
 
                     {!imagesLoaded[index] && <CategorySkeleton />}
@@ -89,9 +91,9 @@ export default function Gallery({ product }: { product: TProduct }) {
           </div>
 
           {/* Auto-play indicator */}
-          {/* {isAutoPlaying && (
+          {isAutoPlaying && (
             <div className='absolute top-4 right-4 w-2 h-2 bg-green-500 rounded-full animate-pulse' />
-          )} */}
+          )}
         </Carousel>
       </div>
     </div>

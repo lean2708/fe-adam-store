@@ -83,9 +83,9 @@ export function CartItem({
           <div className='grid grid-rows-3 w-full'>
             <div className='flex justify-between'>
               <div>
-                <h3 className=' font-bold text-primary mb-1 line-clamp-1 text-xs sm:text-sm md:text-base'>
+                <h1 className=' font-bold text-primary mb-1 line-clamp-1 text-xs sm:text-sm md:text-base'>
                   {cartItem.Product.name}
-                </h3>
+                </h1>
                 <p
                   className={cn(
                     `text-sm text-muted-foreground mb-2`,

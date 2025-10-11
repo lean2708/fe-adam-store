@@ -16,13 +16,13 @@ export function ProductList({ className }: { className?: string }) {
   const { isAuthenticated, isLoading, user } = useAuth();
   const selectedItems = useCartStore((s) => s.selectedItems);
   const router = useRouter();
-  const { items: products } = useCheckoutDatas();
+  const { items: products, isEmpty } = useCheckoutDatas();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated && !user) {
       router.push('/login');
     }
-    if (selectedItems.length === 0) {
+    if (isEmpty) {
       router.push('/');
       toast.info('Your order has been cancelled !', {
         description:

@@ -48,23 +48,25 @@ export default function OrderItem(props: {
     ),
     PROCESSING: (
       <>
-        <button className='w-40  px-6 md:px-4 py-4 md:py-2 mr-4 rounded-md border border-[#C5C4C2] text-sm text-[#C5C4C2] bg-[#E5E4E1]'>
-          {t('actions.wait')}
-        </button>
         <button
           onClick={() => openModule()}
-          className='w-52 mr-4  px-6 md:px-4 py-4 md:py-2rounded-md border border-[#888888] text-sm'
+          className='md:w-52 w-full md:mr-4  px-6 md:px-4 py-4 md:py-2 rounded-md border border-[#888888] text-sm'
         >
           {t('actions.change_address')}
         </button>
-        <button
-          onClick={() => {
-            setIsDeleted(true);
-          }}
-          className='w-40  px-6 md:px-4 py-4 md:py-2 border-[#888888] border text-black rounded-md text-sm'
-        >
-          {t('actions.cancel_order')}
-        </button>
+        <div className='md:block flex justify-between my-4'>
+          <button
+            onClick={() => {
+              setIsDeleted(true);
+            }}
+            className='w-40 mr-4  px-6 md:px-4 py-4 md:py-2 border-[#888888] border text-black rounded-md text-sm'
+          >
+            {t('actions.cancel_order')}
+          </button>
+          <button className='w-40  px-6 md:px-4 py-4 md:py-2  rounded-md border border-[#C5C4C2] text-sm text-[#C5C4C2] bg-[#E5E4E1]'>
+            {t('actions.wait')}
+          </button>
+        </div>
       </>
     ),
     SHIPPED: (
